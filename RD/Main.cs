@@ -15,6 +15,13 @@ namespace RD
         public Main()
         {
             InitializeComponent();
+            show();
         }
+
+        private void show()
+        {
+            textBox1.Text = GlobalClasscs.User.StrUsrName;
+        }
+
     }
 }
