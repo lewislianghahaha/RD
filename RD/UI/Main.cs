@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using RD.Logic;
 using RD.UI.Account;
+using RD.UI.Basic;
 
 namespace RD.UI
 {
@@ -33,7 +34,9 @@ namespace RD.UI
         {
             try
             {
-
+                var basic = new BasicFrm();
+                basic.StartPosition = FormStartPosition.CenterScreen;
+                basic.ShowDialog();
             }
             catch (Exception ex)
             {
