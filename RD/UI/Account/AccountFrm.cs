@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Task = RD.Logic.Task;
 
-namespace RD
+namespace RD.UI.Account
 {
-    public partial class Login : Form
+    public partial class AccountFrm : Form
     {
-        public Login()
+        Task task = new Task();
+
+        public AccountFrm()
         {
             InitializeComponent();
             OnRegisterEvents();
@@ -20,35 +23,23 @@ namespace RD
 
         private void OnRegisterEvents()
         {
-            btnLogin.Click += BtnLogin_Click;
+            btnChange.Click += BtnChange_Click;
             btnexit.Click += Btnexit_Click;
         }
 
         /// <summary>
-        /// 登录
+        /// 更换密码
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnLogin_Click(object sender, EventArgs e)
+        private void BtnChange_Click(object sender, EventArgs e)
         {
             try
             {
-                if (txtName.Text == "" || txtpwd.Text == "") throw new Exception("请输入帐号及密码进行登录");
-                if (txtName.Text == "Lewis" && txtpwd.Text == "124")
-                {
-                    GlobalClasscs.User.StrUsrName = txtName.Text;
-                    GlobalClasscs.User.StrUsrpwd = txtpwd.Text;
+                task.TaskId = 0;
+                task.AccountName = GlobalClasscs.User.StrUsrName;
+                task.AccountPwd = GlobalClasscs.User.StrUsrpwd;
 
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-                else
-                {
-                    txtName.Text = "";
-                    txtpwd.Text = "";
-                    throw new Exception("帐号或密码错误,不能登录");
-
-                }
             }
             catch (Exception ex)
             {
@@ -63,7 +54,7 @@ namespace RD
         /// <param name="e"></param>
         private void Btnexit_Click(object sender, EventArgs e)
         {
-            this.Close();
+           this.Close();
         }
     }
 }

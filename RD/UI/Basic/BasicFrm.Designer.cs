@@ -1,6 +1,6 @@
-﻿namespace RD
+﻿namespace RD.UI.Basic
 {
-    partial class Main
+    partial class BasicFrm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,31 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(22, 41);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
-            this.textBox1.TabIndex = 0;
-            // 
-            // Main
+            // BasicFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 659);
-            this.Controls.Add(this.textBox1);
-            this.Name = "Main";
-            this.Text = "RD-Main";
+            this.ClientSize = new System.Drawing.Size(995, 626);
+            this.Name = "BasicFrm";
+            this.Text = "基础资料库";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBox1;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace RD
+﻿namespace RD.UI
 {
     partial class Login
     {
@@ -30,17 +30,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btnLogin = new System.Windows.Forms.Button();
-            this.btnexit = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.txtpwd = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.txtpwd = new System.Windows.Forms.TextBox();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnexit = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -50,7 +50,17 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(531, 120);
-            this.panel1.TabIndex = 0;
+            this.panel1.TabIndex = 111;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(531, 120);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // panel2
             // 
@@ -66,32 +76,21 @@
             this.panel2.Size = new System.Drawing.Size(531, 162);
             this.panel2.TabIndex = 1;
             // 
-            // btnLogin
+            // txtpwd
             // 
-            this.btnLogin.Location = new System.Drawing.Point(115, 128);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(100, 23);
-            this.btnLogin.TabIndex = 0;
-            this.btnLogin.Text = "登录";
-            this.btnLogin.UseVisualStyleBackColor = true;
+            this.txtpwd.Location = new System.Drawing.Point(164, 71);
+            this.txtpwd.Name = "txtpwd";
+            this.txtpwd.Size = new System.Drawing.Size(199, 21);
+            this.txtpwd.TabIndex = 1;
+            this.txtpwd.UseSystemPasswordChar = true;
             // 
-            // btnexit
+            // txtName
             // 
-            this.btnexit.Location = new System.Drawing.Point(296, 128);
-            this.btnexit.Name = "btnexit";
-            this.btnexit.Size = new System.Drawing.Size(100, 23);
-            this.btnexit.TabIndex = 1;
-            this.btnexit.Text = "退出";
-            this.btnexit.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(113, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 12);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "帐号:";
+            this.txtName.BackColor = System.Drawing.SystemColors.Window;
+            this.txtName.Location = new System.Drawing.Point(164, 25);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(199, 21);
+            this.txtName.TabIndex = 0;
             // 
             // label2
             // 
@@ -102,35 +101,40 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "密码:";
             // 
-            // txtName
+            // label1
             // 
-            this.txtName.Location = new System.Drawing.Point(164, 25);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(199, 21);
-            this.txtName.TabIndex = 4;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(113, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 12);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "帐号:";
             // 
-            // txtpwd
+            // btnexit
             // 
-            this.txtpwd.Location = new System.Drawing.Point(164, 71);
-            this.txtpwd.Name = "txtpwd";
-            this.txtpwd.Size = new System.Drawing.Size(199, 21);
-            this.txtpwd.TabIndex = 5;
-            this.txtpwd.UseSystemPasswordChar = true;
+            this.btnexit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnexit.Location = new System.Drawing.Point(296, 128);
+            this.btnexit.Name = "btnexit";
+            this.btnexit.Size = new System.Drawing.Size(100, 23);
+            this.btnexit.TabIndex = 3;
+            this.btnexit.Text = "退出";
+            this.btnexit.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // btnLogin
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(531, 120);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.btnLogin.Location = new System.Drawing.Point(115, 128);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(100, 23);
+            this.btnLogin.TabIndex = 2;
+            this.btnLogin.Text = "登录";
+            this.btnLogin.UseVisualStyleBackColor = true;
             // 
             // Login
             // 
+            this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnexit;
             this.ClientSize = new System.Drawing.Size(531, 282);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
@@ -138,9 +142,9 @@
             this.Name = "Login";
             this.Text = "RD-Login";
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

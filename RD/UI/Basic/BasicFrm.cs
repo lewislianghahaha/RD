@@ -8,20 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RD
+namespace RD.UI.Basic
 {
-    public partial class Main : Form
+    public partial class BasicFrm : Form
     {
-        public Main()
+        public BasicFrm()
         {
             InitializeComponent();
-            show();
         }
-
-        private void show()
-        {
-            textBox1.Text = GlobalClasscs.User.StrUsrName;
-        }
-
     }
 }
