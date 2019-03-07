@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using RD.Logic.Change;
 
 namespace RD.Logic
 {
     public class Task
     {
-        private int _taskid;          //记录中转ID
-        private string _accountName;  //记录帐号名称
-        private string _accountPwd;   //记录帐号密码
+        ChangeData change=new ChangeData();
+
+
+        private int _taskid;             //记录中转ID
+        private string _accountName;     //记录帐号名称
+        private string _accountPwd;      //记录帐号密码
+
+
+
+        private DataTable _resultTable;  //返回DT类型
+        private bool _resultMark;        //返回是否成功标记
 
         /// <summary>
         /// 中转ID
@@ -28,10 +32,18 @@ namespace RD.Logic
         /// </summary>
         public string AccountPwd { set { _accountPwd = value; } }
 
-        ///// <summary>
-        /////返回DataTable至主窗体
-        ///// </summary>
-        //public DataTable RestulTable => _resultTable;
+
+
+
+        /// <summary>
+        ///返回DataTable至主窗体
+        /// </summary>
+        public DataTable RestulTable => _resultTable;
+
+        /// <summary>
+        /// 返回结果标记
+        /// </summary>
+        public bool ResultMark => _resultMark;
 
         public void StartTask()
         {
@@ -39,7 +51,7 @@ namespace RD.Logic
             {
                 //帐号密码修改
                 case 0:
-
+                    ChangeRecord(_accountName,_accountPwd);
                     break;
                 //客户信息管理
                 case 1:
@@ -77,7 +89,21 @@ namespace RD.Logic
                 case 9:
 
                     break;
+                //查询功能
+                case 10:
+
+                    break;
             }
+        }
+
+        /// <summary>
+        /// 帐号密码修改
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="userNewPwd"></param>
+        private void ChangeRecord(string userName,string userNewPwd)
+        {
+            _resultMark =change.ChangeRecord(userName,userNewPwd);
         }
 
 

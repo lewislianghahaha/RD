@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RD
+﻿namespace RD.UI
 {
     public class GlobalClasscs
     {
@@ -13,6 +7,13 @@ namespace RD
             public string StrUsrName;
             public string StrUsrpwd;
         };
+
+        public struct BasicFrm
+        {
+            public int BasicId;          //用于获取所打开的基础信息库的那个功能ID
+        };
+
         public static Account User;
+        public static BasicFrm Basic;
     }
 }

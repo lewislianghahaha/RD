@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtname = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtoldpwd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtnewpwd = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnChange = new System.Windows.Forms.Button();
             this.btnexit = new System.Windows.Forms.Button();
@@ -50,13 +50,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "帐号:";
             // 
-            // textBox1
+            // txtname
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(79, 40);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(144, 21);
-            this.textBox1.TabIndex = 1;
+            this.txtname.Enabled = false;
+            this.txtname.Location = new System.Drawing.Point(79, 40);
+            this.txtname.Name = "txtname";
+            this.txtname.Size = new System.Drawing.Size(144, 21);
+            this.txtname.TabIndex = 1;
             // 
             // panel1
             // 
@@ -77,13 +77,14 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "注:新旧密码不能一致,并且新密码不能包含$@字符";
             // 
-            // textBox2
+            // txtoldpwd
             // 
-            this.textBox2.Location = new System.Drawing.Point(79, 67);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(144, 21);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.UseSystemPasswordChar = true;
+            this.txtoldpwd.Enabled = false;
+            this.txtoldpwd.Location = new System.Drawing.Point(79, 67);
+            this.txtoldpwd.Name = "txtoldpwd";
+            this.txtoldpwd.Size = new System.Drawing.Size(144, 21);
+            this.txtoldpwd.TabIndex = 4;
+            this.txtoldpwd.UseSystemPasswordChar = true;
             // 
             // label3
             // 
@@ -94,13 +95,13 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "旧密码:";
             // 
-            // textBox3
+            // txtnewpwd
             // 
-            this.textBox3.Location = new System.Drawing.Point(79, 94);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(144, 21);
-            this.textBox3.TabIndex = 6;
-            this.textBox3.UseSystemPasswordChar = true;
+            this.txtnewpwd.Location = new System.Drawing.Point(79, 94);
+            this.txtnewpwd.Name = "txtnewpwd";
+            this.txtnewpwd.Size = new System.Drawing.Size(144, 21);
+            this.txtnewpwd.TabIndex = 6;
+            this.txtnewpwd.UseSystemPasswordChar = true;
             // 
             // label4
             // 
@@ -137,12 +138,12 @@
             this.ControlBox = false;
             this.Controls.Add(this.btnexit);
             this.Controls.Add(this.btnChange);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.txtnewpwd);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtoldpwd);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtname);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AccountFrm";
@@ -157,12 +158,12 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtname;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtoldpwd;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtnewpwd;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnChange;
         private System.Windows.Forms.Button btnexit;

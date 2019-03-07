@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
 using RD.UI.Account;
@@ -8,6 +9,9 @@ namespace RD.UI
 {
     public partial class Main : Form
     {
+        Task task=new Task();
+        Load load=new Load();
+
         public Main()
         {
             InitializeComponent();
@@ -17,23 +21,88 @@ namespace RD.UI
         private void OnRegisterEvents()
         {
             btnSearch.Click += BtnSearch_Click;
-            tmInfor.Click += TmInfor_Click;
+            //tmInfor.Click += TmInfor_Click;
             tmChange.Click += TmChange_Click;
             tmadorn.Click += Tmadorn_Click;
             tmMaterial.Click += TmMaterial_Click;
             tmEXCEL.Click += TmEXCEL_Click;
             tmPrint.Click += TmPrint_Click;
+            tmCustomerInfo.Click += TmCustomerInfo_Click;
+            tmSuplierInfo.Click += TmSuplierInfo_Click;
+            tmMaterialInfo.Click += TmMaterialInfo_Click;
+            tmHouseInfo.Click += TmHouseInfo_Click;
         }
 
         /// <summary>
-        /// 基础信息库
+        /// 客户信息管理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmInfor_Click(object sender, EventArgs e)
+        private void TmCustomerInfo_Click(object sender, EventArgs e)
         {
             try
             {
+                GlobalClasscs.Basic.BasicId = 1;
+                var basic = new BasicFrm();
+                basic.StartPosition = FormStartPosition.CenterScreen;
+                basic.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 供应商信息管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmSuplierInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GlobalClasscs.Basic.BasicId = 2;
+                var basic = new BasicFrm();
+                basic.StartPosition = FormStartPosition.CenterScreen;
+                basic.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        /// <summary>
+        /// 材料信息管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmMaterialInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GlobalClasscs.Basic.BasicId = 3;
+                var basic = new BasicFrm();
+                basic.StartPosition = FormStartPosition.CenterScreen;
+                basic.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 房屋类型及装修工程类别信息管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmHouseInfo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GlobalClasscs.Basic.BasicId = 4;
                 var basic = new BasicFrm();
                 basic.StartPosition = FormStartPosition.CenterScreen;
                 basic.ShowDialog();
@@ -133,15 +202,15 @@ namespace RD.UI
         /// <summary>
         ///子线程使用(重:用于监视功能调用情况,当完成时进行关闭LoadForm)
         /// </summary>
-        //private void Start()
-        //{
-        //    task.StartTask();
+        private void Start()
+        {
+            task.StartTask();
 
-        //    //当完成后将Form2子窗体关闭
-        //    this.Invoke((ThreadStart)(() => {
-        //        load.Close();
-        //    }));
-        //}
-
+            //当完成后将Form2子窗体关闭
+            this.Invoke((ThreadStart)(() =>
+            {
+                load.Close();
+            }));
+        }
     }
 }
