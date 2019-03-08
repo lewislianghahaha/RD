@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tview = new System.Windows.Forms.TreeView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.btnChange = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.btnDel = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnCreate = new System.Windows.Forms.Button();
             this.gvdtl = new System.Windows.Forms.DataGridView();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.btnChange = new System.Windows.Forms.Button();
-            this.btnDel = new System.Windows.Forms.Button();
-            this.tview = new System.Windows.Forms.TreeView();
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
@@ -52,10 +52,10 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
-            this.panel5.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,23 +73,12 @@
             this.panel1.Size = new System.Drawing.Size(995, 30);
             this.panel1.TabIndex = 0;
             // 
-            // btnSearch
+            // textBox1
             // 
-            this.btnSearch.Location = new System.Drawing.Point(426, 3);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 0;
-            this.btnSearch.Text = "查询";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 1;
+            this.textBox1.Location = new System.Drawing.Point(269, 3);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(151, 21);
+            this.textBox1.TabIndex = 3;
             // 
             // comboBox2
             // 
@@ -100,12 +89,23 @@
             this.comboBox2.Size = new System.Drawing.Size(121, 20);
             this.comboBox2.TabIndex = 2;
             // 
-            // textBox1
+            // comboBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(269, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(151, 21);
-            this.textBox1.TabIndex = 3;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(12, 4);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 20);
+            this.comboBox1.TabIndex = 1;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(426, 3);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 0;
+            this.btnSearch.Text = "查询";
+            this.btnSearch.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -128,6 +128,15 @@
             this.splitContainer1.SplitterDistance = 205;
             this.splitContainer1.TabIndex = 1;
             // 
+            // tview
+            // 
+            this.tview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tview.Location = new System.Drawing.Point(0, 26);
+            this.tview.Name = "tview";
+            this.tview.ShowNodeToolTips = true;
+            this.tview.Size = new System.Drawing.Size(203, 543);
+            this.tview.TabIndex = 1;
+            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -139,6 +148,46 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(203, 26);
             this.panel2.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.btnChange);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(64, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(73, 24);
+            this.panel4.TabIndex = 3;
+            // 
+            // btnChange
+            // 
+            this.btnChange.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnChange.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnChange.Location = new System.Drawing.Point(0, 0);
+            this.btnChange.Name = "btnChange";
+            this.btnChange.Size = new System.Drawing.Size(73, 24);
+            this.btnChange.TabIndex = 0;
+            this.btnChange.Text = "编辑分组";
+            this.btnChange.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.btnDel);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel5.Location = new System.Drawing.Point(137, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(64, 24);
+            this.panel5.TabIndex = 2;
+            // 
+            // btnDel
+            // 
+            this.btnDel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDel.Location = new System.Drawing.Point(0, 0);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(64, 24);
+            this.btnDel.TabIndex = 0;
+            this.btnDel.Text = "删除分组";
+            this.btnDel.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -164,69 +213,20 @@
             // gvdtl
             // 
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gvdtl.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gvdtl.DefaultCellStyle = dataGridViewCellStyle1;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.RowTemplate.Height = 23;
             this.gvdtl.Size = new System.Drawing.Size(784, 569);
             this.gvdtl.TabIndex = 0;
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.btnDel);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel5.Location = new System.Drawing.Point(137, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(64, 24);
-            this.panel5.TabIndex = 2;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.btnChange);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(64, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(73, 24);
-            this.panel4.TabIndex = 3;
-            // 
-            // btnChange
-            // 
-            this.btnChange.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnChange.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnChange.Location = new System.Drawing.Point(0, 0);
-            this.btnChange.Name = "btnChange";
-            this.btnChange.Size = new System.Drawing.Size(73, 24);
-            this.btnChange.TabIndex = 0;
-            this.btnChange.Text = "编辑分组";
-            this.btnChange.UseVisualStyleBackColor = true;
-            // 
-            // btnDel
-            // 
-            this.btnDel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnDel.Location = new System.Drawing.Point(0, 0);
-            this.btnDel.Name = "btnDel";
-            this.btnDel.Size = new System.Drawing.Size(64, 24);
-            this.btnDel.TabIndex = 0;
-            this.btnDel.Text = "删除分组";
-            this.btnDel.UseVisualStyleBackColor = true;
-            // 
-            // tview
-            // 
-            this.tview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tview.Location = new System.Drawing.Point(0, 26);
-            this.tview.Name = "tview";
-            this.tview.ShowNodeToolTips = true;
-            this.tview.Size = new System.Drawing.Size(203, 543);
-            this.tview.TabIndex = 1;
             // 
             // Menu
             // 
@@ -263,10 +263,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
-            this.panel5.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.ResumeLayout(false);

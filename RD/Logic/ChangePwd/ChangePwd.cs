@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RD.DB;
-using RD.DB.Generate;
+﻿using RD.DB.Generate;
 
-namespace RD.Logic.Change
+namespace RD.Logic.ChangePwd
 {
     public class ChangeData
     {

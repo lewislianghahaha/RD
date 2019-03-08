@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace RD.UI.Basic
 {
-    public partial class Add : Form
+    public partial class AddEditor : Form
     {
-        public Add()
+        public AddEditor()
         {
             InitializeComponent();
         }

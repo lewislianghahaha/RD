@@ -48,33 +48,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\Conn.cs" />
+    <Compile Include="DB\Export\ExportDt.cs" />
     <Compile Include="DB\Generate\GenerateDt.cs" />
     <Compile Include="DB\Import\ImportDt.cs" />
     <Compile Include="DB\Search\SearchDt.cs" />
-    <Compile Include="Logic\Change\Change.cs" />
+    <Compile Include="Logic\Basic\ImportDt.cs" />
+    <Compile Include="Logic\ChangePwd\ChangePwd.cs" />
+    <Compile Include="Logic\Basic\Search.cs" />
     <Compile Include="UI\Account\AccountFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Account\AccountFrm.Designer.cs">
       <DependentUpon>AccountFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Basic\Add.cs">
+    <Compile Include="UI\Basic\AddEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Basic\Add.Designer.cs">
-      <DependentUpon>Add.cs</DependentUpon>
+    <Compile Include="UI\Basic\AddEditor.Designer.cs">
+      <DependentUpon>AddEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Basic\BasicFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Basic\BasicFrm.Designer.cs">
       <DependentUpon>BasicFrm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Basic\Change.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Basic\Change.Designer.cs">
-      <DependentUpon>Change.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\GlobalClasscs.cs" />
     <Compile Include="Logic\Task.cs" />
@@ -115,6 +112,9 @@
     </Compile>
     <EmbeddedResource Include="UI\Account\AccountFrm.resx">
       <DependentUpon>AccountFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Basic\AddEditor.resx">
+      <DependentUpon>AddEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Basic\BasicFrm.resx">
       <DependentUpon>BasicFrm.cs</DependentUpon>
@@ -172,10 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
-    <Folder Include="DB\Export\" />
-    <Folder Include="Logic\Basic\" />
     <Folder Include="Logic\Export\" />
-    <Folder Include="Logic\Search\" />
+    <Folder Include="Logic\Main\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="STI\" />
   </ItemGroup>
