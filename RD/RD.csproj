@@ -48,10 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\Conn.cs" />
+    <Compile Include="DB\DtList.cs" />
     <Compile Include="DB\Export\ExportDt.cs" />
     <Compile Include="DB\Generate\GenerateDt.cs" />
     <Compile Include="DB\Import\ImportDt.cs" />
     <Compile Include="DB\Search\SearchDt.cs" />
+    <Compile Include="DB\SqlList.cs" />
     <Compile Include="Logic\Basic\ImportDt.cs" />
     <Compile Include="Logic\ChangePwd\ChangePwd.cs" />
     <Compile Include="Logic\Basic\Search.cs" />

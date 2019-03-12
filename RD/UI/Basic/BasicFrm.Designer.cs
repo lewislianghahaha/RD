@@ -45,6 +45,7 @@
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmReset = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -221,7 +222,8 @@
             // 
             this.Menu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmSave});
+            this.tmSave,
+            this.tmReset});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(995, 25);
@@ -233,6 +235,12 @@
             this.tmSave.Name = "tmSave";
             this.tmSave.Size = new System.Drawing.Size(44, 21);
             this.tmSave.Text = "保存";
+            // 
+            // tmReset
+            // 
+            this.tmReset.Name = "tmReset";
+            this.tmReset.Size = new System.Drawing.Size(44, 21);
+            this.tmReset.Text = "刷新";
             // 
             // BasicFrm
             // 
@@ -281,5 +289,6 @@
         private System.Windows.Forms.TreeView tview;
         private System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmSave;
+        private System.Windows.Forms.ToolStripMenuItem tmReset;
     }
 }

@@ -26,60 +26,76 @@ namespace RD.UI.Basic
             btnDel.Click += BtnDel_Click;
             tmSave.Click += TmSave_Click;
             tview.Click += Tview_Click;
+            tmReset.Click += TmReset_Click;
         }
 
-        //初始化树形列表
+        //初始化树形列表 及 GridView
         private void OnInitialize()
         {
             switch (GlobalClasscs.Basic.BasicId)
             {
                 //客户信息管理
                 case 1:
-                    task.FunctionId = 1;
-                    task.FunctionName = "Customer";
-                    task.FunctionType = "T";
+                    task.TaskId = 1;                 //中转功能ID
+                    task.FunctionId = "1";           //功能ID(创建:0 查询:1 保存:2 审核:3)
+                    task.FunctionName = "Customer";  //功能名
+                    task.FunctionType = "T";         //表格类型(注:读取时使用) T:表头 G:表体
+                    task.ParentId = null;            //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
                     this.Text = "基础信息库-客户信息管理";
                     break;
                 //供应商信息管理
                 case 2:
-                    task.FunctionId = 2;
+                    task.TaskId = 1;                 
+                    task.FunctionId = "1";
                     task.FunctionName = "Supplier";
                     task.FunctionType = "T";
+                    task.ParentId = null;
                     this.Text = "基础信息库-供应商信息管理";
                     break;
                 //材料信息管理
                 case 3:
-                    task.FunctionId = 3;
+                    task.TaskId = 1;                 
+                    task.FunctionId = "1";
                     task.FunctionName = "Material";
                     task.FunctionType = "T";
+                    task.ParentId = null;
                     this.Text = "基础信息库-材料信息管理";
                     break;
                 //房屋类型及装修工程类别信息管理
                 case 4:
-                    task.FunctionId = 4;
+                    task.TaskId = 1;                 
+                    task.FunctionId = "1";
                     task.FunctionName = "House";
                     task.FunctionType = "T";
+                    task.ParentId = null;
                     this.Text = "基础信息库-房屋类型及装修工程类别信息管理";
                     break;
             }
+            task.StartTask();
             GetTreeList(task.RestulTable);
-
-            //var anime = new TreeNode();
-            //anime.Tag = 1;
-            //anime.Text = "ALL";
-            //tview.Nodes.Add(anime);
+            //Q:如何在获取初始化信息后进行使用?（主要是表体信息）
         }
 
         //根据获取的DT读取树形列表
         private void GetTreeList(DataTable dt)
         {
             var pId = -1; //记录父节点ID
+            var anime = new TreeNode();
+
             try
             {
-                if (dt.Rows.Count <= 0) return;
-                foreach (DataRow row in dt.Rows)
+                if (dt.Rows.Count == 0)
                 {
-                    
+                    anime.Tag = 1;
+                    anime.Text = "ALL";
+                    tview.Nodes.Add(anime);
+                }
+                else
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -169,7 +185,17 @@ namespace RD.UI.Basic
         /// <param name="e"></param>
         private void TmSave_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            return;
+        }
+
+        /// <summary>
+        /// 刷新功能
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmReset_Click(object sender, EventArgs e)
+        {
+            return;
         }
 
         /// <summary>
@@ -195,6 +221,5 @@ namespace RD.UI.Basic
                 load.Close();
             }));
         }
-
     }
 }
