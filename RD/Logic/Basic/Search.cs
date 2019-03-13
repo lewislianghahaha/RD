@@ -14,7 +14,7 @@ namespace RD.Logic.Basic
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="functionType"></param>
-        /// <param name="parentId">主键ID,用于表体查询时使用 注:当为0时,为表体全部查询</param>
+        /// <param name="parentId">主键ID,用于表体查询时使用 注:当为null时,为表体全部查询</param>
         /// <returns></returns>
         public DataTable GetData(string functionName, string functionType,string parentId)
         {
@@ -37,14 +37,15 @@ namespace RD.Logic.Basic
         /// <param name="functionName"></param>
         /// <param name="searchName">查询选择列名-查询框有值时使用</param>
         /// <param name="searchValue">查询所填值-查询框有值时使用</param>
+        /// <param name="dtdtl"></param>
         /// <returns></returns>
-        public DataTable GetBdSearchData(string functionName, string searchName, string searchValue)
+        public DataTable GetBdSearchData(string functionName, string searchName, string searchValue,DataTable dtdtl)
         {
             var dt = new DataTable();
 
             try
             {
-                dt = serDt.GetBdSearchValueRecord(functionName, searchName, searchValue);
+                dt = serDt.GetBdSearchValueRecord(functionName, searchName, searchValue,dtdtl);
             }
             catch (Exception ex)
             {

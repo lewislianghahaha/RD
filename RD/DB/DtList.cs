@@ -19,36 +19,36 @@ namespace RD.DB
 
                 switch (i)
                 {
-                    case 0: //客户名称
-                        dc.ColumnName = "CustName";
+                    case 0: //CustName
+                        dc.ColumnName = "客户名称"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 1: //房屋类型ID
-                        dc.ColumnName = "HTypeid";
-                        dc.DataType = Type.GetType("System.int"); 
+                    case 1: //HTypeid
+                        dc.ColumnName = "房屋类型ID"; 
+                        dc.DataType = Type.GetType("System.Int32");
                         break;
-                    case 2: //装修地区
-                        dc.ColumnName = "Spare";
+                    case 2: //Spare
+                        dc.ColumnName = "装修地区"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 3://装修地址
-                        dc.ColumnName = "SpareAdd";
+                    case 3://SpareAdd
+                        dc.ColumnName = "装修地址"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 4: //客户通讯地址
-                        dc.ColumnName = "Cust_Add";
+                    case 4: //Cust_Add
+                        dc.ColumnName = "客户通讯地址"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 5: //客户联系方式
-                        dc.ColumnName = "Cust_Phone";
+                    case 5: //Cust_Phone
+                        dc.ColumnName = "客户联系方式"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 6: //录入人
-                        dc.ColumnName = "InputUser";
+                    case 6: //InputUser
+                        dc.ColumnName = "录入人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 7://录入日期
-                        dc.ColumnName = "InputDt";
+                    case 7://InputDt
+                        dc.ColumnName = "录入日期"; 
                         dc.DataType = Type.GetType("System.DateTime"); 
                         break;
                 }
@@ -70,32 +70,32 @@ namespace RD.DB
 
                 switch (i)
                 {
-                    case 0: //供应商名称
-                        dc.ColumnName = "SupName";
+                    case 0: //SupName
+                        dc.ColumnName = "供应商名称"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 1: //通讯地址
-                        dc.ColumnName = "Address";
+                    case 1: //Address
+                        dc.ColumnName = "通讯地址"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 2: //联系人
-                        dc.ColumnName = "ContactName";
+                    case 2: //ContactName
+                        dc.ColumnName = "联系人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 3://联系方式
-                        dc.ColumnName = "ContactPhone";
+                    case 3://ContactPhone
+                        dc.ColumnName = "联系方式"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 4: //工商登记号
-                        dc.ColumnName = "GoNum";
+                    case 4: //GoNum
+                        dc.ColumnName = "工商登记号"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 5: //录入人
-                        dc.ColumnName = "InputUser";
+                    case 5: //InputUser
+                        dc.ColumnName = "录入人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 6://录入日期
-                        dc.ColumnName = "InputDt";
+                    case 6://InputDt
+                        dc.ColumnName = "录入日期"; 
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
                 }
@@ -117,32 +117,32 @@ namespace RD.DB
 
                 switch (i)
                 {
-                    case 0: //材料名称
-                        dc.ColumnName = "MaterialName";
+                    case 0: //MaterialName
+                        dc.ColumnName = "材料名称"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 1: //材料规格
-                        dc.ColumnName = "MaterialSize";
+                    case 1: //MaterialSize
+                        dc.ColumnName = "材料规格"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 2: //材料供应商ID
-                        dc.ColumnName = "Supid";
-                        dc.DataType = Type.GetType("System.int");
+                    case 2: //Supid
+                        dc.ColumnName = "材料供应商ID"; 
+                        dc.DataType = Type.GetType("System.Int32");
                         break;
-                    case 3://单位
-                        dc.ColumnName = "Unit";
+                    case 3://Unit
+                        dc.ColumnName = "单位"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 4: //单价
-                        dc.ColumnName = "Price";
+                    case 4: //Price
+                        dc.ColumnName = "单价"; 
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
-                    case 5: //录入人
-                        dc.ColumnName = "InputUser";
+                    case 5: //InputUser
+                        dc.ColumnName = "录入人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 6://录入日期
-                        dc.ColumnName = "InputDt";
+                    case 6://InputDt
+                        dc.ColumnName = "录入日期"; 
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
                 }
@@ -164,16 +164,16 @@ namespace RD.DB
 
                 switch (i)
                 {
-                    case 0: //类型信息名称
-                        dc.ColumnName = "HtypeName";
+                    case 0: //HtypeName
+                        dc.ColumnName = "类型信息名称"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 1: //录入人
-                        dc.ColumnName = "InputUser";
+                    case 1: //InputUser
+                        dc.ColumnName = "录入人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 2://录入日期
-                        dc.ColumnName = "InputDt";
+                    case 2://InputDt
+                        dc.ColumnName = "录入日期"; 
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
                 }

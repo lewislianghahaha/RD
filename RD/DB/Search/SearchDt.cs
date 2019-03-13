@@ -19,30 +19,20 @@ namespace RD.DB.Search
         /// <returns></returns>
         public DataTable GetBdTableDt(string functionName, string functionType,string parentId)
         {
-            var ds=new DataSet();
-            var resultDt=new DataTable();
+            var dt=new DataTable();
 
             try
             {
-                ds = GetRecord(functionName, functionType,parentId);
+                dt = GetRecord(functionName, functionType,parentId);
             }
             catch (Exception ex)
             {
-                ds.Tables[0].Rows.Clear();
-                ds.Tables[0].Columns.Clear();
+                dt.Rows.Clear();
+                dt.Columns.Clear();
                 throw new Exception(ex.Message);
             }
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                resultDt = ds.Tables[0];
-            }
-            //若没有记录,就创建一个空DataTable(注:这里主要针对表体)
-            else
-            {
-                GetTempdt(functionName);
-            }
-            return resultDt;
+            return dt;
         }
 
         /// <summary>
@@ -51,31 +41,22 @@ namespace RD.DB.Search
         /// <param name="functionName"></param>
         /// <param name="searchName"></param>
         /// <param name="searchValue"></param>
+        /// <param name="dtdtl"></param>
         /// <returns></returns>
-        public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue)
+        public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue,DataTable dtdtl)
         {
-            var ds = new DataSet();
+            var dt = new DataTable();
             var resultDt = new DataTable();
 
             try
             {
-                ds = GetSearchValueRecord(functionName,searchName,searchValue);
+                dt = GetSearchValueRecord(functionName,searchName,searchValue,dtdtl);
             }
             catch (Exception ex)
             {
-                ds.Tables[0].Rows.Clear();
-                ds.Tables[0].Columns.Clear();
+                dt.Rows.Clear();
+                dt.Columns.Clear();
                 throw new Exception(ex.Message);
-            }
-
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                resultDt = ds.Tables[0];
-            }
-            //若没有记录,就创建一个空DataTable(注:这里主要针对表体)
-            else
-            {
-                GetTempdt(functionName);
             }
             return resultDt;
         }
@@ -87,9 +68,10 @@ namespace RD.DB.Search
         /// <param name="functionType">表格类型(注:读取时使用) T:表头 G:表体</param>
         /// <param name="parentId">主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容</param>
         /// <returns></returns>
-        private DataSet GetRecord(string functionName,string functionType,string parentId)
+        private DataTable GetRecord(string functionName,string functionType,string parentId)
         {
-            var ds = new DataSet();
+            var dt = new DataTable();
+            var resultdt=new DataTable();
             var sqlscript = string.Empty;
 
             switch (functionName)
@@ -127,10 +109,19 @@ namespace RD.DB.Search
                             : sqlList.BD_SQLList("11", parentId, null, null));
                     break;
             }
-            
-            var sqlDataAdapter=new SqlDataAdapter(sqlscript,GetConn());
-            sqlDataAdapter.Fill(ds);
-            return ds;
+
+            var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
+            sqlDataAdapter.Fill(dt);
+            //这里区分表头或表体输出的效果 注:表体:无论是否有值都是要将记录填充到临时表
+            if (functionType == "T")
+            {
+                resultdt = dt;
+            }
+            else
+            {
+                resultdt = dt.Rows.Count == 0 ? GetTempdt(functionName) : dt;
+            }
+            return resultdt;
         }
 
         /// <summary>
@@ -139,30 +130,76 @@ namespace RD.DB.Search
         /// <param name="functionName">功能名:决定是用那个系列表格</param>
         /// <param name="searchName">查询选择列名-查询框有值时使用</param>
         /// <param name="searchValue">查询所填值-查询框有值时使用</param>
+        /// <param name="dtdtl"></param>
         /// <returns></returns>
-        private DataSet GetSearchValueRecord(string functionName,string searchName,string searchValue)
+        private DataTable GetSearchValueRecord(string functionName,string searchName,string searchValue,DataTable dtdtl)
         {
-            var ds=new DataSet();
-            var sqlscript = string.Empty;
+            var tempdt=new DataTable();
+            var dt=new DataTable();
+            var rows=new DataRow[0];
+            var sqlscript = $"'{searchName}' like '" + '%' + searchValue + '%' + "'";
+
             switch (functionName)
             {
+                //"客户信息管理"
                 case "Customer":
-                    sqlscript = sqlList.BD_SQLList("2.1", null, searchName, searchValue);
+                    //根据功能名称创建对应的空表
+                    tempdt = GetTempdt(functionName);
+                    //根据条件从DT内获取对应记录
+                    rows = dtdtl.Select(sqlscript); 
+                    //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
+                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
                     break;
+                //"供应商信息管理"
                 case "Supplier":
-                    sqlscript = sqlList.BD_SQLList("5.1",null,searchName,searchValue);
+                    //根据功能名称创建对应的空表
+                    tempdt = GetTempdt(functionName);
+                    //根据条件从DT内获取对应记录
+                    rows = dtdtl.Select(sqlscript);
+                    //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
+                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
                     break;
+                //材料信息管理
                 case "Material":
-                    sqlscript = sqlList.BD_SQLList("8.1", null, searchName, searchValue);
+                    //根据功能名称创建对应的空表
+                    tempdt = GetTempdt(functionName);
+                    //根据条件从DT内获取对应记录
+                    rows = dtdtl.Select(sqlscript);
+                    //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
+                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
                     break;
+                //房屋类型及装修工程类别信息管理
                 case "House":
-                    sqlscript = sqlList.BD_SQLList("11.1", null, searchName, searchValue);
+                    //根据功能名称创建对应的空表
+                    tempdt = GetTempdt(functionName);
+                    //根据条件从DT内获取对应记录
+                    rows = dtdtl.Select(sqlscript);
+                    //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
+                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
                     break;
             }
+            return dt;
+        }
 
-            var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
-            sqlDataAdapter.Fill(ds);
-            return ds;
+        /// <summary>
+        /// 将记录填充至临时表内
+        /// </summary>
+        /// <param name="rows">根据DT查询后返回过来的行数数组</param>
+        /// <param name="tempdt">空白表</param>
+        /// <param name="tempdtColNum">空白表列数</param>
+        /// <returns></returns>
+        private DataTable IntoTempdt(DataRow[] rows,DataTable tempdt,int tempdtColNum)
+        {
+            foreach (var i in rows)
+            {
+                for (var j = 0; j < tempdtColNum; j++)
+                {
+                    var row = tempdt.NewRow();
+                    row[j] = i[j];
+                    tempdt.Rows.Add(row);
+                }
+            }
+            return tempdt;
         }
 
         /// <summary>

@@ -19,6 +19,7 @@ namespace RD.Logic
         private string _parentId;        //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
         private string _searchName;      //查询选择列名-查询框有值时使用
         private string _searchValue;     //查询所填值-查询框有值时使用
+        private DataTable _data;         //获取初始化的表体信息
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -46,7 +47,7 @@ namespace RD.Logic
         /// <summary>
         /// 功能名称
         /// </summary>
-        public string FunctionName { set { _accountName = value; } }
+        public string FunctionName { set { _functinName = value; } }
 
         /// <summary>
         /// 表格类型(T:表头 G:表体)
@@ -68,17 +69,23 @@ namespace RD.Logic
         /// </summary>
         public string ParentId {set { _parentId = value; }}
 
+        /// <summary>
+        /// 获取初始化后的表体信息(用于后台查询时使用)
+        /// </summary>
+        public DataTable Data { set { _data = value; } }
 
-////////*********************Get*********************//////////
+
+        ////////*********************Get*********************//////////
         /// <summary>
         ///返回DataTable至主窗体
         /// </summary>
-        public DataTable RestulTable => _resultTable;
+        public DataTable ResultTable => _resultTable;
 
         /// <summary>
         /// 返回结果标记
         /// </summary>
         public bool ResultMark => _resultMark;
+    
 
         public void StartTask()
         {
@@ -90,7 +97,7 @@ namespace RD.Logic
                     break;
                 //基础信息库
                 case 1:
-                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue);
+                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data);
                     break;
                 //室内装修工程单
                 case 2:
@@ -138,8 +145,9 @@ namespace RD.Logic
         /// <param name="parentId">主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或 获取对应功能表体的全部内容</param>
         /// <param name="searchName">查询选择列名-查询框有值时使用</param>
         /// <param name="searchValue">查询所填值-查询框有值时使用</param>
+        /// <param name="dt">初始化后的DT，已获取数据库对应表 表体的全部信息;作用:查询表体时使用到</param>
         private void BasicInfo(string functionId,string functionName,string functionType,string parentId,
-                               string searchName, string searchValue)
+                               string searchName, string searchValue,DataTable dt)
         {
             switch (functionId)
             {
@@ -153,7 +161,7 @@ namespace RD.Logic
                     break;
                 //查询(查询按钮时使用) 返回结果至GridView内
                 case "1.1":
-                    _resultTable = search.GetBdSearchData(functionName, searchName, searchValue);
+                    _resultTable = search.GetBdSearchData(functionName, searchName, searchValue,dt);
                     break;
                 //保存
                 case "2":

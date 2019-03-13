@@ -11,6 +11,11 @@ namespace RD.UI.Basic
         Task task=new Task();
         Load load=new Load();
 
+        //保存初始化的表头内容
+       public DataTable _dt=new DataTable();
+        //保存初始化的表体内容
+       public DataTable _dtldt =new DataTable(); 
+
         public BasicFrm()
         {
             InitializeComponent();
@@ -27,57 +32,86 @@ namespace RD.UI.Basic
             tmSave.Click += TmSave_Click;
             tview.Click += Tview_Click;
             tmReset.Click += TmReset_Click;
+
         }
 
-        //初始化树形列表 及 GridView
+        //初始化树形列表及GridView控件
         private void OnInitialize()
         {
+            var functionName = string.Empty;
+
+            task.TaskId = 1;                 //中转功能ID
+            task.FunctionId = "1";           //功能ID(创建:0 查询:1 保存:2 审核:3)
+            task.FunctionType = "T";         //表格类型(注:读取时使用) T:表头 G:表体
+            task.ParentId = null;            //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
+
+            //根据功能中转ID获取表头信息(树形菜单使用) 以及表体信息(GridView控件使用)
             switch (GlobalClasscs.Basic.BasicId)
             {
                 //客户信息管理
                 case 1:
-                    task.TaskId = 1;                 //中转功能ID
-                    task.FunctionId = "1";           //功能ID(创建:0 查询:1 保存:2 审核:3)
-                    task.FunctionName = "Customer";  //功能名
-                    task.FunctionType = "T";         //表格类型(注:读取时使用) T:表头 G:表体
-                    task.ParentId = null;            //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
+                    task.FunctionName = "Customer";
+                    functionName = "Customer";
                     this.Text = "基础信息库-客户信息管理";
                     break;
                 //供应商信息管理
                 case 2:
-                    task.TaskId = 1;                 
-                    task.FunctionId = "1";
                     task.FunctionName = "Supplier";
-                    task.FunctionType = "T";
-                    task.ParentId = null;
+                    functionName = "Supplier";
                     this.Text = "基础信息库-供应商信息管理";
                     break;
                 //材料信息管理
                 case 3:
-                    task.TaskId = 1;                 
-                    task.FunctionId = "1";
                     task.FunctionName = "Material";
-                    task.FunctionType = "T";
-                    task.ParentId = null;
+                    functionName = "Material";
                     this.Text = "基础信息库-材料信息管理";
                     break;
                 //房屋类型及装修工程类别信息管理
                 case 4:
-                    task.TaskId = 1;                 
-                    task.FunctionId = "1";
                     task.FunctionName = "House";
-                    task.FunctionType = "T";
-                    task.ParentId = null;
+                    functionName = "House";
                     this.Text = "基础信息库-房屋类型及装修工程类别信息管理";
                     break;
             }
             task.StartTask();
-            GetTreeList(task.RestulTable);
-            //Q:如何在获取初始化信息后进行使用?（主要是表体信息）
+            //将返回的结果赋值至表头DT变量类型内
+            _dt = task.ResultTable;
+            //按照对应的参数获取表体全部内容
+            _dtldt = OnInitializeDtl(1, "1", functionName, "G", null);
+            //导出记录至树形菜单内
+            ShowTreeList(_dt);
+            //导出记录至GridView控件内
+            gvdtl.DataSource = _dtldt;
+        }
+
+        /// <summary>
+        /// 初始化获取表体信息
+        /// </summary>
+        private DataTable OnInitializeDtl(int taskId, string functionId, string functionName, string functionType, string parentId)
+        {
+            var dt = new DataTable();
+
+            try
+            {
+                task.TaskId = taskId;                        //中转功能ID
+                task.FunctionId = functionId;               //功能ID(创建:0 查询:1 保存:2 审核:3)
+                task.FunctionName = functionName;
+                task.FunctionType = functionType;          //表格类型(注:读取时使用) T:表头 G:表体
+                task.ParentId = parentId;                 //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
+                task.StartTask();
+                dt = task.ResultTable;
+            }
+            catch (Exception ex)
+            {
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return dt;
         }
 
         //根据获取的DT读取树形列表
-        private void GetTreeList(DataTable dt)
+        private void ShowTreeList(DataTable dt)
         {
             var pId = -1; //记录父节点ID
             var anime = new TreeNode();
@@ -86,7 +120,7 @@ namespace RD.UI.Basic
             {
                 if (dt.Rows.Count == 0)
                 {
-                    anime.Tag = 1;
+                    anime.Tag = 0;
                     anime.Text = "ALL";
                     tview.Nodes.Add(anime);
                 }
@@ -170,11 +204,11 @@ namespace RD.UI.Basic
         {
             try
             {
-
+                
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -185,17 +219,31 @@ namespace RD.UI.Basic
         /// <param name="e"></param>
         private void TmSave_Click(object sender, EventArgs e)
         {
-            return;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
-        /// 刷新功能
+        /// 刷新功能(重新获取表头及表体全部信息)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TmReset_Click(object sender, EventArgs e)
         {
-            return;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -205,7 +253,14 @@ namespace RD.UI.Basic
         /// <param name="e"></param>
         private void Tview_Click(object sender, EventArgs e)
         {
-            return;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
