@@ -21,7 +21,7 @@ namespace RD.UI.Account
             btnexit.Click += Btnexit_Click;
         }
 
-        private void Show()
+        private new void Show()
         {
             txtname.Text = GlobalClasscs.User.StrUsrName;
             txtoldpwd.Text = GlobalClasscs.User.StrUsrpwd;

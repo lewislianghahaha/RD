@@ -20,7 +20,7 @@
             {
                 //客户信息管理-表头(全部)
                 case "0":
-                    _result = "select a.Id,a.parentid,a.CustType from dbo.T_BD_Cust a";
+                    _result = "select a.Id,a.parentid,a.CustType from dbo.T_BD_Cust a order by a.Parentid";
                     break;
                 //客户信息管理-表体(全部)
                 case "1":

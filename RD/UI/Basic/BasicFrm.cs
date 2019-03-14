@@ -82,6 +82,8 @@ namespace RD.UI.Basic
             ShowTreeList(_dt);
             //导出记录至GridView控件内
             gvdtl.DataSource = _dtldt;
+            //预留(权限部份)
+
         }
 
         /// <summary>
@@ -113,22 +115,65 @@ namespace RD.UI.Basic
         //根据获取的DT读取树形列表
         private void ShowTreeList(DataTable dt)
         {
-            var pId = -1; //记录父节点ID
-            var anime = new TreeNode();
-
+            //记录父节点ID
+            var pId = -1; 
+            
             try
             {
                 if (dt.Rows.Count == 0)
                 {
+                    var anime = new TreeNode();
                     anime.Tag = 0;
                     anime.Text = "ALL";
                     tview.Nodes.Add(anime);
                 }
                 else
                 {
+                    #region 为传递过来的DT进行排序
+                        //dt.DefaultView.Sort = "ParentId asc";
+                        //var dtsoft = dt.DefaultView.ToTable();
+                    #endregion
+
                     foreach (DataRow row in dt.Rows)
                     {
+                        var anime = new TreeNode();
+                        anime.Tag = Convert.ToInt32(row[0]);              //自身主键ID
+                        anime.Text = Convert.ToString(row[2]);           //节点内容
+                        pId = Convert.ToInt32(row[1]);                  //上一级主键ID
 
+                        //当PID值为0时,表体要增加根节点
+                        if (pId == 0)
+                        {
+                            tview.Nodes.Add(anime);
+                        }
+                        //反之增加根节点下面对应的子节点 追加
+                        else
+                        {
+                            //读取根节点
+                            foreach (TreeNode node in tview.Nodes)
+                            {
+                                //此为统计当前已插入的子节点总个数
+                                //var a = node.Nodes.Count;
+
+                                //当循环出来的ParentId与节点的TAG相同时,表示为下属子节点,需增加
+                                if ((int)node.Tag == pId)
+                                {
+                                    node.Nodes.Add(anime);
+                                }
+                                //当子节点下还有节点的话,在此执行
+                                else
+                                {
+                                    //循环读取子节点
+                                    foreach (TreeNode nodel in node.Nodes)
+                                    {
+                                        if ((int)nodel.Tag == pId)
+                                        {
+                                            nodel.Nodes.Add(anime);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -137,6 +182,8 @@ namespace RD.UI.Basic
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         /// <summary>
         /// 新建分组
