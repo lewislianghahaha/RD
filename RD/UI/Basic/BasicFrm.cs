@@ -149,36 +149,28 @@ namespace RD.UI.Basic
                         //反之增加根节点下面对应的子节点 追加
                         else
                         {
-                           
-                            //读取根节点
-                            //for (var index = 0; index < tview.Nodes.Count; index++)
-                            //{
-                                var node = tview.Nodes[0];
-                                //当循环出来的ParentId与节点的TAG相同时,表示为下属子节点,需增加
-                                if ((int) node.Tag == pId)
+                            //读取根节点信息
+                            var node = tview.Nodes[0];
+                            //添加根节点下Level=1的值
+                            if ((int)node.Tag == pId)
+                            {
+                                node.Nodes.Add(anime);
+                            }
+                            //读取Level=1下的节点值并进行匹配添加
+                            else
+                            {
+
+                                //Q:如何获取最新添加的节点信息?
+
+                                ////    //循环读取子节点
+                                foreach (TreeNode nodel in node.Nodes)
                                 {
-                                    node.Nodes.Add(anime);
-                                }
-                                //当子节点下还有节点的话,在此执行
-                                else
-                                {
-                                    for (var index = 0; index < node.Nodes.Count; index++)
+                                    if ((int)nodel.Tag == pId)
                                     {
-                                        if ((int)node.Nodes[index].Tag == pId)
-                                        {
-                                            node.Nodes[index].Nodes.Add(anime);
-                                        }
+                                        nodel.Nodes.Add(anime);
                                     }
-                                    //循环读取子节点
-                                    //foreach (TreeNode nodel in node.Nodes)
-                                    //{
-                                    //    if ((int) nodel.Tag == pId)
-                                    //    {
-                                    //        nodel.Nodes.Add(anime);
-                                    //    }
-                                    //}
                                 }
-                            //}
+                            }
                         }
                     }
                 }
@@ -189,8 +181,29 @@ namespace RD.UI.Basic
             }
         }
 
-        //此为统计当前已插入的子节点总个数
-        //var a = node.Nodes.Count;
+        /// <summary>
+        /// 增加子节点
+        /// </summary>
+        /// <param name="node">节点类</param>
+        /// <param name="pid"></param>
+        private TreeNode AddChildTreeNote(TreeNode node,int pid)
+        {
+            var treeNode=new TreeNode();
+
+            //foreach (TreeNode nodel in node.Nodes)
+            //{
+            //    if ((int) node.Tag == pid)
+            //    {
+            //        nodel.Nodes.Add(node);
+            //    }
+            //}
+            //if ((int) node.Tag == pid)
+            //{
+            //   var tree = new TreeNode();
+               
+            //}
+            return treeNode;
+        }
 
         /// <summary>
         /// 新建分组

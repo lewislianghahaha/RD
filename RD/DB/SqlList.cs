@@ -53,7 +53,7 @@
                 //******************************************************************//
                 //供应商管理-表头(全部)
                 case "3":
-                    _result = @"SELECT a.Id,a.parentid,a.SupType FROM dbo.T_BD_Supplier a";
+                    _result = @"SELECT a.Id,a.parentid,a.SupType FROM dbo.T_BD_Supplier a order by a.Parentid";
                     break;
                 //供应商管理-表体(全部)
                 case "4":
@@ -84,7 +84,7 @@
                 //******************************************************************//
                 //材料信息管理-表头(全部)
                 case "6":
-                    _result = @"SELECT a.Id,a.parentid,a.MaterialType FROM dbo.T_BD_Material a";
+                    _result = @"SELECT a.Id,a.parentid,a.MaterialType FROM dbo.T_BD_Material a order by a.Parentid";
                     break;
                 //材料信息管理-表体(全部)
                 case "7":
@@ -118,7 +118,7 @@
                 //******************************************************************//
                 //房屋类型及装修工程类别信息管理(表头)
                 case "9":
-                    _result = @"SELECT a.Id,a.parentid,a.HType FROM dbo.T_BD_HType a";
+                    _result = @"SELECT a.Id,a.parentid,a.HType FROM dbo.T_BD_HType a order by a.Parentid";
                     break;
                 //房屋类型及装修工程类别信息管理(表体)
                 case "10":
