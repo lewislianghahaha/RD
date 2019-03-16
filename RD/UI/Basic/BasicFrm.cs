@@ -117,7 +117,8 @@ namespace RD.UI.Basic
         {
             //记录父节点ID
             var pId = -1; 
-            
+            var tree=new TreeNode();
+
             try
             {
                 if (dt.Rows.Count == 0)
@@ -134,43 +135,22 @@ namespace RD.UI.Basic
                         //var dtsoft = dt.DefaultView.ToTable();
                     #endregion
 
-                    foreach (DataRow row in dt.Rows)
+                    for (var i = 0; i < dt.Rows.Count; i++)
                     {
                         var anime = new TreeNode();
-                        anime.Tag = Convert.ToInt32(row[0]);              //自身主键ID
-                        anime.Text = Convert.ToString(row[2]);           //节点内容
-                        pId = Convert.ToInt32(row[1]);                  //上一级主键ID
+                        anime.Tag = Convert.ToInt32(dt.Rows[i][0]);              //自身主键ID
+                        anime.Text = Convert.ToString(dt.Rows[i][2]);           //节点内容
+                        pId = Convert.ToInt32(dt.Rows[i][1]);                  //上一级主键ID
 
-                        //当PID值为0时,表体要增加根节点
                         if (pId == 0)
                         {
                             tview.Nodes.Add(anime);
+                            tree = tview.Nodes[0];
                         }
-                        //反之增加根节点下面对应的子节点 追加
                         else
                         {
-                            //读取根节点信息
-                            var node = tview.Nodes[0];
-                            //添加根节点下Level=1的值
-                            if ((int)node.Tag == pId)
-                            {
-                                node.Nodes.Add(anime);
-                            }
-                            //读取Level=1下的节点值并进行匹配添加
-                            else
-                            {
-
-                                //Q:如何获取最新添加的节点信息?
-
-                                ////    //循环读取子节点
-                                foreach (TreeNode nodel in node.Nodes)
-                                {
-                                    if ((int)nodel.Tag == pId)
-                                    {
-                                        nodel.Nodes.Add(anime);
-                                    }
-                                }
-                            }
+                            var a = tree;
+                            AddChildNode(tree,anime,pId);
                         }
                     }
                 }
@@ -182,28 +162,50 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
-        /// 增加子节点
+        /// 读取记录并增加至子节点内
         /// </summary>
-        /// <param name="node">节点类</param>
+        /// <param name="treeF"></param>
+        /// <param name="treeNode"></param>
         /// <param name="pid"></param>
-        private TreeNode AddChildTreeNote(TreeNode node,int pid)
+        /// <returns></returns>
+        private void AddChildNode(TreeNode treeF,TreeNode treeNode,int pid)
         {
-            var treeNode=new TreeNode();
+            var a = treeF;
 
-            //foreach (TreeNode nodel in node.Nodes)
-            //{
-            //    if ((int) node.Tag == pid)
-            //    {
-            //        nodel.Nodes.Add(node);
-            //    }
-            //}
-            //if ((int) node.Tag == pid)
-            //{
-            //   var tree = new TreeNode();
-               
-            //}
-            return treeNode;
+            if ((int) treeF.Tag == pid)
+            {
+                treeF.Nodes.Add(treeNode);
+            }
+            else
+            {
+                AddChildChildNode(treeF, treeNode, pid);
+            }
         }
+
+        /// <summary>
+        /// 查找并添加节点下的节点(即3级或以下的节点)
+        /// </summary>
+        /// <param name="treeF"></param>
+        /// <param name="treeNode"></param>
+        /// <param name="pid"></param>
+        private void AddChildChildNode(TreeNode treeF, TreeNode treeNode, int pid)
+        {
+            foreach (TreeNode tr1 in treeF.Nodes)
+            {
+                //  var a1 = tr1.Nodes.Count;
+                if ((int)tr1.Tag == pid)
+                {
+                    tr1.Nodes.Add(treeNode);
+                  //  return;
+                }
+                //若节点的节点都有记录的话。就执行这里进行添加
+                else if (tr1.Nodes.Count > 0)
+                {
+                    AddChildNode(treeF, treeNode, pid);
+                }
+            }
+        }
+
 
         /// <summary>
         /// 新建分组
