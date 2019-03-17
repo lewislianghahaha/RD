@@ -131,28 +131,40 @@ namespace RD.UI.Basic
                 else
                 {
                     #region 为传递过来的DT进行排序
-                        //dt.DefaultView.Sort = "ParentId asc";
-                        //var dtsoft = dt.DefaultView.ToTable();
+                    //dt.DefaultView.Sort = "ParentId asc";
+                    //var dtsoft = dt.DefaultView.ToTable();
                     #endregion
 
-                    for (var i = 0; i < dt.Rows.Count; i++)
-                    {
-                        var anime = new TreeNode();
-                        anime.Tag = Convert.ToInt32(dt.Rows[i][0]);              //自身主键ID
-                        anime.Text = Convert.ToString(dt.Rows[i][2]);           //节点内容
-                        pId = Convert.ToInt32(dt.Rows[i][1]);                  //上一级主键ID
+                    var tnode=new TreeNode();
+                    tnode.Tag = 0;
+                    tnode.Text = "ALL";
+                    tview.Nodes.Add(tnode);
 
-                        if (pId == 0)
-                        {
-                            tview.Nodes.Add(anime);
-                            tree = tview.Nodes[0];
-                        }
-                        else
-                        {
-                            var a = tree;
-                            AddChildNode(tree,anime,pId);
-                        }
-                    }
+                    AddChildNode(tview,dt);
+
+
+                  
+
+                    //for (var i = 0; i < dt.Rows.Count; i++)
+                    //{
+                    //    var anime = new TreeNode();
+                    //    anime.Tag = Convert.ToInt32(dt.Rows[i][0]);              //自身主键ID
+                    //    anime.Text = Convert.ToString(dt.Rows[i][2]);           //节点内容
+                    //    pId = Convert.ToInt32(dt.Rows[i][1]);                  //上一级主键ID
+
+                    //    if (pId == 0)
+                    //    {
+                    //        tview.Nodes.Add(anime);
+                    //        //获取父节点信息
+                    //        tree = tview.Nodes[0];
+                    //        //展开
+                    //        tree.Expand();
+                    //    }
+                    //    else
+                    //    {
+                    //        AddChildNode(tree,anime,pId);
+                    //    }
+                    //}
                 }
             }
             catch (Exception ex)
@@ -164,22 +176,43 @@ namespace RD.UI.Basic
         /// <summary>
         /// 读取记录并增加至子节点内
         /// </summary>
-        /// <param name="treeF"></param>
-        /// <param name="treeNode"></param>
-        /// <param name="pid"></param>
         /// <returns></returns>
-        private void AddChildNode(TreeNode treeF,TreeNode treeNode,int pid)
+        private void AddChildNode(TreeView tvView,DataTable dt)
         {
-            var a = treeF;
+            var tnode = tvView.Nodes[0];
+            var pid = tnode.Tag;
 
-            if ((int) treeF.Tag == pid)
+            var rows = dt.Select("Parentid='" + pid + "'");
+            //循环二级节点信息
+            for (var i = 0; i < rows.Length; i++)
             {
-                treeF.Nodes.Add(treeNode);
+                pid = Convert.ToInt32(rows[i][1]);
+                var rowdtl = dt.Select("Parentid='" + pid + "'");
+                //Q1:如何动态添加到关联的节点后面
+                //目前的想法就是先循环2级节点,然后下面就是循环将2级节点的信息关联添加,在下面执行
+                for (var j = 0; j < rowdtl.Length; j++)
+                {
+                   var tn=new TreeNode();
+                    tn.Tag = rowdtl[j][0];
+                    tn.Text = Convert.ToString(rowdtl[j][2]);
+                    tnode.Nodes.Add(tn);
+                }
+
             }
-            else
-            {
-                AddChildChildNode(treeF, treeNode, pid);
-            }
+
+
+            //var a = treeF.Nodes;
+            ////添加根节点以下的二级节点 
+
+            //if ((int) treeF.Tag == pid)
+            //{
+            //    treeF.Nodes.Add(treeNode);
+            //}
+            ////添加二级节点下的节点记录
+            //else
+            //{
+            //    AddChildChildNode(treeF, treeNode, pid);
+            //}
         }
 
         /// <summary>
@@ -190,19 +223,28 @@ namespace RD.UI.Basic
         /// <param name="pid"></param>
         private void AddChildChildNode(TreeNode treeF, TreeNode treeNode, int pid)
         {
+            //获取最后一个节点信息
+            //这里第一次读取时。只是获取根子点下的二级节点的信息,而不是从三级节点(包括三级节点)的信息
+            //var i = treeF.LastNode.Index;  
+
+            //获取所有节点的个数(包括子节点)
+            var a =tview.GetNodeCount(true);
+            
+
             foreach (TreeNode tr1 in treeF.Nodes)
             {
                 //  var a1 = tr1.Nodes.Count;
                 if ((int)tr1.Tag == pid)
                 {
                     tr1.Nodes.Add(treeNode);
-                  //  return;
+                   // return;
                 }
+
                 //若节点的节点都有记录的话。就执行这里进行添加
-                else if (tr1.Nodes.Count > 0)
-                {
-                    AddChildNode(treeF, treeNode, pid);
-                }
+                //else if (tr1.Nodes.Count > 0)
+                //{
+                //    AddChildChildNode(treeF, treeNode, pid);
+                //}
             }
         }
 
