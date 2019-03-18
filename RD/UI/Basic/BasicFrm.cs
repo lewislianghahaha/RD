@@ -81,7 +81,7 @@ namespace RD.UI.Basic
             //导出记录至树形菜单内
             ShowTreeList(_dt);
             //导出记录至GridView控件内
-            gvdtl.DataSource = _dtldt;
+           // gvdtl.DataSource = _dtldt;
             //预留(权限部份)
 
         }
