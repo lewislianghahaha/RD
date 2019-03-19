@@ -242,5 +242,19 @@ namespace RD.DB.Search
             var sqlcon = new SqlConnection(conn.GetConnectionString());
             return sqlcon;
         }
+
+        /// <summary>
+        /// 根据功能名称获取对应列名并形成Dt
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <returns></returns>
+        public DataTable SearchColList(string functionName)
+        {
+            var ds = new DataSet();
+            var sqlscript=sqlList.BD_FunList(functionName);
+            var sqlDataAdapter=new SqlDataAdapter(sqlscript,GetConn());
+            sqlDataAdapter.Fill(ds);
+            return ds.Tables[0];
+        }
     }
 }

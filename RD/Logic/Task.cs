@@ -157,11 +157,15 @@ namespace RD.Logic
                     break;
                 //查询 作用:1)初始化树形列表表头内容 2)初始化GridView表体内容 3)点击某节点读取表体内容
                 case "1":
-                    _resultTable=search.GetData(functionName,functionType,parentId);
+                    _resultTable = search.GetData(functionName,functionType,parentId);
                     break;
                 //查询(查询按钮时使用) 返回结果至GridView内
                 case "1.1":
                     _resultTable = search.GetBdSearchData(functionName, searchName, searchValue,dt);
+                    break;
+                //查询 作用:根据功能名查询出对应的列名并形成DataTable
+                case "1.2":
+                    _resultTable = search.GetColDropDownList(functionName);
                     break;
                 //保存
                 case "2":

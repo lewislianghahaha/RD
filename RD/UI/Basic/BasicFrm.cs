@@ -10,6 +10,7 @@ namespace RD.UI.Basic
     {
         Task task=new Task();
         Load load=new Load();
+        AddEditor add=new AddEditor();
 
         //保存初始化的表头内容
        public DataTable _dt=new DataTable();
@@ -32,7 +33,7 @@ namespace RD.UI.Basic
             tmSave.Click += TmSave_Click;
             tview.Click += Tview_Click;
             tmReset.Click += TmReset_Click;
-
+            comList.Click += ComList_Click;
         }
 
         //初始化树形列表及GridView控件
@@ -46,33 +47,7 @@ namespace RD.UI.Basic
             task.ParentId = null;            //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
 
             //根据功能中转ID获取表头信息(树形菜单使用) 以及表体信息(GridView控件使用)
-            switch (GlobalClasscs.Basic.BasicId)
-            {
-                //客户信息管理
-                case 1:
-                    task.FunctionName = "Customer";
-                    functionName = "Customer";
-                    this.Text = "基础信息库-客户信息管理";
-                    break;
-                //供应商信息管理
-                case 2:
-                    task.FunctionName = "Supplier";
-                    functionName = "Supplier";
-                    this.Text = "基础信息库-供应商信息管理";
-                    break;
-                //材料信息管理
-                case 3:
-                    task.FunctionName = "Material";
-                    functionName = "Material";
-                    this.Text = "基础信息库-材料信息管理";
-                    break;
-                //房屋类型及装修工程类别信息管理
-                case 4:
-                    task.FunctionName = "House";
-                    functionName = "House";
-                    this.Text = "基础信息库-房屋类型及装修工程类别信息管理";
-                    break;
-            }
+            functionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
             task.StartTask();
             //将返回的结果赋值至表头DT变量类型内
             _dt = task.ResultTable;
@@ -81,7 +56,7 @@ namespace RD.UI.Basic
             //导出记录至树形菜单内
             ShowTreeList(_dt);
             //导出记录至GridView控件内
-           // gvdtl.DataSource = _dtldt;
+            // gvdtl.DataSource = _dtldt;
             //预留(权限部份)
 
         }
@@ -208,6 +183,29 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
+        /// 下拉列表读取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ComList_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                task.TaskId = 1;
+                task.FunctionId = "1.2";
+                ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+                task.StartTask();
+                comList.DataSource = task.ResultTable;
+                comList.DisplayMember = "ColName";     //设置显示值
+                comList.ValueMember = "ColId";       //设置默认值内码(即:列名)
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 新建分组
         /// </summary>
         /// <param name="sender"></param>
@@ -216,14 +214,25 @@ namespace RD.UI.Basic
         {
             try
             {
-                var treeNode=new TreeNode();
-                treeNode.Tag = 1;
-                treeNode.Text = "hahaha";
-                tview.SelectedNode.Nodes.Add(treeNode); //对所选择的节点增加子节点
+                if (tview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
+                var pid = Convert.ToInt32(tview.SelectedNode.Tag);
+
+                add.pid = pid;
+                add.PName = tview.SelectedNode.Text;
+                add.Show();
+                add.StartPosition = FormStartPosition.CenterScreen;
+                add.ShowDialog();
+                //当成功新增后,执行"刷新"操作
+                OnInitialize();
+                #region 增加子节点
+                //treeNode.Tag = 1;
+                //treeNode.Text = "hahaha";
+                //tview.SelectedNode.Nodes.Add(treeNode); //对所选择的节点增加子节点
+                #endregion
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -236,15 +245,20 @@ namespace RD.UI.Basic
         {
             try
             {
-                if(tview.SelectedNode==null) throw new Exception("请选择某一节点");
-                var id = (int) tview.SelectedNode.Tag;
-                var change = new AddEditor();
-                change.StartPosition = FormStartPosition.CenterScreen;
-                change.ShowDialog();
+                if(tview.SelectedNode==null) throw new Exception("没有选择节点,请选择某一节点");
+
+                var pid = (int) tview.SelectedNode.Tag;
+                add.pid = pid;
+                add.PName = tview.SelectedNode.Text;
+                add.Show();
+                add.StartPosition = FormStartPosition.CenterScreen;
+                add.ShowDialog();
+                //当成功新增后,执行"刷新"操作
+                OnInitialize();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         
@@ -257,11 +271,13 @@ namespace RD.UI.Basic
         {
             try
             {
+                // var clickMessage = string.Format("您所选择的信息为:\n 帐套:{0}\n 价格方案:{1}\n 客户:{2}\n 是否继续?", dbName, fPriceName, fcustName);
+                //if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 tview.SelectedNode.Remove();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -274,7 +290,8 @@ namespace RD.UI.Basic
         {
             try
             {
-                
+                if(txtValue.Text==null) throw new Exception("请在查询框填上查询条件再继续.");
+
             }
             catch (Exception ex)
             {
@@ -283,7 +300,7 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
-        /// 保存
+        /// 保存(作用:主要对GridView控件进行数据导入)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -317,7 +334,7 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
-        /// 点击TreeView控件时执行(主要是根据节点ID读取表体数据)
+        /// 点击TreeView控件时执行查询操作(主要是根据节点ID读取表体数据)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -331,6 +348,45 @@ namespace RD.UI.Basic
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// 返回对应的功能点名称
+        /// </summary>
+        /// <param name="basicId">功能点</param>
+        /// <returns></returns>
+        private string ShowBasicFunctionName(int basicId)
+        {
+            var result = string.Empty;
+
+            switch (basicId)
+            {
+                //客户信息管理
+                case 1:
+                    task.FunctionName = "Customer";
+                    result = "Customer";
+                    this.Text = "基础信息库-客户信息管理";
+                    break;
+                //供应商信息管理
+                case 2:
+                    task.FunctionName = "Supplier";
+                    result="Supplier";
+                    this.Text = "基础信息库-供应商信息管理";
+                    break;
+                //材料信息管理
+                case 3:
+                    task.FunctionName = "Material";
+                    result = "Material";
+                    this.Text = "基础信息库-材料信息管理";
+                    break;
+                //房屋类型及装修工程类别信息管理
+                case 4:
+                    task.FunctionName = "House";
+                    result = "House";
+                    this.Text = "基础信息库-房屋类型及装修工程类别信息管理";
+                    break;
+            }
+            return result;
         }
 
         /// <summary>

@@ -30,8 +30,8 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.txtValue = new System.Windows.Forms.TextBox();
+            this.comList = new System.Windows.Forms.ComboBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tview = new System.Windows.Forms.TreeView();
@@ -63,8 +63,8 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.comboBox1);
+            this.panel1.Controls.Add(this.txtValue);
+            this.panel1.Controls.Add(this.comList);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 25);
@@ -72,21 +72,21 @@
             this.panel1.Size = new System.Drawing.Size(995, 30);
             this.panel1.TabIndex = 0;
             // 
-            // textBox1
+            // txtValue
             // 
-            this.textBox1.Location = new System.Drawing.Point(140, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(151, 21);
-            this.textBox1.TabIndex = 3;
+            this.txtValue.Location = new System.Drawing.Point(140, 3);
+            this.txtValue.Name = "txtValue";
+            this.txtValue.Size = new System.Drawing.Size(151, 21);
+            this.txtValue.TabIndex = 3;
             // 
-            // comboBox1
+            // comList
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 1;
+            this.comList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comList.FormattingEnabled = true;
+            this.comList.Location = new System.Drawing.Point(12, 4);
+            this.comList.Name = "comList";
+            this.comList.Size = new System.Drawing.Size(121, 20);
+            this.comList.TabIndex = 1;
             // 
             // btnSearch
             // 
@@ -275,8 +275,8 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox txtValue;
+        private System.Windows.Forms.ComboBox comList;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;

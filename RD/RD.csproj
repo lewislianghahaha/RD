@@ -74,7 +74,7 @@
     <Compile Include="DB\Import\ImportDt.cs" />
     <Compile Include="DB\Search\SearchDt.cs" />
     <Compile Include="DB\SqlList.cs" />
-    <Compile Include="Logic\Basic\ImportDt.cs" />
+    <Compile Include="Logic\Basic\Import.cs" />
     <Compile Include="Logic\ChangePwd\ChangePwd.cs" />
     <Compile Include="Logic\Basic\Search.cs" />
     <Compile Include="UI\Account\AccountFrm.cs">

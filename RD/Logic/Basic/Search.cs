@@ -54,5 +54,23 @@ namespace RD.Logic.Basic
             return dt;
         }
 
+        /// <summary>
+        /// 获取"基础信息库"下拉信息列表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetColDropDownList(string functionName)
+        {
+            var dt = new DataTable();
+
+            try
+            {
+                dt = serDt.SearchColList(functionName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
     }
 }

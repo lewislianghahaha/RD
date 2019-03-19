@@ -1,4 +1,6 @@
-﻿namespace RD.DB
+﻿using NPOI.HSSF.Record.Chart;
+
+namespace RD.DB
 {
     public class SqlList
     {
@@ -145,5 +147,26 @@
             }
             return _result;
         }
+
+        public string BD_FunList(string factionName)
+        {
+            switch (factionName)
+            {
+                case "Customer":
+                    _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=1";
+                    break;
+                case "Supplier":
+                    _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=2";
+                    break;
+                case "Material":
+                    _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=3";
+                    break;
+                case "House":
+                    _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=4";
+                    break;
+            }
+            return _result;
+        }
+
     }
 }

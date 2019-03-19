@@ -130,7 +130,7 @@
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
             this.Name = "AddEditor";
-            this.Text = "新增分组";
+            this.Text = "Tree";
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.ResumeLayout(false);
