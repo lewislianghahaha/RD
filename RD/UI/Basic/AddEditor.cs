@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using RD.Logic;
 
 namespace RD.UI.Basic
 {
     public partial class AddEditor : Form
     {
-        private int _funid;           //功能ID 0：新增 1:修改
-        private int _pid;             //记录上级ID
-        private string _pName;        //记录上级节点名称
+        TaskLogic task=new TaskLogic();
+
+        private string _funid;           //功能ID 0：新增 1:修改
+        private int _pid;               //记录上级ID
+        private string _pName;         //记录上级节点名称
+        private string _functionName; //记录功能名称
+
+        private bool _resultMark;     //返回结果信息
+
+        #region Set
 
         /// <summary>
         /// 记录上级ID
@@ -27,9 +28,23 @@ namespace RD.UI.Basic
         public string PName { set { _pName = value; } }
 
         /// <summary>
-        /// 记录功能ID 0:新增 1:修改
+        /// 记录功能ID 2.1:新增 2.2:编辑(更新)
         /// </summary>
-        public int Funid { set { _funid = value; } }
+        public string Funid { set { _funid = value; } }
+
+        /// <summary>
+        /// 获取功能名称
+        /// </summary>
+        public string FunName { set { _functionName = value; } }
+
+        #endregion
+
+        #region Get
+        /// <summary>
+        /// 返回结果标记
+        /// </summary>
+        public bool ResultMark => _resultMark;
+        #endregion
 
         public AddEditor()
         {
@@ -43,7 +58,6 @@ namespace RD.UI.Basic
             tmClose.Click += TmClose_Click;
         }
 
-
         /// <summary>
         /// 显示基本信息
         /// </summary>
@@ -51,11 +65,11 @@ namespace RD.UI.Basic
         {
             switch (_funid)
             {
-                case 0:
+                case "2.1":
                     this.Text = "新增分组";
                     break;
-                case 1:
-                    this.Text = "创建分组";
+                case "2.2":
+                    this.Text = "编辑分组";
                     break;
             }
             txtUpName.Text = _pName;
@@ -70,8 +84,31 @@ namespace RD.UI.Basic
         {
             try
             {
-                if(txtName.Text==null) throw new Exception("请填写名称");
+                if(txtName.Text==null) throw new Exception("节点名称不能为空,请填上后再按保存");
 
+                task.TaskId = 1;
+                task.FunctionName = _functionName;      //记录所属功能名称
+                task.Pid = _pid;                        //获取主键ID
+                task.TreeName = txtName.Text;           //记录同级节点名称
+
+                switch (_funid)
+                {
+                    //新增
+                    case "2.1":
+                        task.FunctionId = "2.1";                //功能ID   
+                        task.StartTask();
+                        _resultMark = task.ResultMark;
+                        if (!task.ResultMark)throw new Exception("新增异常,请联系管理员");
+                        break;
+                    //编辑
+                    case "2.2":
+                        task.FunctionId = "2.2";               //功能ID
+                        task.StartTask();
+                        _resultMark = task.ResultMark;
+                        if (!task.ResultMark) throw new Exception("新增异常,请联系管理员");
+                        break;
+                }
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -88,6 +125,5 @@ namespace RD.UI.Basic
         {
             this.Close();
         }
-
     }
 }

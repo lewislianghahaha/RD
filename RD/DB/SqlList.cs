@@ -148,6 +148,11 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 根据功能名称查询功能列表
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <returns></returns>
         public string BD_FunList(string factionName)
         {
             switch (factionName)
@@ -168,5 +173,87 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 根据功能名称插入表头信息
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <param name="pid"></param>
+        /// <param name="treeName"></param>
+        /// <returns></returns>
+        public string BD_InsertTree(string factionName,int pid, string treeName)
+        {
+            switch (factionName)
+            {
+                case "Customer":
+                    _result = $@"INSERT INTO dbo.T_BD_Cust( ParentId, CustType )
+                                 VALUES  ({pid},'{treeName}')";
+                    break;
+                case "Supplier":
+                    _result = $@"INSERT INTO dbo.T_BD_Supplier(parentid,SupType)
+                                VALUES ({pid},'{treeName}')";
+                    break;
+                case "Material":
+                    _result = $@"INSERT INTO dbo.T_BD_Material(parentid,MaterialType)
+                                 VALUES ({pid},'{treeName}')";
+                    break;
+                case "House":
+                    _result = $@"INSERT INTO dbo.T_BD_HType(parentid,HType)
+                                 VALUES({pid},'{treeName}')";
+                    break;
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据功能名称更新节点信息
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <param name="treeName">需要更新的节点名称</param>
+        /// <param name="id">原节点ID</param>
+        /// <returns></returns>
+        public string BD_UpdateTree(string factionName,string treeName,int id)
+        {
+            switch (factionName)
+            {
+                case "Customer":
+                    _result = $@"UPDATE dbo.T_BD_Cust SET CustType={treeName} WHERE Id={id}";
+                    break;
+                case "Supplier":
+                    _result = $@"UPDATE dbo.T_BD_Supplier SET SupType={treeName} WHERE Id={id}";
+                    break;
+                case "Material":
+                    _result = $@"UPDATE dbo.T_BD_Material SET MaterialType={treeName} WHERE Id={id}";
+                    break;
+                case "House":
+                    _result = $@"UPDATE dbo.T_BD_HType SET HType={treeName} WHERE Id={id}";
+                    break;
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据功能名称查询id=1时,各表头记录有没有值
+        /// </summary>
+        /// <returns></returns>
+        public string BD_SearchNum(string factionName)
+        {
+            switch (factionName)
+            {
+                case "Customer":
+                    _result = "select a.* from dbo.T_BD_Cust a where id=1";
+                    break;
+                case "Supplier":
+                    _result = "select a.* from dbo.T_BD_Supplier a where id=1";
+                    break;
+                case "Material":
+                    _result = "select a.* from dbo.T_BD_Material a where id=1";
+                    break;
+                case "House":
+                    _result = "select a.* from dbo.T_BD_HType a where id=1";
+                    break;
+            }
+
+            return _result;
+        }
     }
 }

@@ -236,7 +236,7 @@ namespace RD.DB.Search
         /// 获取连接
         /// </summary>
         /// <returns></returns>
-        private SqlConnection GetConn()
+        public SqlConnection GetConn()
         {
             var conn = new Conn();
             var sqlcon = new SqlConnection(conn.GetConnectionString());

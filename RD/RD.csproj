@@ -96,7 +96,7 @@
       <DependentUpon>BasicFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\GlobalClasscs.cs" />
-    <Compile Include="Logic\Task.cs" />
+    <Compile Include="Logic\TaskLogic.cs" />
     <Compile Include="UI\Load.cs">
       <SubType>Form</SubType>
     </Compile>

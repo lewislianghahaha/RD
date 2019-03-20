@@ -8,7 +8,7 @@ namespace RD.UI.Basic
 {
     public partial class BasicFrm : Form
     {
-        Task task=new Task();
+        TaskLogic task=new TaskLogic();
         Load load=new Load();
         AddEditor add=new AddEditor();
 
@@ -39,6 +39,8 @@ namespace RD.UI.Basic
         //初始化树形列表及GridView控件
         private void OnInitialize()
         {
+            tview.Nodes.Clear();
+
             var functionName = string.Empty;
 
             task.TaskId = 1;                 //中转功能ID
@@ -59,6 +61,8 @@ namespace RD.UI.Basic
             // gvdtl.DataSource = _dtldt;
             //预留(权限部份)
 
+            //展开根节点
+            tview.ExpandAll();
         }
 
         /// <summary>
@@ -122,7 +126,7 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
-        /// 读取记录并增加至子节点内
+        /// 读取记录并增加至子节点内(从二级节点开始)
         /// </summary>
         /// <returns></returns>
         private void AddChildNode(TreeView tvView,DataTable dt)
@@ -215,15 +219,18 @@ namespace RD.UI.Basic
             try
             {
                 if (tview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
-                var pid = Convert.ToInt32(tview.SelectedNode.Tag);
 
-                add.pid = pid;
-                add.PName = tview.SelectedNode.Text;
+                add.pid = Convert.ToInt32(tview.SelectedNode.Tag);                  //上级主键ID
+                add.PName = tview.SelectedNode.Text;                                //上级名称
+                add.FunName=ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);     //功能名称
+                add.Funid = "2.1";
+
                 add.Show();
                 add.StartPosition = FormStartPosition.CenterScreen;
                 add.ShowDialog();
                 //当成功新增后,执行"刷新"操作
-                OnInitialize();
+                if (add.ResultMark)
+                    OnInitialize();
                 #region 增加子节点
                 //treeNode.Tag = 1;
                 //treeNode.Text = "hahaha";
@@ -245,16 +252,19 @@ namespace RD.UI.Basic
         {
             try
             {
-                if(tview.SelectedNode==null) throw new Exception("没有选择节点,请选择某一节点");
+                if(tview.SelectedNode == null) throw new Exception("没有选择节点,请选择某一节点");
 
-                var pid = (int) tview.SelectedNode.Tag;
-                add.pid = pid;
-                add.PName = tview.SelectedNode.Text;
+                add.pid = (int)tview.SelectedNode.Tag;                                  //获取所选择的主键ID
+                add.PName = tview.SelectedNode.Text;                                   //本级名称
+                add.FunName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);     //功能名称
+                add.Funid = "2.2";
+
                 add.Show();
                 add.StartPosition = FormStartPosition.CenterScreen;
                 add.ShowDialog();
                 //当成功新增后,执行"刷新"操作
-                OnInitialize();
+                if(add.ResultMark)
+                    OnInitialize();
             }
             catch (Exception ex)
             {
@@ -271,9 +281,17 @@ namespace RD.UI.Basic
         {
             try
             {
-                // var clickMessage = string.Format("您所选择的信息为:\n 帐套:{0}\n 价格方案:{1}\n 客户:{2}\n 是否继续?", dbName, fPriceName, fcustName);
-                //if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                tview.SelectedNode.Remove();
+               // if ((int)tview.SelectedNode.Tag==1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
+                // var clickMessage = $"您所选择的信息为:\n 帐套:{dbName}\n 价格方案:{fPriceName}\n 客户:{fcustName}\n 是否继续?";
+                //if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) ==
+                //    DialogResult.Yes)
+                //{
+                    
+                //}
+
+                #region 删除节点
+                    // tview.SelectedNode.Remove();
+                #endregion
             }
             catch (Exception ex)
             {

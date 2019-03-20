@@ -9,7 +9,7 @@ namespace RD.UI
 {
     public partial class Main : Form
     {
-        Task task=new Task();
+        TaskLogic task=new TaskLogic();
         Load load=new Load();
 
         public Main()

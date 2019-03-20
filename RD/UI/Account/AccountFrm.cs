@@ -6,7 +6,7 @@ namespace RD.UI.Account
 {
     public partial class AccountFrm : Form
     {
-        Task task = new Task();
+        TaskLogic task = new TaskLogic();
 
         public AccountFrm()
         {

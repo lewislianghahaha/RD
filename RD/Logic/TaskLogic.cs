@@ -1,14 +1,14 @@
 ﻿using System.Data;
-using System.Reflection;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
 
 namespace RD.Logic
 {
-    public class Task
+    public class TaskLogic
     {
         ChangeData change=new ChangeData();
         Search search=new Search();
+        Import import=new Import();
 
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
@@ -20,9 +20,13 @@ namespace RD.Logic
         private string _searchName;      //查询选择列名-查询框有值时使用
         private string _searchValue;     //查询所填值-查询框有值时使用
         private DataTable _data;         //获取初始化的表体信息
+        private int _pid;                //获取父级节点ID(新增或更新树形节点时使用)
+        private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
+
+        #region Set
 
         /// <summary>
         /// 中转ID
@@ -62,20 +66,32 @@ namespace RD.Logic
         /// <summary>
         /// 查询所填值-查询框有值时使用
         /// </summary>
-        public string SearchValue {set { _searchValue = value; }}
+        public string SearchValue { set { _searchValue = value; } }
 
         /// <summary>
         /// 主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
         /// </summary>
-        public string ParentId {set { _parentId = value; }}
+        public string ParentId { set { _parentId = value; } }
 
         /// <summary>
         /// 获取初始化后的表体信息(用于后台查询时使用)
         /// </summary>
         public DataTable Data { set { _data = value; } }
 
+        /// <summary>
+        /// 获取上级或自身节点ID(注:新增时获取上级ID  更新时获取自身ID)
+        /// </summary>
+        public int Pid { set { _pid = value; } }
 
-        ////////*********************Get*********************//////////
+        /// <summary>
+        /// 获取同级节点时使用(新增或更新树形节点时使用)
+        /// </summary>
+        public string TreeName { set { _treeName = value; } }
+
+        #endregion
+
+        #region Get
+
         /// <summary>
         ///返回DataTable至主窗体
         /// </summary>
@@ -85,7 +101,8 @@ namespace RD.Logic
         /// 返回结果标记
         /// </summary>
         public bool ResultMark => _resultMark;
-    
+
+        #endregion
 
         public void StartTask()
         {
@@ -97,7 +114,7 @@ namespace RD.Logic
                     break;
                 //基础信息库
                 case 1:
-                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data);
+                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data,_pid,_treeName);
                     break;
                 //室内装修工程单
                 case 2:
@@ -145,9 +162,11 @@ namespace RD.Logic
         /// <param name="parentId">主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或 获取对应功能表体的全部内容</param>
         /// <param name="searchName">查询选择列名-查询框有值时使用</param>
         /// <param name="searchValue">查询所填值-查询框有值时使用</param>
-        /// <param name="dt">初始化后的DT，已获取数据库对应表 表体的全部信息;作用:查询表体时使用到</param>
+        /// <param name="dt">初始化后的DT,已获取数据库对应表 表体的全部信息;作用:查询表体时使用到</param>
+        /// <param name="pid">获取父级节点ID(新增或更新树形节点时使用)</param>
+        /// <param name="treeName">获取同级节点时使用(新增或更新树形节点时使用)</param>
         private void BasicInfo(string functionId,string functionName,string functionType,string parentId,
-                               string searchName, string searchValue,DataTable dt)
+                               string searchName, string searchValue,DataTable dt,int pid,string treeName)
         {
             switch (functionId)
             {
@@ -167,12 +186,24 @@ namespace RD.Logic
                 case "1.2":
                     _resultTable = search.GetColDropDownList(functionName);
                     break;
-                //保存
+                //保存(作用:对表体GridView进行导入)
                 case "2":
 
                     break;
-                //审核
+                //保存(作用:对树形菜单进行导入 新增分组时使用)
+                case "2.1":
+                    _resultMark = import.InsertTreeRd(functionName, pid, treeName);
+                    break;
+                //更新树形菜单(作用:编辑分组时使用)
+                case "2.2":
+                    _resultMark = import.UpdateTreeRd(functionName,pid,treeName);
+                    break;
+                //删除节点及对应的信息
                 case "3":
+
+                    break;
+                //审核
+                case "4":
 
                     break;
             }
