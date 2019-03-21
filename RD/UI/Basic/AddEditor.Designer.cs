@@ -32,9 +32,9 @@
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmClose = new System.Windows.Forms.ToolStripMenuItem();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lbl2 = new System.Windows.Forms.Label();
             this.txtUpName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl1 = new System.Windows.Forms.Label();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,36 +64,36 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(79, 70);
+            this.txtName.Location = new System.Drawing.Point(97, 70);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(176, 21);
+            this.txtName.Size = new System.Drawing.Size(158, 21);
             this.txtName.TabIndex = 10;
             // 
-            // label2
+            // lbl2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 73);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 12);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "节点名称:";
+            this.lbl2.AutoSize = true;
+            this.lbl2.Location = new System.Drawing.Point(18, 73);
+            this.lbl2.Name = "lbl2";
+            this.lbl2.Size = new System.Drawing.Size(59, 12);
+            this.lbl2.TabIndex = 9;
+            this.lbl2.Text = "节点名称:";
             // 
             // txtUpName
             // 
             this.txtUpName.Enabled = false;
-            this.txtUpName.Location = new System.Drawing.Point(78, 39);
+            this.txtUpName.Location = new System.Drawing.Point(97, 39);
             this.txtUpName.Name = "txtUpName";
-            this.txtUpName.Size = new System.Drawing.Size(177, 21);
+            this.txtUpName.Size = new System.Drawing.Size(158, 21);
             this.txtUpName.TabIndex = 8;
             // 
-            // label1
+            // lbl1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 12);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "上级分组:";
+            this.lbl1.AutoSize = true;
+            this.lbl1.Location = new System.Drawing.Point(18, 44);
+            this.lbl1.Name = "lbl1";
+            this.lbl1.Size = new System.Drawing.Size(59, 12);
+            this.lbl1.TabIndex = 7;
+            this.lbl1.Text = "上级分组:";
             // 
             // AddEditor
             // 
@@ -102,9 +102,9 @@
             this.ClientSize = new System.Drawing.Size(284, 104);
             this.ControlBox = false;
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lbl2);
             this.Controls.Add(this.txtUpName);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbl1);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
             this.Name = "AddEditor";
@@ -122,8 +122,8 @@
         private System.Windows.Forms.ToolStripMenuItem tmSave;
         private System.Windows.Forms.ToolStripMenuItem tmClose;
         private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lbl2;
         private System.Windows.Forms.TextBox txtUpName;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl1;
     }
 }

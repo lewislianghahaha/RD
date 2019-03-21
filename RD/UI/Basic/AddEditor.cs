@@ -69,6 +69,8 @@ namespace RD.UI.Basic
                     this.Text = "新增分组";
                     break;
                 case "2.2":
+                    lbl1.Text = "原节点名称:";
+                    lbl2.Text = "新节点名称:";
                     this.Text = "编辑分组";
                     break;
             }
@@ -108,6 +110,9 @@ namespace RD.UI.Basic
                         if (!task.ResultMark) throw new Exception("新增异常,请联系管理员");
                         break;
                 }
+                //结束后将对应的文本框清空
+                txtUpName.Text = "";
+                txtName.Text = "";
                 this.Close();
             }
             catch (Exception ex)

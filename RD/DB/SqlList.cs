@@ -216,16 +216,16 @@ namespace RD.DB
             switch (factionName)
             {
                 case "Customer":
-                    _result = $@"UPDATE dbo.T_BD_Cust SET CustType={treeName} WHERE Id={id}";
+                    _result = $@"UPDATE dbo.T_BD_Cust SET CustType='{treeName}' WHERE Id={id}";
                     break;
                 case "Supplier":
-                    _result = $@"UPDATE dbo.T_BD_Supplier SET SupType={treeName} WHERE Id={id}";
+                    _result = $@"UPDATE dbo.T_BD_Supplier SET SupType='{treeName}' WHERE Id={id}";
                     break;
                 case "Material":
-                    _result = $@"UPDATE dbo.T_BD_Material SET MaterialType={treeName} WHERE Id={id}";
+                    _result = $@"UPDATE dbo.T_BD_Material SET MaterialType='{treeName}' WHERE Id={id}";
                     break;
                 case "House":
-                    _result = $@"UPDATE dbo.T_BD_HType SET HType={treeName} WHERE Id={id}";
+                    _result = $@"UPDATE dbo.T_BD_HType SET HType='{treeName}' WHERE Id={id}";
                     break;
             }
             return _result;

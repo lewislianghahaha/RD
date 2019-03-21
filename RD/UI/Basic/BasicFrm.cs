@@ -220,8 +220,8 @@ namespace RD.UI.Basic
             {
                 if (tview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
 
-                add.pid = Convert.ToInt32(tview.SelectedNode.Tag);                  //上级主键ID
-                add.PName = tview.SelectedNode.Text;                                //上级名称
+                add.pid = (int)tview.SelectedNode.Tag;                                //上级主键ID
+                add.PName = tview.SelectedNode.Text;                                 //获取上级名称
                 add.FunName=ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);     //功能名称
                 add.Funid = "2.1";
 
@@ -255,14 +255,14 @@ namespace RD.UI.Basic
                 if(tview.SelectedNode == null) throw new Exception("没有选择节点,请选择某一节点");
 
                 add.pid = (int)tview.SelectedNode.Tag;                                  //获取所选择的主键ID
-                add.PName = tview.SelectedNode.Text;                                   //本级名称
+                add.PName = tview.SelectedNode.Text;                                   //获取本级名称
                 add.FunName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);     //功能名称
                 add.Funid = "2.2";
 
                 add.Show();
                 add.StartPosition = FormStartPosition.CenterScreen;
                 add.ShowDialog();
-                //当成功新增后,执行"刷新"操作
+                //当编辑成功后,执行"刷新"操作
                 if(add.ResultMark)
                     OnInitialize();
             }
@@ -360,7 +360,19 @@ namespace RD.UI.Basic
         {
             try
             {
+                var a = (int) tview.SelectedNode.Tag;
+                task.TaskId = 1;
+                task.FunctionId = "1";
+                task.FunctionName= ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);     //功能名称
+                task.FunctionType = "G";
+                task.ParentId = "";
 
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if(task.ResultTable.Rows.Count>0) 
+                   gvdtl.DataSource = task.ResultTable;
             }
             catch (Exception ex)
             {
