@@ -31,7 +31,7 @@ namespace RD.UI.Basic
             btnChange.Click += BtnChange_Click;
             btnDel.Click += BtnDel_Click;
             tmSave.Click += TmSave_Click;
-            tview.Click += Tview_Click;
+            tview.AfterSelect += Tview_AfterSelect;
             tmReset.Click += TmReset_Click;
             comList.Click += ComList_Click;
         }
@@ -281,16 +281,38 @@ namespace RD.UI.Basic
         {
             try
             {
-               // if ((int)tview.SelectedNode.Tag==1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
-                // var clickMessage = $"您所选择的信息为:\n 帐套:{dbName}\n 价格方案:{fPriceName}\n 客户:{fcustName}\n 是否继续?";
-                //if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) ==
-                //    DialogResult.Yes)
-                //{
-                    
-                //}
+                if(tview.SelectedNode==null) throw new Exception("请选择某一名称再继续");
+                if ((int)tview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
 
+                //节点ID
+                var treeid = Convert.ToInt32(tview.SelectedNode.Tag);
+                //节点名称
+                var treeName = tview.SelectedNode.Text;
+
+                var clickMessage = $"您所选择的信息为:\n 节点名称:{treeName} \n 是否继续? \n 注:若点选的节点下有内容的话,就会将与它对应的记录都删除, \n 请谨慎处理.";
+
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    task.TaskId = 1;
+                    task.FunctionId = "3";
+                    task.FunctionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+                    task.Pid = treeid;
+                    task.Data = _dt;
+
+                    new Thread(Start).Start();
+                    load.StartPosition = FormStartPosition.CenterScreen;
+                    load.ShowDialog();
+
+                    if (!task.ResultMark) throw new Exception("删除异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("删除成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    OnInitialize();
+                }
+                
                 #region 删除节点
-                    // tview.SelectedNode.Remove();
+                // tview.SelectedNode.Remove();
                 #endregion
             }
             catch (Exception ex)
@@ -308,8 +330,25 @@ namespace RD.UI.Basic
         {
             try
             {
-                if(txtValue.Text==null) throw new Exception("请在查询框填上查询条件再继续.");
+                if((int)comList.SelectedIndex ==-1) throw new Exception("请选择下拉列表.");
+                if(txtValue.Text == "") throw new Exception("请在查询框填上查询条件再继续.");
+                //获取下拉列表值
+                var dvColIdlist = (DataRowView)comList.Items[comList.SelectedIndex];
+                var colName = Convert.ToString(dvColIdlist["ColId"]);
+                //TaskLogic各参数赋值
+                task.TaskId = 1;
+                task.FunctionId = "1.1";
+                task.FunctionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+                task.SearchName = colName;
+                task.SearchValue = txtValue.Text;
+                task.Data = _dtldt;
 
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if (task.ResultTable.Rows.Count >= 0)
+                    gvdtl.DataSource = task.ResultTable;
             }
             catch (Exception ex)
             {
@@ -335,6 +374,34 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
+        /// 刷新功能(重新获取表头及表体全部信息) 在点击中节点后才执行此事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tview_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            try
+            {
+                task.TaskId = 1;
+                task.FunctionId = "1";
+                task.FunctionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+                task.FunctionType = "G";
+                task.ParentId = (int)tview.SelectedNode.Tag == 1 ? null : Convert.ToString(tview.SelectedNode.Tag);
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if (task.ResultTable.Rows.Count > 0)
+                    gvdtl.DataSource = task.ResultTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 刷新功能(重新获取表头及表体全部信息)
         /// </summary>
         /// <param name="sender"></param>
@@ -344,35 +411,6 @@ namespace RD.UI.Basic
             try
             {
                 OnInitialize();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// 点击TreeView控件时执行查询操作(主要是根据节点ID读取表体数据)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tview_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var a = (int) tview.SelectedNode.Tag;
-                task.TaskId = 1;
-                task.FunctionId = "1";
-                task.FunctionName= ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);     //功能名称
-                task.FunctionType = "G";
-                task.ParentId = "";
-
-                new Thread(Start).Start();
-                load.StartPosition = FormStartPosition.CenterScreen;
-                load.ShowDialog();
-
-                if(task.ResultTable.Rows.Count>0) 
-                   gvdtl.DataSource = task.ResultTable;
             }
             catch (Exception ex)
             {

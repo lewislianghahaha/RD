@@ -32,6 +32,13 @@
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmSet = new System.Windows.Forms.ToolStripMenuItem();
             this.tmInfor = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmCustomerInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmSuplierInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmMaterialInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmHouseInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmChange = new System.Windows.Forms.ToolStripMenuItem();
             this.tmCreate = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,13 +68,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.tmt = new System.Windows.Forms.Timer(this.components);
-            this.tmCustomerInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmSuplierInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmMaterialInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmHouseInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -110,18 +110,57 @@
             this.toolStripSeparator6,
             this.tmHouseInfo});
             this.tmInfor.Name = "tmInfor";
-            this.tmInfor.Size = new System.Drawing.Size(152, 22);
+            this.tmInfor.Size = new System.Drawing.Size(148, 22);
             this.tmInfor.Text = "基础信息库";
+            // 
+            // tmCustomerInfo
+            // 
+            this.tmCustomerInfo.Name = "tmCustomerInfo";
+            this.tmCustomerInfo.Size = new System.Drawing.Size(256, 22);
+            this.tmCustomerInfo.Text = "客户信息管理";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(253, 6);
+            // 
+            // tmSuplierInfo
+            // 
+            this.tmSuplierInfo.Name = "tmSuplierInfo";
+            this.tmSuplierInfo.Size = new System.Drawing.Size(256, 22);
+            this.tmSuplierInfo.Text = "供应商信息管理";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(253, 6);
+            // 
+            // tmMaterialInfo
+            // 
+            this.tmMaterialInfo.Name = "tmMaterialInfo";
+            this.tmMaterialInfo.Size = new System.Drawing.Size(256, 22);
+            this.tmMaterialInfo.Text = "材料信息管理";
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(253, 6);
+            // 
+            // tmHouseInfo
+            // 
+            this.tmHouseInfo.Name = "tmHouseInfo";
+            this.tmHouseInfo.Size = new System.Drawing.Size(256, 22);
+            this.tmHouseInfo.Text = "房屋类型及装修工程类别信息管理";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
             // 
             // tmChange
             // 
             this.tmChange.Name = "tmChange";
-            this.tmChange.Size = new System.Drawing.Size(152, 22);
+            this.tmChange.Size = new System.Drawing.Size(148, 22);
             this.tmChange.Text = "帐号密码修改";
             // 
             // tmCreate
@@ -216,6 +255,7 @@
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(82, 20);
             this.comboBox4.TabIndex = 9;
+            this.comboBox4.Visible = false;
             // 
             // label5
             // 
@@ -225,6 +265,7 @@
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 8;
             this.label5.Text = "审核状态";
+            this.label5.Visible = false;
             // 
             // comboBox3
             // 
@@ -353,45 +394,6 @@
             // 
             this.tmt.Enabled = true;
             this.tmt.Tick += new System.EventHandler(this.tmt_Tick);
-            // 
-            // tmCustomerInfo
-            // 
-            this.tmCustomerInfo.Name = "tmCustomerInfo";
-            this.tmCustomerInfo.Size = new System.Drawing.Size(256, 22);
-            this.tmCustomerInfo.Text = "客户信息管理";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(253, 6);
-            // 
-            // tmSuplierInfo
-            // 
-            this.tmSuplierInfo.Name = "tmSuplierInfo";
-            this.tmSuplierInfo.Size = new System.Drawing.Size(256, 22);
-            this.tmSuplierInfo.Text = "供应商信息管理";
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(253, 6);
-            // 
-            // tmMaterialInfo
-            // 
-            this.tmMaterialInfo.Name = "tmMaterialInfo";
-            this.tmMaterialInfo.Size = new System.Drawing.Size(256, 22);
-            this.tmMaterialInfo.Text = "材料信息管理";
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(253, 6);
-            // 
-            // tmHouseInfo
-            // 
-            this.tmHouseInfo.Name = "tmHouseInfo";
-            this.tmHouseInfo.Size = new System.Drawing.Size(256, 22);
-            this.tmHouseInfo.Text = "房屋类型及装修工程类别信息管理";
             // 
             // Main
             // 

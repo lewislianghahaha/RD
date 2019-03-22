@@ -67,6 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\AdminFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AdminFrm.Designer.cs">
+      <DependentUpon>AdminFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\Conn.cs" />
     <Compile Include="DB\DtList.cs" />
     <Compile Include="DB\Export\ExportDt.cs" />
@@ -74,6 +80,7 @@
     <Compile Include="DB\Import\ImportDt.cs" />
     <Compile Include="DB\Search\SearchDt.cs" />
     <Compile Include="DB\SqlList.cs" />
+    <Compile Include="Logic\Basic\Del.cs" />
     <Compile Include="Logic\Basic\Import.cs" />
     <Compile Include="Logic\ChangePwd\ChangePwd.cs" />
     <Compile Include="Logic\Basic\Search.cs" />
@@ -132,6 +139,9 @@
     <Compile Include="UI\Order\MaterialOrderFrm.Designer.cs">
       <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\AdminFrm.resx">
+      <DependentUpon>AdminFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Account\AccountFrm.resx">
       <DependentUpon>AccountFrm.cs</DependentUpon>
     </EmbeddedResource>

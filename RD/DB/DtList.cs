@@ -182,6 +182,28 @@ namespace RD.DB
             return dt;
         }
 
+        /// <summary>
+        /// 创建删除临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_TreeidTemp()
+        {
+            var dt=new DataTable();
+            for (int i = 0; i < 1; i++)
+            {
+                var dc=new DataColumn();
+                switch (i)
+                {
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
 
     }
 }

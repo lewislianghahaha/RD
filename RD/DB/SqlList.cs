@@ -255,5 +255,52 @@ namespace RD.DB
 
             return _result;
         }
+
+        /// <summary>
+        /// 更新帐号密码
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="userpw"></param>
+        /// <returns></returns>
+        public string Up_User(string username, string userpw)
+        {
+            _result = $@"update T_AD_User set UserPassword='{userpw}' where UserName='{username}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 删除记录 包括表头及表体信息(基础信息库)
+        /// </summary>
+        /// <param name="factionName">功能名称</param>
+        /// <param name="id">主键ID</param>
+        /// <returns></returns>
+        public string BD_Del(string factionName, int id)
+        {
+            switch (factionName)
+            {
+                case "Customer":
+                    _result =
+                        $@"delete from dbo.T_BD_Cust a where a.id='{id}';
+                           delete from dbo.T_BD_CustEntry a where a.Custid='{id}';";
+                    break;
+                case "Supplier":
+                    _result =
+                        $@"delete from dbo.T_BD_Supplier a where a.id='{id}';
+                           delete from dbo.T_BD_SupplierEntry a where a.Supid='{id}';";
+                    break;
+                case "Material":
+                    _result =
+                        $@"delete from dbo.T_BD_Material a where a.id='{id}';
+                           delete from dbo.T_BD_MaterialEntry a where a.Materialid='{id}'";
+                    break;
+                case "House":
+                    _result =
+                        $@"delete from dbo.T_BD_HType a where a.id='{id}';
+                           delete from dbo.T_BD_HTypeEntry a where a.HTypeid='{id}'";
+                    break;
+            }
+            return _result;
+        }
+
     }
 }

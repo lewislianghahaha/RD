@@ -9,6 +9,7 @@ namespace RD.Logic
         ChangeData change=new ChangeData();
         Search search=new Search();
         Import import=new Import();
+        Del del=new Del();
 
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
@@ -200,7 +201,7 @@ namespace RD.Logic
                     break;
                 //删除节点及对应的信息
                 case "3":
-
+                    _resultMark = del.DelBD_Record(functionName,pid,dt);
                     break;
                 //审核
                 case "4":
@@ -208,6 +209,8 @@ namespace RD.Logic
                     break;
             }
         }
+
+
 
     }
 }
