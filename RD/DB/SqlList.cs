@@ -280,23 +280,23 @@ namespace RD.DB
             {
                 case "Customer":
                     _result =
-                        $@"delete from dbo.T_BD_Cust a where a.id='{id}';
-                           delete from dbo.T_BD_CustEntry a where a.Custid='{id}';";
+                        $@"delete from dbo.T_BD_Cust where id='{id}';
+                           delete from dbo.T_BD_CustEntry where Custid='{id}'";
                     break;
                 case "Supplier":
                     _result =
-                        $@"delete from dbo.T_BD_Supplier a where a.id='{id}';
-                           delete from dbo.T_BD_SupplierEntry a where a.Supid='{id}';";
+                        $@"delete from dbo.T_BD_Supplier where id='{id}';
+                           delete from dbo.T_BD_SupplierEntry where Supid='{id}'";
                     break;
                 case "Material":
                     _result =
-                        $@"delete from dbo.T_BD_Material a where a.id='{id}';
-                           delete from dbo.T_BD_MaterialEntry a where a.Materialid='{id}'";
+                        $@"delete from dbo.T_BD_Material where id='{id}';
+                           delete from dbo.T_BD_MaterialEntry where Materialid='{id}'";
                     break;
                 case "House":
                     _result =
-                        $@"delete from dbo.T_BD_HType a where a.id='{id}';
-                           delete from dbo.T_BD_HTypeEntry a where a.HTypeid='{id}'";
+                        $@"delete from dbo.T_BD_HType where id='{id}';
+                           delete from dbo.T_BD_HTypeEntry where HTypeid='{id}'";
                     break;
             }
             return _result;

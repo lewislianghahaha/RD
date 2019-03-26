@@ -65,29 +65,27 @@ namespace RD.DB.Generate
 
         /// <summary>
         /// 获取树形菜单相关记录
-        /// </summary>
+        /// </summary> 
         private DataTable GetTreeRecord(DataTable dt,DataTable tempdt,int pid)
         {
             var rowdtl = dt.Select("Parentid='" + pid + "'");
-            if (rowdtl.Length > 0)
+            if (rowdtl.Length <= 0) return tempdt;
+            foreach (var t in rowdtl)
             {
-                foreach (var t in rowdtl)
+                var row = tempdt.NewRow();
+                row[0] = t[0];
+                tempdt.Rows.Add(row);
+
+                var result = dt.Select("Parentid='" + Convert.ToInt32(t[0]) + "'");
+
+                if (result.Length == 0)
                 {
-                    var row = tempdt.NewRow();
-                    row[0] = t[0];
-                    tempdt.Rows.Add(row);
-
-                    var result = dt.Select("Parentid='" + Convert.ToInt32(t[0]) + "'");
-
-                    if (result.Length == 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        //(重)递归调用
-                        GetTreeRecord(dt, tempdt, Convert.ToInt32(t[0]));
-                    }
+                    continue;
+                }
+                else
+                {
+                    //(重)递归调用
+                    GetTreeRecord(dt, tempdt, Convert.ToInt32(t[0]));
                 }
             }
             return tempdt;
@@ -132,5 +130,8 @@ namespace RD.DB.Generate
             }
             return result;
         }
+
+
+
     }      
 }

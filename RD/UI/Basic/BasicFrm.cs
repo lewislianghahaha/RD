@@ -365,6 +365,17 @@ namespace RD.UI.Basic
         {
             try
             {
+                //DateTimePicker dateTime=new DateTimePicker();
+                //gvdtl.Controls.Add(dateTime);
+                ////Q:
+                ////获取GV内第一行第一列的值
+                //var a = gvdtl.Rows[0].Cells[0].Value;
+                var dt = (DataTable) gvdtl.DataSource;
+                
+                //task.TaskId = 1;
+                //task.FunctionId = "2";
+                //task.FunctionName= ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+
 
             }
             catch (Exception ex)
@@ -391,8 +402,8 @@ namespace RD.UI.Basic
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
-
-                if (task.ResultTable.Rows.Count > 0)
+                
+                //if (task.ResultTable.Rows.Count > 0)
                     gvdtl.DataSource = task.ResultTable;
             }
             catch (Exception ex)
