@@ -27,7 +27,7 @@ namespace RD.DB
                 //客户信息管理-表体(全部)
                 case "1":
                     _result = @"
-                                SELECT a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
+                                SELECT a.Id,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                 FROM dbo.T_BD_CustEntry a";
@@ -35,7 +35,7 @@ namespace RD.DB
                 //客户信息管理-表体(针对表体信息查询)
                 case "2":
                     _result =$@"
-                                SELECT a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
+                                SELECT a.Id,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                 FROM dbo.T_BD_CustEntry a
@@ -60,7 +60,7 @@ namespace RD.DB
                 //供应商管理-表体(全部)
                 case "4":
                     _result = @"
-                                   SELECT a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
+                                   SELECT a.Id,a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
                                           a.ContactPhone AS '联系方式',a.GoNum AS '工商登记号',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                    FROM dbo.T_BD_SupplierEntry a
                                ";
@@ -68,7 +68,7 @@ namespace RD.DB
                 //供应商管理-表体(针对表体信息查询)
                 case "5":
                     _result = $@"
-                                  SELECT a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
+                                  SELECT a.Id,a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
                                           a.ContactPhone AS '联系方式',a.GoNum AS '工商登记号',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                    FROM dbo.T_BD_SupplierEntry a
                                    where a.Supid='{parentId}'";
@@ -91,7 +91,7 @@ namespace RD.DB
                 //材料信息管理-表体(全部)
                 case "7":
                     _result = @"
-                                  SELECT a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
+                                  SELECT a.Id,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
                                          a.Unit as '单位',a.Price as '单价',
                                          a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_MaterialEntry a
@@ -100,7 +100,7 @@ namespace RD.DB
                 //材料信息管理-表体(针对表体信息查询)
                 case "8":
                     _result = $@"
-                                    SELECT a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
+                                    SELECT a.Id,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
                                            a.Unit as '单位',a.Price as '单价',
                                            a.InputUser as '录入人',a.InputDt as '录入日期'
                                     FROM dbo.T_BD_MaterialEntry a
@@ -125,13 +125,13 @@ namespace RD.DB
                 //房屋类型及装修工程类别信息管理(表体)
                 case "10":
                     _result = @"
-                                  SELECT a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+                                  SELECT a.Id,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_HTypeEntry a";
                     break;
                 //房屋类型及装修工程类别信息管理(针对表体信息查询)
                 case "11":
                     _result = $@"
-                                  SELECT a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+                                  SELECT a.Id,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_HTypeEntry a
                                   where a.HTypeid='{parentId}'";
                     break;
@@ -302,5 +302,21 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 基础信库更新语句
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public string BD_UpdateEntry(string tableName)
+        {
+            _result = $@"
+                            SELECT a.Id,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
+	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
+                                       a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
+                                FROM dbo.T_BD_CustEntry a
+                                where a.Id='{tableName}'
+                        ";
+            return _result;
+        }
     }
 }

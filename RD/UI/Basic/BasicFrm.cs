@@ -34,6 +34,7 @@ namespace RD.UI.Basic
             tview.AfterSelect += Tview_AfterSelect;
             tmReset.Click += TmReset_Click;
             comList.Click += ComList_Click;
+           
         }
 
         //初始化树形列表及GridView控件
@@ -347,8 +348,10 @@ namespace RD.UI.Basic
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
 
-                if (task.ResultTable.Rows.Count >= 0)
+                //if (task.ResultTable.Rows.Count >= 0)
                     gvdtl.DataSource = task.ResultTable;
+                //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+                gvdtl.Columns[0].Visible = false;
             }
             catch (Exception ex)
             {
@@ -365,18 +368,27 @@ namespace RD.UI.Basic
         {
             try
             {
-                //DateTimePicker dateTime=new DateTimePicker();
-                //gvdtl.Controls.Add(dateTime);
-                ////Q:
-                ////获取GV内第一行第一列的值
-                //var a = gvdtl.Rows[0].Cells[0].Value;
-                var dt = (DataTable) gvdtl.DataSource;
-                
-                //task.TaskId = 1;
-                //task.FunctionId = "2";
-                //task.FunctionName= ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+                //从GridView获取其DataTable内容(注:包括已存在的以及新增的记录)
+                var dt = (DataTable)gvdtl.DataSource;
+                if (dt.Rows.Count != 0)
+                {
+                    task.TaskId = 1;
+                    task.FunctionId = "2";
+                    task.FunctionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+                    task.Data = dt;
 
+                    new Thread(Start).Start();
+                    load.StartPosition = FormStartPosition.CenterScreen;
+                    load.ShowDialog();
 
+                    if (!task.ResultMark) throw new Exception("保存异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    //保存成功后,再次进行初始化
+                    OnInitialize();
+                }
             }
             catch (Exception ex)
             {
@@ -405,6 +417,8 @@ namespace RD.UI.Basic
                 
                 //if (task.ResultTable.Rows.Count > 0)
                     gvdtl.DataSource = task.ResultTable;
+                //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+                gvdtl.Columns[0].Visible = false;
             }
             catch (Exception ex)
             {

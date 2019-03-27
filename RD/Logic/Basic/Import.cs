@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using RD.DB.Import;
 
 namespace RD.Logic.Basic
@@ -50,7 +51,25 @@ namespace RD.Logic.Basic
             return result;
         }
 
-
+        /// <summary>
+        /// 对基础信息库内的表体进行保存
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool Save_BaseEntry(string functionName, DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                result = importDt.SavebaseEntryrd(functionName, dt);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
+        }
 
     }
 }

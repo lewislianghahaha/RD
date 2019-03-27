@@ -13,6 +13,12 @@ namespace RD.DB.Generate
         SqlList sqlList=new SqlList();
         DtList dtList=new DtList();
 
+        /// <summary>
+        /// 修改帐号密码
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="userpwd"></param>
+        /// <returns></returns>
         public bool ChangeUserPwd(string username,string userpwd)
         {
             var result = true;
@@ -31,6 +37,7 @@ namespace RD.DB.Generate
             return result;
         }
 
+        #region 删除树形菜单记录
         /// <summary>
         /// 删除记录(作用:针对基础信息库)
         /// </summary>
@@ -38,7 +45,7 @@ namespace RD.DB.Generate
         /// <param name="pid"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public bool DelBD_Rd(string functionName,int pid,DataTable dt)
+        public bool DelBD_Rd(string functionName, int pid, DataTable dt)
         {
             var result = true;
             var tempdt = dtList.Get_TreeidTemp();
@@ -66,7 +73,7 @@ namespace RD.DB.Generate
         /// <summary>
         /// 获取树形菜单相关记录
         /// </summary> 
-        private DataTable GetTreeRecord(DataTable dt,DataTable tempdt,int pid)
+        private DataTable GetTreeRecord(DataTable dt, DataTable tempdt, int pid)
         {
             var rowdtl = dt.Select("Parentid='" + pid + "'");
             if (rowdtl.Length <= 0) return tempdt;
@@ -97,7 +104,7 @@ namespace RD.DB.Generate
         /// <param name="functionName"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        private bool Del(string functionName,DataTable dt)
+        private bool Del(string functionName, DataTable dt)
         {
             var result = true;
             foreach (DataRow row in dt.Rows)
@@ -130,7 +137,7 @@ namespace RD.DB.Generate
             }
             return result;
         }
-
+        #endregion
 
 
     }      

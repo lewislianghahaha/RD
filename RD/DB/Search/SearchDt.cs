@@ -207,7 +207,7 @@ namespace RD.DB.Search
         /// </summary>
         /// <param name="functionName">功能名,作用:获取空白表格</param>
         /// <returns></returns>
-        private DataTable GetTempdt(string functionName)
+        public DataTable GetTempdt(string functionName)
         {
             var resultDt = new DataTable();
             switch (functionName)
