@@ -42,15 +42,13 @@ namespace RD.UI.Basic
         {
             tview.Nodes.Clear();
 
-            var functionName = string.Empty;
-
             task.TaskId = 1;                 //中转功能ID
             task.FunctionId = "1";           //功能ID(创建:0 查询:1 保存:2 审核:3)
             task.FunctionType = "T";         //表格类型(注:读取时使用) T:表头 G:表体
             task.ParentId = null;            //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
 
             //根据功能中转ID获取表头信息(树形菜单使用) 以及表体信息(GridView控件使用)
-            functionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+            var functionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
             task.StartTask();
             //将返回的结果赋值至表头DT变量类型内
             _dt = task.ResultTable;
@@ -58,8 +56,12 @@ namespace RD.UI.Basic
             _dtldt = OnInitializeDtl(1, "1", functionName, "G", null);
             //导出记录至树形菜单内
             ShowTreeList(_dt);
-            //导出记录至GridView控件内
-            // gvdtl.DataSource = _dtldt;
+            //若在GridView控件内有记录,即将GV内的内容清空
+            //if (gvdtl.RowCount>0)
+            //{
+            //    gvdtl.Columns.Clear();
+            //    gvdtl.Rows.Clear();
+            //}
             //预留(权限部份)
 
             //展开根节点
@@ -352,6 +354,7 @@ namespace RD.UI.Basic
                     gvdtl.DataSource = task.ResultTable;
                 //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
                 gvdtl.Columns[0].Visible = false;
+                gvdtl.Columns[1].Visible = false;
             }
             catch (Exception ex)
             {
@@ -376,6 +379,8 @@ namespace RD.UI.Basic
                     task.FunctionId = "2";
                     task.FunctionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
                     task.Data = dt;
+                    //获取点选中的节点ID(用于最后的表体外键值插入)
+                    task.Pid = Convert.ToInt32(tview.SelectedNode.Tag);
 
                     new Thread(Start).Start();
                     load.StartPosition = FormStartPosition.CenterScreen;
@@ -419,6 +424,7 @@ namespace RD.UI.Basic
                     gvdtl.DataSource = task.ResultTable;
                 //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
                 gvdtl.Columns[0].Visible = false;
+                gvdtl.Columns[1].Visible = false;
             }
             catch (Exception ex)
             {

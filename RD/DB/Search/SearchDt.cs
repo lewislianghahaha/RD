@@ -192,12 +192,12 @@ namespace RD.DB.Search
         {
             foreach (var i in rows)
             {
+                var row = tempdt.NewRow();
                 for (var j = 0; j < tempdtColNum; j++)
                 {
-                    var row = tempdt.NewRow();
                     row[j] = i[j];
-                    tempdt.Rows.Add(row);
                 }
+                tempdt.Rows.Add(row);
             }
             return tempdt;
         }

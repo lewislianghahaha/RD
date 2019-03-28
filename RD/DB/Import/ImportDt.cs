@@ -93,8 +93,9 @@ namespace RD.DB.Import
         /// </summary>
         /// <param name="functionName">功能名称</param>
         /// <param name="dt">从GridView控件内获取的DT</param>
+        /// <param name="pid">对应的表头ID</param>
         /// <returns></returns>
-        public bool SavebaseEntryrd(string functionName,DataTable dt)
+        public bool SavebaseEntryrd(string functionName,DataTable dt,int pid)
         {
             var result = true;
             //根据功能名称获取对应在的临时表信息
@@ -113,17 +114,19 @@ namespace RD.DB.Import
                     {
                         //添加状态
                         case "Added":
-                            tempInsertdt = GetTempRd(row, tempInsertdt);
+                            tempInsertdt = GetTempRd(row, tempInsertdt,pid);
                             break;
                         //修改状态
                         case "Modified":
-                            tempUpdt = GetTempRd(row, tempUpdt);
+                            tempUpdt = GetTempRd(row, tempUpdt,pid);
                             break;
                     }
                 }
                 //循环结束后分别将累积的临时表信息,进行插入或更新操作
-                Importdt(tableName,tempInsertdt);
-                UpEntrydt(tableName,tempUpdt);
+                if(tempInsertdt.Rows.Count>0)
+                    Importdt(tableName,tempInsertdt);
+                if(tempUpdt.Rows.Count>0)
+                    UpEntrydt(tableName,tempUpdt);
             }
             catch (Exception)
             {
@@ -137,15 +140,16 @@ namespace RD.DB.Import
         /// </summary>
         /// <param name="row"></param>
         /// <param name="tempdt"></param>
+        /// <param name="pid"></param>
         /// <returns></returns>
-        private DataTable GetTempRd(DataRow row,DataTable tempdt)
+        private DataTable GetTempRd(DataRow row, DataTable tempdt,int pid)
         {
-            for (var i = 0; i < row.ItemArray.Length; i++)
+            var temprow = tempdt.NewRow();
+            for (var j = 0; j < tempdt.Columns.Count; j++)
             {
-                var tempinsertrow = tempdt.NewRow();
-                tempinsertrow[i] = row[i];
-                tempdt.Rows.Add(tempinsertrow);
+                temprow[j] = j == 0 ? pid : row[j];
             }
+            tempdt.Rows.Add(temprow);
             return tempdt;
         }
 

@@ -56,7 +56,6 @@ namespace RD.DB.Generate
                 var row = tempdt.NewRow();
                 row[0] = pid;
                 tempdt.Rows.Add(row);
-                var a = tempdt;
 
                 //使用递归将相关的节点信息添加至临时表内
                 var resultdt = GetTreeRecord(dt, tempdt, pid);

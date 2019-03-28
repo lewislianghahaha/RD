@@ -27,7 +27,7 @@ namespace RD.DB
                 //客户信息管理-表体(全部)
                 case "1":
                     _result = @"
-                                SELECT a.Id,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
+                                SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                 FROM dbo.T_BD_CustEntry a";
@@ -35,11 +35,11 @@ namespace RD.DB
                 //客户信息管理-表体(针对表体信息查询)
                 case "2":
                     _result =$@"
-                                SELECT a.Id,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
+                                SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                 FROM dbo.T_BD_CustEntry a
-                                where a.Custid='{parentId}'";
+                                where a.id='{parentId}'";
                     break;
                 #region 客户信息管理-表体(查询框有值时使用)
                 //
@@ -60,7 +60,7 @@ namespace RD.DB
                 //供应商管理-表体(全部)
                 case "4":
                     _result = @"
-                                   SELECT a.Id,a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
+                                   SELECT a.Id,a.Supid,a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
                                           a.ContactPhone AS '联系方式',a.GoNum AS '工商登记号',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                    FROM dbo.T_BD_SupplierEntry a
                                ";
@@ -68,10 +68,10 @@ namespace RD.DB
                 //供应商管理-表体(针对表体信息查询)
                 case "5":
                     _result = $@"
-                                  SELECT a.Id,a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
+                                  SELECT a.Id,a.Supid,a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
                                           a.ContactPhone AS '联系方式',a.GoNum AS '工商登记号',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                    FROM dbo.T_BD_SupplierEntry a
-                                   where a.Supid='{parentId}'";
+                                   where a.id='{parentId}'";
                     break;
                 #region 供应商管理-表体(查询框有值时使用)
                 //
@@ -91,7 +91,7 @@ namespace RD.DB
                 //材料信息管理-表体(全部)
                 case "7":
                     _result = @"
-                                  SELECT a.Id,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
+                                  SELECT a.Id,a.MaterialId,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
                                          a.Unit as '单位',a.Price as '单价',
                                          a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_MaterialEntry a
@@ -100,11 +100,11 @@ namespace RD.DB
                 //材料信息管理-表体(针对表体信息查询)
                 case "8":
                     _result = $@"
-                                    SELECT a.Id,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
+                                    SELECT a.Id,a.MaterialId,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
                                            a.Unit as '单位',a.Price as '单价',
                                            a.InputUser as '录入人',a.InputDt as '录入日期'
                                     FROM dbo.T_BD_MaterialEntry a
-                                    where a.MaterialId='{parentId}'";   
+                                    where a.id='{parentId}'";   
                     break;
                 #region 材料信息管理-表体(查询框有值时使用)
                 //
@@ -125,15 +125,15 @@ namespace RD.DB
                 //房屋类型及装修工程类别信息管理(表体)
                 case "10":
                     _result = @"
-                                  SELECT a.Id,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+                                  SELECT a.Id,a.HTypeid,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_HTypeEntry a";
                     break;
                 //房屋类型及装修工程类别信息管理(针对表体信息查询)
                 case "11":
                     _result = $@"
-                                  SELECT a.Id,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+                                  SELECT a.Id,a.HTypeid,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_HTypeEntry a
-                                  where a.HTypeid='{parentId}'";
+                                  where a.id='{parentId}'";
                     break;
                     #region 房屋类型及装修工程类别信息管理(查询框有值时使用)
                     //
@@ -281,22 +281,22 @@ namespace RD.DB
                 case "Customer":
                     _result =
                         $@"delete from dbo.T_BD_Cust where id='{id}';
-                           delete from dbo.T_BD_CustEntry where Custid='{id}'";
+                           delete from dbo.T_BD_CustEntry where id='{id}'";
                     break;
                 case "Supplier":
                     _result =
                         $@"delete from dbo.T_BD_Supplier where id='{id}';
-                           delete from dbo.T_BD_SupplierEntry where Supid='{id}'";
+                           delete from dbo.T_BD_SupplierEntry where id='{id}'";
                     break;
                 case "Material":
                     _result =
                         $@"delete from dbo.T_BD_Material where id='{id}';
-                           delete from dbo.T_BD_MaterialEntry where Materialid='{id}'";
+                           delete from dbo.T_BD_MaterialEntry where id='{id}'";
                     break;
                 case "House":
                     _result =
                         $@"delete from dbo.T_BD_HType where id='{id}';
-                           delete from dbo.T_BD_HTypeEntry where HTypeid='{id}'";
+                           delete from dbo.T_BD_HTypeEntry where id='{id}'";
                     break;
             }
             return _result;
@@ -310,11 +310,9 @@ namespace RD.DB
         public string BD_UpdateEntry(string tableName)
         {
             _result = $@"
-                            SELECT a.Id,a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
-	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
-                                       a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
-                                FROM dbo.T_BD_CustEntry a
-                                where a.Id='{tableName}'
+                            Update T_BD_CustEntry set a.CustName='',a.HTypeid='',a.Spare='',a.SpareAdd='',a.Cust_Add='',
+                                       a.Cust_Phone='',a.InputUser='',a.InputDt=''
+                            where a.Custid='{tableName}'
                         ";
             return _result;
         }

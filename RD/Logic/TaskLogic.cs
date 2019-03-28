@@ -189,7 +189,7 @@ namespace RD.Logic
                     break;
                 //保存(作用:对表体GridView进行导入)
                 case "2":
-                    _resultMark = import.Save_BaseEntry(functionName,dt);
+                    _resultMark = import.Save_BaseEntry(functionName,dt,pid);
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2.1":

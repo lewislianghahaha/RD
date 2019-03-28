@@ -56,13 +56,14 @@ namespace RD.Logic.Basic
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="dt"></param>
+        /// <param name="pid">上级主键ID</param>
         /// <returns></returns>
-        public bool Save_BaseEntry(string functionName, DataTable dt)
+        public bool Save_BaseEntry(string functionName, DataTable dt,int pid)
         {
             var result = true;
             try
             {
-                result = importDt.SavebaseEntryrd(functionName, dt);
+                result = importDt.SavebaseEntryrd(functionName, dt,pid);
             }
             catch (Exception ex)
             {

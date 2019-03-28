@@ -202,6 +202,7 @@
     <Content Include="DLL\NPOI.OpenXml4Net.dll" />
     <Content Include="DLL\NPOI.OpenXmlFormats.dll" />
     <Content Include="obj\Debug\RD.csproj.FileListAbsolute.txt" />
+    <Content Include="RD.csproj.DotSettings.user" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
