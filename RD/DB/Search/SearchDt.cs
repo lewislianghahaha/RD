@@ -43,14 +43,13 @@ namespace RD.DB.Search
         /// <param name="searchValue"></param>
         /// <param name="dtdtl"></param>
         /// <returns></returns>
-        public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue,DataTable dtdtl)
+        public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue,DataTable dtdtl,int pid)
         {
             var dt = new DataTable();
-            var resultDt = new DataTable();
 
             try
             {
-                dt = GetSearchValueRecord(functionName,searchName,searchValue,dtdtl);
+                dt = GetSearchValueRecord(functionName,searchName,searchValue,dtdtl,pid);
             }
             catch (Exception ex)
             {
@@ -58,7 +57,7 @@ namespace RD.DB.Search
                 dt.Columns.Clear();
                 throw new Exception(ex.Message);
             }
-            return resultDt;
+            return dt;
         }
 
         /// <summary>
@@ -131,13 +130,24 @@ namespace RD.DB.Search
         /// <param name="searchName">查询选择列名-查询框有值时使用</param>
         /// <param name="searchValue">查询所填值-查询框有值时使用</param>
         /// <param name="dtdtl"></param>
+        /// <param name="pid"></param>
         /// <returns></returns>
-        private DataTable GetSearchValueRecord(string functionName,string searchName,string searchValue,DataTable dtdtl)
+        private DataTable GetSearchValueRecord(string functionName,string searchName,string searchValue,DataTable dtdtl,int pid)
         {
+            var sqlscript = string.Empty;
             var tempdt=new DataTable();
             var dt=new DataTable();
-            var rows=new DataRow[0];
-            var sqlscript = $"'{searchName}' like '" + '%' + searchValue + '%' + "'";
+
+            //当点击了"ALL"节点或点击"查询"时使用
+            if (pid == -1)
+            {
+                sqlscript = $"{searchName} like '" + '%' + searchValue + '%' + "'";
+            }
+            //当点击某一节点(不包括ALL节点)时使用
+            else
+            {
+                sqlscript = $"{searchName} like '" + '%' + searchValue + '%'+ "' and id = '" + pid + "'";
+            }
 
             switch (functionName)
             {
@@ -146,36 +156,36 @@ namespace RD.DB.Search
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    rows = dtdtl.Select(sqlscript); 
+                    var custrows = dtdtl.Select(sqlscript); 
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
-                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
+                    dt = custrows.Length == 0 ? tempdt : IntoTempdt(custrows, tempdt, tempdt.Columns.Count);
                     break;
                 //"供应商信息管理"
                 case "Supplier":
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    rows = dtdtl.Select(sqlscript);
+                    var suprows = dtdtl.Select(sqlscript);
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
-                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
+                    dt = suprows.Length == 0 ? tempdt : IntoTempdt(suprows, tempdt, tempdt.Columns.Count);
                     break;
                 //材料信息管理
                 case "Material":
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    rows = dtdtl.Select(sqlscript);
+                    var Materialrows = dtdtl.Select(sqlscript);
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
-                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
+                    dt = Materialrows.Length == 0 ? tempdt : IntoTempdt(Materialrows, tempdt, tempdt.Columns.Count);
                     break;
                 //房屋类型及装修工程类别信息管理
                 case "House":
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    rows = dtdtl.Select(sqlscript);
+                    var Houserows = dtdtl.Select(sqlscript);
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
-                    dt = rows.Length == 0 ? tempdt : IntoTempdt(rows, tempdt, tempdt.Columns.Count);
+                    dt = Houserows.Length == 0 ? tempdt : IntoTempdt(Houserows, tempdt, tempdt.Columns.Count);
                     break;
             }
             return dt;

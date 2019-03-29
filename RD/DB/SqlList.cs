@@ -310,8 +310,7 @@ namespace RD.DB
         public string BD_UpdateEntry(string tableName)
         {
             _result = $@"
-                            Update T_BD_CustEntry set a.CustName='',a.HTypeid='',a.Spare='',a.SpareAdd='',a.Cust_Add='',
-                                       a.Cust_Phone='',a.InputUser='',a.InputDt=''
+                            Update '{tableName}' set a.CustName='',a.HTypeid='',a.Spare='',a.SpareAdd='',a.Cust_Add='',a.Cust_Phone=''
                             where a.Custid='{tableName}'
                         ";
             return _result;

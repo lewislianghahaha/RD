@@ -34,7 +34,6 @@ namespace RD.UI.Basic
             tview.AfterSelect += Tview_AfterSelect;
             tmReset.Click += TmReset_Click;
             comList.Click += ComList_Click;
-           
         }
 
         //初始化树形列表及GridView控件
@@ -56,13 +55,16 @@ namespace RD.UI.Basic
             _dtldt = OnInitializeDtl(1, "1", functionName, "G", null);
             //导出记录至树形菜单内
             ShowTreeList(_dt);
-            //若在GridView控件内有记录,即将GV内的内容清空
-            //if (gvdtl.RowCount>0)
-            //{
-            //    gvdtl.Columns.Clear();
-            //    gvdtl.Rows.Clear();
-            //}
+            //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
+            gvdtl.DataSource = _dtldt;
+            //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
+            //设置最后两列不能编辑
+            gvdtl.Columns[gvdtl.Columns.Count-1].ReadOnly = true;
+            gvdtl.Columns[gvdtl.Columns.Count-2].ReadOnly = true;
             //预留(权限部份)
+
 
             //展开根节点
             tview.ExpandAll();
@@ -334,10 +336,10 @@ namespace RD.UI.Basic
             try
             {
                 if((int)comList.SelectedIndex ==-1) throw new Exception("请选择下拉列表.");
-                if(txtValue.Text == "") throw new Exception("请在查询框填上查询条件再继续.");
+               // if(txtValue.Text == "") throw new Exception("请在查询框填上查询条件再继续.");
                 //获取下拉列表值
                 var dvColIdlist = (DataRowView)comList.Items[comList.SelectedIndex];
-                var colName = Convert.ToString(dvColIdlist["ColId"]);
+                var colName = Convert.ToString(dvColIdlist["ColName"]);
                 //TaskLogic各参数赋值
                 task.TaskId = 1;
                 task.FunctionId = "1.1";
@@ -345,16 +347,19 @@ namespace RD.UI.Basic
                 task.SearchName = colName;
                 task.SearchValue = txtValue.Text;
                 task.Data = _dtldt;
+                task.Pid = -1;
 
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
 
-                //if (task.ResultTable.Rows.Count >= 0)
-                    gvdtl.DataSource = task.ResultTable;
+                gvdtl.DataSource = task.ResultTable;
                 //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
                 gvdtl.Columns[0].Visible = false;
                 gvdtl.Columns[1].Visible = false;
+                //设置最后两列不能编辑
+                gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
+                gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
             }
             catch (Exception ex)
             {
@@ -381,6 +386,7 @@ namespace RD.UI.Basic
                     task.Data = dt;
                     //获取点选中的节点ID(用于最后的表体外键值插入)
                     task.Pid = Convert.ToInt32(tview.SelectedNode.Tag);
+                    task.AccountName = GlobalClasscs.User.StrUsrName;
 
                     new Thread(Start).Start();
                     load.StartPosition = FormStartPosition.CenterScreen;
@@ -410,21 +416,54 @@ namespace RD.UI.Basic
         {
             try
             {
+                //当选择框没有值时的操作
                 task.TaskId = 1;
-                task.FunctionId = "1";
                 task.FunctionName = ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
-                task.FunctionType = "G";
-                task.ParentId = (int)tview.SelectedNode.Tag == 1 ? null : Convert.ToString(tview.SelectedNode.Tag);
+
+                //当查询框为空时
+                if (txtValue.Text == "")
+                {
+                    task.FunctionId = "1";
+                    task.FunctionType = "G";
+                    task.ParentId = (int) tview.SelectedNode.Tag == 1 ? null : Convert.ToString(tview.SelectedNode.Tag);
+                }
+                //当查询框不为空并且节点为"ALL"
+                else if (txtValue.Text !="" && (int)tview.SelectedNode.Tag == 1)
+                {
+                    //获取下拉列表值
+                    var dvColIdlist = (DataRowView)comList.Items[comList.SelectedIndex];
+                    var colName = Convert.ToString(dvColIdlist["ColName"]);
+                    //TaskLogic各参数赋值
+                    task.FunctionId = "1.1";
+                    task.SearchName = colName;
+                    task.SearchValue = txtValue.Text;
+                    task.Data = _dtldt;
+                    task.Pid = -1;
+                }
+                else
+                {
+                    //获取下拉列表值
+                    var dvColIdlist = (DataRowView)comList.Items[comList.SelectedIndex];
+                    var colName = Convert.ToString(dvColIdlist["ColName"]);
+                    task.FunctionId = "1.1";
+                    task.SearchName = colName;
+                    task.SearchValue = txtValue.Text;
+                    task.Data = _dtldt;
+                    //获取所选中的节点
+                    task.Pid= Convert.ToInt32(tview.SelectedNode.Tag);
+                }
 
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
                 
-                //if (task.ResultTable.Rows.Count > 0)
-                    gvdtl.DataSource = task.ResultTable;
+                gvdtl.DataSource = task.ResultTable;
                 //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
                 gvdtl.Columns[0].Visible = false;
                 gvdtl.Columns[1].Visible = false;
+                //设置最后两列不能编辑
+                gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
+                gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
             }
             catch (Exception ex)
             {

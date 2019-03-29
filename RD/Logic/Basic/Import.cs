@@ -15,6 +15,7 @@ namespace RD.Logic.Basic
         /// <param name="functionName"></param>
         /// <param name="pid"></param>
         /// <param name="treeName"></param>
+        /// <param name="accountName"></param>
         /// <returns></returns>
         public bool InsertTreeRd(string functionName,int pid,string treeName)
         {
@@ -57,13 +58,14 @@ namespace RD.Logic.Basic
         /// <param name="functionName"></param>
         /// <param name="dt"></param>
         /// <param name="pid">上级主键ID</param>
+        /// <param name="accountName"></param>
         /// <returns></returns>
-        public bool Save_BaseEntry(string functionName, DataTable dt,int pid)
+        public bool Save_BaseEntry(string functionName, DataTable dt,int pid,string accountName)
         {
             var result = true;
             try
             {
-                result = importDt.SavebaseEntryrd(functionName, dt,pid);
+                result = importDt.SavebaseEntryrd(functionName, dt,pid, accountName);
             }
             catch (Exception ex)
             {

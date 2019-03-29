@@ -38,14 +38,15 @@ namespace RD.Logic.Basic
         /// <param name="searchName">查询选择列名-查询框有值时使用</param>
         /// <param name="searchValue">查询所填值-查询框有值时使用</param>
         /// <param name="dtdtl"></param>
+        /// <param name="pid"></param>
         /// <returns></returns>
-        public DataTable GetBdSearchData(string functionName, string searchName, string searchValue,DataTable dtdtl)
+        public DataTable GetBdSearchData(string functionName, string searchName, string searchValue,DataTable dtdtl,int pid)
         {
             var dt = new DataTable();
 
             try
             {
-                dt = serDt.GetBdSearchValueRecord(functionName, searchName, searchValue,dtdtl);
+                dt = serDt.GetBdSearchValueRecord(functionName, searchName, searchValue,dtdtl,pid);
             }
             catch (Exception ex)
             {

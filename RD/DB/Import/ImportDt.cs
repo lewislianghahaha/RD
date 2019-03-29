@@ -94,8 +94,9 @@ namespace RD.DB.Import
         /// <param name="functionName">功能名称</param>
         /// <param name="dt">从GridView控件内获取的DT</param>
         /// <param name="pid">对应的表头ID</param>
+        /// <param name="accountName"></param>
         /// <returns></returns>
-        public bool SavebaseEntryrd(string functionName,DataTable dt,int pid)
+        public bool SavebaseEntryrd(string functionName,DataTable dt,int pid,string accountName)
         {
             var result = true;
             //根据功能名称获取对应在的临时表信息
@@ -114,11 +115,11 @@ namespace RD.DB.Import
                     {
                         //添加状态
                         case "Added":
-                            tempInsertdt = GetTempRd(row, tempInsertdt,pid);
+                            tempInsertdt = GetTempRd(row, tempInsertdt,pid,accountName);
                             break;
                         //修改状态
                         case "Modified":
-                            tempUpdt = GetTempRd(row, tempUpdt,pid);
+                            tempUpdt = GetTempRd(row, tempUpdt,pid,accountName);
                             break;
                     }
                 }
@@ -141,13 +142,29 @@ namespace RD.DB.Import
         /// <param name="row"></param>
         /// <param name="tempdt"></param>
         /// <param name="pid"></param>
+        /// <param name="accountName"></param>
         /// <returns></returns>
-        private DataTable GetTempRd(DataRow row, DataTable tempdt,int pid)
+        private DataTable GetTempRd(DataRow row, DataTable tempdt,int pid,string accountName)
         {
             var temprow = tempdt.NewRow();
             for (var j = 0; j < tempdt.Columns.Count; j++)
             {
-                temprow[j] = j == 0 ? pid : row[j];
+                if (j == 0)
+                {
+                    temprow[j] = pid;
+                }
+                else if (j == tempdt.Columns.Count - 1)
+                {
+                    temprow[j] = DateTime.Now.Date;
+                }
+                else if (j == tempdt.Columns.Count - 2)
+                {
+                    temprow[j] = accountName;
+                }
+                else
+                {
+                    temprow[j] = row[j];
+                }
             }
             tempdt.Rows.Add(temprow);
             return tempdt;
