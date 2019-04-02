@@ -115,14 +115,15 @@ namespace RD.DB.Import
                     {
                         //添加状态
                         case "Added":
-                            tempInsertdt = GetTempRd(row, tempInsertdt,pid,accountName);
+                            tempInsertdt = GetTempRd(row, tempInsertdt,pid,accountName,row.RowState.ToString());
                             break;
                         //修改状态
                         case "Modified":
-                            tempUpdt = GetTempRd(row, tempUpdt,pid,accountName);
+                            tempUpdt = GetTempRd(row, tempUpdt,pid,accountName, row.RowState.ToString());
                             break;
                     }
                 }
+       
                 //循环结束后分别将累积的临时表信息,进行插入或更新操作
                 if(tempInsertdt.Rows.Count>0)
                     Importdt(tableName,tempInsertdt);
@@ -143,8 +144,9 @@ namespace RD.DB.Import
         /// <param name="tempdt"></param>
         /// <param name="pid"></param>
         /// <param name="accountName"></param>
+        /// <param name="rowState">行状态</param>
         /// <returns></returns>
-        private DataTable GetTempRd(DataRow row, DataTable tempdt,int pid,string accountName)
+        private DataTable GetTempRd(DataRow row, DataTable tempdt,int pid,string accountName,string rowState)
         {
             var temprow = tempdt.NewRow();
             for (var j = 0; j < tempdt.Columns.Count; j++)
@@ -153,11 +155,11 @@ namespace RD.DB.Import
                 {
                     temprow[j] = pid;
                 }
-                else if (j == tempdt.Columns.Count - 1)
+                else if (j == tempdt.Columns.Count - 1 && rowState== "Added")
                 {
                     temprow[j] = DateTime.Now.Date;
                 }
-                else if (j == tempdt.Columns.Count - 2)
+                else if (j == tempdt.Columns.Count - 2 && rowState == "Added")
                 {
                     temprow[j] = accountName;
                 }
@@ -197,11 +199,7 @@ namespace RD.DB.Import
         /// </summary>
         private void UpEntrydt(string tableName,DataTable updt)
         {
-            //根据功能名称获取对应的SQL语句
-            foreach (DataRow row in updt.Rows)
-            {
-                
-            }
+            
         }
 
         /// <summary>

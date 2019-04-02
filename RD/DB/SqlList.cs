@@ -1,4 +1,5 @@
-﻿using NPOI.HSSF.Record.Chart;
+﻿using System.Text;
+using NPOI.HSSF.Record.Chart;
 
 namespace RD.DB
 {
@@ -309,6 +310,22 @@ namespace RD.DB
         /// <returns></returns>
         public string BD_UpdateEntry(string tableName)
         {
+            switch (tableName)
+            {
+                case "Customer":
+
+                    break;
+                case "Supplier":
+
+                    break;
+                case "Material":
+
+                    break;
+                case "House":
+
+                    break;
+            }
+
             _result = $@"
                             Update '{tableName}' set a.CustName='',a.HTypeid='',a.Spare='',a.SpareAdd='',a.Cust_Add='',a.Cust_Phone=''
                             where a.Custid='{tableName}'

@@ -433,7 +433,6 @@ namespace RD.UI.Basic
                     //获取下拉列表值
                     var dvColIdlist = (DataRowView)comList.Items[comList.SelectedIndex];
                     var colName = Convert.ToString(dvColIdlist["ColName"]);
-                    //TaskLogic各参数赋值
                     task.FunctionId = "1.1";
                     task.SearchName = colName;
                     task.SearchValue = txtValue.Text;

@@ -138,7 +138,7 @@ namespace RD.DB.Search
             var tempdt=new DataTable();
             var dt=new DataTable();
 
-            //当点击了"ALL"节点或点击"查询"时使用
+            //当点击了"ALL"节点或点击"查询"按钮时使用
             if (pid == -1)
             {
                 sqlscript = $"{searchName} like '" + '%' + searchValue + '%' + "'";
