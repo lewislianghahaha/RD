@@ -151,7 +151,7 @@ namespace RD.DB
                         dc.DataType = Type.GetType("System.String");
                         break;
                     case 4: //Supid
-                        dc.ColumnName = "材料供应商ID"; 
+                        dc.ColumnName = "材料供应商"; 
                         dc.DataType = Type.GetType("System.Int32");
                         break;
                     case 5://Unit

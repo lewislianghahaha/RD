@@ -102,8 +102,15 @@
     <Compile Include="UI\Basic\BasicFrm.Designer.cs">
       <DependentUpon>BasicFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Basic\ShowDtlListFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Basic\ShowDtlListFrm.Designer.cs">
+      <DependentUpon>ShowDtlListFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\GlobalClasscs.cs" />
     <Compile Include="Logic\TaskLogic.cs" />
+    <Compile Include="UI\GridViewPageShow.cs" />
     <Compile Include="UI\Load.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Basic\BasicFrm.resx">
       <DependentUpon>BasicFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Basic\ShowDtlListFrm.resx">
+      <DependentUpon>ShowDtlListFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Load.resx">
       <DependentUpon>Load.cs</DependentUpon>

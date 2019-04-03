@@ -11,6 +11,7 @@ namespace RD.UI.Basic
         TaskLogic task=new TaskLogic();
         Load load=new Load();
         AddEditor add=new AddEditor();
+        ShowDtlListFrm showDtl=new ShowDtlListFrm();
 
         //保存初始化的表头内容
        public DataTable _dt=new DataTable();
@@ -34,6 +35,7 @@ namespace RD.UI.Basic
             tview.AfterSelect += Tview_AfterSelect;
             tmReset.Click += TmReset_Click;
             comList.Click += ComList_Click;
+            gvdtl.CellDoubleClick += Gvdtl_CellDoubleClick;
         }
 
         //初始化树形列表及GridView控件
@@ -60,11 +62,8 @@ namespace RD.UI.Basic
             //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
             gvdtl.Columns[1].Visible = false;
-            //设置最后两列不能编辑
-            gvdtl.Columns[gvdtl.Columns.Count-1].ReadOnly = true;
-            gvdtl.Columns[gvdtl.Columns.Count-2].ReadOnly = true;
-            //
-
+            //设置GridView是否显示某些列
+            ControlGridViewisShow();
             //预留(权限部份)
 
 
@@ -541,5 +540,54 @@ namespace RD.UI.Basic
                 load.Close();
             }));
         }
+
+        /// <summary>
+        /// 当双击GridView控件内某个单元格内发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Gvdtl_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //根据功能名指定某一单元格可以弹出明细内容
+            switch (GlobalClasscs.Basic.BasicId)
+            {
+                //客户信息管理
+                case 1:
+                    if (e.ColumnIndex == 3)
+                    {
+                        //调用明细记录框
+                        
+                        showDtl.StartPosition = FormStartPosition.CenterScreen;
+                        showDtl.ShowDialog();
+                    }
+                    break;
+                //供应商信息管理(Hold)
+                case 2:
+                    break;
+                //材料信息管理
+                case 3:
+                    if (e.ColumnIndex == 4)
+                    {
+                        //调用明细记录框
+
+                        showDtl.StartPosition = FormStartPosition.CenterScreen;
+                        showDtl.ShowDialog();
+                    }
+                    break;
+                //房屋类型及装修工程类别信息管理(Hold)
+                case 4:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 控制GridView
+        /// </summary>
+        private void ControlGridViewisShow()
+        {
+            gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
+            gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
+        }
+
     }
 }
