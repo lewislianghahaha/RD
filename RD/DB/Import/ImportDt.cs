@@ -10,7 +10,7 @@ namespace RD.DB.Import
     {
         SearchDt serDt=new SearchDt();
         SqlList sqlList=new SqlList();
-
+ 
         /// <summary>
         /// 插入树形菜单记录
         /// </summary>
@@ -123,7 +123,6 @@ namespace RD.DB.Import
                             break;
                     }
                 }
-       
                 //循环结束后分别将累积的临时表信息,进行插入或更新操作
                 if(tempInsertdt.Rows.Count>0)
                     Importdt(tableName,tempInsertdt);
@@ -151,7 +150,7 @@ namespace RD.DB.Import
             var temprow = tempdt.NewRow();
             for (var j = 0; j < tempdt.Columns.Count; j++)
             {
-                if (j == 0)
+                if (j == 0 && rowState=="Added")
                 {
                     temprow[j] = pid;
                 }
@@ -199,7 +198,34 @@ namespace RD.DB.Import
         /// </summary>
         private void UpEntrydt(string tableName,DataTable updt)
         {
-            
+            var sqladpter = new SqlDataAdapter();
+            var ds = new DataSet();
+
+            //根据表格名称获取对应的模板表记录
+            var searList = sqlList.BD_SearchTempEntry(tableName);
+
+            using (sqladpter.SelectCommand = new SqlCommand(searList,serDt.GetConn()))
+            {
+                //将查询的记录填充至ds(查询表记录;后面的更新作赋值使用)
+                sqladpter.Fill(ds);
+                //建立更新模板相关信息(包括更新语句 以及 变量参数)
+                sqladpter = GetUpdateAdapter(tableName, serDt.GetConn(), sqladpter);
+                //开始更新(注:通过对DataSet中存在的表进行循环赋值;并进行更新)
+                for (var i = 0; i < updt.Rows.Count; i++)
+                {
+                    for (var j = 0; j < updt.Columns.Count; j++)
+                    {
+                        ds.Tables[0].Rows[i].BeginEdit();
+                        ds.Tables[0].Rows[i][j] = updt.Rows[i][j];
+                        ds.Tables[0].Rows[i].EndEdit();
+                    }
+                    sqladpter.Update(ds.Tables[0]);
+                }
+                //完成更新后将相关内容清空
+                ds.Tables[0].Clear();
+                sqladpter.Dispose();
+                ds.Dispose();
+            }
         }
 
         /// <summary>
@@ -227,5 +253,45 @@ namespace RD.DB.Import
             return result;
         }
 
+        private SqlDataAdapter GetUpdateAdapter(string tableName,SqlConnection conn,SqlDataAdapter da)
+        {
+            //根据标记获取对应的更新语句
+            da.UpdateCommand = new SqlCommand(sqlList.BD_UpdateEntry(tableName), conn);
+
+            switch (tableName)
+            {
+                //定义所需的变量参数
+                case "T_BD_CustEntry":
+                    da.UpdateCommand.Parameters.Add("@Custid", SqlDbType.Int, 8, "Custid");
+                    da.UpdateCommand.Parameters.Add("@CustName",SqlDbType.NVarChar,300,"CustName");
+                    da.UpdateCommand.Parameters.Add("@HTypeid",SqlDbType.Int,8, "HTypeid");
+                    da.UpdateCommand.Parameters.Add("@Spare",SqlDbType.NVarChar,100, "Spare");
+                    da.UpdateCommand.Parameters.Add("@SpareAdd",SqlDbType.NVarChar,300, "SpareAdd");
+                    da.UpdateCommand.Parameters.Add("@Cust_Add",SqlDbType.NVarChar,300, "Cust_Add");
+                    da.UpdateCommand.Parameters.Add("@Cust_Phone",SqlDbType.NVarChar, 300, "Cust_Phone");
+                    break;
+                case "T_BD_SupplierEntry":
+                    da.UpdateCommand.Parameters.Add("@Supid",SqlDbType.Int,8, "Supid");
+                    da.UpdateCommand.Parameters.Add("@SupName",SqlDbType.NVarChar,500,"SupName");
+                    da.UpdateCommand.Parameters.Add("@Address",SqlDbType.NVarChar,200, "Address");
+                    da.UpdateCommand.Parameters.Add("@ContactName",SqlDbType.NVarChar,100, "ContactName");
+                    da.UpdateCommand.Parameters.Add("@ContactPhone",SqlDbType.NVarChar,100, "ContactPhone");
+                    da.UpdateCommand.Parameters.Add("@GoNum",SqlDbType.NVarChar,200, "GoNum");
+                    break;
+                case "T_BD_MaterialEntry":
+                    da.UpdateCommand.Parameters.Add("@MaterialId",SqlDbType.Int,8, "MaterialId");
+                    da.UpdateCommand.Parameters.Add("@MaterialName",SqlDbType.NVarChar,200, "MaterialName");
+                    da.UpdateCommand.Parameters.Add("@MaterialSize",SqlDbType.NVarChar,200, "MaterialSize");
+                    da.UpdateCommand.Parameters.Add("@Supid", SqlDbType.Int, 8, "Supid");
+                    da.UpdateCommand.Parameters.Add("@Unit",SqlDbType.NVarChar,10, "Unit");
+                    da.UpdateCommand.Parameters.Add("@Price",SqlDbType.Decimal,2, "Price");
+                    break;
+                case "T_BD_HTypeEntry":
+                    da.UpdateCommand.Parameters.Add("@HTypeid", SqlDbType.Int, 8, "HTypeid");
+                    da.UpdateCommand.Parameters.Add("@HtypeName",SqlDbType.NVarChar,200, "HtypeName");
+                    break;    
+            }
+            return da;
+        }
     }
 }

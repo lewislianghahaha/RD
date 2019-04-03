@@ -304,7 +304,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 基础信库更新语句
+        /// 基础信库更新语句(更新表体时使用)
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns></returns>
@@ -312,25 +312,84 @@ namespace RD.DB
         {
             switch (tableName)
             {
-                case "Customer":
-
+                case "T_BD_CustEntry":
+                    _result = @"
+                                     Update a set a.CustName=@CustName,a.HTypeid=@HTypeid,a.Spare=@Spare,a.SpareAdd=@SpareAdd,a.Cust_Add=@Cust_Add,
+                                                  a.Cust_Phone=@Cust_Phone
+                                     from dbo.T_BD_CustEntry a
+                                     where Custid=@Custid;
+                                ";
                     break;
-                case "Supplier":
-
+                case "T_BD_SupplierEntry":
+                    _result = @"
+                                     Update a set a.SupName=@SupName,a.Address=@Address,a.ContactName=@ContactName,a.ContactPhone=@ContactPhone,
+                                                  a.GoNum=@GoNum
+                                     from  dbo.T_BD_SupplierEntry a
+                                     where a.Supid=@Supid                       
+                                ";
                     break;
-                case "Material":
-
+                case "T_BD_MaterialEntry":
+                    _result = @"
+                                     Update a set a.MaterialName=@MaterialName,a.MaterialSize=@MaterialSize,
+                                                  a.Supid=@Supid,a.Unit=@Unit,a.Price=@Price
+                                     from dbo.T_BD_MaterialEntry a
+                                     where a.MaterialId=@MaterialId
+                               ";
                     break;
-                case "House":
-
+                case "T_BD_HTypeEntry":
+                    _result = @"
+                                    Update a set a.HtypeName=@HtypeName
+                                    from dbo.T_BD_HTypeEntry a
+                                    where a.HTypeid=@HTypeid
+                                ";
                     break;
             }
-
-            _result = $@"
-                            Update '{tableName}' set a.CustName='',a.HTypeid='',a.Spare='',a.SpareAdd='',a.Cust_Add='',a.Cust_Phone=''
-                            where a.Custid='{tableName}'
-                        ";
             return _result;
         }
+
+        /// <summary>
+        /// 基础信息库查询表体语句(更新时使用) 只显示TOP 1记录
+        /// </summary>
+        /// <returns></returns>
+        public string BD_SearchTempEntry(string tableName)
+        {
+            _result = $@"
+                          SELECT Top 1 a.*
+                          FROM {tableName} a
+                        ";
+            #region test
+            //switch (tableName)
+            //{
+            //    case "T_BD_CustEntry":
+            //        _result = $@"
+            //                    SELECT Top 1 a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
+            //                        a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
+            //                           a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
+            //                    FROM dbo.T_BD_CustEntry a";
+            //        break;
+            //    case "T_BD_SupplierEntry":
+            //        _result = $@"
+            //                      SELECT  Top 1 a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
+            //                              a.ContactPhone AS '联系方式',a.GoNum AS '工商登记号',a.InputUser AS '录入人',a.InputDt AS '录入日期'
+            //                       FROM dbo.T_BD_SupplierEntry a";
+            //        break;
+            //    case "T_BD_MaterialEntry":
+            //        _result = $@"
+            //                        SELECT Top 1 a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
+            //                               a.Unit as '单位',a.Price as '单价',
+            //                               a.InputUser as '录入人',a.InputDt as '录入日期'
+            //                        FROM dbo.T_BD_MaterialEntry a";
+            //        break;
+            //    case "T_BD_HTypeEntry":
+            //        _result = $@"
+            //                      SELECT Top 1 a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+            //                      FROM dbo.T_BD_HTypeEntry a";
+            //        break;
+            //}
+            #endregion
+            return _result;
+        }
+
+
     }
 }

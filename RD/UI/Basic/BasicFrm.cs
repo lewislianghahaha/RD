@@ -63,6 +63,8 @@ namespace RD.UI.Basic
             //设置最后两列不能编辑
             gvdtl.Columns[gvdtl.Columns.Count-1].ReadOnly = true;
             gvdtl.Columns[gvdtl.Columns.Count-2].ReadOnly = true;
+            //
+
             //预留(权限部份)
 
 

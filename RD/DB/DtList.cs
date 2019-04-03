@@ -33,7 +33,7 @@ namespace RD.DB
                         dc.DataType = Type.GetType("System.String");
                         break;
                     case 3: //HTypeid
-                        dc.ColumnName = "房屋类型ID"; 
+                        dc.ColumnName = "房屋类型"; 
                         dc.DataType = Type.GetType("System.Int32");
                         break;
                     case 4: //Spare
