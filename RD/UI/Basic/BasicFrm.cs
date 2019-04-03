@@ -59,9 +59,6 @@ namespace RD.UI.Basic
             ShowTreeList(_dt);
             //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
             gvdtl.DataSource = _dtldt;
-            //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
-            gvdtl.Columns[0].Visible = false;
-            gvdtl.Columns[1].Visible = false;
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //预留(权限部份)
@@ -355,12 +352,8 @@ namespace RD.UI.Basic
                 load.ShowDialog();
 
                 gvdtl.DataSource = task.ResultTable;
-                //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
-                gvdtl.Columns[0].Visible = false;
-                gvdtl.Columns[1].Visible = false;
-                //设置最后两列不能编辑
-                gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
-                gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
             }
             catch (Exception ex)
             {
@@ -440,6 +433,7 @@ namespace RD.UI.Basic
                     task.Data = _dtldt;
                     task.Pid = -1;
                 }
+                //当查询框不为空并且节点不为"ALL"
                 else
                 {
                     //获取下拉列表值
@@ -458,12 +452,8 @@ namespace RD.UI.Basic
                 load.ShowDialog();
                 
                 gvdtl.DataSource = task.ResultTable;
-                //将GridView中的第一列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
-                gvdtl.Columns[0].Visible = false;
-                gvdtl.Columns[1].Visible = false;
-                //设置最后两列不能编辑
-                gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
-                gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
             }
             catch (Exception ex)
             {
@@ -556,7 +546,7 @@ namespace RD.UI.Basic
                     if (e.ColumnIndex == 3)
                     {
                         //调用明细记录框
-                        
+                        showDtl.Show();
                         showDtl.StartPosition = FormStartPosition.CenterScreen;
                         showDtl.ShowDialog();
                     }
@@ -581,12 +571,29 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
-        /// 控制GridView
+        /// 控制GridView列显示情况
         /// </summary>
         private void ControlGridViewisShow()
         {
+            //将GridView中的第一二列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
+            //设置最后两列不能编辑
             gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
             gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
+
+            switch (GlobalClasscs.Basic.BasicId)
+            {
+                //客户信息管理
+                case 1:
+                    gvdtl.Columns[3].ReadOnly = true;
+                    break;
+                //材料信息管理
+                case 3:
+                    gvdtl.Columns[4].ReadOnly = true;
+                    break;
+            }
+
         }
 
     }
