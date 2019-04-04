@@ -42,6 +42,7 @@ namespace RD.DB.Search
         /// <param name="searchName"></param>
         /// <param name="searchValue"></param>
         /// <param name="dtdtl"></param>
+        /// <param name="pid"></param>
         /// <returns></returns>
         public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue,DataTable dtdtl,int pid)
         {
@@ -135,8 +136,8 @@ namespace RD.DB.Search
         private DataTable GetSearchValueRecord(string functionName,string searchName,string searchValue,DataTable dtdtl,int pid)
         {
             var sqlscript = string.Empty;
-            var tempdt=new DataTable();
-            var dt=new DataTable();
+            var tempdt = new DataTable();
+            var dt = new DataTable();
 
             //当点击了"ALL"节点或点击"查询"按钮时使用
             if (pid == -1)
@@ -174,18 +175,18 @@ namespace RD.DB.Search
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    var Materialrows = dtdtl.Select(sqlscript);
+                    var materialrows = dtdtl.Select(sqlscript);
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
-                    dt = Materialrows.Length == 0 ? tempdt : IntoTempdt(Materialrows, tempdt, tempdt.Columns.Count);
+                    dt = materialrows.Length == 0 ? tempdt : IntoTempdt(materialrows, tempdt, tempdt.Columns.Count);
                     break;
                 //房屋类型及装修工程类别信息管理
                 case "House":
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    var Houserows = dtdtl.Select(sqlscript);
+                    var houserows = dtdtl.Select(sqlscript);
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
-                    dt = Houserows.Length == 0 ? tempdt : IntoTempdt(Houserows, tempdt, tempdt.Columns.Count);
+                    dt = houserows.Length == 0 ? tempdt : IntoTempdt(houserows, tempdt, tempdt.Columns.Count);
                     break;
             }
             return dt;
@@ -254,7 +255,7 @@ namespace RD.DB.Search
         }
 
         /// <summary>
-        /// 根据功能名称获取对应列名并形成Dt
+        /// 根据功能名称获取对应列名并形成Dt(查询框下拉列表使用)
         /// </summary>
         /// <param name="functionName"></param>
         /// <returns></returns>
@@ -266,5 +267,59 @@ namespace RD.DB.Search
             sqlDataAdapter.Fill(ds);
             return ds.Tables[0];
         }
+
+        /// <summary>
+        /// 基础信息库-弹出明细窗体使用(初始化时使用)
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <returns></returns>
+        public DataTable SearchInitializeDtl(string functionName)
+        {
+            var dt = new DataTable();
+            var resultdt = new DataTable();
+            var sqlscript = string.Empty;
+
+            switch (functionName)
+            {
+                case "Customer":
+                    sqlscript=sqlList.BD_SQLList("1", null, null, null);
+                    break;
+                case "Supplier":
+                    sqlscript = sqlList.BD_SQLList("4", null, null, null);
+                    break;
+                case "Material":
+                    sqlscript = sqlList.BD_SQLList("7", null, null, null);
+                    break;
+                case "House":
+                    sqlscript = sqlList.BD_SQLList("10.1", null, null, null);
+                    break;
+            }
+            var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
+            sqlDataAdapter.Fill(dt);
+            resultdt = dt.Rows.Count == 0 ? GetTempdt(functionName) : dt;
+            return resultdt;
+        }
+
+        /// <summary>
+        /// 基础信息库-弹出明细窗体使用(查询值时使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchShowDtl(string functionName, string searchName, string searchValue,DataTable searchdt)
+        {
+            var dt = new DataTable();
+
+            try
+            {
+                dt = GetSearchValueRecord(functionName, searchName, searchValue, searchdt, -1);
+            }
+            catch (Exception ex)
+            {
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
+
     }
 }

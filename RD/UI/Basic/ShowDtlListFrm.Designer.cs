@@ -52,21 +52,20 @@
             this.tmClose});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.MainMenu.Size = new System.Drawing.Size(902, 34);
+            this.MainMenu.Size = new System.Drawing.Size(601, 25);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "MainMenu";
             // 
             // tmGet
             // 
             this.tmGet.Name = "tmGet";
-            this.tmGet.Size = new System.Drawing.Size(58, 28);
+            this.tmGet.Size = new System.Drawing.Size(44, 21);
             this.tmGet.Text = "获取";
             // 
             // tmClose
             // 
             this.tmClose.Name = "tmClose";
-            this.tmClose.Size = new System.Drawing.Size(58, 28);
+            this.tmClose.Size = new System.Drawing.Size(44, 21);
             this.tmClose.Text = "关闭";
             // 
             // panel1
@@ -75,36 +74,32 @@
             this.panel1.Controls.Add(this.comlist);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 34);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(902, 57);
+            this.panel1.Size = new System.Drawing.Size(601, 38);
             this.panel1.TabIndex = 1;
             // 
             // txtValue
             // 
-            this.txtValue.Location = new System.Drawing.Point(224, 14);
-            this.txtValue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtValue.Location = new System.Drawing.Point(149, 9);
             this.txtValue.Name = "txtValue";
-            this.txtValue.Size = new System.Drawing.Size(148, 28);
+            this.txtValue.Size = new System.Drawing.Size(100, 21);
             this.txtValue.TabIndex = 3;
             // 
             // comlist
             // 
             this.comlist.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comlist.FormattingEnabled = true;
-            this.comlist.Location = new System.Drawing.Point(24, 14);
-            this.comlist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comlist.Location = new System.Drawing.Point(16, 9);
             this.comlist.Name = "comlist";
-            this.comlist.Size = new System.Drawing.Size(180, 26);
+            this.comlist.Size = new System.Drawing.Size(121, 20);
             this.comlist.TabIndex = 2;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(394, 14);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSearch.Location = new System.Drawing.Point(263, 9);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(112, 34);
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "查询";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -113,10 +108,9 @@
             // 
             this.panel2.Controls.Add(this.gvdtl);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 91);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Location = new System.Drawing.Point(0, 63);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(902, 613);
+            this.panel2.Size = new System.Drawing.Size(601, 406);
             this.panel2.TabIndex = 2;
             // 
             // gvdtl
@@ -127,24 +121,23 @@
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
-            this.gvdtl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(902, 613);
+            this.gvdtl.Size = new System.Drawing.Size(601, 406);
             this.gvdtl.TabIndex = 0;
             // 
             // ShowDtlListFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AcceptButton = this.btnSearch;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(902, 704);
+            this.ClientSize = new System.Drawing.Size(601, 469);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ShowDtlListFrm";
             this.Text = "Show";
             this.MainMenu.ResumeLayout(false);

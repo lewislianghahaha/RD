@@ -1,7 +1,4 @@
-﻿using System.Text;
-using NPOI.HSSF.Record.Chart;
-
-namespace RD.DB
+﻿namespace RD.DB
 {
     public class SqlList
     {
@@ -28,7 +25,7 @@ namespace RD.DB
                 //客户信息管理-表体(全部)
                 case "1":
                     _result = @"
-                                SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型',
+                                SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型',a.HTypeName as '房屋类型名称',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                 FROM dbo.T_BD_CustEntry a";
@@ -36,7 +33,7 @@ namespace RD.DB
                 //客户信息管理-表体(针对表体信息查询)
                 case "2":
                     _result =$@"
-                                SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型',
+                                SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型',a.HTypeName as '房屋类型名称',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
                                 FROM dbo.T_BD_CustEntry a
@@ -92,7 +89,8 @@ namespace RD.DB
                 //材料信息管理-表体(全部)
                 case "7":
                     _result = @"
-                                  SELECT a.Id,a.MaterialId,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商',
+                                  SELECT a.Id,a.MaterialId,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',
+                                         a.Supid as '材料供应商',a.SupName as '材料供应商名称',
                                          a.Unit as '单位',a.Price as '单价',
                                          a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_MaterialEntry a
@@ -101,7 +99,8 @@ namespace RD.DB
                 //材料信息管理-表体(针对表体信息查询)
                 case "8":
                     _result = $@"
-                                    SELECT a.Id,a.MaterialId,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商',
+                                    SELECT a.Id,a.MaterialId,a.MaterialName as '材料名称',a.MaterialSize as '材料规格',
+                                           a.Supid as '材料供应商',a.SupName as '材料供应商名称',
                                            a.Unit as '单位',a.Price as '单价',
                                            a.InputUser as '录入人',a.InputDt as '录入日期'
                                     FROM dbo.T_BD_MaterialEntry a
@@ -128,6 +127,14 @@ namespace RD.DB
                     _result = @"
                                   SELECT a.Id,a.HTypeid,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
                                   FROM dbo.T_BD_HTypeEntry a";
+                    break;
+                //房屋类型及装修工程类别信息管理(针对明细信息框查询)
+                case "10.1":
+                    _result = @"
+                                  SELECT a.Id,a.HTypeid,a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+                                  FROM dbo.T_BD_HTypeEntry a
+                                  inner join dbo.T_BD_HType b on a.id=b.id
+                                  where b.HType='房屋类型'";
                     break;
                 //房屋类型及装修工程类别信息管理(针对表体信息查询)
                 case "11":
@@ -314,8 +321,8 @@ namespace RD.DB
             {
                 case "T_BD_CustEntry":
                     _result = @"
-                                     Update a set a.CustName=@CustName,a.HTypeid=@HTypeid,a.Spare=@Spare,a.SpareAdd=@SpareAdd,a.Cust_Add=@Cust_Add,
-                                                  a.Cust_Phone=@Cust_Phone
+                                     Update a set a.CustName=@CustName,a.HTypeid=@HTypeid,a.HTypeName=@HTypeName,a.Spare=@Spare,a.SpareAdd=@SpareAdd,
+                                                  a.Cust_Add=@Cust_Add,a.Cust_Phone=@Cust_Phone
                                      from dbo.T_BD_CustEntry a
                                      where Custid=@Custid;
                                 ";
@@ -331,7 +338,7 @@ namespace RD.DB
                 case "T_BD_MaterialEntry":
                     _result = @"
                                      Update a set a.MaterialName=@MaterialName,a.MaterialSize=@MaterialSize,
-                                                  a.Supid=@Supid,a.Unit=@Unit,a.Price=@Price
+                                                  a.Supid=@Supid,a.SupName=@SupName,a.Unit=@Unit,a.Price=@Price
                                      from dbo.T_BD_MaterialEntry a
                                      where a.MaterialId=@MaterialId
                                ";
@@ -357,39 +364,7 @@ namespace RD.DB
                           SELECT Top 1 a.*
                           FROM {tableName} a
                         ";
-            #region test
-            //switch (tableName)
-            //{
-            //    case "T_BD_CustEntry":
-            //        _result = $@"
-            //                    SELECT Top 1 a.CustName AS '客户名称',a.HTypeid AS '房屋类型ID',
-            //                        a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
-            //                           a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
-            //                    FROM dbo.T_BD_CustEntry a";
-            //        break;
-            //    case "T_BD_SupplierEntry":
-            //        _result = $@"
-            //                      SELECT  Top 1 a.SupName AS '供应商名称',a.Address AS '通讯地址',a.ContactName AS '联系人',
-            //                              a.ContactPhone AS '联系方式',a.GoNum AS '工商登记号',a.InputUser AS '录入人',a.InputDt AS '录入日期'
-            //                       FROM dbo.T_BD_SupplierEntry a";
-            //        break;
-            //    case "T_BD_MaterialEntry":
-            //        _result = $@"
-            //                        SELECT Top 1 a.MaterialName as '材料名称',a.MaterialSize as '材料规格',a.Supid as '材料供应商ID',
-            //                               a.Unit as '单位',a.Price as '单价',
-            //                               a.InputUser as '录入人',a.InputDt as '录入日期'
-            //                        FROM dbo.T_BD_MaterialEntry a";
-            //        break;
-            //    case "T_BD_HTypeEntry":
-            //        _result = $@"
-            //                      SELECT Top 1 a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
-            //                      FROM dbo.T_BD_HTypeEntry a";
-            //        break;
-            //}
-            #endregion
             return _result;
         }
-
-
     }
 }

@@ -201,6 +201,7 @@ namespace RD.UI.Basic
                 task.TaskId = 1;
                 task.FunctionId = "1.2";
                 ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);
+
                 task.StartTask();
                 comList.DataSource = task.ResultTable;
                 comList.DisplayMember = "ColName";     //设置显示值
@@ -334,7 +335,7 @@ namespace RD.UI.Basic
             try
             {
                 if((int)comList.SelectedIndex ==-1) throw new Exception("请选择下拉列表.");
-               // if(txtValue.Text == "") throw new Exception("请在查询框填上查询条件再继续.");
+
                 //获取下拉列表值
                 var dvColIdlist = (DataRowView)comList.Items[comList.SelectedIndex];
                 var colName = Convert.ToString(dvColIdlist["ColName"]);
@@ -370,6 +371,7 @@ namespace RD.UI.Basic
         {
             try
             {
+                if (tview.SelectedNode == null) throw new Exception("没有选择节点,请选择某一节点");
                 //从GridView获取其DataTable内容(注:包括已存在的以及新增的记录)
                 var dt = (DataTable)gvdtl.DataSource;
                 if (dt.Rows.Count != 0)
@@ -543,12 +545,12 @@ namespace RD.UI.Basic
             {
                 //客户信息管理
                 case 1:
-                    if (e.ColumnIndex == 3)
+                    if (e.ColumnIndex == 4)
                     {
-                        //调用明细记录框
-                        showDtl.Show();
-                        showDtl.StartPosition = FormStartPosition.CenterScreen;
-                        showDtl.ShowDialog();
+                        showDtl.Funid = 0;
+                        //使用房屋类型名称
+                        showDtl.FactionName = ShowBasicFunctionName(4);
+                        ShowdtlMessageInfo(e.RowIndex,e.ColumnIndex);
                     }
                     break;
                 //供应商信息管理(Hold)
@@ -556,18 +558,35 @@ namespace RD.UI.Basic
                     break;
                 //材料信息管理
                 case 3:
-                    if (e.ColumnIndex == 4)
+                    if (e.ColumnIndex == 5)
                     {
-                        //调用明细记录框
-
-                        showDtl.StartPosition = FormStartPosition.CenterScreen;
-                        showDtl.ShowDialog();
+                        showDtl.Funid = 1;
+                        //使用供应商名称
+                        showDtl.FactionName = ShowBasicFunctionName(2);
+                        ShowdtlMessageInfo(e.RowIndex,e.ColumnIndex);
                     }
                     break;
                 //房屋类型及装修工程类别信息管理(Hold)
                 case 4:
                     break;
             }
+        }
+
+        /// <summary>
+        /// 明细框信息设置
+        /// </summary>
+        void ShowdtlMessageInfo(int rowindex,int colindex)
+        {
+            //初始化明细记录框(获取DataTable记录)
+            showDtl.OnInitialize();
+            //调用明细记录框
+            showDtl.StartPosition = FormStartPosition.CenterScreen;
+            showDtl.ShowDialog();
+            //将从明细框里获取的值返回至指定的GridView单元格内
+            //返回ID值
+            gvdtl.Rows[rowindex].Cells[colindex - 1].Value = showDtl.ResultId;
+            //返回对应的名称
+            gvdtl.Rows[rowindex].Cells[colindex].Value = showDtl.ResultName;
         }
 
         /// <summary>
@@ -586,15 +605,17 @@ namespace RD.UI.Basic
             {
                 //客户信息管理
                 case 1:
-                    gvdtl.Columns[3].ReadOnly = true;
+                    //id值列不显示
+                    gvdtl.Columns[3].Visible = false;
+                    gvdtl.Columns[4].ReadOnly = true;
                     break;
                 //材料信息管理
                 case 3:
-                    gvdtl.Columns[4].ReadOnly = true;
+                    gvdtl.Columns[4].Visible = false;
+                    gvdtl.Columns[5].ReadOnly = true;
                     break;
             }
 
         }
-
     }
 }

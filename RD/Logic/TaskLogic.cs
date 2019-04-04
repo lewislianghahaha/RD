@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Reflection;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
 
@@ -23,7 +24,6 @@ namespace RD.Logic
         private DataTable _data;         //获取初始化的表体信息
         private int _pid;                //获取父级节点ID(新增或更新树形节点时使用)
         private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
-
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -168,6 +168,7 @@ namespace RD.Logic
         /// <param name="pid">获取父级节点ID(新增或更新树形节点时使用)</param>
         /// <param name="treeName">获取同级节点时使用(新增或更新树形节点时使用)</param>
         /// <param name="accountName">获取帐号名称</param>
+        /// <param name="funid">明细窗体功能ID</param>
         private void BasicInfo(string functionId,string functionName,string functionType,string parentId,
                                string searchName, string searchValue,DataTable dt,int pid,string treeName,string accountName)
         {
@@ -188,6 +189,14 @@ namespace RD.Logic
                 //查询 作用:根据功能名查询出对应的列名并形成DataTable(查询框下拉列表使用)
                 case "1.2":
                     _resultTable = search.GetColDropDownList(functionName);
+                    break;
+                //查询 作用:明细窗体查询(初始化使用)
+                case "1.3":
+                    _resultTable = search.GetInitializeDtl(functionName);
+                    break;
+                //查询 作用:明细窗体查询(查询值时使用)
+                case "1.4":
+                    _resultTable = search.GetSearchDt(functionName, searchName, searchValue, dt);
                     break;
                 //保存(作用:对表体GridView进行导入)
                 case "2":

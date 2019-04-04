@@ -265,6 +265,7 @@ namespace RD.DB.Import
                     da.UpdateCommand.Parameters.Add("@Custid", SqlDbType.Int, 8, "Custid");
                     da.UpdateCommand.Parameters.Add("@CustName",SqlDbType.NVarChar,300,"CustName");
                     da.UpdateCommand.Parameters.Add("@HTypeid",SqlDbType.Int,8, "HTypeid");
+                    da.UpdateCommand.Parameters.Add("@HTypeName", SqlDbType.NVarChar, 200, "HTypeName");
                     da.UpdateCommand.Parameters.Add("@Spare",SqlDbType.NVarChar,100, "Spare");
                     da.UpdateCommand.Parameters.Add("@SpareAdd",SqlDbType.NVarChar,300, "SpareAdd");
                     da.UpdateCommand.Parameters.Add("@Cust_Add",SqlDbType.NVarChar,300, "Cust_Add");
@@ -283,6 +284,7 @@ namespace RD.DB.Import
                     da.UpdateCommand.Parameters.Add("@MaterialName",SqlDbType.NVarChar,200, "MaterialName");
                     da.UpdateCommand.Parameters.Add("@MaterialSize",SqlDbType.NVarChar,200, "MaterialSize");
                     da.UpdateCommand.Parameters.Add("@Supid", SqlDbType.Int, 8, "Supid");
+                    da.UpdateCommand.Parameters.Add("@SupName",SqlDbType.NVarChar,500, "SupName");
                     da.UpdateCommand.Parameters.Add("@Unit",SqlDbType.NVarChar,10, "Unit");
                     da.UpdateCommand.Parameters.Add("@Price",SqlDbType.Decimal,2, "Price");
                     break;

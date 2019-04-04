@@ -13,7 +13,7 @@ namespace RD.DB
         public DataTable Get_CustEmptydt()
         {
             var dt=new DataTable();
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 11; i++)
             {
                 var dc = new DataColumn();
 
@@ -33,30 +33,34 @@ namespace RD.DB
                         dc.DataType = Type.GetType("System.String");
                         break;
                     case 3: //HTypeid
-                        dc.ColumnName = "房屋类型"; 
+                        dc.ColumnName = "房屋类型id"; 
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    case 4: //Spare
+                    case 4: //HTypeName
+                        dc.ColumnName = "房屋类型名称";
+                        dc.DataType=Type.GetType("System.String");
+                        break;
+                    case 5: //Spare
                         dc.ColumnName = "装修地区"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 5://SpareAdd
+                    case 6://SpareAdd
                         dc.ColumnName = "装修地址"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 6: //Cust_Add
+                    case 7: //Cust_Add
                         dc.ColumnName = "客户通讯地址"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 7: //Cust_Phone
+                    case 8: //Cust_Phone
                         dc.ColumnName = "客户联系方式"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 8: //InputUser
+                    case 9: //InputUser
                         dc.ColumnName = "录入人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 9://InputDt
+                    case 10://InputDt
                         dc.ColumnName = "录入日期"; 
                         dc.DataType = Type.GetType("System.DateTime"); 
                         break;
@@ -128,7 +132,7 @@ namespace RD.DB
         public DataTable Get_MaterialEmptydt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 9; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var dc = new DataColumn();
 
@@ -151,22 +155,26 @@ namespace RD.DB
                         dc.DataType = Type.GetType("System.String");
                         break;
                     case 4: //Supid
-                        dc.ColumnName = "材料供应商"; 
+                        dc.ColumnName = "材料供应商id"; 
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    case 5://Unit
+                    case 5://SupName
+                        dc.ColumnName = "材料供应商名称";
+                        dc.DataType=Type.GetType("System.String");
+                        break;
+                    case 6://Unit
                         dc.ColumnName = "单位"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 6: //Price
+                    case 7: //Price
                         dc.ColumnName = "单价"; 
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
-                    case 7: //InputUser
+                    case 8: //InputUser
                         dc.ColumnName = "录入人"; 
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 8://InputDt
+                    case 9://InputDt
                         dc.ColumnName = "录入日期"; 
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
@@ -236,7 +244,5 @@ namespace RD.DB
             }
             return dt;
         }
-
-
     }
 }

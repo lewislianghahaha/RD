@@ -18,7 +18,7 @@ namespace RD.Logic.Basic
         /// <returns></returns>
         public DataTable GetData(string functionName, string functionType,string parentId)
         {
-            var dt = new DataTable();
+            DataTable dt;
 
             try
             {
@@ -42,7 +42,7 @@ namespace RD.Logic.Basic
         /// <returns></returns>
         public DataTable GetBdSearchData(string functionName, string searchName, string searchValue,DataTable dtdtl,int pid)
         {
-            var dt = new DataTable();
+            DataTable dt;
 
             try
             {
@@ -61,7 +61,7 @@ namespace RD.Logic.Basic
         /// <returns></returns>
         public DataTable GetColDropDownList(string functionName)
         {
-            var dt = new DataTable();
+            DataTable dt;
 
             try
             {
@@ -74,7 +74,45 @@ namespace RD.Logic.Basic
             return dt;
         }
 
+        /// <summary>
+        /// 基础信息库-弹出明细窗体使用(初始化时使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetInitializeDtl(string factionName)
+        {
+            DataTable dt;
 
+            try
+            {
+                dt = serDt.SearchInitializeDtl(factionName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
 
+        /// <summary>
+        /// 基础信息库-弹出明细窗体使用(查询值时使用)
+        /// </summary>
+        /// <param name="funcationName"></param>
+        /// <param name="searchName"></param>
+        /// <param name="searchValue"></param>
+        /// <param name="resultdt"></param>
+        /// <returns></returns>
+        public DataTable GetSearchDt(string funcationName, string searchName, string searchValue, DataTable resultdt)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.SearchShowDtl(funcationName, searchName, searchValue, resultdt);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
     }
 }
