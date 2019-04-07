@@ -15,6 +15,13 @@ namespace RD.UI.Order
         public AdornOrderFrm()
         {
             InitializeComponent();
+            OnRegisterEvents();
         }
+
+        private void OnRegisterEvents()
+        {
+            
+        }
+
     }
 }
