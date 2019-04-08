@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using RD.Logic;
 using RD.UI.Account;
 using RD.UI.Basic;
+using RD.UI.Order;
 
 namespace RD.UI
 {
@@ -139,7 +140,16 @@ namespace RD.UI
         /// <param name="e"></param>
         private void Tmadorn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var adorn=new AdornOrderFrm();
+                adorn.StartPosition=FormStartPosition.CenterParent;
+                adorn.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -149,7 +159,16 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmMaterial_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var material=new MaterialOrderFrm();
+                material.StartPosition=FormStartPosition.CenterParent;
+                material.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>

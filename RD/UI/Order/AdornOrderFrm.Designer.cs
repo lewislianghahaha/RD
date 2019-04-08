@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmConfirm = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,27 +38,41 @@
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtHoseName = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtAdd = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comType = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.btnCreate = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.btnDel = new System.Windows.Forms.Button();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.btnChange = new System.Windows.Forms.Button();
+            this.tvview = new System.Windows.Forms.TreeView();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comHtype = new System.Windows.Forms.ComboBox();
+            this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.txtCustomer = new System.Windows.Forms.TextBox();
+            this.cmCustomer = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmCustomer = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.cmCustomer.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -70,20 +85,21 @@
             this.tmExport});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1492, 32);
+            this.MainMenu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.MainMenu.Size = new System.Drawing.Size(995, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "menuStrip1";
             // 
             // tmSave
             // 
             this.tmSave.Name = "tmSave";
-            this.tmSave.Size = new System.Drawing.Size(58, 28);
+            this.tmSave.Size = new System.Drawing.Size(44, 22);
             this.tmSave.Text = "保存";
             // 
             // tmConfirm
             // 
             this.tmConfirm.Name = "tmConfirm";
-            this.tmConfirm.Size = new System.Drawing.Size(58, 28);
+            this.tmConfirm.Size = new System.Drawing.Size(44, 22);
             this.tmConfirm.Text = "审核";
             // 
             // tmExport
@@ -93,168 +109,265 @@
             this.toolStripSeparator1,
             this.tmPrint});
             this.tmExport.Name = "tmExport";
-            this.tmExport.Size = new System.Drawing.Size(58, 28);
+            this.tmExport.Size = new System.Drawing.Size(44, 22);
             this.tmExport.Text = "导出";
             // 
             // tmExcel
             // 
             this.tmExcel.Name = "tmExcel";
-            this.tmExcel.Size = new System.Drawing.Size(210, 30);
+            this.tmExcel.Size = new System.Drawing.Size(152, 22);
             this.tmExcel.Text = "Excel";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(207, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(210, 30);
+            this.tmPrint.Size = new System.Drawing.Size(152, 22);
             this.tmPrint.Text = "打印";
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.comboBox1);
+            this.panel1.Controls.Add(this.txtCustomer);
+            this.panel1.Controls.Add(this.txtAdd);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.txtHoseName);
+            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 32);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1492, 40);
+            this.panel1.Size = new System.Drawing.Size(995, 27);
             this.panel1.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 11);
+            this.label1.Location = new System.Drawing.Point(4, 8);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 18);
+            this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "客户名称:";
             // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(113, 7);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(165, 26);
-            this.comboBox1.TabIndex = 1;
-            // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.panel4);
-            this.panel2.Controls.Add(this.panel3);
+            this.panel2.Controls.Add(this.splitContainer1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 72);
+            this.panel2.Location = new System.Drawing.Point(0, 51);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1492, 867);
+            this.panel2.Size = new System.Drawing.Size(995, 575);
             this.panel2.TabIndex = 2;
             // 
-            // panel3
+            // splitContainer1
             // 
-            this.panel3.Controls.Add(this.panel6);
-            this.panel3.Controls.Add(this.treeView1);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(200, 867);
-            this.panel3.TabIndex = 0;
+            this.splitContainer1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
             // 
-            // panel4
+            // splitContainer1.Panel1
             // 
-            this.panel4.Controls.Add(this.dataGridView1);
-            this.panel4.Controls.Add(this.panel5);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(200, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1292, 867);
-            this.panel4.TabIndex = 1;
+            this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.Controls.Add(this.tvview);
+            this.splitContainer1.Panel1.Controls.Add(this.panel3);
             // 
-            // panel5
+            // splitContainer1.Panel2
             // 
-            this.panel5.Controls.Add(this.comType);
-            this.panel5.Controls.Add(this.label2);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1292, 42);
-            this.panel5.TabIndex = 0;
-            // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(0, 42);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(200, 822);
-            this.treeView1.TabIndex = 0;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.panel7);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel6.Location = new System.Drawing.Point(0, 0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(200, 42);
-            this.panel6.TabIndex = 1;
+            this.splitContainer1.Panel2.Controls.Add(this.gvdtl);
+            this.splitContainer1.Panel2.Controls.Add(this.panel7);
+            this.splitContainer1.Size = new System.Drawing.Size(995, 575);
+            this.splitContainer1.SplitterDistance = 215;
+            this.splitContainer1.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 12);
+            this.label2.Location = new System.Drawing.Point(199, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 18);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "装修工程类别:";
+            this.label2.Size = new System.Drawing.Size(83, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "房屋类型名称:";
             // 
-            // comType
+            // txtHoseName
             // 
-            this.comType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comType.FormattingEnabled = true;
-            this.comType.Location = new System.Drawing.Point(157, 7);
-            this.comType.Name = "comType";
-            this.comType.Size = new System.Drawing.Size(188, 26);
-            this.comType.TabIndex = 1;
+            this.txtHoseName.Enabled = false;
+            this.txtHoseName.Location = new System.Drawing.Point(281, 3);
+            this.txtHoseName.Name = "txtHoseName";
+            this.txtHoseName.Size = new System.Drawing.Size(127, 21);
+            this.txtHoseName.TabIndex = 3;
             // 
-            // dataGridView1
+            // label3
             // 
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 42);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 30;
-            this.dataGridView1.Size = new System.Drawing.Size(1292, 825);
-            this.dataGridView1.TabIndex = 1;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(414, 8);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "装修地址:";
             // 
-            // panel7
+            // txtAdd
             // 
-            this.panel7.Controls.Add(this.btnCreate);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(72, 42);
-            this.panel7.TabIndex = 0;
+            this.txtAdd.Enabled = false;
+            this.txtAdd.Location = new System.Drawing.Point(472, 3);
+            this.txtAdd.Name = "txtAdd";
+            this.txtAdd.Size = new System.Drawing.Size(519, 21);
+            this.txtAdd.TabIndex = 5;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.panel6);
+            this.panel3.Controls.Add(this.panel5);
+            this.panel3.Controls.Add(this.panel4);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(211, 26);
+            this.panel3.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.btnCreate);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(73, 26);
+            this.panel4.TabIndex = 0;
             // 
             // btnCreate
             // 
             this.btnCreate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCreate.Location = new System.Drawing.Point(0, 0);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(72, 42);
+            this.btnCreate.Size = new System.Drawing.Size(73, 26);
             this.btnCreate.TabIndex = 0;
-            this.btnCreate.Text = "新建";
+            this.btnCreate.Text = "新建类别";
             this.btnCreate.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.btnDel);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel5.Location = new System.Drawing.Point(136, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(75, 26);
+            this.panel5.TabIndex = 1;
+            // 
+            // btnDel
+            // 
+            this.btnDel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDel.Location = new System.Drawing.Point(0, 0);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(75, 26);
+            this.btnDel.TabIndex = 0;
+            this.btnDel.Text = "删除类别";
+            this.btnDel.UseVisualStyleBackColor = true;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.btnChange);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(73, 0);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(63, 26);
+            this.panel6.TabIndex = 2;
+            // 
+            // btnChange
+            // 
+            this.btnChange.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnChange.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnChange.Location = new System.Drawing.Point(0, 0);
+            this.btnChange.Name = "btnChange";
+            this.btnChange.Size = new System.Drawing.Size(63, 26);
+            this.btnChange.TabIndex = 0;
+            this.btnChange.Text = "修改类别";
+            this.btnChange.UseVisualStyleBackColor = true;
+            // 
+            // tvview
+            // 
+            this.tvview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvview.Location = new System.Drawing.Point(0, 26);
+            this.tvview.Name = "tvview";
+            this.tvview.Size = new System.Drawing.Size(211, 545);
+            this.tvview.TabIndex = 1;
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.comHtype);
+            this.panel7.Controls.Add(this.label4);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel7.Location = new System.Drawing.Point(0, 0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(772, 26);
+            this.panel7.TabIndex = 0;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 8);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "装修工程类别:";
+            // 
+            // comHtype
+            // 
+            this.comHtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comHtype.FormattingEnabled = true;
+            this.comHtype.Location = new System.Drawing.Point(97, 3);
+            this.comHtype.Name = "comHtype";
+            this.comHtype.Size = new System.Drawing.Size(121, 20);
+            this.comHtype.TabIndex = 1;
+            // 
+            // gvdtl
+            // 
+            this.gvdtl.AllowUserToDeleteRows = false;
+            this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvdtl.Location = new System.Drawing.Point(0, 26);
+            this.gvdtl.Name = "gvdtl";
+            this.gvdtl.RowTemplate.Height = 23;
+            this.gvdtl.Size = new System.Drawing.Size(772, 545);
+            this.gvdtl.TabIndex = 1;
+            // 
+            // txtCustomer
+            // 
+            this.txtCustomer.ContextMenuStrip = this.cmCustomer;
+            this.txtCustomer.Location = new System.Drawing.Point(61, 3);
+            this.txtCustomer.Name = "txtCustomer";
+            this.txtCustomer.Size = new System.Drawing.Size(132, 21);
+            this.txtCustomer.TabIndex = 6;
+            // 
+            // cmCustomer
+            // 
+            this.cmCustomer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmCustomer});
+            this.cmCustomer.Name = "cmCustomer";
+            this.cmCustomer.Size = new System.Drawing.Size(125, 26);
+            // 
+            // tmCustomer
+            // 
+            this.tmCustomer.Name = "tmCustomer";
+            this.tmCustomer.Size = new System.Drawing.Size(124, 22);
+            this.tmCustomer.Text = "客户资料";
             // 
             // AdornOrderFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1492, 939);
+            this.ClientSize = new System.Drawing.Size(995, 626);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "AdornOrderFrm";
             this.Text = "室内装修工程单";
             this.MainMenu.ResumeLayout(false);
@@ -262,13 +375,18 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.cmCustomer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,18 +402,27 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tmPrint;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.ComboBox comType;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TextBox txtHoseName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.TextBox txtAdd;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button btnCreate;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Button btnChange;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button btnDel;
+        private System.Windows.Forms.TreeView tvview;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.ComboBox comHtype;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridView gvdtl;
+        private System.Windows.Forms.TextBox txtCustomer;
+        private System.Windows.Forms.ContextMenuStrip cmCustomer;
+        private System.Windows.Forms.ToolStripMenuItem tmCustomer;
     }
 }
