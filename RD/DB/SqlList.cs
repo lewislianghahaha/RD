@@ -382,6 +382,18 @@
         }
 
 
+        public string PRO_AdornSQLList(string sqlid)
+        {
+            //记录SQL报表中转ID
+            switch (sqlid)
+            {
+                //表头（全部）
+                case "1":
+                    _result = @"";
+                    break;
+            }
+            return _result;
+        }
 
     }
 }

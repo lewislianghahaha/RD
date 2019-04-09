@@ -7,7 +7,7 @@ namespace RD.DB
     public class DtList
     {
         /// <summary>
-        /// 获取"客户信息管理"临时表
+        /// 获取"客户信息管理"表体临时表
         /// </summary>
         /// <returns></returns>
         public DataTable Get_CustEmptydt()
@@ -71,7 +71,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"供应商信息管理"临时表
+        /// 获取"供应商信息管理"表体临时表
         /// </summary>
         /// <returns></returns>
         public DataTable Get_SupplierEmptydt()
@@ -126,7 +126,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"材料信息管理"临时表
+        /// 获取"材料信息管理"表体临时表
         /// </summary>
         /// <returns></returns>
         public DataTable Get_MaterialEmptydt()
@@ -185,7 +185,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"房屋类型及装修工程类别信息管理"临时表
+        /// 获取"房屋类型及装修工程类别信息管理"表体临时表
         /// </summary>
         /// <returns></returns>
         public DataTable Get_HouseEmptydt()
@@ -245,6 +245,143 @@ namespace RD.DB
             return dt;
         }
 
+        /// <summary>
+        /// 获取"室内装修工程"表体临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_AdornEmptydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 11; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //主键ID
+                    case 1:
+                        dc.ColumnName = "adornid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //HTypeid
+                    case 2:
+                        dc.ColumnName = "工程类别ID";
+                        dc.DataType=Type.GetType("System.Int32");
+                        break;
+                    //MaterialId
+                    case 3:
+                        dc.ColumnName = "材料ID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //quantities
+                    case 4:
+                        dc.ColumnName = "工程量";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //Temp_Price
+                    case 5:
+                        dc.ColumnName = "临时材料单价";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Ren_Cost
+                    case 6:
+                        dc.ColumnName = "人工费用";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Fu_Cost
+                    case 7:
+                        dc.ColumnName = "辅材费用";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //FRemark
+                    case 8:
+                        dc.ColumnName = "备注";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //InputUser
+                    case 9:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 10:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取"主材"表体临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_PROMaterialEmtrydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 9; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //主键ID
+                    case 1:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //MaterialId
+                    case 2:
+                        dc.ColumnName = "材料ID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //quantities
+                    case 3:
+                        dc.ColumnName = "工程量";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //Ren_Cost
+                    case 4:
+                        dc.ColumnName = "人工费用";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Fu_Cost
+                    case 5:
+                        dc.ColumnName = "辅材费用";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //FRemark
+                    case 6:
+                        dc.ColumnName = "备注";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 7:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 8:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
 
     }
 }

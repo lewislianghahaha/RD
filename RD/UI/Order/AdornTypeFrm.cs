@@ -7,13 +7,17 @@ namespace RD.UI.Order
     {
 
 
-        private string _resultName;   //返回结果信息名称
+        private bool _resultMark;     //返回结果信息
+
+        #region Set
+
+        #endregion
 
         #region Get
         /// <summary>
-        /// 返回结果名称
+        /// 返回结果标记
         /// </summary>
-        public string ResultName => _resultName;
+        public bool ResultMark => _resultMark;
         #endregion
 
         public AdornTypeFrm()
@@ -38,7 +42,7 @@ namespace RD.UI.Order
             try
             {
                 if(txtValue.Text=="")throw new Exception("节点名称不能为空,请填上后再按保存");
-                _resultName = txtValue.Text;
+                
                 this.Close();
             }
             catch (Exception ex)

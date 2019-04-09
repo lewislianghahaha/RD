@@ -174,7 +174,6 @@ namespace RD.Logic
         /// <param name="pid">获取父级节点ID(新增或更新树形节点时使用)</param>
         /// <param name="treeName">获取同级节点时使用(新增或更新树形节点时使用)</param>
         /// <param name="accountName">获取帐号名称</param>
-        /// <param name="funid">明细窗体功能ID</param>
         private void BasicInfo(string functionId,string functionName,string functionType,string parentId,
                                string searchName, string searchValue,DataTable dt,int pid,string treeName,string accountName)
         {
@@ -231,9 +230,16 @@ namespace RD.Logic
         {
             switch (functionId)
             {
-                //查询
+                //查询(作用:下拉列表使用)
                 case "1":
                     _resultTable = orderSearch.GetHouseTypeDtl();
+                    break;
+                //查询(作用:1)初始化树菜单内容 2)初始化GridView内容 )
+                case "1.1":
+
+                    break;
+                //查询(作用:)
+                case "1.2":
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":

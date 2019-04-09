@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
@@ -10,6 +11,11 @@ namespace RD.UI.Order
         TaskLogic task = new TaskLogic();
         Load load=new Load();
         AdornTypeFrm adornType=new AdornTypeFrm();
+
+        //保存初始化的表头内容
+        public DataTable _dt = new DataTable();
+        //保存初始化的表体内容
+        public DataTable _dtldt = new DataTable();
 
         public AdornOrderFrm()
         {
@@ -38,6 +44,9 @@ namespace RD.UI.Order
         private void OnInitialize()
         {
             txtCustomer.ReadOnly = true;
+
+            task.TaskId = 2;
+
 
         }
 
@@ -74,6 +83,7 @@ namespace RD.UI.Order
         {
             try
             {
+                if((int)tvview.SelectedNode.Parent.Tag!=1) throw new Exception("请在ALL节点下新建新类别");
 
                 adornType.StartPosition = FormStartPosition.CenterScreen;
                 adornType.ShowDialog();
@@ -114,6 +124,8 @@ namespace RD.UI.Order
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
                 if ((int)tvview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
+
+
 
             }
             catch (Exception ex)
