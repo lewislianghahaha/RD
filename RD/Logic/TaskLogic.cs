@@ -1,16 +1,22 @@
 ﻿using System.Data;
-using System.Reflection;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
+using RD.Logic.Order;
 
 namespace RD.Logic
 {
     public class TaskLogic
     {
+        //基础信息库使用
         ChangeData change=new ChangeData();
         Search search=new Search();
         Import import=new Import();
         Del del=new Del();
+
+        //室内装修工程 及 主材单使用
+        OrderSearch orderSearch=new OrderSearch();
+        OrderImport orderImport=new OrderImport();
+        OrderDel odrderDel=new OrderDel();
 
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
@@ -120,17 +126,17 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-
+                    PrdAdornInfo(_functionId);
                     break;
                 //主材单
                 case 3:
-
+                    PrdMaterialInfo(_functionId);
                     break;
-                //导出EXCEL
+                //导出EXCEL(Main窗体使用)
                 case 4:
 
                     break;
-                //打印
+                //打印(Main窗体使用)
                 case 5:
 
                     break;
@@ -174,10 +180,6 @@ namespace RD.Logic
         {
             switch (functionId)
             {
-                //创建
-                case "0":
-
-                    break;
                 //查询 作用:1)初始化树形列表表头内容 2)初始化GridView表体内容 3)点击某节点读取表体内容(当查询框没有值时)
                 case "1":
                     _resultTable = search.GetData(functionName,functionType,parentId);
@@ -221,7 +223,52 @@ namespace RD.Logic
             }
         }
 
+        /// <summary>
+        /// 室内装修工程单
+        /// </summary>
+        /// <param name="functionId">功能ID</param>
+        private void PrdAdornInfo(string functionId)
+        {
+            switch (functionId)
+            {
+                //查询
+                case "1":
+                    _resultTable = orderSearch.GetHouseTypeDtl();
+                    break;
+                //保存(作用:对树形菜单进行导入 新增分组时使用)
+                case "2":
 
+                    break;
+                //保存(作用:对表体GridView进行导入)
+                case "2.1":
+
+                    break;
+                //更新树形菜单(作用:编辑分组时使用)
+                case "2.2":
+
+                    break;
+                //删除节点及对应的信息
+                case "3":
+
+                    break;
+                //审核
+                case "4":
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 主材单
+        /// </summary>
+        /// <param name="functionId"></param>
+        private void PrdMaterialInfo(string functionId)
+        {
+            switch (functionId)
+            {
+                
+            }
+        }
 
     }
 }

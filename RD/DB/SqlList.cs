@@ -366,5 +366,22 @@
                         ";
             return _result;
         }
+
+        /// <summary>
+        /// 室内装修工程单-下拉列表使用
+        /// </summary>
+        /// <returns></returns>
+        public string PRO_Adorn_SearchDropDownList()
+        {
+            var result = @"
+                                  SELECT a.HTypeid,a.HtypeName
+                                  FROM dbo.T_BD_HTypeEntry a
+                                  inner join dbo.T_BD_HType b on a.id=b.id
+                                  where b.HType='装修工程'";
+            return result;
+        }
+
+
+
     }
 }

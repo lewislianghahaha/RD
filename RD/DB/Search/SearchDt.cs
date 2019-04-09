@@ -10,6 +10,8 @@ namespace RD.DB.Search
         SqlList sqlList=new SqlList();
         DtList dlDtList=new DtList();
 
+        #region 基础信息库
+
         /// <summary>
         /// 基础信息库各模块查询使用
         /// </summary>
@@ -17,13 +19,13 @@ namespace RD.DB.Search
         /// <param name="functionType">表格类型(注:读取时使用) T:表头 G:表体</param>
         /// <param name="parentId">主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容</param>
         /// <returns></returns>
-        public DataTable GetBdTableDt(string functionName, string functionType,string parentId)
+        public DataTable GetBdTableDt(string functionName, string functionType, string parentId)
         {
-            var dt=new DataTable();
+            var dt = new DataTable();
 
             try
             {
-                dt = GetRecord(functionName, functionType,parentId);
+                dt = GetRecord(functionName, functionType, parentId);
             }
             catch (Exception ex)
             {
@@ -44,13 +46,13 @@ namespace RD.DB.Search
         /// <param name="dtdtl"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue,DataTable dtdtl,int pid)
+        public DataTable GetBdSearchValueRecord(string functionName, string searchName, string searchValue, DataTable dtdtl, int pid)
         {
             var dt = new DataTable();
 
             try
             {
-                dt = GetSearchValueRecord(functionName,searchName,searchValue,dtdtl,pid);
+                dt = GetSearchValueRecord(functionName, searchName, searchValue, dtdtl, pid);
             }
             catch (Exception ex)
             {
@@ -68,10 +70,10 @@ namespace RD.DB.Search
         /// <param name="functionType">表格类型(注:读取时使用) T:表头 G:表体</param>
         /// <param name="parentId">主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容</param>
         /// <returns></returns>
-        private DataTable GetRecord(string functionName,string functionType,string parentId)
+        private DataTable GetRecord(string functionName, string functionType, string parentId)
         {
             var dt = new DataTable();
-            var resultdt=new DataTable();
+            var resultdt = new DataTable();
             var sqlscript = string.Empty;
 
             switch (functionName)
@@ -133,7 +135,7 @@ namespace RD.DB.Search
         /// <param name="dtdtl"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        private DataTable GetSearchValueRecord(string functionName,string searchName,string searchValue,DataTable dtdtl,int pid)
+        private DataTable GetSearchValueRecord(string functionName, string searchName, string searchValue, DataTable dtdtl, int pid)
         {
             var sqlscript = string.Empty;
             var tempdt = new DataTable();
@@ -147,7 +149,7 @@ namespace RD.DB.Search
             //当点击某一节点(不包括ALL节点)时使用
             else
             {
-                sqlscript = $"{searchName} like '" + '%' + searchValue + '%'+ "' and id = '" + pid + "'";
+                sqlscript = $"{searchName} like '" + '%' + searchValue + '%' + "' and id = '" + pid + "'";
             }
 
             switch (functionName)
@@ -157,7 +159,7 @@ namespace RD.DB.Search
                     //根据功能名称创建对应的空表
                     tempdt = GetTempdt(functionName);
                     //根据条件从DT内获取对应记录
-                    var custrows = dtdtl.Select(sqlscript); 
+                    var custrows = dtdtl.Select(sqlscript);
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
                     dt = custrows.Length == 0 ? tempdt : IntoTempdt(custrows, tempdt, tempdt.Columns.Count);
                     break;
@@ -199,7 +201,7 @@ namespace RD.DB.Search
         /// <param name="tempdt">空白表</param>
         /// <param name="tempdtColNum">空白表列数</param>
         /// <returns></returns>
-        private DataTable IntoTempdt(DataRow[] rows,DataTable tempdt,int tempdtColNum)
+        private DataTable IntoTempdt(DataRow[] rows, DataTable tempdt, int tempdtColNum)
         {
             foreach (var i in rows)
             {
@@ -262,8 +264,8 @@ namespace RD.DB.Search
         public DataTable SearchColList(string functionName)
         {
             var ds = new DataSet();
-            var sqlscript=sqlList.BD_FunList(functionName);
-            var sqlDataAdapter=new SqlDataAdapter(sqlscript,GetConn());
+            var sqlscript = sqlList.BD_FunList(functionName);
+            var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
             sqlDataAdapter.Fill(ds);
             return ds.Tables[0];
         }
@@ -282,7 +284,7 @@ namespace RD.DB.Search
             switch (functionName)
             {
                 case "Customer":
-                    sqlscript=sqlList.BD_SQLList("1", null, null, null);
+                    sqlscript = sqlList.BD_SQLList("1", null, null, null);
                     break;
                 case "Supplier":
                     sqlscript = sqlList.BD_SQLList("4", null, null, null);
@@ -304,7 +306,7 @@ namespace RD.DB.Search
         /// 基础信息库-弹出明细窗体使用(查询值时使用)
         /// </summary>
         /// <returns></returns>
-        public DataTable SearchShowDtl(string functionName, string searchName, string searchValue,DataTable searchdt)
+        public DataTable SearchShowDtl(string functionName, string searchName, string searchValue, DataTable searchdt)
         {
             var dt = new DataTable();
 
@@ -321,5 +323,25 @@ namespace RD.DB.Search
             return dt;
         }
 
+        #endregion
+
+        #region 室内装修工程
+
+        /// <summary>
+        /// 室内装修工程(装修工程类别下拉列表使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchHouseType()
+        {
+            var ds = new DataSet();
+            var sqlscript = sqlList.PRO_Adorn_SearchDropDownList();
+            var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
+            sqlDataAdapter.Fill(ds);
+            return ds.Tables[0];
+        }
+
+
+
+        #endregion
     }
 }
