@@ -17,6 +17,19 @@ namespace RD.UI.Order
         //保存初始化的表体内容
         public DataTable _dtldt = new DataTable();
 
+        private string _funState;  //功能状态标记(作用:记录打开此功能窗体时是读取记录 还是 创建记录) C:创建 R:读取
+
+        #region Set
+
+            /// <summary>
+            /// 获取功能状态标记ID
+            /// </summary>
+            public string FunState { set { _funState = value; } }
+
+        #endregion
+
+
+
         public AdornOrderFrm()
         {
             InitializeComponent();
@@ -39,18 +52,62 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 初始化
+        /// 初始化(注:根据功能状态标记来控制)
         /// </summary>
         private void OnInitialize()
         {
             txtCustomer.ReadOnly = true;
-
             task.TaskId = 2;
 
+            //功能状态:创建 C
+            if (_funState == "C")
+            {
+
+                task.StartTask();
+
+                //获取表头信息
+                _dt = task.ResultTable;
+                //获取表体信息
+                _dtldt = OnInitializeDtl();
+                //导出记录至树形菜单内
+
+                //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
+                
+                //设置GridView是否显示某些列
+
+                //预留(权限部份)
+
+                //展开根节点
+                tvview.ExpandAll();
+            }
+            //功能状态:读取 R
+            else
+            {
+                
+            }
 
         }
 
+        /// <summary>
+        /// 初始化获取表体信息
+        /// </summary>
+        /// <returns></returns>
+        private DataTable OnInitializeDtl()
+        {
+            var dt = new DataTable();
 
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return dt;
+        }
 
         /// <summary>
         /// 装修类别下拉列表

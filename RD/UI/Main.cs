@@ -143,6 +143,8 @@ namespace RD.UI
             try
             {
                 var adorn=new AdornOrderFrm();
+                adorn.FunState = "C";  //创建状态
+
                 adorn.StartPosition=FormStartPosition.CenterParent;
                 adorn.ShowDialog();
             }
@@ -162,6 +164,8 @@ namespace RD.UI
             try
             {
                 var material=new MaterialOrderFrm();
+                 //创建状态
+
                 material.StartPosition=FormStartPosition.CenterParent;
                 material.ShowDialog();
             }

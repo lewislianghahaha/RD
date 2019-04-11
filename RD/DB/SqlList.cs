@@ -389,7 +389,7 @@
             {
                 //表头（全部）
                 case "1":
-                    _result = @"";
+                    _result = @"SELECT a.Id,a.ParentId,a.TypeName FROM dbo.T_PRO_adorn a";
                     break;
             }
             return _result;

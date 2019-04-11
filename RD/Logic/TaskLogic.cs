@@ -126,7 +126,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    PrdAdornInfo(_functionId);
+                    PrdAdornInfo(_functionId,_functionType);
                     break;
                 //主材单
                 case 3:
@@ -226,7 +226,8 @@ namespace RD.Logic
         /// 室内装修工程单
         /// </summary>
         /// <param name="functionId">功能ID</param>
-        private void PrdAdornInfo(string functionId)
+        /// <param name="functionType"></param>
+        private void PrdAdornInfo(string functionId,string functionType)
         {
             switch (functionId)
             {
