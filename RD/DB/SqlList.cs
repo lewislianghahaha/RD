@@ -368,7 +368,7 @@
         }
 
         /// <summary>
-        /// 室内装修工程单-下拉列表使用
+        /// 室内装修工程单-装修工程下拉列表使用
         /// </summary>
         /// <returns></returns>
         public string PRO_Adorn_SearchDropDownList()
@@ -381,15 +381,24 @@
             return result;
         }
 
-
-        public string PRO_AdornSQLList(string sqlid)
+        /// <summary>
+        /// 单据类型-表头（树型菜单使用） 注:包括室内装修工程 主材单据
+        /// </summary>
+        /// <param name="sqlid">SQL分类ID</param>
+        /// <param name="proid">室内装修工程主键</param>
+        /// <returns></returns>
+        public string PRO_TreeViewSQLList(string sqlid,int proid)
         {
             //记录SQL报表中转ID
             switch (sqlid)
             {
-                //表头（全部）
+                //室内装修工程-树型菜单使用(读取室内装修工程单表头信息)
                 case "1":
-                    _result = @"SELECT a.Id,a.ParentId,a.TypeName FROM dbo.T_PRO_adorn a";
+                    _result = $@"SELECT a.Id,a.ParentId,a.TypeName FROM dbo.T_PRO_adorn a where Id={proid}";
+                    break;
+                //主材单-树型菜单使用(读取材料信息管理中的大类,如:砖材)
+                case "2":
+                    _result = $@"";
                     break;
             }
             return _result;

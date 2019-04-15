@@ -340,7 +340,7 @@ namespace RD.DB.Search
             return ds.Tables[0];
         }
 
-
+        
 
         #endregion
     }
