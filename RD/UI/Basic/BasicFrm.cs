@@ -68,14 +68,7 @@ namespace RD.UI.Basic
             //展开根节点
             tview.ExpandAll();
             //设置，若功能不是 房屋类型及装修工程类别信息管理明细,那就将右键菜单功能隐藏
-            if (GlobalClasscs.Basic.BasicId != 4)
-            {
-                tmShowdtl.Visible = false;
-            }
-            else
-            {
-                tmShowdtl.Visible = true;
-            }
+            tmShowdtl.Visible = GlobalClasscs.Basic.BasicId == 4;
         }
 
         /// <summary>
