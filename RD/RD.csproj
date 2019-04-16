@@ -105,6 +105,12 @@
     <Compile Include="UI\Basic\BasicFrm.Designer.cs">
       <DependentUpon>BasicFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Basic\HtypeProjectFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Basic\HtypeProjectFrm.Designer.cs">
+      <DependentUpon>HtypeProjectFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Basic\ShowDtlListFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Basic\BasicFrm.resx">
       <DependentUpon>BasicFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Basic\HtypeProjectFrm.resx">
+      <DependentUpon>HtypeProjectFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Basic\ShowDtlListFrm.resx">
       <DependentUpon>ShowDtlListFrm.cs</DependentUpon>

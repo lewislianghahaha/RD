@@ -16,6 +16,8 @@ namespace RD.UI.Order
         public DataTable _dt = new DataTable();
         //保存初始化的表体内容
         public DataTable _dtldt = new DataTable();
+        //保存单据名称
+        public string OrderNo = string.Empty;
 
         private string _funState;  //功能状态标记(作用:记录打开此功能窗体时是读取记录 还是 创建记录) C:创建 R:读取
 
@@ -62,29 +64,30 @@ namespace RD.UI.Order
             //功能状态:创建 C
             if (_funState == "C")
             {
+                //设置表头信息(只需显示ALL字段)
 
-                task.StartTask();
-
-                //获取表头信息
-                _dt = task.ResultTable;
-                //获取表体信息
-                _dtldt = OnInitializeDtl();
+                //获取表体信息(获取空白表)
+               // _dtldt = OnInitializeDtl();
                 //导出记录至树形菜单内
-
+                
                 //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
                 
-                //设置GridView是否显示某些列
-
-                //预留(权限部份)
-
-                //展开根节点
-                tvview.ExpandAll();
             }
             //功能状态:读取 R
             else
             {
-                
+
+                task.StartTask();
+                //获取表头信息
+                _dt = task.ResultTable;
+                //获取表体信息
+
             }
+            //设置GridView是否显示某些列
+
+            //展开根节点
+            tvview.ExpandAll();
+            //预留(权限部份)
 
         }
 
@@ -92,7 +95,7 @@ namespace RD.UI.Order
         /// 初始化获取表体信息
         /// </summary>
         /// <returns></returns>
-        private DataTable OnInitializeDtl()
+        private DataTable OnInitializeDtl(string funState)
         {
             var dt = new DataTable();
 
@@ -108,6 +111,9 @@ namespace RD.UI.Order
             }
             return dt;
         }
+
+
+
 
         /// <summary>
         /// 装修类别下拉列表

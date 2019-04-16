@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -47,6 +48,8 @@
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmReset = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShowPrjoectDtl = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmShowdtl = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -58,6 +61,7 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.Menu.SuspendLayout();
+            this.ShowPrjoectDtl.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -211,6 +215,7 @@
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gvdtl.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.ContextMenuStrip = this.ShowPrjoectDtl;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -251,6 +256,19 @@
             this.tmReset.Size = new System.Drawing.Size(44, 21);
             this.tmReset.Text = "刷新";
             // 
+            // ShowPrjoectDtl
+            // 
+            this.ShowPrjoectDtl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmShowdtl});
+            this.ShowPrjoectDtl.Name = "ShowPrjoectDtl";
+            this.ShowPrjoectDtl.Size = new System.Drawing.Size(149, 26);
+            // 
+            // tmShowdtl
+            // 
+            this.tmShowdtl.Name = "tmShowdtl";
+            this.tmShowdtl.Size = new System.Drawing.Size(148, 22);
+            this.tmShowdtl.Text = "项目名称明细";
+            // 
             // BasicFrm
             // 
             this.AcceptButton = this.btnSearch;
@@ -276,6 +294,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
+            this.ShowPrjoectDtl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -300,5 +319,7 @@
         private System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmSave;
         private System.Windows.Forms.ToolStripMenuItem tmReset;
+        private System.Windows.Forms.ContextMenuStrip ShowPrjoectDtl;
+        private System.Windows.Forms.ToolStripMenuItem tmShowdtl;
     }
 }

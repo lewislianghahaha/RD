@@ -12,6 +12,7 @@ namespace RD.UI.Basic
         Load load=new Load();
         AddEditor add=new AddEditor();
         ShowDtlListFrm showDtl=new ShowDtlListFrm();
+        HtypeProjectFrm htype=new HtypeProjectFrm();
 
         //保存初始化的表头内容
        public DataTable _dt=new DataTable();
@@ -36,6 +37,7 @@ namespace RD.UI.Basic
             tmReset.Click += TmReset_Click;
             comList.Click += ComList_Click;
             gvdtl.CellDoubleClick += Gvdtl_CellDoubleClick;
+            tmShowdtl.Click += TmShowdtl_Click;
         }
 
         //初始化树形列表及GridView控件
@@ -62,10 +64,18 @@ namespace RD.UI.Basic
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //预留(权限部份)
-
-
+            
             //展开根节点
             tview.ExpandAll();
+            //设置，若功能不是 房屋类型及装修工程类别信息管理明细,那就将右键菜单功能隐藏
+            if (GlobalClasscs.Basic.BasicId != 4)
+            {
+                tmShowdtl.Visible = false;
+            }
+            else
+            {
+                tmShowdtl.Visible = true;
+            }
         }
 
         /// <summary>
@@ -615,7 +625,34 @@ namespace RD.UI.Basic
                     gvdtl.Columns[5].ReadOnly = true;
                     break;
             }
+        }
 
+        /// <summary>
+        /// 显示项目明细名称(装修工程信息管理使用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmShowdtl_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //当检测到功能ID为 "房屋类型及装修工程类别信息管理" 时才执行下一步
+                //if (GlobalClasscs.Basic.BasicId != 4) return;
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选取某一行,然后再按此按钮");
+
+                //获取所选择的树型菜单Text信息
+                htype.TypeName = tview.SelectedNode.Text;
+                //根据所选择的GridView中的行获取其HTypeID值
+                htype.HTypeid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1]);
+
+                htype.OnInitialize();
+                htype.StartPosition = FormStartPosition.CenterScreen;
+                htype.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -211,6 +211,10 @@ namespace RD.Logic
                 case "2.2":
                     _resultMark = import.UpdateTreeRd(functionName,pid,treeName);
                     break;
+                //保存(作用:对 房屋类型及装修工程类别信息管理 对应的 项目名称明细 保存时使用)
+                case "2.3":
+                    _resultMark = true;
+                    break;
                 //删除节点及对应的信息
                 case "3":
                     _resultMark = del.DelBD_Record(functionName,pid,dt);
