@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -241,6 +242,10 @@ namespace RD.DB.Search
                 case "House":
                     resultDt = dlDtList.Get_HouseEmptydt();
                     break;
+                //房屋类型及装修工程类别信息管理-类别项目名称
+                case "HouseProject":
+                    resultDt = dlDtList.Get_HouseProjectEmptydt();
+                    break;
             }
             return resultDt;
         }
@@ -283,17 +288,25 @@ namespace RD.DB.Search
 
             switch (functionName)
             {
+                //客户信息管理
                 case "Customer":
                     sqlscript = sqlList.BD_SQLList("1", null, null, null);
                     break;
+                //供应商管理
                 case "Supplier":
                     sqlscript = sqlList.BD_SQLList("4", null, null, null);
                     break;
+                //材料信息管理
                 case "Material":
                     sqlscript = sqlList.BD_SQLList("7", null, null, null);
                     break;
+                //房屋类型及装修工程类别信息管理
                 case "House":
                     sqlscript = sqlList.BD_SQLList("10.1", null, null, null);
+                    break;
+                //房屋类型及装修工程类别信息管理-类别项目名称
+                case "HouseProject":
+                    sqlscript = sqlList.BD_SQLList("12", null, null, null);
                     break;
             }
             var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());

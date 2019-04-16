@@ -633,10 +633,10 @@ namespace RD.UI.Basic
                 //if (GlobalClasscs.Basic.BasicId != 4) return;
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选取某一行,然后再按此按钮");
 
-                //获取所选择的树型菜单Text信息
+                //获取所选择的树型菜单Text信息(装修工程类别名称)
                 htype.TypeName = tview.SelectedNode.Text;
                 //根据所选择的GridView中的行获取其HTypeID值
-                htype.HTypeid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1]);
+                htype.HTypeid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
 
                 htype.OnInitialize();
                 htype.StartPosition = FormStartPosition.CenterScreen;

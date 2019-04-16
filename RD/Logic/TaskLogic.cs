@@ -199,7 +199,7 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = search.GetSearchDt(functionName, searchName, searchValue, dt);
                     break;
-                //保存(作用:对表体GridView进行导入)
+                //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
                 case "2":
                     _resultMark = import.Save_BaseEntry(functionName,dt,pid,accountName);
                     break;
@@ -210,10 +210,6 @@ namespace RD.Logic
                 //更新树形菜单(作用:编辑分组时使用)
                 case "2.2":
                     _resultMark = import.UpdateTreeRd(functionName,pid,treeName);
-                    break;
-                //保存(作用:对 房屋类型及装修工程类别信息管理 对应的 项目名称明细 保存时使用)
-                case "2.3":
-                    _resultMark = true;
                     break;
                 //删除节点及对应的信息
                 case "3":

@@ -75,7 +75,7 @@ namespace RD.Logic.Basic
         }
 
         /// <summary>
-        /// 基础信息库-弹出明细窗体使用(初始化时使用)
+        /// 基础信息库-弹出明细窗体 及 类别项目名称窗体 使用(初始化时使用)
         /// </summary>
         /// <returns></returns>
         public DataTable GetInitializeDtl(string factionName)
@@ -94,7 +94,7 @@ namespace RD.Logic.Basic
         }
 
         /// <summary>
-        /// 基础信息库-弹出明细窗体使用(查询值时使用)
+        /// 基础信息库-弹出明细窗体 及 类别项目名称窗体 使用(查询值时使用)
         /// </summary>
         /// <param name="funcationName"></param>
         /// <param name="searchName"></param>

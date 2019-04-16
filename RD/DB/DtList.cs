@@ -224,6 +224,53 @@ namespace RD.DB
         }
 
         /// <summary>
+        /// 获取"房屋类型及装修工程类别信息管理"-项目名称表体临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_HouseProjectEmptydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    case 0:
+                        dc.ColumnName = "HTypeid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    case 1:
+                        dc.ColumnName = "Prjoectid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    case 2: //PrjoectName
+                        dc.ColumnName = "项目名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 3: //Unit
+                        dc.ColumnName = "单位";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 4://Price
+                        dc.ColumnName = "单价";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    case 5://InputUser
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 6://InputDt
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
         /// 创建删除临时表
         /// </summary>
         /// <returns></returns>

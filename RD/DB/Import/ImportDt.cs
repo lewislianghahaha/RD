@@ -89,7 +89,7 @@ namespace RD.DB.Import
         }
 
         /// <summary>
-        /// 对基础信息库表体进行保存操作
+        /// 对基础信息库表体进行保存操作(注:包括插入及更新操作)
         /// </summary>
         /// <param name="functionName">功能名称</param>
         /// <param name="dt">从GridView控件内获取的DT</param>
@@ -142,7 +142,7 @@ namespace RD.DB.Import
         /// <param name="row"></param>
         /// <param name="tempdt"></param>
         /// <param name="pid"></param>
-        /// <param name="accountName"></param>
+        /// <param name="accountName">帐号名称</param>
         /// <param name="rowState">行状态</param>
         /// <returns></returns>
         private DataTable GetTempRd(DataRow row, DataTable tempdt,int pid,string accountName,string rowState)
@@ -249,6 +249,9 @@ namespace RD.DB.Import
                 case "House":
                     result = "T_BD_HTypeEntry";
                     break;
+                case "HouseProject":
+                    result = "T_BD_HTypeProjectDtl";
+                    break;
             }
             return result;
         }
@@ -295,5 +298,8 @@ namespace RD.DB.Import
             }
             return da;
         }
+
+
+
     }
 }

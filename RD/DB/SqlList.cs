@@ -143,15 +143,23 @@
                                   FROM dbo.T_BD_HTypeEntry a
                                   where a.id='{parentId}'";
                     break;
-                    #region 房屋类型及装修工程类别信息管理(查询框有值时使用)
-                    //
-                    //case "11.1":
-                    //    _result = $@"
-                    //                  SELECT a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
-                    //                  FROM dbo.T_BD_HTypeEntry a
-                    //                  where a.'{searchName}' like '%'+'{searchValue}'+'%'";
-                    //    break;
-                    #endregion
+                #region 房屋类型及装修工程类别信息管理(查询框有值时使用)
+                //
+                //case "11.1":
+                //    _result = $@"
+                //                  SELECT a.HtypeName as '类型信息名称',a.InputUser as '录入人',a.InputDt as '录入日期'
+                //                  FROM dbo.T_BD_HTypeEntry a
+                //                  where a.'{searchName}' like '%'+'{searchValue}'+'%'";
+                //    break;
+                #endregion
+                //房屋类型及装修工程类别信息管理-类别项目名称(针对表体信息查询)
+                case "12":
+                    _result = $@"
+                                    SELECT a.Htypeid,a.ProjectId,a.ProjectName AS '项目名称',a.Unit AS '单位',a.price '单价',a.InputUser '录入人',a.InputDt '录入日期'
+                                    FROM dbo.T_BD_HTypeProjectdtl a
+                                    WHERE a.Htypeid='{parentId}';
+                                ";
+                    break;
             }
             return _result;
         }

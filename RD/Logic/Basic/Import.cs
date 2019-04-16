@@ -53,7 +53,7 @@ namespace RD.Logic.Basic
         }
 
         /// <summary>
-        /// 对基础信息库内的表体进行保存
+        /// 对基础信息库内的表体进行保存(注:包括插入及更新操作)
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="dt"></param>
