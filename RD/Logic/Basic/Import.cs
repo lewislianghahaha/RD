@@ -13,15 +13,16 @@ namespace RD.Logic.Basic
         /// 根据功能名称插入对应的表(树形节点插入使用)
         /// </summary>
         /// <param name="functionName"></param>
+        /// <param name="id">室内装修工程单据使用</param>
         /// <param name="pid"></param>
         /// <param name="treeName"></param>
         /// <returns></returns>
-        public bool InsertTreeRd(string functionName,int pid,string treeName)
+        public bool InsertTreeRd(string functionName,int id,int pid,string treeName)
         {
             var result=true;
             try
             {
-                result=importDt.InsertTreeRecord(functionName, pid, treeName);
+                result=importDt.InsertTreeRecord(functionName, id,pid, treeName);
             }
             catch (Exception ex)
             {

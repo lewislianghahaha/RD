@@ -193,11 +193,13 @@ namespace RD.UI.Order
             try
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
-                //
-                if ((int)tvview.SelectedNode.Parent.Tag!=1) throw new Exception("请在ALL节点下新建新类别");
+                //判断若新增节点不在ALL节点下,就显示异常
+                if((int)tvview.SelectedNode.Tag>1)
+                    if ((int)tvview.SelectedNode.Tag-1 !=1) throw new Exception("请在ALL节点下新建新类别");
 
                 adornType.Pid= (int)tvview.SelectedNode.Tag;                                //上级主键ID
                 adornType.Funid = "C";                                                     //设置功能标识ID
+                adornType.Id = 0;                                                         //获取上上级表头ID(Q:怎样获取表头ID?)
 
                 adornType.StartPosition = FormStartPosition.CenterScreen;
                 adornType.ShowDialog();

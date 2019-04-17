@@ -31,6 +31,7 @@ namespace RD.Logic
         private int _pid;                //获取父级节点ID(新增或更新树形节点时使用)
         private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
         private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
+        private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -102,6 +103,11 @@ namespace RD.Logic
         /// </summary>
         public string FunState { set { _funState = value; } }
 
+        /// <summary>
+        /// 获取上上级节点ID(室内装修工程单 及 室内主材单使用)
+        /// </summary>
+        public int Id { set { _id = value; } }
+
         #endregion
 
         #region Get
@@ -132,7 +138,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName);
+                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id);
                     break;
                 //主材单
                 case 3:
@@ -212,7 +218,7 @@ namespace RD.Logic
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2.1":
-                    _resultMark = import.InsertTreeRd(functionName, pid, treeName);
+                    _resultMark = import.InsertTreeRd(functionName, -1,pid, treeName);
                     break;
                 //更新树形菜单(作用:编辑分组时使用)
                 case "2.2":
@@ -238,7 +244,8 @@ namespace RD.Logic
         /// <param name="funState">单据状态 C:创建 R:读取</param>
         /// <param name="pid">表头ID</param>
         /// <param name="treeName">节点名称</param>
-        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName)
+        /// <param name="id">上上级节点ID(室内装修工程单 及 室内主材单使用)</param>
+        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id)
         {
             switch (functionId)
             {
@@ -256,7 +263,7 @@ namespace RD.Logic
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":
-                    _resultMark = orderImport.InsertTreeRd(functionName,pid, treeName);
+                    _resultMark = orderImport.InsertTreeRd(functionName,id,pid, treeName);
                     break;
                 //更新树形菜单(作用:编辑分组时使用)
                 case "2.1":

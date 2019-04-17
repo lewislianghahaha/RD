@@ -12,15 +12,16 @@ namespace RD.Logic.Order
         ///  根据功能名称插入对应的表(树形节点插入使用)
         /// </summary>
         /// <param name="functionName"></param>
-        /// <param name="pid"></param>
+        /// <param name="id">上上级节点ID(室内装修工程单 及 室内主材单使用)</param>
+        /// <param name="pid">上级节点ID</param>
         /// <param name="treeName"></param>
         /// <returns></returns>
-        public bool InsertTreeRd(string functionName, int pid, string treeName)
+        public bool InsertTreeRd(string functionName, int id,int pid, string treeName)
         {
             var result = true;
             try
             {
-                result = importDt.InsertTreeRecord(functionName,pid, treeName);
+                result = importDt.InsertTreeRecord(functionName,id,pid, treeName);
             }
             catch (Exception ex)
             {

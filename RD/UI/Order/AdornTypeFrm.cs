@@ -10,8 +10,10 @@ namespace RD.UI.Order
 
         //功能标识ID(新建：C 编辑 E)
         private string _funid;
-        //上级主键ID
+        //树菜单上级主键ID
         private int _pid;     
+        //表头ID
+        private int _id;
 
         //返回结果信息
         private bool _resultMark;
@@ -25,13 +27,17 @@ namespace RD.UI.Order
             /// 获取功能标识ID(新建：C 编辑 A)
             /// </summary>
             public string Funid { set { _funid = value; } }
+            /// <summary>
+            /// 表头ID
+            /// </summary>
+            public int Id { set { _id = value; } }
         #endregion
 
         #region Get
-            /// <summary>
-            /// 返回结果标记
-            /// </summary>
-            public bool ResultMark => _resultMark;
+        /// <summary>
+        /// 返回结果标记
+        /// </summary>
+        public bool ResultMark => _resultMark;
         #endregion
 
         public AdornTypeFrm()
@@ -67,6 +73,7 @@ namespace RD.UI.Order
                     case "C":
                         task.FunctionId = "2";
                         task.FunctionName = "AdornOrder";
+                        task.Id = _id;                        //获取上上级表头ID
                         task.StartTask();
                         _resultMark = task.ResultMark;
                         if (!task.ResultMark) throw new Exception("新建异常,请联系管理员");

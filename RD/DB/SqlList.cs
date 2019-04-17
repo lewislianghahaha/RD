@@ -446,22 +446,23 @@
         /// 根据功能名称插入表头信息
         /// </summary>
         /// <param name="factionName"></param>
+        /// <param name="id"></param>
         /// <param name="pid"></param>
         /// <param name="treeName"></param>
         /// <returns></returns>
-        public string Pro_InsertTree(string factionName, int pid, string treeName)
+        public string Pro_InsertTree(string factionName, int id,int pid, string treeName)
         {
             switch (factionName)
             {
                 case "AdornOrder":
                     _result = $@"
-                                  INSERT INTO dbo.T_PRO_AdornTree( ParentId, TypeName )
-                                  VALUES  ({pid},'{treeName}')";
+                                  INSERT INTO dbo.T_PRO_AdornTree( Id,ParentId, TypeName )
+                                  VALUES  ({id},{pid},'{treeName}')";
                     break;
                 case "MaterialOrder":
                     _result = $@"
-                                  INSERT INTO dbo.T_PRO_MaterialTree( ParentId, MaterialType )
-                                  VALUES  ({pid},'{treeName}')
+                                  INSERT INTO dbo.T_PRO_MaterialTree( Id,ParentId, MaterialType )
+                                  VALUES  ({id},{pid},'{treeName}')
                                 ";
                     break;
             }

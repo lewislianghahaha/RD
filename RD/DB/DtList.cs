@@ -392,7 +392,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"主材"表体临时表
+        /// 获取"室内主材"表体临时表
         /// </summary>
         /// <returns></returns>
         public DataTable Get_ProMaterialEmtrydt()

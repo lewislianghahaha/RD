@@ -10,15 +10,16 @@ namespace RD.DB.Import
     {
         SearchDt serDt=new SearchDt();
         SqlList sqlList=new SqlList();
- 
+
         /// <summary>
         /// 插入树形菜单记录
         /// </summary>
         /// <param name="functionName"></param>
+        /// <param name="id">上上级节点ID(室内装修工程单 及 室内主材单使用)</param>
         /// <param name="pid">上级节点ID</param>
         /// <param name="treeName"></param>
         /// <returns></returns>
-        public bool InsertTreeRecord(string functionName, int pid, string treeName)
+        public bool InsertTreeRecord(string functionName, int id,int pid, string treeName)
         {
             var result = true;
             var sqlscript = string.Empty;
@@ -37,13 +38,24 @@ namespace RD.DB.Import
                 //单据使用
                 else
                 {
-                    sqlscript = sqlList.Pro_InsertTree(functionName, 0, "ALL");
+                    sqlscript = sqlList.Pro_InsertTree(functionName, id, 0, "ALL");
                 }
                 EditDt(sqlscript);
+            }
+            //插入要新增的记录
+            if (functionName != "AdornOrder" || functionName != "MaterialOrder")
+            {
+                sqlscript = sqlList.BD_InsertTree(functionName, pid, treeName);
+            }
+            else
+            {
+                sqlscript = sqlList.Pro_InsertTree(functionName,id,pid,treeName);
             }
             result = EditDt(sqlscript);
             return result;
         }
+
+
 
         /// <summary>
         /// 更新所选的节点信息
@@ -56,6 +68,7 @@ namespace RD.DB.Import
         {
             var result = true;
             var sqlscript = string.Empty;
+
             //基础信息库使用
             if (functionName != "AdornOrder" || functionName != "MaterialOrder")
             {
