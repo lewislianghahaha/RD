@@ -10,10 +10,8 @@
         /// </summary>
         /// <param name="sqlid">SQL中转ID</param>
         /// <param name="parentId">表头ID</param>
-        /// <param name="searchName">查询选择列名-查询框有值时使用</param>
-        /// <param name="searchValue">查询所填值-查询框有值时使用</param>
         /// <returns></returns>
-        public string BD_SQLList(string sqlid,string parentId,string searchName,string searchValue)
+        public string BD_SQLList(string sqlid,string parentId)
         {
             //记录SQL报表中转ID
             switch (sqlid)
@@ -157,8 +155,7 @@
                     _result = $@"
                                     SELECT a.Htypeid,a.ProjectId,a.ProjectName AS '项目名称',a.Unit AS '单位',a.price '单价',a.InputUser '录入人',a.InputDt '录入日期'
                                     FROM dbo.T_BD_HTypeProjectdtl a
-                                    WHERE a.Htypeid='{parentId}';
-                                ";
+                                    WHERE a.Htypeid='{parentId}'";
                     break;
             }
             return _result;
@@ -340,7 +337,7 @@
                                      Update a set a.SupName=@SupName,a.Address=@Address,a.ContactName=@ContactName,a.ContactPhone=@ContactPhone,
                                                   a.GoNum=@GoNum
                                      from  dbo.T_BD_SupplierEntry a
-                                     where a.Supid=@Supid                       
+                                     where a.Supid=@Supid;                       
                                 ";
                     break;
                 case "T_BD_MaterialEntry":
@@ -348,14 +345,20 @@
                                      Update a set a.MaterialName=@MaterialName,a.MaterialSize=@MaterialSize,
                                                   a.Supid=@Supid,a.SupName=@SupName,a.Unit=@Unit,a.Price=@Price
                                      from dbo.T_BD_MaterialEntry a
-                                     where a.MaterialId=@MaterialId
+                                     where a.MaterialId=@MaterialId;
                                ";
                     break;
                 case "T_BD_HTypeEntry":
                     _result = @"
                                     Update a set a.HtypeName=@HtypeName
                                     from dbo.T_BD_HTypeEntry a
-                                    where a.HTypeid=@HTypeid
+                                    where a.HTypeid=@HTypeid;
+                                ";
+                    break;
+                case "T_BD_HTypeProjectDtl":
+                    _result = @"
+                                    UPDATE T_BD_HTypeProjectDtl SET ProjectName=@ProjectName,Unit=@Unit,Price=@Price
+                                    WHERE ProjectId=@ProjectId;
                                 ";
                     break;
             }
@@ -390,23 +393,97 @@
         }
 
         /// <summary>
-        /// 单据类型-表头（树型菜单使用） 注:包括室内装修工程 主材单据
+        /// 室内装修工程单-根据表头ID读取表体信息(单据状态为R时使用)
         /// </summary>
-        /// <param name="sqlid">SQL分类ID</param>
-        /// <param name="proid">室内装修工程主键</param>
+        /// <param name="pid"></param>
         /// <returns></returns>
-        public string PRO_TreeViewSQLList(string sqlid,int proid)
+        public string Pro_Adorn_SearchDtl(int pid)
         {
-            //记录SQL报表中转ID
-            switch (sqlid)
+            var result = $@"
+                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
+	                               a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
+                             FROM dbo.T_PRO_AdornEntry a
+                             WHERE a.Id='{pid}'
+                          ";
+            return result;
+        }
+
+        /// <summary>
+        /// 室内装修工程单-根据表头ID读取表头信息(单据状态为R时使用)
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public string Pro_Adorn_SearchTreeView(int pid)
+        {
+            var result = $@"
+                            SELECT a.Treeid,a.ParentId,a.TypeName
+                            FROM dbo.T_PRO_AdornTree a
+                            WHERE a.Id='{pid}'
+                           ";
+            return result;
+        }
+
+        /// <summary>
+        /// 根据功能名称查询id=1时,各表头记录有没有值(室内装修工程 及 室内主材单使用)
+        /// </summary>
+        /// <returns></returns>
+        public string Pro_SearchNum(string factionName)
+        {
+            switch (factionName)
             {
-                //室内装修工程-树型菜单使用(读取室内装修工程单表头信息)
-                case "1":
-                    _result = $@"SELECT a.Id,a.ParentId,a.TypeName FROM dbo.T_PRO_adorn a where Id={proid}";
+                case "AdornOrder":
+                    _result = "select a.* from dbo.T_PRO_AdornTree a where id=1";
                     break;
-                //主材单-树型菜单使用(读取材料信息管理中的大类,如:砖材)
-                case "2":
-                    _result = $@"";
+                case "MaterialOrder":
+                    _result = "select a.* from T_PRO_MaterialTree a where id=1";
+                    break;
+            }
+
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据功能名称插入表头信息
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <param name="pid"></param>
+        /// <param name="treeName"></param>
+        /// <returns></returns>
+        public string Pro_InsertTree(string factionName, int pid, string treeName)
+        {
+            switch (factionName)
+            {
+                case "AdornOrder":
+                    _result = $@"
+                                  INSERT INTO dbo.T_PRO_AdornTree( ParentId, TypeName )
+                                  VALUES  ({pid},'{treeName}')";
+                    break;
+                case "MaterialOrder":
+                    _result = $@"
+                                  INSERT INTO dbo.T_PRO_MaterialTree( ParentId, MaterialType )
+                                  VALUES  ({pid},'{treeName}')
+                                ";
+                    break;
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据功能名称更新节点信息(室内装修工程 及 室内主材单使用)
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <param name="treeName">需要更新的节点名称</param>
+        /// <param name="id">原节点ID</param>
+        /// <returns></returns>
+        public string Pro_UpdateTree(string factionName, string treeName, int id)
+        {
+            switch (factionName)
+            {
+                case "AdornOrder":
+                    _result = $@"UPDATE dbo.T_PRO_AdornTree SET TypeName='{treeName}' WHERE Treeid='{id}'";
+                    break;
+                case "MaterialOrder":
+                    _result = $@"UPDATE dbo.T_PRO_MaterialTree SET MaterialType='{treeName}' WHERE Treeid='{id}'";
                     break;
             }
             return _result;

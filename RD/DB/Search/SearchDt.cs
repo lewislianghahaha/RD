@@ -82,34 +82,39 @@ namespace RD.DB.Search
                 //客户信息管理
                 case "Customer":
                     sqlscript = functionType == "T"
-                        ? sqlList.BD_SQLList("0", null, null, null)
+                        ? sqlList.BD_SQLList("0", null)
                         : (parentId == null
-                            ? sqlList.BD_SQLList("1", null, null, null)
-                            : sqlList.BD_SQLList("2", parentId, null, null));
+                            ? sqlList.BD_SQLList("1", null)
+                            : sqlList.BD_SQLList("2", parentId));
                     break;
                 //供应商管理
                 case "Supplier":
                     sqlscript = functionType == "T"
-                        ? sqlList.BD_SQLList("3", null, null, null)
+                        ? sqlList.BD_SQLList("3", null)
                         : (parentId == null
-                            ? sqlList.BD_SQLList("4", null, null, null)
-                            : sqlList.BD_SQLList("5", parentId, null, null));
+                            ? sqlList.BD_SQLList("4", null)
+                            : sqlList.BD_SQLList("5", parentId));
                     break;
                 //材料信息管理
                 case "Material":
                     sqlscript = functionType == "T"
-                        ? sqlList.BD_SQLList("6", null, null, null)
+                        ? sqlList.BD_SQLList("6", null)
                         : (parentId == null
-                            ? sqlList.BD_SQLList("7", null, null, null)
-                            : sqlList.BD_SQLList("8", parentId, null, null));
+                            ? sqlList.BD_SQLList("7", null)
+                            : sqlList.BD_SQLList("8", parentId));
                     break;
                 //房屋类型及装修工程类别信息管理
                 case "House":
                     sqlscript = functionType == "T"
-                        ? sqlList.BD_SQLList("9", null, null, null)
+                        ? sqlList.BD_SQLList("9", null)
                         : (parentId == null
-                            ? sqlList.BD_SQLList("10", null, null, null)
-                            : sqlList.BD_SQLList("11", parentId, null, null));
+                            ? sqlList.BD_SQLList("10", null)
+                            : sqlList.BD_SQLList("11", parentId));
+                    break;
+                //房屋类型及装修工程类别信息管理-类别项目名称
+                case "HouseProject":
+                    if (functionType == "G")
+                        sqlscript = sqlList.BD_SQLList("12", parentId);
                     break;
             }
 
@@ -290,23 +295,19 @@ namespace RD.DB.Search
             {
                 //客户信息管理
                 case "Customer":
-                    sqlscript = sqlList.BD_SQLList("1", null, null, null);
+                    sqlscript = sqlList.BD_SQLList("1", null);
                     break;
                 //供应商管理
                 case "Supplier":
-                    sqlscript = sqlList.BD_SQLList("4", null, null, null);
+                    sqlscript = sqlList.BD_SQLList("4", null);
                     break;
                 //材料信息管理
                 case "Material":
-                    sqlscript = sqlList.BD_SQLList("7", null, null, null);
+                    sqlscript = sqlList.BD_SQLList("7", null);
                     break;
                 //房屋类型及装修工程类别信息管理
                 case "House":
-                    sqlscript = sqlList.BD_SQLList("10.1", null, null, null);
-                    break;
-                //房屋类型及装修工程类别信息管理-类别项目名称
-                case "HouseProject":
-                    sqlscript = sqlList.BD_SQLList("12", null, null, null);
+                    sqlscript = sqlList.BD_SQLList("10.1", null);
                     break;
             }
             var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
@@ -352,6 +353,76 @@ namespace RD.DB.Search
             sqlDataAdapter.Fill(ds);
             return ds.Tables[0];
         }
+
+        /// <summary>
+        /// 读取表体信息
+        /// </summary>
+        /// <param name="funState">单据状态</param>
+        /// <param name="pid">表头ID</param>
+        /// <returns></returns>
+        public DataTable SearchAdorndtl(string funState,int pid)
+        {
+            var dt = new DataTable();
+            var reslut = new DataTable();
+            var sqlscript = string.Empty;
+
+            try
+            {
+                //获取相关SQL查询语句
+                sqlscript = sqlList.Pro_Adorn_SearchDtl(pid);
+                //执行查询功能并将结填充到DataTable内
+                var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
+                sqlDataAdapter.Fill(dt);
+
+                //若返回的DataTable行数为0,或单据状态为C(创建)时,就返回空白表
+                if (dt.Rows.Count == 0 || funState == "C")
+                {
+                    reslut = dlDtList.Get_AdornEmptydt();
+                }
+                //否则返回有值的结果集
+                else
+                {
+                    reslut = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                reslut.Rows.Clear();
+                reslut.Columns.Clear();
+                throw new Exception(ex.Message);
+            }
+            return reslut;
+        }
+
+        /// <summary>
+        /// 读取“室内装修工程单”表头信息(TreeView使用)
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public DataTable SearchAdornTreeView(int pid)
+        {
+            var dt = new DataTable();
+
+            try
+            {
+                //获取相关SQL查询语句
+                var sqlscript = sqlList.Pro_Adorn_SearchTreeView(pid);
+                //执行查询功能并将结填充到DataTable内
+                var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
+                sqlDataAdapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
+
+        #endregion
+
+        #region 室内主材单
 
         
 

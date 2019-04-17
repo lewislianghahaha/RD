@@ -22,18 +22,26 @@ namespace RD.DB.Import
         {
             var result = true;
             var sqlscript = string.Empty;
+            var dt=new DataTable();
+
             //若pid为1时,要先判断pid=1时有没有值,若没有就要先插入ALL的记录,再插入要新增的记录
-            var dt = SearchNum(functionName);
+            dt = SearchNum(functionName);
       
             if (pid == 1 && dt.Rows.Count==0)
             {
-                sqlscript = sqlList.BD_InsertTree(functionName, 0, "ALL");
+                //基础信息库使用
+                if (functionName != "AdornOrder" || functionName != "MaterialOrder")
+                {
+                    sqlscript = sqlList.BD_InsertTree(functionName, 0, "ALL"); 
+                }
+                //单据使用
+                else
+                {
+                    sqlscript = sqlList.Pro_InsertTree(functionName, 0, "ALL");
+                }
                 EditDt(sqlscript);
             }
-            
-            sqlscript = sqlList.BD_InsertTree(functionName, pid, treeName);
             result = EditDt(sqlscript);
-            
             return result;
         }
 
@@ -47,8 +55,18 @@ namespace RD.DB.Import
         public bool UpdateTreeRecord(string functionName,int id,string treeName)
         {
             var result = true;
-            var sqlscript = sqlList.BD_UpdateTree(functionName, treeName, id);
-            result=EditDt(sqlscript);
+            var sqlscript = string.Empty;
+            //基础信息库使用
+            if (functionName != "AdornOrder" || functionName != "MaterialOrder")
+            {
+                sqlscript = sqlList.BD_UpdateTree(functionName, treeName, id);
+            }
+            //单据使用
+            else
+            {
+                sqlscript= sqlList.Pro_UpdateTree(functionName, treeName, id);
+            }
+            result = EditDt(sqlscript);
             return result;
         }
 
@@ -82,7 +100,17 @@ namespace RD.DB.Import
         private DataTable SearchNum(string functionName)
         {
             var dt=new DataTable();
-            var sqlscript= sqlList.BD_SearchNum(functionName);
+            var sqlscript = string.Empty;
+            //基础信息库使用
+            if (functionName != "AdornOrder" || functionName!="MaterialOrder")
+            {
+                sqlscript= sqlList.BD_SearchNum(functionName);
+            }
+            //单据使用
+            else
+            {
+                sqlscript = sqlList.Pro_SearchNum(functionName);
+            }
             var sqlDataAdapter=new SqlDataAdapter(sqlscript,serDt.GetConn());
             sqlDataAdapter.Fill(dt);
             return dt;
@@ -294,7 +322,13 @@ namespace RD.DB.Import
                 case "T_BD_HTypeEntry":
                     da.UpdateCommand.Parameters.Add("@HTypeid", SqlDbType.Int, 8, "HTypeid");
                     da.UpdateCommand.Parameters.Add("@HtypeName",SqlDbType.NVarChar,200, "HtypeName");
-                    break;    
+                    break;
+                case "T_BD_HTypeProjectDtl":
+                    da.UpdateCommand.Parameters.Add("@ProjectId", SqlDbType.Int, 8, "ProjectId");
+                    da.UpdateCommand.Parameters.Add("@ProjectName", SqlDbType.NVarChar, 300, "ProjectName");
+                    da.UpdateCommand.Parameters.Add("@Unit", SqlDbType.NVarChar, 10, "Unit");
+                    da.UpdateCommand.Parameters.Add("@Price", SqlDbType.Decimal, 2, "Price");
+                    break;
             }
             return da;
         }

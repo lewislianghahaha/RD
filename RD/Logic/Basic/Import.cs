@@ -10,12 +10,11 @@ namespace RD.Logic.Basic
         ImportDt importDt=new ImportDt();
 
         /// <summary>
-        /// 根据功能名称插入对应的
+        /// 根据功能名称插入对应的表(树形节点插入使用)
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="pid"></param>
         /// <param name="treeName"></param>
-        /// <param name="accountName"></param>
         /// <returns></returns>
         public bool InsertTreeRd(string functionName,int pid,string treeName)
         {

@@ -37,20 +37,24 @@ namespace RD.UI.Basic
         public void OnInitialize()
         {
             task.TaskId = 1;
-            task.FunctionId = "1.3";
+            task.FunctionId = "1";
             task.FunctionName = "HouseProject";
+            task.FunctionType = "G";
+            task.ParentId = Convert.ToString(_hTypeid);
 
-            Show();
+            task.StartTask();
 
             gvdtl.DataSource = task.ResultTable;
-            //_dt = task.ResultTable;
+            //根据功能ID定义界面相关值
+            Show();
             //控制GridView列显示情况
-            //ControlGridViewisShow();
+            ControlGridViewisShow();
         }
 
         void OnRegisterEvents()
         {
             tmSave.Click += TmSave_Click;
+            tmClose.Click += TmClose_Click;
         }
 
         private new void Show()
@@ -80,7 +84,7 @@ namespace RD.UI.Basic
                 task.FunctionName = "HouseProject";
                 task.Data = (DataTable) gvdtl.DataSource;
                 task.Pid = _hTypeid;
-                task.AccountName = null;
+                task.AccountName = GlobalClasscs.User.StrUsrName;
 
                 task.StartTask();
                 if (!task.ResultMark) throw new Exception("保存异常,请联系管理员");
@@ -88,11 +92,22 @@ namespace RD.UI.Basic
                 {
                     MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+                this.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         /// <summary>

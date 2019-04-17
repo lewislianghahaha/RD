@@ -149,7 +149,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip Menu;
+        private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmGet;
         private System.Windows.Forms.ToolStripMenuItem tmClose;
         private System.Windows.Forms.Panel panel1;

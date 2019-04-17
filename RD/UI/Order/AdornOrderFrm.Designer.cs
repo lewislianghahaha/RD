@@ -37,6 +37,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtOrderNo = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.txtCustomer = new System.Windows.Forms.TextBox();
             this.cmCustomer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmCustomer = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,8 +61,6 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.comHtype = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.cmCustomer.SuspendLayout();
@@ -133,7 +133,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.txtOrderNo);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtCustomer);
             this.panel1.Controls.Add(this.txtAdd);
@@ -148,11 +148,29 @@
             this.panel1.Size = new System.Drawing.Size(995, 27);
             this.panel1.TabIndex = 1;
             // 
+            // txtOrderNo
+            // 
+            this.txtOrderNo.Enabled = false;
+            this.txtOrderNo.Location = new System.Drawing.Point(64, 3);
+            this.txtOrderNo.Name = "txtOrderNo";
+            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
+            this.txtOrderNo.TabIndex = 8;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "单据名称:";
+            // 
             // txtCustomer
             // 
             this.txtCustomer.ContextMenuStrip = this.cmCustomer;
             this.txtCustomer.Location = new System.Drawing.Point(274, 3);
             this.txtCustomer.Name = "txtCustomer";
+            this.txtCustomer.ReadOnly = true;
             this.txtCustomer.Size = new System.Drawing.Size(132, 21);
             this.txtCustomer.TabIndex = 6;
             // 
@@ -363,23 +381,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "装修工程类别:";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "单据名称:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(64, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(149, 21);
-            this.textBox1.TabIndex = 8;
-            // 
             // AdornOrderFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -445,7 +446,7 @@
         private System.Windows.Forms.TextBox txtCustomer;
         private System.Windows.Forms.ContextMenuStrip cmCustomer;
         private System.Windows.Forms.ToolStripMenuItem tmCustomer;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtOrderNo;
         private System.Windows.Forms.Label label5;
     }
 }

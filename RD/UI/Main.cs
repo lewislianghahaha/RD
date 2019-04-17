@@ -12,6 +12,8 @@ namespace RD.UI
     {
         TaskLogic task=new TaskLogic();
         Load load=new Load();
+        AdornOrderFrm adorn = new AdornOrderFrm();
+        MaterialOrderFrm material = new MaterialOrderFrm();
 
         public Main()
         {
@@ -22,7 +24,6 @@ namespace RD.UI
         private void OnRegisterEvents()
         {
             btnSearch.Click += BtnSearch_Click;
-            //tmInfor.Click += TmInfor_Click;
             tmChange.Click += TmChange_Click;
             tmadorn.Click += Tmadorn_Click;
             tmMaterial.Click += TmMaterial_Click;
@@ -142,9 +143,10 @@ namespace RD.UI
         {
             try
             {
-                var adorn=new AdornOrderFrm();
-                adorn.FunState = "C";  //创建状态
-
+                //设置单据状态为"创建"
+                adorn.FunState = "C";  
+                //初始化窗体信息
+                adorn.OnInitialize();
                 adorn.StartPosition=FormStartPosition.CenterParent;
                 adorn.ShowDialog();
             }
@@ -163,7 +165,6 @@ namespace RD.UI
         {
             try
             {
-                var material=new MaterialOrderFrm();
                  //创建状态
 
                 material.StartPosition=FormStartPosition.CenterParent;

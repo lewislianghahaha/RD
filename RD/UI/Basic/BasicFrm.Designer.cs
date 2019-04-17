@@ -316,7 +316,7 @@
         private System.Windows.Forms.Button btnChange;
         private System.Windows.Forms.Button btnDel;
         private System.Windows.Forms.TreeView tview;
-        private System.Windows.Forms.MenuStrip Menu;
+        private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmSave;
         private System.Windows.Forms.ToolStripMenuItem tmReset;
         private System.Windows.Forms.ContextMenuStrip ShowPrjoectDtl;

@@ -82,7 +82,7 @@ namespace RD.UI.Basic
         /// <summary>
         /// 显示基本信息
         /// </summary>
-        private void Show()
+        private new void Show()
         {
             switch (_funid)
             {

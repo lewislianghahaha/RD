@@ -12,31 +12,30 @@ namespace RD.UI.Order
         Load load=new Load();
         AdornTypeFrm adornType=new AdornTypeFrm();
 
-        //保存初始化的表头内容
-        public DataTable _dt = new DataTable();
-        //保存初始化的表体内容
-        public DataTable _dtldt = new DataTable();
         //保存单据名称
         public string OrderNo = string.Empty;
-
-        private string _funState;  //功能状态标记(作用:记录打开此功能窗体时是读取记录 还是 创建记录) C:创建 R:读取
+        //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
+        private string _funState;
+        //获取表头ID(Main窗体双击某行读取时使用)
+        private int _pid;
 
         #region Set
 
-            /// <summary>
-            /// 获取功能状态标记ID
-            /// </summary>
-            public string FunState { set { _funState = value; } }
+        /// <summary>
+        /// 获取单据状态标记ID C:创建 R:读取
+        /// </summary>
+        public string FunState { set { _funState = value; } }
+        /// <summary>
+        /// 获取表头ID(Main窗体双击某行读取时使用)
+        /// </summary>
+        public int Pid { set { _pid = value; } }
 
         #endregion
-
-
 
         public AdornOrderFrm()
         {
             InitializeComponent();
             OnRegisterEvents();
-            OnInitialize();
         }
 
         private void OnRegisterEvents()
@@ -56,35 +55,31 @@ namespace RD.UI.Order
         /// <summary>
         /// 初始化(注:根据功能状态标记来控制)
         /// </summary>
-        private void OnInitialize()
+        public void OnInitialize()
         {
-            txtCustomer.ReadOnly = true;
-            task.TaskId = 2;
-
-            //功能状态:创建 C
+            //单据状态:创建 C
             if (_funState == "C")
             {
-                //设置表头信息(只需显示ALL字段)
-
-                //获取表体信息(获取空白表)
-               // _dtldt = OnInitializeDtl();
-                //导出记录至树形菜单内
-                
+                //设置树菜单表头信息(只需显示ALL字段)
+                ShowTreeList(_funState,null);
                 //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
-                
+                gvdtl.DataSource = OnInitializeDtl(); ;
             }
-            //功能状态:读取 R
+            //单据状态:读取 R
             else
             {
+                task.TaskId = 2;
+                task.FunctionId = "1.1";
+                task.Pid = _pid;
 
                 task.StartTask();
-                //获取表头信息
-                _dt = task.ResultTable;
-                //获取表体信息
-
+                //设置树菜单表头信息
+                ShowTreeList(_funState, task.ResultTable);
+                //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
+                gvdtl.DataSource = OnInitializeDtl();
             }
             //设置GridView是否显示某些列
-
+            ControlGridViewisShow();
             //展开根节点
             tvview.ExpandAll();
             //预留(权限部份)
@@ -92,16 +87,22 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 初始化获取表体信息
+        /// 初始化获取表体信息(注:若单据状态C时,获取空白表;若为R时,就按情况判断是读取空白表还是有内容的表)
         /// </summary>
         /// <returns></returns>
-        private DataTable OnInitializeDtl(string funState)
+        private DataTable OnInitializeDtl()
         {
             var dt = new DataTable();
 
             try
             {
+                task.TaskId = 2;
+                task.FunctionId = "1.2";
+                task.FunState = _funState;
+                task.Pid = _pid;
 
+                task.StartTask();
+                dt = task.ResultTable;
             }
             catch (Exception ex)
             {
@@ -112,8 +113,53 @@ namespace RD.UI.Order
             return dt;
         }
 
+        /// <summary>
+        /// 根据获取的DT读取树形列表
+        /// </summary>
+        /// <param name="funState">单据状态</param>
+        /// <param name="dt">树型菜单Datatable</param>
+        private void ShowTreeList(string funState,DataTable dt)
+        {
+            //当单据状态为"创建"时使用
+            if (funState == "C" || dt.Rows.Count == 0)
+            {
+                var tree = new TreeNode();
+                tree.Tag = 1;
+                tree.Text = "ALL";
+                tvview.Nodes.Add(tree);
+            }
+            //当单据状态为"读取"及dt有值时使用
+            else
+            {
+                var tnode = new TreeNode();
+                tnode.Tag = 1;
+                tnode.Text = "ALL";
+                tvview.Nodes.Add(tnode);
+                //展开根节点
+                tvview.ExpandAll();
+                //读取记录并增加至子节点内(从二级节点开始)
+                AddChildNode(tvview,dt);
+            }
+        }
 
-
+        /// <summary>
+        /// 读取记录并增加至子节点内(从二级节点开始)
+        /// </summary>
+        /// <returns></returns>
+        private void AddChildNode(TreeView tvView, DataTable dt)
+        {
+            var tnode = tvView.Nodes[0];
+            var rows = dt.Select("ParentId='" + Convert.ToInt32(tnode.Tag) + "'");
+            //循环子节点信息(从二级节点开始)
+            foreach (var r in rows)
+            {
+                var tn = new TreeNode();
+                tn.Tag = Convert.ToInt32(r[0]);        //自身主键ID
+                tn.Text = Convert.ToString(r[2]);     //节点内容
+                //将二级节点添加至根节点下
+                tnode.Nodes.Add(tn);
+            }
+        }
 
         /// <summary>
         /// 装修类别下拉列表
@@ -146,11 +192,18 @@ namespace RD.UI.Order
         {
             try
             {
-                if((int)tvview.SelectedNode.Parent.Tag!=1) throw new Exception("请在ALL节点下新建新类别");
+                if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
+                //
+                if ((int)tvview.SelectedNode.Parent.Tag!=1) throw new Exception("请在ALL节点下新建新类别");
+
+                adornType.Pid= (int)tvview.SelectedNode.Tag;                                //上级主键ID
+                adornType.Funid = "C";                                                     //设置功能标识ID
 
                 adornType.StartPosition = FormStartPosition.CenterScreen;
                 adornType.ShowDialog();
-
+                //当成功新增后,执行"刷新"操作 
+                if (adornType.ResultMark)
+                    OnInitialize();
             }
             catch (Exception ex)
             {
@@ -169,6 +222,14 @@ namespace RD.UI.Order
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
 
+                adornType.Pid = (int)tvview.SelectedNode.Tag;                             //获取所选择的主键ID
+                adornType.Funid = "E";                                                    //设置功能标识ID
+
+                adornType.StartPosition = FormStartPosition.CenterScreen;
+                adornType.ShowDialog();
+                //当成功新增后,执行"刷新"操作
+                if (adornType.ResultMark)
+                    OnInitialize();
             }
             catch (Exception ex)
             {
@@ -198,7 +259,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 保存
+        /// 保存(作用:主要对GridView控件进行数据导入)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -308,6 +369,20 @@ namespace RD.UI.Order
             {
                 load.Close();
             }));
+        }
+
+        private void ControlGridViewisShow()
+        {
+            //将GridView中的第一二列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
+            gvdtl.Columns[2].Visible = false;
+            gvdtl.Columns[3].Visible = false;
+            //设置指定列不能编辑
+            gvdtl.Columns[7].ReadOnly = true;
+            gvdtl.Columns[12].ReadOnly = true;
+            gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
+            gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
         }
     }
 }

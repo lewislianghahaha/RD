@@ -30,6 +30,7 @@ namespace RD.Logic
         private DataTable _data;         //获取初始化的表体信息
         private int _pid;                //获取父级节点ID(新增或更新树形节点时使用)
         private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
+        private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -96,6 +97,11 @@ namespace RD.Logic
         /// </summary>
         public string TreeName { set { _treeName = value; } }
 
+        /// <summary>
+        /// 获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
+        /// </summary>
+        public string FunState { set { _funState = value; } }
+
         #endregion
 
         #region Get
@@ -126,7 +132,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    PrdAdornInfo(_functionId,_functionType);
+                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName);
                     break;
                 //主材单
                 case 3:
@@ -199,6 +205,7 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = search.GetSearchDt(functionName, searchName, searchValue, dt);
                     break;
+
                 //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
                 case "2":
                     _resultMark = import.Save_BaseEntry(functionName,dt,pid,accountName);
@@ -211,6 +218,7 @@ namespace RD.Logic
                 case "2.2":
                     _resultMark = import.UpdateTreeRd(functionName,pid,treeName);
                     break;
+
                 //删除节点及对应的信息
                 case "3":
                     _resultMark = del.DelBD_Record(functionName,pid,dt);
@@ -226,8 +234,11 @@ namespace RD.Logic
         /// 室内装修工程单
         /// </summary>
         /// <param name="functionId">功能ID</param>
-        /// <param name="functionType"></param>
-        private void PrdAdornInfo(string functionId,string functionType)
+        /// <param name="functionName"></param>
+        /// <param name="funState">单据状态 C:创建 R:读取</param>
+        /// <param name="pid">表头ID</param>
+        /// <param name="treeName">节点名称</param>
+        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName)
         {
             switch (functionId)
             {
@@ -235,23 +246,23 @@ namespace RD.Logic
                 case "1":
                     _resultTable = orderSearch.GetHouseTypeDtl();
                     break;
-                //查询(作用:1)初始化树菜单内容 2)初始化GridView内容 )
+                //查询(作用:初始化树菜单内容)
                 case "1.1":
-
+                    _resultTable = orderSearch.Get_AdornTreeView(pid);
                     break;
-                //查询(作用:)
+                //查询(作用:初始化GridView内容)
                 case "1.2":
-
+                    _resultTable = orderSearch.Get_AdornDtl(funState,pid);
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":
-
-                    break;
-                //保存(作用:对表体GridView进行导入)
-                case "2.1":
-
+                    _resultMark = orderImport.InsertTreeRd(functionName,pid, treeName);
                     break;
                 //更新树形菜单(作用:编辑分组时使用)
+                case "2.1":
+                    _resultMark = orderImport.UpdateTreeRd(functionName,pid, treeName);
+                    break;
+                //保存(作用:对表体GridView进行导入)
                 case "2.2":
 
                     break;

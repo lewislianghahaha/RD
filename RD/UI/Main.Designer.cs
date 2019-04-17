@@ -68,12 +68,15 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.tmt = new System.Windows.Forms.Timer(this.components);
+            this.showDtl = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmShowdtl = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.status.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.showDtl.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -188,7 +191,7 @@
             // 
             this.tmMaterial.Name = "tmMaterial";
             this.tmMaterial.Size = new System.Drawing.Size(160, 22);
-            this.tmMaterial.Text = "主材单";
+            this.tmMaterial.Text = "室内主材单";
             // 
             // tmImport
             // 
@@ -395,6 +398,19 @@
             this.tmt.Enabled = true;
             this.tmt.Tick += new System.EventHandler(this.tmt_Tick);
             // 
+            // showDtl
+            // 
+            this.showDtl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmShowdtl});
+            this.showDtl.Name = "showDtl";
+            this.showDtl.Size = new System.Drawing.Size(149, 26);
+            // 
+            // tmShowdtl
+            // 
+            this.tmShowdtl.Name = "tmShowdtl";
+            this.tmShowdtl.Size = new System.Drawing.Size(148, 22);
+            this.tmShowdtl.Text = "显示明细信息";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -418,13 +434,14 @@
             this.status.PerformLayout();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.showDtl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip Menu;
+        private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmSet;
         private System.Windows.Forms.ToolStripMenuItem tmInfor;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -463,5 +480,7 @@
         private System.Windows.Forms.ToolStripMenuItem tmMaterialInfo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem tmHouseInfo;
+        private System.Windows.Forms.ContextMenuStrip showDtl;
+        private System.Windows.Forms.ToolStripMenuItem tmShowdtl;
     }
 }

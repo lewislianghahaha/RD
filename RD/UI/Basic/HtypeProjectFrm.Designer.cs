@@ -32,6 +32,7 @@
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.tmClose = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
@@ -41,7 +42,8 @@
             // 
             this.Menu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmSave});
+            this.tmSave,
+            this.tmClose});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(630, 25);
@@ -74,11 +76,18 @@
             this.gvdtl.Size = new System.Drawing.Size(630, 390);
             this.gvdtl.TabIndex = 0;
             // 
+            // tmClose
+            // 
+            this.tmClose.Name = "tmClose";
+            this.tmClose.Size = new System.Drawing.Size(44, 21);
+            this.tmClose.Text = "关闭";
+            // 
             // HtypeProjectFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(630, 415);
+            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
@@ -95,9 +104,10 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip Menu;
+        private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmSave;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView gvdtl;
+        private System.Windows.Forms.ToolStripMenuItem tmClose;
     }
 }

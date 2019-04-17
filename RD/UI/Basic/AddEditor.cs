@@ -61,7 +61,7 @@ namespace RD.UI.Basic
         /// <summary>
         /// 显示基本信息
         /// </summary>
-        public void Show()
+        public new void Show()
         {
             switch (_funid)
             {
@@ -107,7 +107,7 @@ namespace RD.UI.Basic
                         task.FunctionId = "2.2";               //功能ID
                         task.StartTask();
                         _resultMark = task.ResultMark;
-                        if (!task.ResultMark) throw new Exception("新增异常,请联系管理员");
+                        if (!task.ResultMark) throw new Exception("编辑异常,请联系管理员");
                         break;
                 }
                 //结束后将对应的文本框清空
