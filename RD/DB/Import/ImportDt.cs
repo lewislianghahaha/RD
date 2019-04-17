@@ -30,32 +30,54 @@ namespace RD.DB.Import
       
             if (pid == 1 && dt.Rows.Count==0)
             {
+                sqlscript = GetSqlscript(functionName,id,pid,treeName,0);
+                EditDt(sqlscript);
+            }
+            //插入要新增的记录
+            sqlscript = GetSqlscript(functionName, id, pid, treeName, 1);
+            result = EditDt(sqlscript);
+            return result;
+        }
+
+        /// <summary>
+        /// 获取插入语句
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="id"></param>
+        /// <param name="pid"></param>
+        /// <param name="treeName"></param>
+        /// <param name="markid">区分ID;是插头首行;还是其它行</param>
+        /// <returns></returns>
+        private string GetSqlscript(string functionName,int id,int pid,string treeName,int markid)
+        {
+            var sqlscript = string.Empty;
+            if (markid == 0)
+            {
                 //基础信息库使用
                 if (functionName != "AdornOrder" || functionName != "MaterialOrder")
                 {
-                    sqlscript = sqlList.BD_InsertTree(functionName, 0, "ALL"); 
+                    sqlscript = sqlList.BD_InsertTree(functionName, 0, "ALL");
                 }
                 //单据使用
                 else
                 {
                     sqlscript = sqlList.Pro_InsertTree(functionName, id, 0, "ALL");
                 }
-                EditDt(sqlscript);
-            }
-            //插入要新增的记录
-            if (functionName != "AdornOrder" || functionName != "MaterialOrder")
-            {
-                sqlscript = sqlList.BD_InsertTree(functionName, pid, treeName);
             }
             else
             {
-                sqlscript = sqlList.Pro_InsertTree(functionName,id,pid,treeName);
+                //插入要新增的记录
+                if (functionName != "AdornOrder" || functionName != "MaterialOrder")
+                {
+                    sqlscript = sqlList.BD_InsertTree(functionName, pid, treeName);
+                }
+                else
+                {
+                    sqlscript = sqlList.Pro_InsertTree(functionName, id, pid, treeName);
+                }
             }
-            result = EditDt(sqlscript);
-            return result;
+            return sqlscript;
         }
-
-
 
         /// <summary>
         /// 更新所选的节点信息
