@@ -15,7 +15,7 @@ namespace RD.DB
             var pubs = ConfigurationManager.ConnectionStrings["Connstring"];
             var consplit = pubs.ConnectionString.Split(';');
 
-            var strcon = string.Format(consplit[0], ".") + ";" + string.Format(consplit[1], "RD") + ";" +
+            var strcon = string.Format(consplit[0], "192.168.1.250") + ";" + string.Format(consplit[1], "RD") + ";" +
                          consplit[2] + ";" + string.Format(consplit[3], "sa") + ";" +
                          string.Format(consplit[4], "8990489he") + ";" + consplit[5] + ";" + consplit[6] + ";" + consplit[7];
 
