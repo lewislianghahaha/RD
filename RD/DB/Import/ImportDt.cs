@@ -319,6 +319,13 @@ namespace RD.DB.Import
             return result;
         }
 
+        /// <summary>
+        /// 更新参数
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="conn"></param>
+        /// <param name="da"></param>
+        /// <returns></returns>
         private SqlDataAdapter GetUpdateAdapter(string tableName,SqlConnection conn,SqlDataAdapter da)
         {
             //根据标记获取对应的更新语句
@@ -368,7 +375,28 @@ namespace RD.DB.Import
             return da;
         }
 
+        /// <summary>
+        /// 根据相关条件插入信息至T_PRO_Material 或 T_PRO_Adorn表内,并返回新插入的主键ID值
+        /// </summary>
+        /// <param name="functionName">功能名称 Adorn:室内装修工程单 Material:室内主材单</param>
+        /// <param name="custid"></param>
+        /// <returns></returns>
+        public int InsertOrderFirstDt(string functionName, int custid)
+        {
+            var reslutid = 0;
+            switch (functionName)
+            {
+                //室内装修工程单
+                case "Adorn":
 
+                    break;
+                //室内主材单
+                case "Material":
+
+                    break;
+            }
+            return reslutid;
+        }
 
     }
 }

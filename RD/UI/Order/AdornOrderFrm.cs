@@ -12,11 +12,9 @@ namespace RD.UI.Order
         Load load=new Load();
         AdornTypeFrm adornType=new AdornTypeFrm();
 
-        //保存单据名称
-        public string OrderNo = string.Empty;
         //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
         private string _funState;
-        //获取表头ID(Main窗体双击某行读取时使用)
+        //获取表头ID
         private int _pid;
 
         #region Set
@@ -26,7 +24,7 @@ namespace RD.UI.Order
         /// </summary>
         public string FunState { set { _funState = value; } }
         /// <summary>
-        /// 获取表头ID(Main窗体双击某行读取时使用)
+        /// 获取表头ID
         /// </summary>
         public int Pid { set { _pid = value; } }
 
@@ -60,6 +58,8 @@ namespace RD.UI.Order
             //单据状态:创建 C
             if (_funState == "C")
             {
+                //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
+                ShowHead(_pid);
                 //设置树菜单表头信息(只需显示ALL字段)
                 ShowTreeList(_funState,null);
                 //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
@@ -68,6 +68,9 @@ namespace RD.UI.Order
             //单据状态:读取 R
             else
             {
+                ////根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
+                ShowHead(_pid);
+
                 task.TaskId = 2;
                 task.FunctionId = "1.1";
                 task.Pid = _pid;
@@ -111,6 +114,14 @@ namespace RD.UI.Order
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return dt;
+        }
+
+        /// <summary>
+        /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
+        /// </summary>
+        private void ShowHead(int pid)
+        {
+            
         }
 
         /// <summary>

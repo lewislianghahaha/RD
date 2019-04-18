@@ -32,9 +32,11 @@ namespace RD.Logic
         private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
         private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
         private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
+        private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单使用）
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
+        private int _orderid;            //返回生成后的单据主键ID(室内装修工程单 及 室内主材单使用)
 
         #region Set
 
@@ -108,6 +110,11 @@ namespace RD.Logic
         /// </summary>
         public int Id { set { _id = value; } }
 
+        /// <summary>
+        /// //获取客户ID（室内装修工程单 及 室内主材单使用）
+        /// </summary>
+        public int Custid { set { _custid = value; } }
+
         #endregion
 
         #region Get
@@ -121,6 +128,11 @@ namespace RD.Logic
         /// 返回结果标记
         /// </summary>
         public bool ResultMark => _resultMark;
+
+        /// <summary>
+        /// 返回生成后的单据编号(室内装修工程单 及 室内主材单使用)
+        /// </summary>
+        public int Orderid => _orderid;
 
         #endregion
 
@@ -138,7 +150,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id);
+                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid);
                     break;
                 //主材单
                 case 3:
@@ -244,8 +256,9 @@ namespace RD.Logic
         /// <param name="funState">单据状态 C:创建 R:读取</param>
         /// <param name="pid">表头ID</param>
         /// <param name="treeName">节点名称</param>
-        /// <param name="id">上上级节点ID(室内装修工程单 及 室内主材单使用)</param>
-        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id)
+        /// <param name="id">上上级节点ID</param>
+        /// <param name="custid">客户ID</param>
+        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,int custid)
         {
             switch (functionId)
             {
@@ -272,6 +285,10 @@ namespace RD.Logic
                 //保存(作用:对表体GridView进行导入)
                 case "2.2":
 
+                    break;
+                //保存(作用:导入信息至表头T_PRO_Adorn 或 T_PRO_Material 注:插入成功后,返回单据ID,若异常返回0)
+                case "2.3":
+                    _orderid = orderImport.InsertOrderFirstDt(functionName,custid);
                     break;
                 //删除节点及对应的信息
                 case "3":

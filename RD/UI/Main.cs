@@ -12,8 +12,9 @@ namespace RD.UI
     {
         TaskLogic task=new TaskLogic();
         Load load=new Load();
-        AdornOrderFrm adorn = new AdornOrderFrm();
-        MaterialOrderFrm material = new MaterialOrderFrm();
+        CustInfoFrm custInfo=new CustInfoFrm();
+        //AdornOrderFrm adorn = new AdornOrderFrm();
+        //MaterialOrderFrm material = new MaterialOrderFrm();
 
         public Main()
         {
@@ -144,11 +145,12 @@ namespace RD.UI
             try
             {
                 //设置单据状态为"创建"
-                adorn.FunState = "C";  
+                custInfo.FunState = "C";
+                custInfo.FunName = "Adorn";  
                 //初始化窗体信息
-                adorn.OnInitialize();
-                adorn.StartPosition=FormStartPosition.CenterParent;
-                adorn.ShowDialog();
+                custInfo.OnInitialize();
+                custInfo.StartPosition=FormStartPosition.CenterParent;
+                custInfo.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -166,9 +168,12 @@ namespace RD.UI
             try
             {
                  //创建状态
-
-                material.StartPosition=FormStartPosition.CenterParent;
-                material.ShowDialog();
+                custInfo.FunState = "C";
+                custInfo.FunName = "Material";
+                //初始化窗体信息
+                custInfo.OnInitialize();
+                custInfo.StartPosition=FormStartPosition.CenterParent;
+                custInfo.ShowDialog();
             }
             catch (Exception ex)
             {

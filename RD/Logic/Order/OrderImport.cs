@@ -51,5 +51,23 @@ namespace RD.Logic.Order
             return result;
         }
 
+        /// <summary>
+        /// 根据相关条件插入信息至T_PRO_Material 或 T_PRO_Adorn表内,并返回新插入的主键ID值
+        /// </summary>
+        /// <returns></returns>
+        public int InsertOrderFirstDt(string functionName, int custid)
+        {
+            var reslutid = 0;
+            try
+            {
+                reslutid = importDt.InsertOrderFirstDt(functionName, custid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return reslutid;
+        }
+
     }
 }

@@ -161,6 +161,12 @@
     <Compile Include="UI\Order\ContextMenuFrm.Designer.cs">
       <DependentUpon>ContextMenuFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Order\CustInfoFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Order\CustInfoFrm.Designer.cs">
+      <DependentUpon>CustInfoFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Order\MaterialOrderFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\ContextMenuFrm.resx">
       <DependentUpon>ContextMenuFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Order\CustInfoFrm.resx">
+      <DependentUpon>CustInfoFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\MaterialOrderFrm.resx">
       <DependentUpon>MaterialOrderFrm.cs</DependentUpon>

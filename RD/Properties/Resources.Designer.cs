@@ -68,5 +68,14 @@ namespace RD.Properties {
                 return ResourceManager.GetString("BasicFrm_TmSave_Click_保存成功_请点击后继续", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 生成成功,请点击继续 的本地化字符串。
+        /// </summary>
+        internal static string CustInfoFrm_TmGet_Click_生成成功_请点击继续 {
+            get {
+                return ResourceManager.GetString("CustInfoFrm_TmGet_Click_生成成功_请点击继续", resourceCulture);
+            }
+        }
     }
 }
