@@ -490,5 +490,15 @@
             return _result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string Get_OrderMaxid()
+        {
+
+            return _result;
+        }
+
     }
 }

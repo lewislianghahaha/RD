@@ -384,18 +384,44 @@ namespace RD.DB.Import
         public int InsertOrderFirstDt(string functionName, int custid)
         {
             var reslutid = 0;
+            var dt = new DataTable();
+            var sqlscript = string.Empty;
+            //获取对应表的最大ID值
+            var maxid = 0;                          
+
             switch (functionName)
             {
                 //室内装修工程单
                 case "Adorn":
+                    //获取T_PRO_Adorn表MAX(ID)值
 
+                    EditDt(sqlscript);
+                    //插入相关记录至T_PRO_Adorn表内
+                    //
+                    Importdt("T_PRO_Adorn", dt);
                     break;
                 //室内主材单
                 case "Material":
+                    //插入相关记录至T_PRO_Adorn表内
+                    //
+
+                    Importdt("T_PRO_Material", dt);
 
                     break;
             }
             return reslutid;
+        }
+
+        /// <summary>
+        /// 获取主键ID值
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        private int Maxid(string tableName)
+        {
+            var id = 0;
+
+            return id;
         }
 
     }

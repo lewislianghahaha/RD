@@ -43,7 +43,6 @@ namespace RD.UI.Order
             tmConfirm.Click += TmConfirm_Click;
             tmExcel.Click += TmExcel_Click;
             tmPrint.Click += TmPrint_Click;
-            tmCustomer.Click += TmCustomer_Click;
             btnCreate.Click += BtnCreate_Click;
             btnChange.Click += BtnChange_Click;
             btnDel.Click += BtnDel_Click;
@@ -68,7 +67,7 @@ namespace RD.UI.Order
             //单据状态:读取 R
             else
             {
-                ////根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
+                //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
                 ShowHead(_pid);
 
                 task.TaskId = 2;
@@ -328,23 +327,6 @@ namespace RD.UI.Order
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TmPrint_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// 右键菜单-客户资料
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TmCustomer_Click(object sender, EventArgs e)
         {
             try
             {

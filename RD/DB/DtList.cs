@@ -490,5 +490,112 @@ namespace RD.DB
             return dt;
         }
 
+        /// <summary>
+        /// 获取"室内装修工程"表头临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_ProAdorndt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //单据编号
+                    case 1:
+                        dc.ColumnName = "OrderNo";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //客户ID
+                    case 2:
+                        dc.ColumnName = "Custid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //录入人
+                    case 3:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //录入日期
+                    case 4:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    //审核状态
+                    case 5:
+                        dc.ColumnName = "Fstatus";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //审核日期
+                    case 6:
+                        dc.ColumnName = "FstatusDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取"室内主材单"表头临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_ProMaterialdt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //单据编号
+                    case 1:
+                        dc.ColumnName = "OrderNo";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //客户ID
+                    case 2:
+                        dc.ColumnName = "Custid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //录入人
+                    case 3:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //录入日期
+                    case 4:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    //审核状态
+                    case 5:
+                        dc.ColumnName = "Fstatus";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //审核日期
+                    case 6:
+                        dc.ColumnName = "FstatusDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
     }
 }
