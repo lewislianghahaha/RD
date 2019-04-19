@@ -67,7 +67,25 @@ namespace RD.Logic.Order
             return dt;
         }
 
-        
+        /// <summary>
+        /// 根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public DataTable Get_FirstOrderInfo(string functionName, int pid)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.SearFirstOrderInfo(functionName,pid);
+            }
+            catch (Exception ex)
+            {
+                throw  new Exception(ex.Message);
+            }
+            return dt;
+        }
 
     }
 }

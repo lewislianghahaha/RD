@@ -491,12 +491,38 @@
         }
 
         /// <summary>
-        /// 
+        /// 获取最大的单据ID (室内装修工程 及 室内主材单使用)
         /// </summary>
         /// <returns></returns>
-        public string Get_OrderMaxid()
+        public string Get_OrderMaxid(string tablename)
         {
+            _result = $@"
+                         SELECT ISNULL(MAX(id),0)+1
+                         FROM dbo.{tablename}";
+            return _result;
+        }
 
+        /// <summary>
+        /// 根据主键ID获取单据表相关信息
+        /// </summary>
+        /// <param name="factionname"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public string Get_OrderInfo(string factionname,int pid)
+        {
+            switch (factionname)
+            {
+                case "Pro_Adorn":
+                    _result = $@"
+                                    
+                                ";
+                    break;
+                case "Pro_Material":
+                    _result = $@"
+                                    
+                                ";
+                    break;
+            }
             return _result;
         }
 

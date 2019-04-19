@@ -38,6 +38,7 @@ namespace RD.Logic
         private bool _resultMark;        //返回是否成功标记
         private int _orderid;            //返回生成后的单据主键ID(室内装修工程单 及 室内主材单使用)
 
+
         #region Set
 
         /// <summary>
@@ -150,9 +151,9 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid);
+                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName);
                     break;
-                //主材单
+                //室内主材单
                 case 3:
                     PrdMaterialInfo(_functionId);
                     break;
@@ -258,7 +259,8 @@ namespace RD.Logic
         /// <param name="treeName">节点名称</param>
         /// <param name="id">上上级节点ID</param>
         /// <param name="custid">客户ID</param>
-        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,int custid)
+        /// <param name="accountName">帐号名称</param>
+        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,int custid,string accountName)
         {
             switch (functionId)
             {
@@ -274,6 +276,10 @@ namespace RD.Logic
                 case "1.2":
                     _resultTable = orderSearch.Get_AdornDtl(funState,pid);
                     break;
+                //查询(作用:根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息)
+                case "1.3":
+                    _resultTable = null;
+                    break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":
                     _resultMark = orderImport.InsertTreeRd(functionName,id,pid, treeName);
@@ -288,7 +294,7 @@ namespace RD.Logic
                     break;
                 //保存(作用:导入信息至表头T_PRO_Adorn 或 T_PRO_Material 注:插入成功后,返回单据ID,若异常返回0)
                 case "2.3":
-                    _orderid = orderImport.InsertOrderFirstDt(functionName,custid);
+                    _orderid = orderImport.InsertOrderFirstDt(functionName,custid,accountName);
                     break;
                 //删除节点及对应的信息
                 case "3":

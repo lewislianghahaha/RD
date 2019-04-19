@@ -13,8 +13,6 @@ namespace RD.UI
         TaskLogic task=new TaskLogic();
         Load load=new Load();
         CustInfoFrm custInfo=new CustInfoFrm();
-        //AdornOrderFrm adorn = new AdornOrderFrm();
-        //MaterialOrderFrm material = new MaterialOrderFrm();
 
         public Main()
         {
@@ -146,7 +144,7 @@ namespace RD.UI
             {
                 //设置单据状态为"创建"
                 custInfo.FunState = "C";
-                custInfo.FunName = "Adorn";  
+                custInfo.FunName = "Pro_Adorn";  
                 //初始化窗体信息
                 custInfo.OnInitialize();
                 custInfo.StartPosition=FormStartPosition.CenterParent;
@@ -169,7 +167,7 @@ namespace RD.UI
             {
                  //创建状态
                 custInfo.FunState = "C";
-                custInfo.FunName = "Material";
+                custInfo.FunName = "Pro_Material";
                 //初始化窗体信息
                 custInfo.OnInitialize();
                 custInfo.StartPosition=FormStartPosition.CenterParent;

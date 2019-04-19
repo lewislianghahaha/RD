@@ -46,7 +46,7 @@
             this.tmClose});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(575, 25);
+            this.Menu.Size = new System.Drawing.Size(705, 25);
             this.Menu.TabIndex = 0;
             // 
             // tmGet
@@ -67,7 +67,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(575, 337);
+            this.panel1.Size = new System.Drawing.Size(705, 416);
             this.panel1.TabIndex = 1;
             // 
             // gvdtl
@@ -80,14 +80,14 @@
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(575, 337);
+            this.gvdtl.Size = new System.Drawing.Size(705, 416);
             this.gvdtl.TabIndex = 0;
             // 
             // CustInfoFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(575, 362);
+            this.ClientSize = new System.Drawing.Size(705, 441);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Menu);
@@ -105,7 +105,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip Menu;
+        private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmGet;
         private System.Windows.Forms.ToolStripMenuItem tmClose;
         private System.Windows.Forms.Panel panel1;

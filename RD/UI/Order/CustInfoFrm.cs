@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
 
@@ -10,7 +11,7 @@ namespace RD.UI.Order
         AdornOrderFrm adornOrder=new AdornOrderFrm();
         MaterialOrderFrm materialOrder=new MaterialOrderFrm();
 
-        //记录功能名称 Adorn:室内装修工程 Material:室内主材单
+        //记录功能名称 Pro_Adorn:室内装修工程 Pro_Material:室内主材单
         private string _funName;
         //单据状态标记(作用:记录创建记录) C:创建
         private string _funState;
@@ -71,14 +72,14 @@ namespace RD.UI.Order
                 var customerName = string.Empty;
                 //客户主键ID
                 var customerid = 0;
-                //记录功能名称 Adorn:室内装修工程 Material:室内主材单
+                //记录功能名称 Pro_Adorn:室内装修工程 Pro_Material:室内主材单
                 var frmName = string.Empty;
                 //主键ID(记录生成后的表头ID 即:T_PRO_Adorn 或 T_PRO_Material)
                 var id = 0;
 
                 if (gvdtl.SelectedRows.Count==0) throw new Exception("请选取某一行,然后再按此按钮");
 
-                frmName = _funName == "Adorn" ? "室内装修工程" : "室内主材";
+                frmName = _funName == "Pro_Adorn" ? "室内装修工程" : "室内主材";
                 //获取当前行的客户名称 及 客户ID信息
                 customerid= Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
                 customerName = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[2].Value);
@@ -92,6 +93,7 @@ namespace RD.UI.Order
                     task.FunctionId = "2.3";
                     task.FunctionName = _funName;
                     task.Custid = customerid;
+                    task.AccountName = GlobalClasscs.User.StrUsrName;
 
                     task.StartTask();
                     //返回新插入的表头ID;即T_PRO_Adorn 或 T_PRO_Material表信息
@@ -103,22 +105,26 @@ namespace RD.UI.Order
                         //当插入完成后,转移到 室内装修工程单 或 室内主材单 窗体内,并将此窗体关闭
                         MessageBox.Show($"新增{frmName}单据成功,请点击继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //室内装修工程单
-                        if (_funName == "Adorn")
+                        if (_funName == "Pro_Adorn")
                         {
-                            //关闭此窗体
-                            this.Close();
+                            //将当前窗体隐藏
+                            this.Visible = false;
+                            //弹出对应窗体
                             adornOrder.FunState = _funState;
                             adornOrder.Pid = id;            //单据主键id
+                            adornOrder.FunName = _funName;  //功能名称
 
                             adornOrder.OnInitialize();
                             adornOrder.StartPosition = FormStartPosition.CenterParent;
                             adornOrder.ShowDialog();
+
                         }
                         //室内主材单
                         else
                         {
-                            //关闭此窗体
-                            this.Close();
+                            //将当前窗体隐藏
+                            this.Visible = false;
+                            //弹出对应窗体
 
                             materialOrder.StartPosition=FormStartPosition.CenterParent;
                             materialOrder.ShowDialog();
@@ -152,5 +158,17 @@ namespace RD.UI.Order
             gvdtl.Columns[1].Visible = false;
             gvdtl.Columns[3].Visible = false;
         }
+
+    //private void Start()
+    //{
+    //    task.StartTask();
+
+    //    //当完成后将Form2子窗体关闭
+    //    this.Invoke((ThreadStart)(() =>
+    //    {
+    //        load.Close();
+    //    }));
+    //}
+
     }
 }

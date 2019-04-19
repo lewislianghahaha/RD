@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 using RD.DB.Search;
 
 namespace RD.DB.Import
@@ -315,6 +316,12 @@ namespace RD.DB.Import
                 case "HouseProject":
                     result = "T_BD_HTypeProjectDtl";
                     break;
+                case "Pro_Adorn":
+                    result = "T_PRO_Adorn";
+                    break;
+                case "Pro_Material":
+                    result = "T_PRO_Material";
+                    break;
             }
             return result;
         }
@@ -379,35 +386,42 @@ namespace RD.DB.Import
         /// 根据相关条件插入信息至T_PRO_Material 或 T_PRO_Adorn表内,并返回新插入的主键ID值
         /// </summary>
         /// <param name="functionName">功能名称 Adorn:室内装修工程单 Material:室内主材单</param>
-        /// <param name="custid"></param>
+        /// <param name="custid">所选择的客户ID</param>
+        /// <param name="accountname">帐号名称</param>
         /// <returns></returns>
-        public int InsertOrderFirstDt(string functionName, int custid)
+        public int InsertOrderFirstDt(string functionName, int custid,string accountname)
         {
+            //获取对应表的最大ID值
             var reslutid = 0;
             var dt = new DataTable();
-            var sqlscript = string.Empty;
-            //获取对应表的最大ID值
-            var maxid = 0;                          
 
-            switch (functionName)
+            try
             {
-                //室内装修工程单
-                case "Adorn":
-                    //获取T_PRO_Adorn表MAX(ID)值
+                var tablename = GetTableName(functionName);
 
-                    EditDt(sqlscript);
-                    //插入相关记录至T_PRO_Adorn表内
-                    //
-                    Importdt("T_PRO_Adorn", dt);
-                    break;
-                //室内主材单
-                case "Material":
-                    //插入相关记录至T_PRO_Adorn表内
-                    //
-
-                    Importdt("T_PRO_Material", dt);
-
-                    break;
+                switch (functionName)
+                {
+                    //室内装修工程单
+                    case "Pro_Adorn":
+                        //获取T_PRO_Adorn表MAX(ID)值
+                        reslutid = Maxid(tablename);
+                        //插入相关记录至T_PRO_Adorn临时表内
+                        dt = Get_OrderTemp(functionName, custid, reslutid, accountname);
+                        break;
+                    //室内主材单
+                    case "Pro_Material":
+                        //获取T_PRO_Material表MAX(ID)值
+                        reslutid = Maxid(tablename);
+                        //插入相关记录至T_PRO_Material临时表内
+                        dt = Get_OrderTemp(functionName, custid, reslutid, accountname);
+                        break;
+                }
+                //将相关记录进行插入
+                Importdt(tablename, dt);
+            }
+            catch (Exception)
+            {
+                reslutid = 0;
             }
             return reslutid;
         }
@@ -419,10 +433,58 @@ namespace RD.DB.Import
         /// <returns></returns>
         private int Maxid(string tableName)
         {
-            var id = 0;
-
+            var dt = new DataTable();
+            //获取对应的SQL语句
+            var sqlscript=sqlList.Get_OrderMaxid(tableName);
+            //执行SQL
+            var sqlDataAdapter=new SqlDataAdapter(sqlscript,serDt.GetConn());
+            sqlDataAdapter.Fill(dt);
+            //赋值
+            var id = Convert.ToInt32(dt.Rows[0][0]);
             return id;
         }
 
+        /// <summary>
+        /// 将相关值插入至对应的临时表内
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="custid"></param>
+        /// <param name="maxid"></param>
+        /// <param name="accountname"></param>
+        /// <returns></returns>
+        private DataTable Get_OrderTemp(string functionName, int custid,int maxid,string accountname)
+        {
+            var remark = string.Empty;
+            var dt = new DataTable();
+
+            switch (functionName)
+            {
+                //室内装修工程
+                case "Pro_Adorn":
+                    //获取对应临时表
+                    dt = serDt.GetTempdt(functionName);
+                    remark = "AD";
+                    break;
+                //室内主材单
+                case "Pro_Material":
+                    //获取对应临时表
+                    dt = serDt.GetTempdt(functionName);
+                    remark = "M";
+                    break;
+            }
+
+            //将临时表进行赋值
+            var row = dt.NewRow();
+            row[0] = maxid;
+            row[1] = remark + '-' + DateTime.Now.ToString("yyMMdd") + '-'+ maxid;
+            row[2] = custid;
+            row[3] = accountname;
+            row[4] = DateTime.Now.Date;
+            row[5] = 'N';
+            //row[6] = null;
+            dt.Rows.Add(row);
+
+            return dt;
+        }
     }
 }

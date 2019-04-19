@@ -16,17 +16,23 @@ namespace RD.UI.Order
         private string _funState;
         //获取表头ID
         private int _pid;
+        //记录功能名称 Pro_Adorn:室内装修工程 Pro_Material:室内主材单
+        private string _funName;
 
         #region Set
 
-        /// <summary>
-        /// 获取单据状态标记ID C:创建 R:读取
-        /// </summary>
-        public string FunState { set { _funState = value; } }
-        /// <summary>
-        /// 获取表头ID
-        /// </summary>
-        public int Pid { set { _pid = value; } }
+            /// <summary>
+            /// 获取单据状态标记ID C:创建 R:读取
+            /// </summary>
+            public string FunState { set { _funState = value; } }
+            /// <summary>
+            /// 获取表头ID
+            /// </summary>
+            public int Pid { set { _pid = value; } }
+            /// <summary>
+            /// 记录功能名称 Adorn:室内装修工程 Material:室内主材单
+            /// </summary>
+            public string FunName { set { _funName = value; } }
 
         #endregion
 
@@ -54,11 +60,12 @@ namespace RD.UI.Order
         /// </summary>
         public void OnInitialize()
         {
+            //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
+            ShowHead(_funName,_pid);
+
             //单据状态:创建 C
             if (_funState == "C")
             {
-                //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
-                ShowHead(_pid);
                 //设置树菜单表头信息(只需显示ALL字段)
                 ShowTreeList(_funState,null);
                 //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
@@ -67,9 +74,6 @@ namespace RD.UI.Order
             //单据状态:读取 R
             else
             {
-                //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
-                ShowHead(_pid);
-
                 task.TaskId = 2;
                 task.FunctionId = "1.1";
                 task.Pid = _pid;
@@ -118,9 +122,23 @@ namespace RD.UI.Order
         /// <summary>
         /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
         /// </summary>
-        private void ShowHead(int pid)
+        /// <param name="funname"></param>
+        /// <param name="pid"></param>
+        private void ShowHead(string funname,int pid)
         {
+            //根据ID值读取T_Pro_Adorn表记录;并将结果赋给对应的文本框内
+            task.TaskId = 2;
+            task.FunctionId = "1.3";
+            task.FunctionName = funname;
+            task.Pid = pid;
             
+            task.StartTask();
+            //并将结果赋给对应的文本框内
+            var dt = task.ResultTable;
+            txtOrderNo.Text = dt.Rows[1].ToString();
+            txtCustomer.Text = dt.Rows[2].ToString();
+            txtHoseName.Text = dt.Rows[3].ToString();
+            txtAdd.Text = dt.Rows[4].ToString();
         }
 
         /// <summary>

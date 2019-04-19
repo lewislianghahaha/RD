@@ -251,6 +251,14 @@ namespace RD.DB.Search
                 case "HouseProject":
                     resultDt = dlDtList.Get_HouseProjectEmptydt();
                     break;
+                //室内装修工程单
+                case "Pro_Adorn":
+                    resultDt = dlDtList.Get_ProAdorndt();
+                    break;
+                //室内主材单
+                case "Pro_Material":
+                    resultDt = dlDtList.Get_ProMaterialdt();
+                    break;
             }
             return resultDt;
         }
@@ -347,11 +355,11 @@ namespace RD.DB.Search
         /// <returns></returns>
         public DataTable SearchHouseType()
         {
-            var ds = new DataSet();
+            var dt = new DataTable();
             var sqlscript = sqlList.PRO_Adorn_SearchDropDownList();
             var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
-            sqlDataAdapter.Fill(ds);
-            return ds.Tables[0];
+            sqlDataAdapter.Fill(dt);
+            return dt;
         }
 
         /// <summary>
@@ -420,11 +428,34 @@ namespace RD.DB.Search
             return dt;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="factionname"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public DataTable SearFirstOrderInfo(string factionname,int pid)
+        {
+            var dt = new DataTable();
+
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                throw;
+            }
+            return dt;
+        }
+
         #endregion
 
         #region 室内主材单
 
-        
+
 
         #endregion
     }
