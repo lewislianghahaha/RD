@@ -70,6 +70,7 @@
             this.tmt = new System.Windows.Forms.Timer(this.components);
             this.showDtl = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmShowdtl = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -85,7 +86,8 @@
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmSet,
             this.tmCreate,
-            this.tmImport});
+            this.tmImport,
+            this.tmRefresh});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(1071, 25);
@@ -206,18 +208,18 @@
             // tmEXCEL
             // 
             this.tmEXCEL.Name = "tmEXCEL";
-            this.tmEXCEL.Size = new System.Drawing.Size(112, 22);
+            this.tmEXCEL.Size = new System.Drawing.Size(152, 22);
             this.tmEXCEL.Text = "EXCEL";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(109, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(112, 22);
+            this.tmPrint.Size = new System.Drawing.Size(152, 22);
             this.tmPrint.Text = "打印";
             // 
             // panel1
@@ -411,6 +413,12 @@
             this.tmShowdtl.Size = new System.Drawing.Size(148, 22);
             this.tmShowdtl.Text = "显示明细信息";
             // 
+            // tmRefresh
+            // 
+            this.tmRefresh.Name = "tmRefresh";
+            this.tmRefresh.Size = new System.Drawing.Size(44, 21);
+            this.tmRefresh.Text = "刷新";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -482,5 +490,6 @@
         private System.Windows.Forms.ToolStripMenuItem tmHouseInfo;
         private System.Windows.Forms.ContextMenuStrip showDtl;
         private System.Windows.Forms.ToolStripMenuItem tmShowdtl;
+        private System.Windows.Forms.ToolStripMenuItem tmRefresh;
     }
 }

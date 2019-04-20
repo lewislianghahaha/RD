@@ -58,6 +58,7 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.comHtype = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnGetdtl = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -139,7 +140,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(995, 27);
             this.panel1.TabIndex = 1;
@@ -218,7 +219,7 @@
             this.panel2.Controls.Add(this.splitContainer1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 51);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(995, 575);
             this.panel2.TabIndex = 2;
@@ -337,6 +338,8 @@
             // 
             // panel7
             // 
+            this.panel7.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel7.Controls.Add(this.btnGetdtl);
             this.panel7.Controls.Add(this.comHtype);
             this.panel7.Controls.Add(this.label4);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
@@ -362,6 +365,15 @@
             this.label4.Size = new System.Drawing.Size(83, 12);
             this.label4.TabIndex = 0;
             this.label4.Text = "装修工程类别:";
+            // 
+            // btnGetdtl
+            // 
+            this.btnGetdtl.Location = new System.Drawing.Point(241, 1);
+            this.btnGetdtl.Name = "btnGetdtl";
+            this.btnGetdtl.Size = new System.Drawing.Size(145, 23);
+            this.btnGetdtl.TabIndex = 2;
+            this.btnGetdtl.Text = "获取工程类别明细信息";
+            this.btnGetdtl.UseVisualStyleBackColor = true;
             // 
             // AdornOrderFrm
             // 
@@ -427,5 +439,6 @@
         private System.Windows.Forms.TextBox txtCustomer;
         private System.Windows.Forms.TextBox txtOrderNo;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnGetdtl;
     }
 }

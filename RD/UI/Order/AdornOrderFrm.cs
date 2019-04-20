@@ -12,11 +12,13 @@ namespace RD.UI.Order
         Load load=new Load();
         AdornTypeFrm adornType=new AdornTypeFrm();
 
+        //保存树型菜单DataTable记录
+        private DataTable _treeviewdt=new DataTable();
         //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
         private string _funState;
         //获取表头ID
         private int _pid;
-        //记录功能名称 Pro_Adorn:室内装修工程 Pro_Material:室内主材单
+        //记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
         private string _funName;
 
         #region Set
@@ -70,10 +72,10 @@ namespace RD.UI.Order
             {
                 //设置树菜单表头信息(只需显示ALL字段)
                 ShowTreeList(_funState,null);
-                //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
-                gvdtl.DataSource = OnInitializeDtl(); ;
+                //对GridView赋值(输出空白表)
+                gvdtl.DataSource = OnInitializeDtl();
             }
-            //单据状态:读取 R
+            //单据状态:读取 R （读取顺序:树型菜单->表体内容）
             else
             {
                 task.TaskId = 2;
@@ -81,7 +83,9 @@ namespace RD.UI.Order
                 task.Pid = _pid;
 
                 task.StartTask();
-                //设置树菜单表头信息
+                //将树菜单的DT保存（后面删除功能有用）
+                _treeviewdt = task.ResultTable;
+                //读取设置树菜单表头信息
                 ShowTreeList(_funState, task.ResultTable);
                 //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
                 gvdtl.DataSource = OnInitializeDtl();
@@ -135,7 +139,7 @@ namespace RD.UI.Order
             task.Pid = pid;
             
             task.StartTask();
-            //并将结果赋给对应的文本框内
+            //并将结果赋给对应的文本框内(表头信息)
             var dt = task.ResultTable;
             txtOrderNo.Text = dt.Rows[0][0].ToString();
             txtCustomer.Text = dt.Rows[0][1].ToString();
@@ -284,8 +288,32 @@ namespace RD.UI.Order
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
                 if ((int)tvview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
 
+                //节点ID
+                var treeid = Convert.ToInt32(tvview.SelectedNode.Tag);
+                //节点名称
+                var treeName = tvview.SelectedNode.Text;
 
+                var clickMessage = $"您所选择的信息为:\n 节点名称:{treeName} \n 是否继续? \n 注:若点选的节点下有内容的话(包括明细内容),就会将与它对应的记录都删除, \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    task.TaskId = 2;
+                    task.FunctionId = "3";
+                    task.FunctionName = _funName;
+                    task.Pid = treeid;
+                    task.Data = _treeviewdt;
 
+                    new Thread(Start).Start();
+                    load.StartPosition = FormStartPosition.CenterScreen;
+                    load.ShowDialog();
+
+                    if (!task.ResultMark) throw new Exception("删除异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("删除成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    //删除完成后“刷新”
+                    OnInitialize();
+                }
             }
             catch (Exception ex)
             {

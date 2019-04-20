@@ -251,11 +251,11 @@ namespace RD.DB.Search
                     resultDt = dlDtList.Get_HouseProjectEmptydt();
                     break;
                 //室内装修工程单
-                case "Pro_Adorn":
+                case "AdornOrder":
                     resultDt = dlDtList.Get_ProAdorndt();
                     break;
                 //室内主材单
-                case "Pro_Material":
+                case "MaterialOrder":
                     resultDt = dlDtList.Get_ProMaterialdt();
                     break;
             }
@@ -354,7 +354,7 @@ namespace RD.DB.Search
         /// <returns></returns>
         public DataTable SearchHouseType()
         {
-            var sqlscript = sqlList.PRO_Adorn_SearchDropDownList();
+            var sqlscript = sqlList.Order_Adorn_SearchDropDownList();
             var dt = GetData(sqlscript);
             return dt;
         }
@@ -372,7 +372,7 @@ namespace RD.DB.Search
             try
             {
                 //获取相关SQL查询语句
-                var sqlscript = sqlList.Pro_Adorn_SearchDtl(pid);
+                var sqlscript = sqlList.Order_Adorn_SearchDtl(pid);
                 //执行查询功能并将结填充到DataTable内
                 var dt = GetData(sqlscript);
 
@@ -408,7 +408,7 @@ namespace RD.DB.Search
             try
             {
                 //获取相关SQL查询语句
-                var sqlscript = sqlList.Pro_Adorn_SearchTreeView(pid);
+                var sqlscript = sqlList.Order_Adorn_SearchTreeView(pid);
                 //执行查询功能并将结填充到DataTable内
                 dt = GetData(sqlscript);
             }

@@ -151,11 +151,11 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    PrdAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName);
+                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data);
                     break;
                 //室内主材单
                 case 3:
-                    PrdMaterialInfo(_functionId);
+                    ProMaterialInfo(_functionId);
                     break;
                 //导出EXCEL(Main窗体使用)
                 case 4:
@@ -260,7 +260,8 @@ namespace RD.Logic
         /// <param name="id">上上级节点ID</param>
         /// <param name="custid">客户ID</param>
         /// <param name="accountName">帐号名称</param>
-        private void PrdAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,int custid,string accountName)
+        /// <param name="dt">初始化后的DT,获取数据库对应表的全部信息;</param>
+        private void ProAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,int custid,string accountName,DataTable dt)
         {
             switch (functionId)
             {
@@ -296,9 +297,9 @@ namespace RD.Logic
                 case "2.3":
                     _orderid = orderImport.InsertOrderFirstDt(functionName,custid,accountName);
                     break;
-                //删除节点及对应的信息
+                //删除节点及对应的表体信息
                 case "3":
-
+                    _resultMark = odrderDel.DelBD_Record(functionName, pid, dt);
                     break;
                 //审核
                 case "4":
@@ -311,7 +312,7 @@ namespace RD.Logic
         /// 主材单
         /// </summary>
         /// <param name="functionId"></param>
-        private void PrdMaterialInfo(string functionId)
+        private void ProMaterialInfo(string functionId)
         {
             switch (functionId)
             {

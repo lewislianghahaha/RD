@@ -1,17 +1,19 @@
 ﻿namespace RD.DB
 {
+    //作用:定义所需的SQL语句
     public class SqlList
     {
         //根据SQLID返回对应的SQL语句  
-        private string _result;         
+        private string _result;
 
+        #region 基础信息库
         /// <summary>
         /// "基础信息库"SQL列表
         /// </summary>
         /// <param name="sqlid">SQL中转ID</param>
         /// <param name="parentId">表头ID</param>
         /// <returns></returns>
-        public string BD_SQLList(string sqlid,string parentId)
+        public string BD_SQLList(string sqlid, string parentId)
         {
             //记录SQL报表中转ID
             switch (sqlid)
@@ -30,7 +32,7 @@
                     break;
                 //客户信息管理-表体(针对表体信息查询)
                 case "2":
-                    _result =$@"
+                    _result = $@"
                                 SELECT a.Id,a.Custid,a.CustName AS '客户名称',a.HTypeid AS '房屋类型',a.HTypeName as '房屋类型名称',
 	                                   a.Spare AS '装修地区',a.SpareAdd AS '装修地址',a.Cust_Add AS '客户通讯地址',
                                        a.Cust_Phone AS '客户联系方式',a.InputUser AS '录入人',a.InputDt AS '录入日期'
@@ -102,7 +104,7 @@
                                            a.Unit as '单位',a.Price as '单价',
                                            a.InputUser as '录入人',a.InputDt as '录入日期'
                                     FROM dbo.T_BD_MaterialEntry a
-                                    where a.id='{parentId}'";   
+                                    where a.id='{parentId}'";
                     break;
                 #region 材料信息管理-表体(查询框有值时使用)
                 //
@@ -193,7 +195,7 @@
         /// <param name="pid"></param>
         /// <param name="treeName"></param>
         /// <returns></returns>
-        public string BD_InsertTree(string factionName,int pid, string treeName)
+        public string BD_InsertTree(string factionName, int pid, string treeName)
         {
             switch (factionName)
             {
@@ -224,7 +226,7 @@
         /// <param name="treeName">需要更新的节点名称</param>
         /// <param name="id">原节点ID</param>
         /// <returns></returns>
-        public string BD_UpdateTree(string factionName,string treeName,int id)
+        public string BD_UpdateTree(string factionName, string treeName, int id)
         {
             switch (factionName)
             {
@@ -377,12 +379,14 @@
                         ";
             return _result;
         }
+        #endregion
 
+        #region 单据相关
         /// <summary>
         /// 室内装修工程单-装修工程下拉列表使用
         /// </summary>
         /// <returns></returns>
-        public string PRO_Adorn_SearchDropDownList()
+        public string Order_Adorn_SearchDropDownList()
         {
             var result = @"
                                   SELECT a.HTypeid,a.HtypeName
@@ -397,7 +401,7 @@
         /// </summary>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public string Pro_Adorn_SearchDtl(int pid)
+        public string Order_Adorn_SearchDtl(int pid)
         {
             var result = $@"
                              SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
@@ -413,7 +417,7 @@
         /// </summary>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public string Pro_Adorn_SearchTreeView(int pid)
+        public string Order_Adorn_SearchTreeView(int pid)
         {
             var result = $@"
                             SELECT a.Treeid,a.ParentId,a.TypeName
@@ -427,7 +431,7 @@
         /// 根据功能名称查询id=1时,各表头记录有没有值(室内装修工程 及 室内主材单使用)
         /// </summary>
         /// <returns></returns>
-        public string Pro_SearchNum(string factionName)
+        public string Order_SearchNum(string factionName)
         {
             switch (factionName)
             {
@@ -450,7 +454,7 @@
         /// <param name="pid"></param>
         /// <param name="treeName"></param>
         /// <returns></returns>
-        public string Pro_InsertTree(string factionName, int id,int pid, string treeName)
+        public string Order_InsertTree(string factionName, int id, int pid, string treeName)
         {
             switch (factionName)
             {
@@ -476,7 +480,7 @@
         /// <param name="treeName">需要更新的节点名称</param>
         /// <param name="id">原节点ID</param>
         /// <returns></returns>
-        public string Pro_UpdateTree(string factionName, string treeName, int id)
+        public string Order_UpdateTree(string factionName, string treeName, int id)
         {
             switch (factionName)
             {
@@ -508,11 +512,11 @@
         /// <param name="factionname"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public string Get_OrderInfo(string factionname,int pid)
+        public string Get_OrderInfo(string factionname, int pid)
         {
             switch (factionname)
             {
-                case "Pro_Adorn":
+                case "AdornOrder":
                     _result = $@"
                                     SELECT a.OrderNo '单据名称',b.CustName '客户名称',b.HTypeName '房屋类型名称',b.SpareAdd '装修地址' 
                                     FROM dbo.T_PRO_Adorn a
@@ -520,7 +524,7 @@
                                     WHERE a.id='{pid}'
                                 ";
                     break;
-                case "Pro_Material":
+                case "MaterialOrder":
                     _result = $@"
                                     SELECT a.OrderNo '单据名称',b.CustName '客户名称',b.HTypeName '房屋类型名称',b.SpareAdd '装修地址' 
                                     FROM dbo.T_PRO_Material a
@@ -531,6 +535,29 @@
             }
             return _result;
         }
+
+        /// <summary>
+        /// 删除记录 包括表头及表体信息(室内装修工程 室内主材)
+        /// </summary>
+        /// <param name="factionName">功能名称</param>
+        /// <param name="id">主键ID</param>
+        /// <returns></returns>
+        public string OrderInfo_Del(string factionName, int id)
+        {
+            switch (factionName)
+            {
+                case "AdornOrder":
+                    _result =$@"delete from dbo.T_PRO_AdornTree where Treeid='{id}';
+                               delete from dbo.T_PRO_AdornEntry  where Treeid='{id}'";
+                    break;
+                case "MaterialOrder":
+                    _result =$@"delete from dbo.T_PRO_MaterialTree where Treeid='{id}';
+                                delete from dbo.T_PRO_MaterialEntry where Treeid='{id}'";
+                    break;
+            }
+            return _result;
+        }
+        #endregion
 
     }
 }

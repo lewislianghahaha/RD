@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\Order\OrderDel.cs" />
+    <Compile Include="Logic\Order\OrderGenerate.cs" />
     <Compile Include="Logic\Order\OrderImport.cs" />
     <Compile Include="Logic\Order\OrderSearch.cs" />
     <Compile Include="UI\AdminFrm.cs">
@@ -155,11 +156,11 @@
     <Compile Include="UI\Order\AdornTypeFrm.Designer.cs">
       <DependentUpon>AdornTypeFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Order\ContextMenuFrm.cs">
+    <Compile Include="UI\Order\TypeInfoFrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Order\ContextMenuFrm.Designer.cs">
-      <DependentUpon>ContextMenuFrm.cs</DependentUpon>
+    <Compile Include="UI\Order\TypeInfoFrm.Designer.cs">
+      <DependentUpon>TypeInfoFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Order\CustInfoFrm.cs">
       <SubType>Form</SubType>
@@ -216,8 +217,8 @@
     <EmbeddedResource Include="UI\Order\AdornTypeFrm.resx">
       <DependentUpon>AdornTypeFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Order\ContextMenuFrm.resx">
-      <DependentUpon>ContextMenuFrm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Order\TypeInfoFrm.resx">
+      <DependentUpon>TypeInfoFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\CustInfoFrm.resx">
       <DependentUpon>CustInfoFrm.cs</DependentUpon>

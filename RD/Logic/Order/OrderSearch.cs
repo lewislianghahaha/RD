@@ -4,7 +4,7 @@ using RD.DB.Search;
 
 namespace RD.Logic.Order
 {
-    //室内装修工程单 以及 主材单查询使用
+    //作用:查询使用
     public class OrderSearch
     {
         SearchDt serDt=new SearchDt();

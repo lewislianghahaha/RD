@@ -37,6 +37,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.txtAdd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtHoseName = new System.Windows.Forms.TextBox();
@@ -47,9 +49,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvView = new System.Windows.Forms.TreeView();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnGetdtl = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.cmCustomer.SuspendLayout();
@@ -57,6 +60,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -130,6 +135,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(995, 27);
             this.panel1.TabIndex = 1;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(65, 3);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(149, 21);
+            this.textBox1.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "单据名称:";
             // 
             // txtAdd
             // 
@@ -210,7 +232,8 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.gvdtl);
+            this.splitContainer1.Panel2.Controls.Add(this.panel3);
+            this.splitContainer1.Panel2.Controls.Add(this.panel2);
             this.splitContainer1.Size = new System.Drawing.Size(995, 575);
             this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 3;
@@ -223,6 +246,34 @@
             this.tvView.Size = new System.Drawing.Size(186, 571);
             this.tvView.TabIndex = 0;
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel2.Controls.Add(this.btnGetdtl);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(797, 26);
+            this.panel2.TabIndex = 0;
+            // 
+            // btnGetdtl
+            // 
+            this.btnGetdtl.Location = new System.Drawing.Point(4, 1);
+            this.btnGetdtl.Name = "btnGetdtl";
+            this.btnGetdtl.Size = new System.Drawing.Size(139, 23);
+            this.btnGetdtl.TabIndex = 0;
+            this.btnGetdtl.Text = "获取材料类别明细信息";
+            this.btnGetdtl.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.gvdtl);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(0, 26);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(797, 545);
+            this.panel3.TabIndex = 1;
+            // 
             // gvdtl
             // 
             this.gvdtl.AllowUserToDeleteRows = false;
@@ -231,25 +282,8 @@
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(797, 571);
+            this.gvdtl.Size = new System.Drawing.Size(797, 545);
             this.gvdtl.TabIndex = 0;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(65, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(149, 21);
-            this.textBox1.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "单据名称:";
             // 
             // MaterialOrderFrm
             // 
@@ -271,6 +305,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -297,8 +333,11 @@
         private System.Windows.Forms.TextBox txtAdd;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView tvView;
-        private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnGetdtl;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.DataGridView gvdtl;
     }
 }

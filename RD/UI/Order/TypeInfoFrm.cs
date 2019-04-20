@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace RD.UI.Order
 {
-    public partial class ContextMenuFrm : Form
+    public partial class TypeInfoFrm : Form
     {
-        public ContextMenuFrm()
+        public TypeInfoFrm()
         {
             InitializeComponent();
             OnRegisterEvents();

@@ -3,7 +3,7 @@ using System.Data;
 
 namespace RD.DB
 {
-    //根据功能名创建空表
+    //作用:创建所需的临时表
     public class DtList
     {
         /// <summary>

@@ -56,7 +56,7 @@ namespace RD.DB.Import
                 //单据使用
                 if (functionName == "AdornOrder" || functionName == "MaterialOrder")
                 {
-                    sqlscript = sqlList.Pro_InsertTree(functionName, id, 0, "ALL");
+                    sqlscript = sqlList.Order_InsertTree(functionName, id, 0, "ALL");
 
                 }
                 //基础信息库使用
@@ -70,7 +70,7 @@ namespace RD.DB.Import
                 //插入要新增的记录
                 if (functionName == "AdornOrder" || functionName == "MaterialOrder")
                 {
-                    sqlscript = sqlList.Pro_InsertTree(functionName, id, pid, treeName);
+                    sqlscript = sqlList.Order_InsertTree(functionName, id, pid, treeName);
 
                 }
                 else
@@ -96,7 +96,7 @@ namespace RD.DB.Import
             //单据使用
             if (functionName == "AdornOrder" || functionName == "MaterialOrder")
             {
-                sqlscript = sqlList.Pro_UpdateTree(functionName, treeName, id);
+                sqlscript = sqlList.Order_UpdateTree(functionName, treeName, id);
             }
             //基础信息库使用
             else
@@ -142,7 +142,7 @@ namespace RD.DB.Import
             //单据使用
             if (functionName == "AdornOrder" || functionName =="MaterialOrder")
             {
-                sqlscript = sqlList.Pro_SearchNum(functionName);
+                sqlscript = sqlList.Order_SearchNum(functionName);
             }
             //基础信息库使用
             else
@@ -318,10 +318,10 @@ namespace RD.DB.Import
                 case "HouseProject":
                     result = "T_BD_HTypeProjectDtl";
                     break;
-                case "Pro_Adorn":
+                case "AdornOrder":
                     result = "T_PRO_Adorn";
                     break;
-                case "Pro_Material":
+                case "MaterialOrder":
                     result = "T_PRO_Material";
                     break;
             }
@@ -405,14 +405,14 @@ namespace RD.DB.Import
                 switch (functionName)
                 {
                     //室内装修工程单
-                    case "Pro_Adorn":
+                    case "AdornOrder":
                         //获取T_PRO_Adorn表MAX(ID)值
                         reslutid = Maxid(tablename);
                         //插入相关记录至T_PRO_Adorn临时表内
                         dt = Get_OrderTemp(functionName, custid, reslutid, accountname);
                         break;
                     //室内主材单
-                    case "Pro_Material":
+                    case "MaterialOrder":
                         //获取T_PRO_Material表MAX(ID)值
                         reslutid = Maxid(tablename);
                         //插入相关记录至T_PRO_Material临时表内
@@ -463,13 +463,13 @@ namespace RD.DB.Import
             switch (functionName)
             {
                 //室内装修工程
-                case "Pro_Adorn":
+                case "AdornOrder":
                     //获取对应临时表
                     dt = serDt.GetTempdt(functionName);
                     remark = "AD";
                     break;
                 //室内主材单
-                case "Pro_Material":
+                case "MaterialOrder":
                     //获取对应临时表
                     dt = serDt.GetTempdt(functionName);
                     remark = "M";

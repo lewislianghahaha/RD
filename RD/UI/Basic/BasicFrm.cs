@@ -296,7 +296,7 @@ namespace RD.UI.Basic
                 //节点名称
                 var treeName = tview.SelectedNode.Text;
 
-                var clickMessage = $"您所选择的信息为:\n 节点名称:{treeName} \n 是否继续? \n 注:若点选的节点下有内容的话,就会将与它对应的记录都删除, \n 请谨慎处理.";
+                var clickMessage = $"您所选择的信息为:\n 节点名称:{treeName} \n 是否继续? \n 注:若点选的节点下有内容的话(包括明细内容),就会将与它对应的记录都删除, \n 请谨慎处理.";
 
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
@@ -629,8 +629,7 @@ namespace RD.UI.Basic
         {
             try
             {
-                //当检测到功能ID为 "房屋类型及装修工程类别信息管理" 时才执行下一步
-                //if (GlobalClasscs.Basic.BasicId != 4) return;
+                if (tview.SelectedNode == null) throw new Exception("请选择某一名称再继续");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选取某一行,然后再按此按钮");
 
                 //获取所选择的树型菜单Text信息(装修工程类别名称)

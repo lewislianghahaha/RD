@@ -3,7 +3,7 @@ using RD.DB.Import;
 
 namespace RD.Logic.Order
 {
-    //室内装修工程单 以及 室内主材单导入数据时使用
+    //作用:导入数据
     public class OrderImport
     {
         ImportDt importDt=new ImportDt();

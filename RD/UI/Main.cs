@@ -144,7 +144,7 @@ namespace RD.UI
             {
                 //设置单据状态为"创建"
                 custInfo.FunState = "C";
-                custInfo.FunName = "Pro_Adorn";  
+                custInfo.FunName = "AdornOrder";  
                 //初始化窗体信息
                 custInfo.OnInitialize();
                 custInfo.StartPosition=FormStartPosition.CenterParent;
@@ -167,7 +167,7 @@ namespace RD.UI
             {
                  //创建状态
                 custInfo.FunState = "C";
-                custInfo.FunName = "Pro_Material";
+                custInfo.FunName = "MaterialOrder";
                 //初始化窗体信息
                 custInfo.OnInitialize();
                 custInfo.StartPosition=FormStartPosition.CenterParent;
