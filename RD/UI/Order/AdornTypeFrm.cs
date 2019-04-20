@@ -53,6 +53,22 @@ namespace RD.UI.Order
         }
 
         /// <summary>
+        /// 初始化记录
+        /// </summary>
+        public void OnInitialize()
+        {
+            switch (_funid)
+            {
+                case "C":
+                    this.Text = "新建类别";
+                    break;
+                case "E":
+                    this.Text = "编辑类别";
+                    break;
+            }
+        }
+
+        /// <summary>
         /// 设置
         /// </summary>
         /// <param name="sender"></param>
@@ -74,6 +90,7 @@ namespace RD.UI.Order
                         task.FunctionId = "2";
                         task.FunctionName = "AdornOrder";
                         task.Id = _id;                        //获取上上级表头ID
+
                         task.StartTask();
                         _resultMark = task.ResultMark;
                         if (!task.ResultMark) throw new Exception("新建异常,请联系管理员");
@@ -82,6 +99,7 @@ namespace RD.UI.Order
                     case "E":
                         task.FunctionId = "2.1";
                         task.FunctionName = "AdornOrder";
+
                         task.StartTask();
                         _resultMark = task.ResultMark;
                         if (!task.ResultMark) throw new Exception("编辑异常,请联系管理员");

@@ -60,6 +60,8 @@ namespace RD.UI.Order
         /// </summary>
         public void OnInitialize()
         {
+            //清空树菜单信息
+            tvview.Nodes.Clear();
             //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
             ShowHead(_funName,_pid);
 
@@ -135,10 +137,10 @@ namespace RD.UI.Order
             task.StartTask();
             //并将结果赋给对应的文本框内
             var dt = task.ResultTable;
-            txtOrderNo.Text = dt.Rows[1].ToString();
-            txtCustomer.Text = dt.Rows[2].ToString();
-            txtHoseName.Text = dt.Rows[3].ToString();
-            txtAdd.Text = dt.Rows[4].ToString();
+            txtOrderNo.Text = dt.Rows[0][0].ToString();
+            txtCustomer.Text = dt.Rows[0][1].ToString();
+            txtHoseName.Text = dt.Rows[0][2].ToString();
+            txtAdd.Text = dt.Rows[0][3].ToString();
         }
 
         /// <summary>
@@ -223,16 +225,18 @@ namespace RD.UI.Order
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
                 //判断若新增节点不在ALL节点下,就显示异常
                 if((int)tvview.SelectedNode.Tag>1)
-                    if ((int)tvview.SelectedNode.Tag-1 !=1) throw new Exception("请在ALL节点下新建新类别");
+                    if ((int)tvview.SelectedNode.Tag-1 !=1) throw new Exception("请在'ALL'节点下新建新类别");
 
-                adornType.Pid= (int)tvview.SelectedNode.Tag;                                //上级主键ID
-                adornType.Funid = "C";                                                     //设置功能标识ID
-                adornType.Id = 0;                                                         //获取上上级表头ID(Q:怎样获取表头ID?)
+                adornType.Pid= (int)tvview.SelectedNode.Tag;                                   //上级主键ID
+                adornType.Funid = "C";                                                        //设置功能标识ID
+                adornType.Id = _pid;                                                         //获取上上级表头ID
 
+                adornType.OnInitialize();
                 adornType.StartPosition = FormStartPosition.CenterScreen;
                 adornType.ShowDialog();
-                //当成功新增后,执行"刷新"操作 
+                //当成功新增后,将状态标记更新为R（读取）并执行"刷新"操作 
                 if (adornType.ResultMark)
+                    _funState = "R";
                     OnInitialize();
             }
             catch (Exception ex)
@@ -251,14 +255,15 @@ namespace RD.UI.Order
             try
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
-
+                if((int)tvview.SelectedNode.Tag==1) throw new Exception("'ALL'节点不能修改,请选择其它节点.");
                 adornType.Pid = (int)tvview.SelectedNode.Tag;                             //获取所选择的主键ID
                 adornType.Funid = "E";                                                    //设置功能标识ID
 
                 adornType.StartPosition = FormStartPosition.CenterScreen;
                 adornType.ShowDialog();
-                //当成功新增后,执行"刷新"操作
+                //当成功新增后,将状态标记更新为R（读取）并执行"刷新"操作 
                 if (adornType.ResultMark)
+                    _funState = "R";
                     OnInitialize();
             }
             catch (Exception ex)
@@ -384,6 +389,9 @@ namespace RD.UI.Order
             }));
         }
 
+        /// <summary>
+        /// 控制GridView单元格显示方式
+        /// </summary>
         private void ControlGridViewisShow()
         {
             //将GridView中的第一二列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常

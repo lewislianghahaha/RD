@@ -103,7 +103,7 @@ namespace RD.UI.Order
                     else
                     {
                         //当插入完成后,转移到 室内装修工程单 或 室内主材单 窗体内,并将此窗体关闭
-                        MessageBox.Show($"新增{frmName}单据成功,请点击继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"新增'{frmName}'单据成功,请点击继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //室内装修工程单
                         if (_funName == "Pro_Adorn")
                         {

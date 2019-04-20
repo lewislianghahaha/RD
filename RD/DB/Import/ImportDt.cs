@@ -24,10 +24,9 @@ namespace RD.DB.Import
         {
             var result = true;
             var sqlscript = string.Empty;
-            var dt=new DataTable();
 
             //若pid为1时,要先判断pid=1时有没有值,若没有就要先插入ALL的记录,再插入要新增的记录
-            dt = SearchNum(functionName);
+            var dt = SearchNum(functionName);
       
             if (pid == 1 && dt.Rows.Count==0)
             {
@@ -54,27 +53,29 @@ namespace RD.DB.Import
             var sqlscript = string.Empty;
             if (markid == 0)
             {
-                //基础信息库使用
-                if (functionName != "AdornOrder" || functionName != "MaterialOrder")
-                {
-                    sqlscript = sqlList.BD_InsertTree(functionName, 0, "ALL");
-                }
                 //单据使用
-                else
+                if (functionName == "AdornOrder" || functionName == "MaterialOrder")
                 {
                     sqlscript = sqlList.Pro_InsertTree(functionName, id, 0, "ALL");
+
+                }
+                //基础信息库使用
+                else
+                {
+                    sqlscript = sqlList.BD_InsertTree(functionName, 0, "ALL");
                 }
             }
             else
             {
                 //插入要新增的记录
-                if (functionName != "AdornOrder" || functionName != "MaterialOrder")
+                if (functionName == "AdornOrder" || functionName == "MaterialOrder")
                 {
-                    sqlscript = sqlList.BD_InsertTree(functionName, pid, treeName);
+                    sqlscript = sqlList.Pro_InsertTree(functionName, id, pid, treeName);
+
                 }
                 else
                 {
-                    sqlscript = sqlList.Pro_InsertTree(functionName, id, pid, treeName);
+                    sqlscript = sqlList.BD_InsertTree(functionName, pid, treeName);
                 }
             }
             return sqlscript;
@@ -92,15 +93,15 @@ namespace RD.DB.Import
             var result = true;
             var sqlscript = string.Empty;
 
-            //基础信息库使用
-            if (functionName != "AdornOrder" || functionName != "MaterialOrder")
-            {
-                sqlscript = sqlList.BD_UpdateTree(functionName, treeName, id);
-            }
             //单据使用
+            if (functionName == "AdornOrder" || functionName == "MaterialOrder")
+            {
+                sqlscript = sqlList.Pro_UpdateTree(functionName, treeName, id);
+            }
+            //基础信息库使用
             else
             {
-                sqlscript= sqlList.Pro_UpdateTree(functionName, treeName, id);
+                sqlscript = sqlList.BD_UpdateTree(functionName, treeName, id);
             }
             result = EditDt(sqlscript);
             return result;
@@ -137,15 +138,16 @@ namespace RD.DB.Import
         {
             var dt=new DataTable();
             var sqlscript = string.Empty;
-            //基础信息库使用
-            if (functionName != "AdornOrder" || functionName!="MaterialOrder")
-            {
-                sqlscript= sqlList.BD_SearchNum(functionName);
-            }
+
             //单据使用
-            else
+            if (functionName == "AdornOrder" || functionName =="MaterialOrder")
             {
                 sqlscript = sqlList.Pro_SearchNum(functionName);
+            }
+            //基础信息库使用
+            else
+            {
+                sqlscript = sqlList.BD_SearchNum(functionName);
             }
             var sqlDataAdapter=new SqlDataAdapter(sqlscript,serDt.GetConn());
             sqlDataAdapter.Fill(dt);
@@ -382,6 +384,7 @@ namespace RD.DB.Import
             return da;
         }
 
+        #region 单据代码相关
         /// <summary>
         /// 根据相关条件插入信息至T_PRO_Material 或 T_PRO_Adorn表内,并返回新插入的主键ID值
         /// </summary>
@@ -389,7 +392,7 @@ namespace RD.DB.Import
         /// <param name="custid">所选择的客户ID</param>
         /// <param name="accountname">帐号名称</param>
         /// <returns></returns>
-        public int InsertOrderFirstDt(string functionName, int custid,string accountname)
+        public int InsertOrderFirstDt(string functionName, int custid, string accountname)
         {
             //获取对应表的最大ID值
             var reslutid = 0;
@@ -435,9 +438,9 @@ namespace RD.DB.Import
         {
             var dt = new DataTable();
             //获取对应的SQL语句
-            var sqlscript=sqlList.Get_OrderMaxid(tableName);
+            var sqlscript = sqlList.Get_OrderMaxid(tableName);
             //执行SQL
-            var sqlDataAdapter=new SqlDataAdapter(sqlscript,serDt.GetConn());
+            var sqlDataAdapter = new SqlDataAdapter(sqlscript, serDt.GetConn());
             sqlDataAdapter.Fill(dt);
             //赋值
             var id = Convert.ToInt32(dt.Rows[0][0]);
@@ -452,7 +455,7 @@ namespace RD.DB.Import
         /// <param name="maxid"></param>
         /// <param name="accountname"></param>
         /// <returns></returns>
-        private DataTable Get_OrderTemp(string functionName, int custid,int maxid,string accountname)
+        private DataTable Get_OrderTemp(string functionName, int custid, int maxid, string accountname)
         {
             var remark = string.Empty;
             var dt = new DataTable();
@@ -476,7 +479,7 @@ namespace RD.DB.Import
             //将临时表进行赋值
             var row = dt.NewRow();
             row[0] = maxid;
-            row[1] = remark + '-' + DateTime.Now.ToString("yyMMdd") + '-'+ maxid;
+            row[1] = remark + '-' + DateTime.Now.ToString("yyMMdd") + '-' + maxid;
             row[2] = custid;
             row[3] = accountname;
             row[4] = DateTime.Now.Date;
@@ -486,5 +489,7 @@ namespace RD.DB.Import
 
             return dt;
         }
+
+        #endregion
     }
 }

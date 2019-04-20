@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -355,10 +354,8 @@ namespace RD.DB.Search
         /// <returns></returns>
         public DataTable SearchHouseType()
         {
-            var dt = new DataTable();
             var sqlscript = sqlList.PRO_Adorn_SearchDropDownList();
-            var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
-            sqlDataAdapter.Fill(dt);
+            var dt = GetData(sqlscript);
             return dt;
         }
 
@@ -370,17 +367,14 @@ namespace RD.DB.Search
         /// <returns></returns>
         public DataTable SearchAdorndtl(string funState,int pid)
         {
-            var dt = new DataTable();
             var reslut = new DataTable();
-            var sqlscript = string.Empty;
 
             try
             {
                 //获取相关SQL查询语句
-                sqlscript = sqlList.Pro_Adorn_SearchDtl(pid);
+                var sqlscript = sqlList.Pro_Adorn_SearchDtl(pid);
                 //执行查询功能并将结填充到DataTable内
-                var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
-                sqlDataAdapter.Fill(dt);
+                var dt = GetData(sqlscript);
 
                 //若返回的DataTable行数为0,或单据状态为C(创建)时,就返回空白表
                 if (dt.Rows.Count == 0 || funState == "C")
@@ -416,8 +410,7 @@ namespace RD.DB.Search
                 //获取相关SQL查询语句
                 var sqlscript = sqlList.Pro_Adorn_SearchTreeView(pid);
                 //执行查询功能并将结填充到DataTable内
-                var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
-                sqlDataAdapter.Fill(dt);
+                dt = GetData(sqlscript);
             }
             catch (Exception ex)
             {
@@ -429,7 +422,7 @@ namespace RD.DB.Search
         }
 
         /// <summary>
-        /// 
+        /// 根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息
         /// </summary>
         /// <param name="factionname"></param>
         /// <param name="pid"></param>
@@ -440,13 +433,35 @@ namespace RD.DB.Search
 
             try
             {
-
+                var sqlscript = sqlList.Get_OrderInfo(factionname, pid);
+                dt = GetData(sqlscript);
             }
             catch (Exception)
             {
                 dt.Rows.Clear();
                 dt.Columns.Clear();
                 throw;
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 根据指定SQL语句执行并返回DT
+        /// </summary>
+        /// <param name="sqlscript"></param>
+        /// <returns></returns>
+        private DataTable GetData(string sqlscript)
+        {
+            var dt = new DataTable();
+            try
+            {
+                var sqlDataAdapter = new SqlDataAdapter(sqlscript, GetConn());
+                sqlDataAdapter.Fill(dt);
+            }
+            catch (Exception)
+            {
+                dt.Rows.Clear();
+                dt.Columns.Clear();
             }
             return dt;
         }

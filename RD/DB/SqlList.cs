@@ -514,12 +514,18 @@
             {
                 case "Pro_Adorn":
                     _result = $@"
-                                    
+                                    SELECT a.OrderNo '单据名称',b.CustName '客户名称',b.HTypeName '房屋类型名称',b.SpareAdd '装修地址' 
+                                    FROM dbo.T_PRO_Adorn a
+                                    INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
+                                    WHERE a.id='{pid}'
                                 ";
                     break;
                 case "Pro_Material":
                     _result = $@"
-                                    
+                                    SELECT a.OrderNo '单据名称',b.CustName '客户名称',b.HTypeName '房屋类型名称',b.SpareAdd '装修地址' 
+                                    FROM dbo.T_PRO_Material a
+                                    INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
+                                    WHERE a.id='{pid}'
                                 ";
                     break;
             }

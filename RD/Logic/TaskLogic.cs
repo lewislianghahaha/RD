@@ -278,7 +278,7 @@ namespace RD.Logic
                     break;
                 //查询(作用:根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息)
                 case "1.3":
-                    _resultTable = null;
+                    _resultTable = orderSearch.Get_FirstOrderInfo(functionName,pid);
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":
