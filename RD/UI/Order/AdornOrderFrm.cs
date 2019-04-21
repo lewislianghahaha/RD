@@ -347,7 +347,23 @@ namespace RD.UI.Order
         {
             try
             {
+                var clickMessage = $"您所选择的信息为:\n 单据名称:{txtOrderNo.Text} \n 是否继续? \n 注:审核后需反审核才能对该单据的记录进行修改, \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    task.TaskId = 2;
+                    task.FunctionId = "4";
+                    task.FunctionName = _funName;
+                    task.Id = _pid;      //表头ID
+                    task.Confirmid = 0; //记录审核操作标记 0:审核 1:反审核
 
+                    if (!task.ResultMark) throw new Exception("审核异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    //审核完成后“刷新”(注:审核成功的单据,经刷新后为不可修改效果)
+                    OnInitialize();
+                }
             }
             catch (Exception ex)
             {
@@ -398,7 +414,19 @@ namespace RD.UI.Order
         {
             try
             {
+                task.TaskId = 2;
+                task.FunctionId = "1.4";
+                task.FunctionName = _funName;
+                task.Id = _pid;  //表头ID
+                task.Pid = (int)tvview.SelectedNode.Tag == 1 ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);  //树节点ID
 
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                gvdtl.DataSource = task.ResultTable;
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
             }
             catch (Exception ex)
             {
@@ -422,7 +450,7 @@ namespace RD.UI.Order
         /// </summary>
         private void ControlGridViewisShow()
         {
-            //将GridView中的第一二列(ID值)隐去 注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
             gvdtl.Columns[1].Visible = false;
             gvdtl.Columns[2].Visible = false;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using RD.DB.Search;
 
 namespace RD.DB.Generate
 {
@@ -9,26 +8,23 @@ namespace RD.DB.Generate
     public class GenerateDt
     {
         Conn conn=new Conn();
-        SearchDt serDt = new SearchDt();
         SqlList sqlList=new SqlList();
         DtList dtList=new DtList();
 
+        #region 修改帐号密码
         /// <summary>
         /// 修改帐号密码
         /// </summary>
         /// <param name="username"></param>
         /// <param name="userpwd"></param>
         /// <returns></returns>
-        public bool ChangeUserPwd(string username,string userpwd)
+        public bool ChangeUserPwd(string username, string userpwd)
         {
             var result = true;
             try
             {
-                using (var sql = new SqlConnection(conn.GetConnectionString()))
-                {
-                    var sqlCommand = new SqlCommand(sqlList.Up_User(username,userpwd), sql);
-                    sqlCommand.ExecuteNonQuery();
-                }
+                var sqlscipt= sqlList.Up_User(username, userpwd);
+                result = GenerDt(sqlscipt);
             }
             catch (Exception)
             {
@@ -36,6 +32,7 @@ namespace RD.DB.Generate
             }
             return result;
         }
+        #endregion
 
         #region 删除树形菜单记录
 
@@ -126,13 +123,13 @@ namespace RD.DB.Generate
             foreach (DataRow row in dt.Rows)
             {
                 var sqlscript = Get_DelScript(functionName, row);
-                result = DelDt(sqlscript);
+                result = GenerDt(sqlscript);
             }
             return result;
         }
 
         /// <summary>
-        /// 根据functionName获取对就的删除SQL语句
+        /// 根据functionName获取对应的删除SQL语句
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="row"></param>
@@ -153,21 +150,25 @@ namespace RD.DB.Generate
             return sqlscript;
         }
 
+        #endregion
+
+        #region 审核（反审核）单据记录
+
         /// <summary>
-        /// 删除记录
+        /// 单据审核（反审核）操作
         /// </summary>
-        /// <param name="sqlscript"></param>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="confirmid">审核ID 0:审核 1:反审核</param>
+        /// <param name="pid">主键ID</param>
         /// <returns></returns>
-        private bool DelDt(string sqlscript)
+        public bool ConfirmOrderDtl(string functionName,int confirmid,int pid)
         {
             var result = true;
+
             try
             {
-                var sqlconn = serDt.GetConn();
-                sqlconn.Open();
-                var sqlCommand = new SqlCommand(sqlscript, sqlconn);
-                sqlCommand.ExecuteNonQuery();
-                sqlconn.Close();
+                var sqlscript = sqlList.ChangeOrderState(functionName, confirmid, pid);
+                result = GenerDt(sqlscript);
             }
             catch (Exception)
             {
@@ -178,6 +179,36 @@ namespace RD.DB.Generate
 
         #endregion
 
+        /// <summary>
+        /// 按照指定的SQL语句执行记录并返回执行结果（true 或 false）
+        /// </summary>
+        /// <param name="sqlscript"></param>
+        /// <returns></returns>
+        private bool GenerDt(string sqlscript)
+        {
+            var result = true;
 
-    }      
+            try
+            {
+                using (var sql = new SqlConnection(conn.GetConnectionString()))
+                {
+                    var sqlCommand = new SqlCommand(sqlscript, sql);
+                    sqlCommand.ExecuteNonQuery();
+                }
+                #region 
+                //var sqlconn = serDt.GetConn();
+                //sqlconn.Open();
+                //var sqlCommand = new SqlCommand(sqlscript, sqlconn);
+                //sqlCommand.ExecuteNonQuery();
+                //sqlconn.Close();
+                #endregion
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+    }
 }

@@ -397,7 +397,7 @@
         }
 
         /// <summary>
-        /// 室内装修工程单-根据表头ID读取表体信息(单据状态为R时使用)
+        /// 室内装修工程单-根据表头ID读取表体信息(单据状态为R时使用) (作用:初始化GridView内容)
         /// </summary>
         /// <param name="pid"></param>
         /// <returns></returns>
@@ -557,6 +557,81 @@
             }
             return _result;
         }
+
+        /// <summary>
+        /// 根据获取树菜单节点刷新表体内容
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <param name="id">主键ID</param>
+        /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
+        /// <returns></returns>
+        public string OrderInfo_dtl(string factionName, int id, int treeid)
+        {
+            switch (factionName)
+            {
+                case "AdornOrder":
+                    //为-1表示读取全部
+                    if (treeid == -1)
+                    {
+                        _result = $@"SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
+                                            a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
+                                    FROM dbo.T_PRO_AdornEntry a
+                                    WHERE a.Id='{id}'";
+                    }
+                    else
+                    {
+                        _result = $@"
+                                        SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
+                                            a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
+                                        FROM dbo.T_PRO_AdornEntry a
+                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}'
+                                    ";
+                    }
+                    break;
+                case "MaterialOrder":
+                    //为-1表示读取全部
+                    if (treeid == -1)
+                    {
+                        _result = $@"SELECT a.id,a.TreeId,a.EntryID,a.MaterialId,a.MaterialName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,a.Price,
+	                                        a.Temp_Price,a.Amount,a.FRemark,a.InputUser,a.InputDt 
+                                    FROM dbo.T_PRO_MaterialEntry a
+                                    WHERE a.Id='{id}'";
+                    }
+                    else
+                    {
+                        _result = $@"SELECT a.id,a.TreeId,a.EntryID,a.MaterialId,a.MaterialName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,a.Price,
+	                                        a.Temp_Price,a.Amount,a.FRemark,a.InputUser,a.InputDt 
+                                    FROM dbo.T_PRO_MaterialEntry a
+                                    WHERE a.Id='{id}' AND a.TreeId='{treeid}'";
+                    }
+                    break;
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 更新单据状态(审核与反审核时使用)
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="confirmid">审核ID 0:审核 1:反审核</param>
+        /// <param name="id">主键ID</param>
+        /// <returns></returns>
+        public string ChangeOrderState(string functionName, int confirmid,int id)
+        {
+            switch (functionName)
+            {
+                case "AdornOrder":
+                    _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Adorn SET Fstatus='Y',FstatusDt=GETDATE() WHERE a.Id='{id}'" 
+                                                    : $@"UPDATE dbo.T_PRO_Adorn SET Fstatus='N',FstatusDt=NULL WHERE a.Id='{id}'";
+                    break;
+                case "MaterialOrder":
+                    _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Material SET Fstatus='Y',FstatusDt=GETDATE() WHERE a.Id='{id}'"
+                                                    : $@"UPDATE dbo.T_PRO_Material SET Fstatus='N',FstatusDt=NULL WHERE a.Id='{id}'";
+                    break;
+            }
+            return _result;
+        }
+
         #endregion
 
     }

@@ -360,7 +360,7 @@ namespace RD.DB.Search
         }
 
         /// <summary>
-        /// 读取表体信息
+        /// 读取表体信息(作用:初始化GridView内容)
         /// </summary>
         /// <param name="funState">单据状态</param>
         /// <param name="pid">表头ID</param>
@@ -465,6 +465,37 @@ namespace RD.DB.Search
             }
             return dt;
         }
+
+        /// <summary>
+        ///  根据获取树菜单节点刷新表体内容
+        /// </summary>
+        /// <param name="factionname"></param>
+        /// <param name="pid">主键ID</param>
+        /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
+        /// <returns></returns>
+        public DataTable Get_Orderdtl(string factionname, int pid, int treeid)
+        {
+            var resultdt=new DataTable();
+
+            try
+            {
+                //获取对应SQL语句
+                var sqlscript = sqlList.OrderInfo_dtl(factionname, pid, treeid);
+                //获取对应临时表信息(当没有查询结果时使用)
+                var tempdt = factionname == "AdornOrder" ? dlDtList.Get_AdornEmptydt() : dlDtList.Get_ProMaterialEmtrydt();
+                //若返回行数为0，即需用对应空表(临时表)填充
+                var dt = GetData(sqlscript);
+                resultdt = dt.Rows.Count == 0 ? tempdt : dt;
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
+
 
         #endregion
 

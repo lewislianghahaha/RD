@@ -29,7 +29,7 @@ namespace RD.Logic.Order
         }
 
         /// <summary>
-        /// 获取“室内装修工程”表体信息
+        /// 获取“室内装修工程”表体信息(作用:初始化GridView内容)
         /// </summary>
         /// <param name="funState">单据状态 R:读取 C:创建</param>
         /// <param name="pid">表头ID</param>
@@ -83,6 +83,27 @@ namespace RD.Logic.Order
             catch (Exception ex)
             {
                 throw  new Exception(ex.Message);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        ///  根据获取树菜单节点刷新表体内容
+        /// </summary>
+        /// <param name="factionname">功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单</param>
+        /// <param name="pid">主键ID </param>
+        /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
+        /// <returns></returns>
+        public DataTable Get_Orderdtl(string factionname,int pid,int treeid)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.Get_Orderdtl(factionname,pid,treeid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
             return dt;
         }

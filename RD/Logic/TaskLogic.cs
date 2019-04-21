@@ -17,6 +17,7 @@ namespace RD.Logic
         OrderSearch orderSearch=new OrderSearch();
         OrderImport orderImport=new OrderImport();
         OrderDel odrderDel=new OrderDel();
+        OrderGenerate orderGenerate=new OrderGenerate();
 
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
@@ -33,6 +34,7 @@ namespace RD.Logic
         private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
         private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
         private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单使用）
+        private int _confirmid;          //审核ID
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -116,6 +118,11 @@ namespace RD.Logic
         /// </summary>
         public int Custid { set { _custid = value; } }
 
+        /// <summary>
+        /// 审核ID
+        /// </summary>
+        public int Confirmid {set { _confirmid = value; } } 
+
         #endregion
 
         #region Get
@@ -151,7 +158,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data);
+                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid);
                     break;
                 //室内主材单
                 case 3:
@@ -242,7 +249,8 @@ namespace RD.Logic
                 case "3":
                     _resultMark = del.DelBD_Record(functionName,pid,dt);
                     break;
-                //审核
+
+                //审核（反审核）
                 case "4":
 
                     break;
@@ -261,7 +269,9 @@ namespace RD.Logic
         /// <param name="custid">客户ID</param>
         /// <param name="accountName">帐号名称</param>
         /// <param name="dt">初始化后的DT,获取数据库对应表的全部信息;</param>
-        private void ProAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,int custid,string accountName,DataTable dt)
+        /// <param name="confirmid">审核ID</param>
+        private void ProAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
+                                  int custid,string accountName,DataTable dt,int confirmid)
         {
             switch (functionId)
             {
@@ -280,6 +290,10 @@ namespace RD.Logic
                 //查询(作用:根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息)
                 case "1.3":
                     _resultTable = orderSearch.Get_FirstOrderInfo(functionName,pid);
+                    break;
+                //查询(作用:树菜单节点击刷新使用)
+                case "1.4":
+                    _resultTable = orderSearch.Get_Orderdtl(functionName, id, pid);
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":
@@ -301,9 +315,9 @@ namespace RD.Logic
                 case "3":
                     _resultMark = odrderDel.DelBD_Record(functionName, pid, dt);
                     break;
-                //审核
+                //审核（反审核）
                 case "4":
-
+                    _resultMark = orderGenerate.ConfirmOrderDtl(functionName,confirmid,pid);
                     break;
             }
         }
