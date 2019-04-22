@@ -368,6 +368,7 @@ namespace RD.UI.Order
             try
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((int)tvview.SelectedNode.Tag == 1) throw new Exception("不能选择ALL节点,请另选其它再继续");
                 if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
 
 
