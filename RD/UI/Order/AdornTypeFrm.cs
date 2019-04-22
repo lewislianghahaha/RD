@@ -24,7 +24,7 @@ namespace RD.UI.Order
             /// </summary>
             public int Pid {set { _pid = value; } }
             /// <summary>
-            /// 获取功能标识ID(新建：C 编辑 A)
+            /// 获取功能标识ID(新建：C 编辑 E)
             /// </summary>
             public string Funid { set { _funid = value; } }
             /// <summary>

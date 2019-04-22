@@ -8,11 +8,13 @@ namespace RD.UI.Order
     public partial class TypeInfoFrm : Form
     {
 
-        TaskLogic taskLogic=new TaskLogic();
+        TaskLogic task=new TaskLogic();
 
+        //获取表体DT
+        private DataTable _dt;
         //获取ID信息
         private int _id;
-        //获取功能名称:Material 材料 HouseType:装修工程类别
+        //获取功能名称:Material 材料 HouseProject:装修工程类别
         private string _funname;
 
 
@@ -44,7 +46,6 @@ namespace RD.UI.Order
         {
             InitializeComponent();
             OnRegisterEvents();
-            OnInitialize();
         }
 
         private void OnRegisterEvents()
@@ -60,12 +61,19 @@ namespace RD.UI.Order
         /// </summary>
         public void OnInitialize()
         {
-            //初始化对应的装修工程类别明细记录
-            taskLogic.TaskId = 1;
+            //初始化对应的类别明细记录(包括装修工程 及 材料)
+            task.TaskId = 1;
+            task.FunctionId = "1";
+            task.FunctionName = _funname;
+            task.FunctionType = "G";
+            task.ParentId = Convert.ToString(_id);
+
+            task.StartTask();
+            _dt = task.ResultTable;
 
             switch (_funname)
             {
-                case "HouseType":
+                case "HouseProject":
                     this.Text = "装修工程类别";
                     break;
                 case "Material":
