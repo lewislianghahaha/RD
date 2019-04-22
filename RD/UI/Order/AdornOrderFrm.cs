@@ -11,6 +11,7 @@ namespace RD.UI.Order
         TaskLogic task = new TaskLogic();
         Load load=new Load();
         AdornTypeFrm adornType=new AdornTypeFrm();
+        TypeInfoFrm typeInfoFrm=new TypeInfoFrm();
 
         //保存树型菜单DataTable记录
         private DataTable _treeviewdt=new DataTable();
@@ -55,6 +56,7 @@ namespace RD.UI.Order
             btnChange.Click += BtnChange_Click;
             btnDel.Click += BtnDel_Click;
             tvview.AfterSelect += Tvview_AfterSelect;
+            btnGetdtl.Click += BtnGetdtl_Click;
         }
 
         /// <summary>
@@ -183,13 +185,13 @@ namespace RD.UI.Order
         private void AddChildNode(TreeView tvView, DataTable dt)
         {
             var tnode = tvView.Nodes[0];
-            var rows = dt.Select("ParentId='" + Convert.ToInt32(tnode.Tag) + "'");
+            var rows = dt.Select("ParentId='" + Convert.ToInt32(tnode.Tag) + "' and Id = '" + _pid + "'");
             //循环子节点信息(从二级节点开始)
             foreach (var r in rows)
             {
                 var tn = new TreeNode();
-                tn.Tag = Convert.ToInt32(r[0]);        //自身主键ID
-                tn.Text = Convert.ToString(r[2]);     //节点内容
+                tn.Tag = Convert.ToInt32(r[1]);        //自身主键ID
+                tn.Text = Convert.ToString(r[3]);     //节点内容
                 //将二级节点添加至根节点下
                 tnode.Nodes.Add(tn);
             }
@@ -233,7 +235,7 @@ namespace RD.UI.Order
 
                 adornType.Pid= (int)tvview.SelectedNode.Tag;                                   //上级主键ID
                 adornType.Funid = "C";                                                        //设置功能标识ID
-                adornType.Id = _pid;                                                         //获取上上级表头ID
+                adornType.Id = _pid;                                                         //获取上级表头ID
 
                 adornType.OnInitialize();
                 adornType.StartPosition = FormStartPosition.CenterScreen;
@@ -330,6 +332,51 @@ namespace RD.UI.Order
         {
             try
             {
+                if(gvdtl.Rows.Count==0) throw new Exception("没有任何记录,不能保存");
+                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
+
+                task.TaskId = 2;
+                task.FunctionId = "2.2";
+
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if(!task.ResultMark) throw new Exception("保存异常,请联系管理员");
+                else
+                {
+                    MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                //保存成功后,再次进行初始化
+                OnInitialize();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 获取工程类别明细信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnGetdtl_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
+
+
+
+                typeInfoFrm.OnInitialize();
+                typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
+                typeInfoFrm.ShowDialog();
+
+                //返回获取的行记录至GridView内
 
             }
             catch (Exception ex)
@@ -355,6 +402,8 @@ namespace RD.UI.Order
                     task.FunctionName = _funName;
                     task.Id = _pid;      //表头ID
                     task.Confirmid = 0; //记录审核操作标记 0:审核 1:反审核
+
+                    task.StartTask();
 
                     if (!task.ResultMark) throw new Exception("审核异常,请联系管理员");
                     else

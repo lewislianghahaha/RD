@@ -51,7 +51,7 @@
             this.tmClose});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(723, 25);
+            this.Menu.Size = new System.Drawing.Size(795, 25);
             this.Menu.TabIndex = 0;
             this.Menu.Text = "menuStrip1";
             // 
@@ -75,7 +75,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(723, 31);
+            this.panel1.Size = new System.Drawing.Size(795, 31);
             this.panel1.TabIndex = 1;
             // 
             // btnSearch
@@ -109,7 +109,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 56);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(723, 383);
+            this.panel2.Size = new System.Drawing.Size(795, 411);
             this.panel2.TabIndex = 2;
             // 
             // gvdtl
@@ -120,7 +120,7 @@
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(723, 383);
+            this.gvdtl.Size = new System.Drawing.Size(795, 411);
             this.gvdtl.TabIndex = 0;
             // 
             // TypeInfoFrm
@@ -128,7 +128,7 @@
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(723, 439);
+            this.ClientSize = new System.Drawing.Size(795, 467);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);

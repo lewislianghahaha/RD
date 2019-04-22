@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
 using RD.DB.Search;
 
 namespace RD.DB.Import
@@ -23,18 +22,20 @@ namespace RD.DB.Import
         public bool InsertTreeRecord(string functionName, int id,int pid, string treeName)
         {
             var result = true;
-            var sqlscript = string.Empty;
 
+            #region
             //若pid为1时,要先判断pid=1时有没有值,若没有就要先插入ALL的记录,再插入要新增的记录
-            var dt = SearchNum(functionName);
-      
-            if (pid == 1 && dt.Rows.Count==0)
-            {
-                sqlscript = GetSqlscript(functionName,id,pid,treeName,0);
-                EditDt(sqlscript);
-            }
+            //var dt = SearchNum(functionName);
+
+            //if (pid == 1 && dt.Rows.Count==0)
+            //{
+            //    sqlscript = GetSqlscript(functionName,id,pid,treeName,0);
+            //    EditDt(sqlscript);
+            //}
+            #endregion
+
             //插入要新增的记录
-            sqlscript = GetSqlscript(functionName, id, pid, treeName, 1);
+            var sqlscript = GetSqlscript(functionName, id, pid, treeName, 1);
             result = EditDt(sqlscript);
             return result;
         }

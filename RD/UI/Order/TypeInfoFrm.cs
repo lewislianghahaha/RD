@@ -1,10 +1,45 @@
 ﻿using System;
+using System.Data;
 using System.Windows.Forms;
+using RD.Logic;
 
 namespace RD.UI.Order
 {
     public partial class TypeInfoFrm : Form
     {
+
+        TaskLogic taskLogic=new TaskLogic();
+
+        //获取ID信息
+        private int _id;
+        //获取功能名称:Material 材料 HouseType:装修工程类别
+        private string _funname;
+
+
+        private DataTable _resultTable;  //返回DT类型
+
+        #region Set
+
+        /// <summary>
+        /// 获取ID信息
+        /// </summary>
+        public int Id { set { _id = value; } }
+        /// <summary>
+        /// 获取功能名称
+        /// </summary>
+        public string Funname { set { _funname = value; } }
+
+        #endregion
+
+        #region Get
+
+        /// <summary>
+        /// 返回DT
+        /// </summary>
+        public DataTable ResultTable { set { _resultTable = value; }}
+
+        #endregion
+
         public TypeInfoFrm()
         {
             InitializeComponent();
@@ -23,9 +58,20 @@ namespace RD.UI.Order
         /// <summary>
         /// 初始化
         /// </summary>
-        private void OnInitialize()
+        public void OnInitialize()
         {
+            //初始化对应的装修工程类别明细记录
+            taskLogic.TaskId = 1;
 
+            switch (_funname)
+            {
+                case "HouseType":
+                    this.Text = "装修工程类别";
+                    break;
+                case "Material":
+                    this.Text = "材料明细";
+                    break;
+            }
         }
 
         /// <summary>
@@ -37,6 +83,7 @@ namespace RD.UI.Order
         {
             try
             {
+                if(gvdtl.Rows.Count==0) throw new Exception("请至少选中一行");
 
             }
             catch (Exception ex)

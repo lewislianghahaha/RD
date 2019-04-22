@@ -192,8 +192,10 @@ namespace RD.DB.Generate
             {
                 using (var sql = new SqlConnection(conn.GetConnectionString()))
                 {
+                    sql.Open();
                     var sqlCommand = new SqlCommand(sqlscript, sql);
                     sqlCommand.ExecuteNonQuery();
+                    sql.Close();
                 }
                 #region 
                 //var sqlconn = serDt.GetConn();

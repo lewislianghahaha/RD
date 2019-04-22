@@ -89,7 +89,7 @@ namespace RD.UI.Order
                     case "C":
                         task.FunctionId = "2";
                         task.FunctionName = "AdornOrder";
-                        task.Id = _id;                        //获取上上级表头ID
+                        task.Id = _id;                        //获取上级表头ID
 
                         task.StartTask();
                         _resultMark = task.ResultMark;

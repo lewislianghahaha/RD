@@ -420,7 +420,7 @@
         public string Order_Adorn_SearchTreeView(int pid)
         {
             var result = $@"
-                            SELECT a.Treeid,a.ParentId,a.TypeName
+                            SELECT a.Id,a.Treeid,a.ParentId,a.TypeName
                             FROM dbo.T_PRO_AdornTree a
                             WHERE a.Id='{pid}'
                            ";
@@ -621,12 +621,12 @@
             switch (functionName)
             {
                 case "AdornOrder":
-                    _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Adorn SET Fstatus='Y',FstatusDt=GETDATE() WHERE a.Id='{id}'" 
-                                                    : $@"UPDATE dbo.T_PRO_Adorn SET Fstatus='N',FstatusDt=NULL WHERE a.Id='{id}'";
+                    _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Adorn SET Fstatus='Y',FstatusDt=GETDATE() WHERE Id='{id}'" 
+                                                    : $@"UPDATE dbo.T_PRO_Adorn SET Fstatus='N',FstatusDt=NULL WHERE Id='{id}'";
                     break;
                 case "MaterialOrder":
-                    _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Material SET Fstatus='Y',FstatusDt=GETDATE() WHERE a.Id='{id}'"
-                                                    : $@"UPDATE dbo.T_PRO_Material SET Fstatus='N',FstatusDt=NULL WHERE a.Id='{id}'";
+                    _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Material SET Fstatus='Y',FstatusDt=GETDATE() WHERE Id='{id}'"
+                                                    : $@"UPDATE dbo.T_PRO_Material SET Fstatus='N',FstatusDt=NULL WHERE Id='{id}'";
                     break;
             }
             return _result;

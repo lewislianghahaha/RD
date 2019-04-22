@@ -295,6 +295,7 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = orderSearch.Get_Orderdtl(functionName, id, pid);
                     break;
+
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":
                     _resultMark = orderImport.InsertTreeRd(functionName,id,pid, treeName);
@@ -305,16 +306,18 @@ namespace RD.Logic
                     break;
                 //保存(作用:对表体GridView进行导入)
                 case "2.2":
-
+                    _resultMark = true;
                     break;
                 //保存(作用:导入信息至表头T_PRO_Adorn 或 T_PRO_Material 注:插入成功后,返回单据ID,若异常返回0)
                 case "2.3":
                     _orderid = orderImport.InsertOrderFirstDt(functionName,custid,accountName);
                     break;
+
                 //删除节点及对应的表体信息
                 case "3":
                     _resultMark = odrderDel.DelBD_Record(functionName, pid, dt);
                     break;
+
                 //审核（反审核）
                 case "4":
                     _resultMark = orderGenerate.ConfirmOrderDtl(functionName,confirmid,pid);
