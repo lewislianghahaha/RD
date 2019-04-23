@@ -539,12 +539,14 @@ namespace RD.UI.Order
             foreach (DataRow sourcerow in sourcedt.Rows)
             {
                 var row = dt.NewRow();
-                row[0] = id;                                     //表头ID
-                row[1] = treeid;                                //树菜单ID
-                row[3] = hTypeid;                              //工程类别-项目名称ID
-                row[4] = Convert.ToString(sourcerow[2]);      //工程类别-项目名称
-                row[5] = Convert.ToString(sourcerow[3]);     //单位名称
-                row[10] = Convert.ToDecimal(sourcerow[4]);  //单价
+                row[0] = id;                                        //表头ID
+                row[1] = treeid;                                   //树菜单ID
+                row[3] = hTypeid;                                 //工程类别-项目名称ID
+                row[4] = Convert.ToString(sourcerow[2]);         //工程类别-项目名称
+                row[5] = Convert.ToString(sourcerow[3]);        //单位名称
+                row[10] = Convert.ToDecimal(sourcerow[4]);     //单价
+                row[14] = GlobalClasscs.User.StrUsrName;      //录入人
+                row[15] = DateTime.Now.Date;                 //录入日期
                 dt.Rows.Add(row);
             }
             gvdtl.DataSource = dt;
