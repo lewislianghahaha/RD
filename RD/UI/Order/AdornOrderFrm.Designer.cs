@@ -56,9 +56,9 @@
             this.btnCreate = new System.Windows.Forms.Button();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.btnGetdtl = new System.Windows.Forms.Button();
             this.comHtype = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnGetdtl = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -229,6 +229,7 @@
             this.splitContainer1.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -348,6 +349,15 @@
             this.panel7.Size = new System.Drawing.Size(773, 26);
             this.panel7.TabIndex = 0;
             // 
+            // btnGetdtl
+            // 
+            this.btnGetdtl.Location = new System.Drawing.Point(241, 1);
+            this.btnGetdtl.Name = "btnGetdtl";
+            this.btnGetdtl.Size = new System.Drawing.Size(145, 23);
+            this.btnGetdtl.TabIndex = 2;
+            this.btnGetdtl.Text = "获取工程类别明细信息";
+            this.btnGetdtl.UseVisualStyleBackColor = true;
+            // 
             // comHtype
             // 
             this.comHtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -365,15 +375,6 @@
             this.label4.Size = new System.Drawing.Size(83, 12);
             this.label4.TabIndex = 0;
             this.label4.Text = "装修工程类别:";
-            // 
-            // btnGetdtl
-            // 
-            this.btnGetdtl.Location = new System.Drawing.Point(241, 1);
-            this.btnGetdtl.Name = "btnGetdtl";
-            this.btnGetdtl.Size = new System.Drawing.Size(145, 23);
-            this.btnGetdtl.TabIndex = 2;
-            this.btnGetdtl.Text = "获取工程类别明细信息";
-            this.btnGetdtl.UseVisualStyleBackColor = true;
             // 
             // AdornOrderFrm
             // 

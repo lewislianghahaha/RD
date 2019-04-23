@@ -51,11 +51,14 @@ namespace RD.DB.Generate
 
             try
             {
-                //先将选择的节点ID赋值给临时表
-                var row = tempdt.NewRow();
-                row[0] = pid;
-                tempdt.Rows.Add(row);
-
+                //先将选择的节点ID赋值给临时表(基础信息库才使用)
+                if (functionName != "AdornOrder" && functionName != "MaterialOrder")
+                {
+                    var row = tempdt.NewRow();
+                    row[0] = pid;
+                    tempdt.Rows.Add(row);
+                }
+                    
                 //使用递归将相关的节点信息添加至临时表内
                 var resultdt = GetTreeRecord(functionName, dt, tempdt, pid);
                 //循环执行删除操作
@@ -75,7 +78,18 @@ namespace RD.DB.Generate
         {
             //保存主键ID
             var id = 0;
-            var rowdtl = dt.Select("Parentid='" + pid + "'");
+            var rowdtl=new DataRow[0];
+
+            //若factionname为AdornOrder 或 MaterialOrder时，是用treeid为条件
+            if (factionname == "AdornOrder" || factionname == "MaterialOrder")
+            {
+                rowdtl = dt.Select("Treeid='" + pid + "'");
+            }
+            else
+            {
+                rowdtl = dt.Select("Parentid='" + pid + "'");
+            }
+
             if (rowdtl.Length <= 0) return tempdt;
 
             foreach (var t in rowdtl)
@@ -96,16 +110,20 @@ namespace RD.DB.Generate
 
                 tempdt.Rows.Add(row);
 
-                var result = dt.Select("Parentid='" + id + "'");
+                //若功能名称不是AdornOrder 或 MaterialOrder这两个单据类型时才执行递归
+                if (factionname != "AdornOrder" && factionname != "MaterialOrder")
+                {
+                    var result = dt.Select("Parentid='" + id + "'");
 
-                if (result.Length == 0)
-                {
-                    continue;
-                }
-                else
-                {
-                    //(重)递归调用
-                    GetTreeRecord(factionname,dt, tempdt, id);
+                    if (result.Length == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        //(重)递归调用
+                        GetTreeRecord(factionname, dt, tempdt, id);
+                    }
                 }
             }
             return tempdt;

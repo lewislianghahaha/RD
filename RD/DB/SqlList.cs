@@ -172,17 +172,25 @@
         {
             switch (factionName)
             {
+                //客户信息管理
                 case "Customer":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=1";
                     break;
+                //供应商信息管理
                 case "Supplier":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=2";
                     break;
+                //材料信息管理
                 case "Material":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=3";
                     break;
+                //房屋类型及装修工程类别信息管理
                 case "House":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=4";
+                    break;
+                //房屋类型及装修工程类别信息管理-类别项目名称
+                case "HouseProject":
+                    _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=5";
                     break;
             }
             return _result;

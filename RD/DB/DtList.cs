@@ -241,7 +241,7 @@ namespace RD.DB
                         dc.DataType = Type.GetType("System.Int32");
                         break;
                     case 1:
-                        dc.ColumnName = "Prjoectid";
+                        dc.ColumnName = "Projectid";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
                     case 2: //PrjoectName

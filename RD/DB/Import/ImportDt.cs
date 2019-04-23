@@ -15,7 +15,7 @@ namespace RD.DB.Import
         /// 插入树形菜单记录
         /// </summary>
         /// <param name="functionName"></param>
-        /// <param name="id">上上级节点ID(室内装修工程单 及 室内主材单使用)</param>
+        /// <param name="id">表头ID(室内装修工程单 及 室内主材单使用)</param>
         /// <param name="pid">上级节点ID</param>
         /// <param name="treeName"></param>
         /// <returns></returns>
@@ -24,16 +24,18 @@ namespace RD.DB.Import
             var result = true;
             var sqlscript = string.Empty;
 
-            #region
-            //若pid为1时,要先判断pid=1时有没有值,若没有就要先插入ALL的记录,再插入要新增的记录
-            var dt = SearchNum(functionName);
-
-            if (pid == 1 && dt.Rows.Count == 0)
+            //判断若功能名称不是AdornOrder 或 MaterialOrder时才执行(即基础信息库才使用)
+            if (functionName != "AdornOrder" && functionName != "MaterialOrder")
             {
-                sqlscript = GetSqlscript(functionName, id, pid, treeName, 0);
-                EditDt(sqlscript);
+                //若pid为1时,要先判断pid=1时有没有值,若没有就要先插入ALL的记录,再插入要新增的记录
+                var dt = SearchNum(functionName);
+
+                if (pid == 1 && dt.Rows.Count == 0)
+                {
+                    sqlscript = GetSqlscript(functionName, id, pid, treeName, 0);
+                    EditDt(sqlscript);
+                }
             }
-            #endregion
 
             //插入要新增的记录
             sqlscript = GetSqlscript(functionName, id, pid, treeName, 1);
@@ -142,15 +144,15 @@ namespace RD.DB.Import
             var sqlscript = string.Empty;
 
             //单据使用
-            if (functionName == "AdornOrder" || functionName =="MaterialOrder")
-            {
-                sqlscript = sqlList.Order_SearchNum(functionName);
-            }
-            //基础信息库使用
-            else
-            {
+            //if (functionName == "AdornOrder" || functionName =="MaterialOrder")
+            //{
+            //    sqlscript = sqlList.Order_SearchNum(functionName);
+            //}
+            ////基础信息库使用
+            //else
+            //{
                 sqlscript = sqlList.BD_SearchNum(functionName);
-            }
+            //}
             var sqlDataAdapter=new SqlDataAdapter(sqlscript,serDt.GetConn());
             sqlDataAdapter.Fill(dt);
             return dt;

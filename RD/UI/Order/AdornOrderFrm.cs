@@ -220,7 +220,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 新建类别
+        /// 新建类别(注:不能在除ALL节点下创建新节点)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -228,12 +228,11 @@ namespace RD.UI.Order
         {
             try
             {
-                if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
+                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择");
                 //判断若新增节点不在ALL节点下,就显示异常
-                if((int)tvview.SelectedNode.Tag>1)
-                    if ((int)tvview.SelectedNode.Tag-1 !=1) throw new Exception("请在'ALL'节点下新建新类别");
+                if((string)tvview.SelectedNode.Text!="ALL") throw new Exception("请在'ALL'节点下新建新类别");
 
-                adornType.Pid= (int)tvview.SelectedNode.Tag;                                   //上级主键ID
+                adornType.Pid= (int)tvview.SelectedNode.Tag;                                   //上级节点ID
                 adornType.Funid = "C";                                                        //设置功能标识ID
                 adornType.Id = _pid;                                                         //获取上级表头ID
 
@@ -265,6 +264,7 @@ namespace RD.UI.Order
                 adornType.Pid = (int)tvview.SelectedNode.Tag;                             //获取所选择的主键ID
                 adornType.Funid = "E";                                                    //设置功能标识ID
 
+                adornType.OnInitialize();
                 adornType.StartPosition = FormStartPosition.CenterScreen;
                 adornType.ShowDialog();
                 //当成功新增后,将状态标记更新为R（读取）并执行"刷新"操作 
@@ -369,15 +369,22 @@ namespace RD.UI.Order
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
                 if ((int)tvview.SelectedNode.Tag == 1) throw new Exception("不能选择ALL节点,请另选其它再继续");
-                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
+                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
 
+                //获取下拉列表值
+                var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                var id = Convert.ToInt32(dvColIdlist["HTypeid"]);
 
-
+                typeInfoFrm.Funname = "HouseProject";
+                typeInfoFrm.Id = id;
+                //初始化记录
                 typeInfoFrm.OnInitialize();
                 typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
                 typeInfoFrm.ShowDialog();
 
                 //返回获取的行记录至GridView内
+                if(typeInfoFrm.ResultTable.Rows.Count==0)throw new Exception("没有行记录,请重新选择");
+                //将返回的结果赋值至GridView内
 
             }
             catch (Exception ex)

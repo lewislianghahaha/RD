@@ -91,7 +91,7 @@
             // 
             this.txtValue.Location = new System.Drawing.Point(141, 5);
             this.txtValue.Name = "txtValue";
-            this.txtValue.Size = new System.Drawing.Size(128, 21);
+            this.txtValue.Size = new System.Drawing.Size(152, 21);
             this.txtValue.TabIndex = 1;
             // 
             // comlist
