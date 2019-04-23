@@ -260,7 +260,7 @@ namespace RD.UI.Order
             try
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
-                if((int)tvview.SelectedNode.Tag==1) throw new Exception("'ALL'节点不能修改,请选择其它节点.");
+                if((string)tvview.SelectedNode.Text=="ALL") throw new Exception("'ALL'节点不能修改,请选择其它节点.");
                 adornType.Pid = (int)tvview.SelectedNode.Tag;                             //获取所选择的主键ID
                 adornType.Funid = "E";                                                    //设置功能标识ID
 
@@ -288,7 +288,7 @@ namespace RD.UI.Order
             try
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
-                if ((int)tvview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
+                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能删除,请选择其它节点进行删除");
 
                 //节点ID
                 var treeid = Convert.ToInt32(tvview.SelectedNode.Tag);
@@ -368,24 +368,26 @@ namespace RD.UI.Order
             try
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
-                if ((int)tvview.SelectedNode.Tag == 1) throw new Exception("不能选择ALL节点,请另选其它再继续");
+                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
                 if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
 
                 //获取下拉列表值
                 var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                var id = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                //获取所选中的树菜单节点ID
+                var treeid = (int) tvview.SelectedNode.Tag;
 
                 typeInfoFrm.Funname = "HouseProject";
-                typeInfoFrm.Id = id;
+                typeInfoFrm.Id = hTypeid;
                 //初始化记录
                 typeInfoFrm.OnInitialize();
                 typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
                 typeInfoFrm.ShowDialog();
 
                 //返回获取的行记录至GridView内
-                if(typeInfoFrm.ResultTable.Rows.Count==0)throw new Exception("没有行记录,请重新选择");
+                if(typeInfoFrm.ResultTable.Rows.Count==0) throw new Exception("没有行记录,请重新选择");
                 //将返回的结果赋值至GridView内
-
+                InsertdtToGridView(_pid,treeid,hTypeid, typeInfoFrm.ResultTable);
             }
             catch (Exception ex)
             {
@@ -444,7 +446,7 @@ namespace RD.UI.Order
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+                        
         /// <summary>
         /// 导出-打印
         /// </summary>
@@ -513,10 +515,39 @@ namespace RD.UI.Order
             gvdtl.Columns[2].Visible = false;
             gvdtl.Columns[3].Visible = false;
             //设置指定列不能编辑
-            gvdtl.Columns[7].ReadOnly = true;
-            gvdtl.Columns[12].ReadOnly = true;
-            gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
-            gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
+            gvdtl.Columns[4].ReadOnly = true;   //工程类别-项目名称
+            gvdtl.Columns[5].ReadOnly = true;   //单位名称
+            gvdtl.Columns[7].ReadOnly = true;   //综合单价
+            gvdtl.Columns[10].ReadOnly = true;  //单价
+            gvdtl.Columns[12].ReadOnly = true;  //合计
+            gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true; //录入人
+            gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true; //录入日期
+        }
+
+        /// <summary>
+        /// 将获取的DT内容插入至GridView内
+        /// </summary>
+        /// <param name="id">主键ID</param>
+        /// <param name="treeid">树菜单ID</param>
+        /// <param name="hTypeid">工程类别ID</param>
+        /// <param name="sourcedt">明细窗体获取的DT</param>
+        private void InsertdtToGridView(int id,int treeid,int hTypeid, DataTable sourcedt)
+        {
+            //将GridView内的内容赋值到DT
+            var dt = (DataTable) gvdtl.DataSource;
+            //循环sourcedt内的内容,目的:将刚从明细窗体内获取的值插入到GridView内
+            foreach (DataRow sourcerow in sourcedt.Rows)
+            {
+                var row = dt.NewRow();
+                row[0] = id;                                     //表头ID
+                row[1] = treeid;                                //树菜单ID
+                row[3] = hTypeid;                              //工程类别-项目名称ID
+                row[4] = Convert.ToString(sourcerow[2]);      //工程类别-项目名称
+                row[5] = Convert.ToString(sourcerow[3]);     //单位名称
+                row[10] = Convert.ToDecimal(sourcerow[4]);  //单价
+                dt.Rows.Add(row);
+            }
+            gvdtl.DataSource = dt;
         }
     }
 }

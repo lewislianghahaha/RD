@@ -101,11 +101,11 @@ namespace RD.UI.Order
                 //根据Funname获取对应的临时表
                 _resultTable = _funname == "HouseProject" ? dtList.Get_HouseProjectEmptydt() : dtList.Get_MaterialEmptydt();
                 //获取当前行记录
-
                 foreach (DataGridViewRow row in gvdtl.SelectedRows)
                 {
                     //根据MaterialID 或 Prjoectid获取所选中的GridView记录
-                    rowdtl = _funname == "HouseProject" ? _dt.Select("ProjectId='" + Convert.ToInt32(row.Cells[1].Value) + "'") : _dt.Select("MaterialId='" + Convert.ToInt32(row.Cells[1].Value) + "'");
+                    rowdtl = _funname == "HouseProject" ? _dt.Select("ProjectId='" + Convert.ToInt32(row.Cells[1].Value) + "'") 
+                                         : _dt.Select("MaterialId='" + Convert.ToInt32(row.Cells[1].Value) + "'");
                     //循环将相关值赋给到输出表内
                     foreach (var row1 in rowdtl)
                     {
