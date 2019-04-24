@@ -568,17 +568,16 @@ namespace RD.UI.Order
             try
             {
                 if(gvdtl.SelectedRows.Count==0) throw new Exception("请选择某一行进行删除");
-
-                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                
+                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续? \n 注:选择需删除的行时,请不要跨行选择. \n 请谨慎处理";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
-                    //注:执行方式 判断若所选择的行内的 adornid项 有值，就执行下面第一步，若没有。只需将在GridView内的行删除就行
-                    //1）将所选择的行保存到_deldt内(在按“保存”时执行对该行的数据库删除)
-
+                    //注:执行方式 判断若所选择的行内的 adornid项 有值，就执行下面第一步,若没有;只需将在GridView内的行删除就行
+                    //1)将所选择的行保存到_deldt内(在按“保存”时执行对该行的数据库删除)
+                    
                     //创建对应临时表
                     var tempdt = dtList.Get_AdornEmptydt();
                     //将所选择的记录赋值至tempdt临时表内
-
                     foreach (DataGridViewRow row in gvdtl.SelectedRows)
                     {
                         //若列adornid不为空时,才进行记录
@@ -597,13 +596,11 @@ namespace RD.UI.Order
                     {
                         _deldt = tempdt;
                     }
-                    //最后使用循环将所选择的行在GridView内删除
-                    for (var i = this.gvdtl.SelectedRows.Count; i > 0; i--)
+                    //最后使用循环将所选择的行在GridView内删除（注:所选择的行不能跨行选择!否则会出现漏删的情况）
+                    for (var i = gvdtl.SelectedRows.Count; i > 0; i--)
                     {
                         gvdtl.Rows.RemoveAt(gvdtl.SelectedRows[i - 1].Index);
                     }
-                    //    var drv = this.gvdtl.SelectedRows[0].DataBoundItem as DataRowView;
-                    //drv.Delete();
                 }
             }
             catch (Exception ex)
@@ -677,6 +674,7 @@ namespace RD.UI.Order
             task.TaskId = 2;
             task.FunctionId = "2.2";
 
+            task.Data = _deldt;       //要进行删除的记录
 
             new Thread(Start).Start();
             load.StartPosition = FormStartPosition.CenterScreen;
