@@ -320,9 +320,9 @@ namespace RD.DB
                         dc.ColumnName = "adornid";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    //HTypeProjectid
+                    //HTypeid
                     case 3:
-                        dc.ColumnName = "工程类别HTypeProjectidID";
+                        dc.ColumnName = "工程类别HTypeID";
                         dc.DataType=Type.GetType("System.Int32");
                         break;
                     //HTypeProjectName

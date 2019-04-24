@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmConfirm = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +56,8 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnCreate = new System.Windows.Forms.Button();
             this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.ConMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnGetdtl = new System.Windows.Forms.Button();
             this.comHtype = new System.Windows.Forms.ComboBox();
@@ -71,6 +74,7 @@
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.ConMenu.SuspendLayout();
             this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -330,12 +334,26 @@
             // 
             this.gvdtl.AllowUserToDeleteRows = false;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.ContextMenuStrip = this.ConMenu;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 26);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.RowTemplate.Height = 23;
             this.gvdtl.Size = new System.Drawing.Size(773, 545);
             this.gvdtl.TabIndex = 1;
+            // 
+            // ConMenu
+            // 
+            this.ConMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmdel});
+            this.ConMenu.Name = "ConMenu";
+            this.ConMenu.Size = new System.Drawing.Size(149, 26);
+            // 
+            // tmdel
+            // 
+            this.tmdel.Name = "tmdel";
+            this.tmdel.Size = new System.Drawing.Size(148, 22);
+            this.tmdel.Text = "删除所选内容";
             // 
             // panel7
             // 
@@ -401,6 +419,7 @@
             this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.ConMenu.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.ResumeLayout(false);
@@ -441,5 +460,7 @@
         private System.Windows.Forms.TextBox txtOrderNo;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnGetdtl;
+        private System.Windows.Forms.ContextMenuStrip ConMenu;
+        private System.Windows.Forms.ToolStripMenuItem tmdel;
     }
 }

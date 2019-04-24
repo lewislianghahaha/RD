@@ -2,6 +2,7 @@
 using System.Data;
 using System.Threading;
 using System.Windows.Forms;
+using RD.DB;
 using RD.Logic;
 
 namespace RD.UI.Order
@@ -12,7 +13,10 @@ namespace RD.UI.Order
         Load load=new Load();
         AdornTypeFrm adornType=new AdornTypeFrm();
         TypeInfoFrm typeInfoFrm=new TypeInfoFrm();
+        DtList dtList = new DtList();
 
+        //保存GridView内需要进行删除的临时表
+        private DataTable _deldt=new DataTable();
         //保存树型菜单DataTable记录
         private DataTable _treeviewdt=new DataTable();
         //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
@@ -57,6 +61,8 @@ namespace RD.UI.Order
             btnDel.Click += BtnDel_Click;
             tvview.AfterSelect += Tvview_AfterSelect;
             btnGetdtl.Click += BtnGetdtl_Click;
+            tmdel.Click += Tmdel_Click;
+            gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
         }
 
         /// <summary>
@@ -206,6 +212,9 @@ namespace RD.UI.Order
         {
             try
             {
+
+
+
                 task.TaskId = 2;
                 task.FunctionId = "1";
                 task.StartTask();
@@ -334,20 +343,8 @@ namespace RD.UI.Order
             {
                 if(gvdtl.Rows.Count==0) throw new Exception("没有任何记录,不能保存");
                 if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
-
-                task.TaskId = 2;
-                task.FunctionId = "2.2";
-
-
-                new Thread(Start).Start();
-                load.StartPosition = FormStartPosition.CenterScreen;
-                load.ShowDialog();
-
-                if(!task.ResultMark) throw new Exception("保存异常,请联系管理员");
-                else
-                {
-                    MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                //执行保存功能
+                Savedtl();
                 //保存成功后,再次进行初始化
                 OnInitialize();
 
@@ -473,6 +470,15 @@ namespace RD.UI.Order
         {
             try
             {
+                //判断若GridView有内容时,就提示是否 先保存再继续
+                if (gvdtl.Rows.Count > 0)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
                 task.TaskId = 2;
                 task.FunctionId = "1.4";
                 task.FunctionName = _funName;
@@ -541,7 +547,7 @@ namespace RD.UI.Order
                 var row = dt.NewRow();
                 row[0] = id;                                        //表头ID
                 row[1] = treeid;                                   //树菜单ID
-                row[3] = hTypeid;                                 //工程类别-项目名称ID
+                row[3] = hTypeid;                                 //工程类别ID
                 row[4] = Convert.ToString(sourcerow[2]);         //工程类别-项目名称
                 row[5] = Convert.ToString(sourcerow[3]);        //单位名称
                 row[10] = Convert.ToDecimal(sourcerow[4]);     //单价
@@ -550,6 +556,130 @@ namespace RD.UI.Order
                 dt.Rows.Add(row);
             }
             gvdtl.DataSource = dt;
+        }
+
+        /// <summary>
+        /// 删除GridView中所选择的行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmdel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(gvdtl.SelectedRows.Count==0) throw new Exception("请选择某一行进行删除");
+
+                var clickMessage = $"您所选择的信息为:\n 您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //注:执行方式 判断若所选择的行内的 adornid项 有值，就执行下面第一步，若没有。只需将在GridView内的行删除就行
+                    //1）将所选择的行保存到_deldt内(在按“保存”时执行对该行的数据库删除)
+
+                    //创建对应临时表
+                    var tempdt = dtList.Get_AdornEmptydt();
+                    //获取GridView的DT
+                    var dt = (DataTable) gvdtl.DataSource;
+                    //将所选择的记录赋值至tempdt临时表内
+                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                    {
+                        //若列adornid不为空时,才进行记录
+                        //if (row.Cells[2].Value.ToString() != "")
+                        //{
+                            var row1 = tempdt.NewRow();
+                            for (var i = 0; i < tempdt.Columns.Count; i++)
+                            {
+                                row1[i] = row.Cells[i].Value;
+                            }
+                            tempdt.Rows.Add(row1);
+                        dt.Rows.Remove(row1);
+                        //}
+                    }
+                    
+                    
+                    var a = tempdt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 当GridView内的单元格的值更改时发生（注:每当有其中一个单元格的值发生变化时,都会循环 行中所有单元格并执行此事件）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Gvdtl_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.ColumnIndex == 8 || e.ColumnIndex == 9 || e.ColumnIndex == 10 || e.ColumnIndex == 11)
+                {
+                    decimal renCost = 0;  //人工费用
+                    decimal fuCost = 0; //辅材费用
+                    decimal price = 0;  //单价
+                    
+                    //计算“综合单价”=人工费用(8)+辅材费用(9)+(单价(10) 或 临时价(11))
+
+                    //人工费用
+                    renCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[8].Value);
+                    //辅材费用
+                    fuCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[9].Value);
+                    //单价(注:若临时价有值。就取临时价。反之用单价;若两者都没有的话,就为0)
+                    if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[11].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[11].Value);
+                    }
+                    else if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[10].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[10].Value);
+                    }
+                    else
+                    {
+                        price = 0;
+                    }
+                    gvdtl.Rows[e.RowIndex].Cells[7].Value = renCost + fuCost + price;
+                }
+                else if (e.ColumnIndex == 6 || e.ColumnIndex == 7)
+                {
+                    decimal quantities = 0;  //工程量
+                    decimal finalPrice = 0; //综合单价
+                    
+                    //计算“合计”=工程量(6) * 综合单价(7)
+
+                    //工程量
+                    quantities = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[6].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[6].Value);
+                    //综合单价
+                    finalPrice = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[7].Value);
+
+                    gvdtl.Rows[e.RowIndex].Cells[12].Value = quantities * finalPrice;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        /// <summary>
+        /// 保存GridView记录(作用:在按“保存”按钮时,或转移树菜单节点 或 重新选择下拉框时使用)
+        /// </summary>
+        private void Savedtl()
+        {
+            task.TaskId = 2;
+            task.FunctionId = "2.2";
+
+
+            new Thread(Start).Start();
+            load.StartPosition = FormStartPosition.CenterScreen;
+            load.ShowDialog();
+
+            if (!task.ResultMark) throw new Exception("保存异常,请联系管理员");
+            else
+            {
+                MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

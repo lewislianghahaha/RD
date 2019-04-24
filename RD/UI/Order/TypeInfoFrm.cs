@@ -100,7 +100,7 @@ namespace RD.UI.Order
                 if(gvdtl.SelectedRows.Count==0) throw new Exception("请至少选中一行");
                 //根据Funname获取对应的临时表
                 _resultTable = _funname == "HouseProject" ? dtList.Get_HouseProjectEmptydt() : dtList.Get_MaterialEmptydt();
-                //获取当前行记录
+                //获取所选择的行记录
                 foreach (DataGridViewRow row in gvdtl.SelectedRows)
                 {
                     //根据MaterialID 或 Prjoectid获取所选中的GridView记录

@@ -412,7 +412,7 @@
         public string Order_Adorn_SearchDtl(int pid)
         {
             var result = $@"
-                             SELECT a.id,a.Treeid,a.adornid,a.HTypeProjectid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
+                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
 	                               a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
                              FROM dbo.T_PRO_AdornEntry a
                              WHERE a.Id='{pid}'
