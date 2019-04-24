@@ -569,7 +569,7 @@ namespace RD.UI.Order
             {
                 if(gvdtl.SelectedRows.Count==0) throw new Exception("请选择某一行进行删除");
 
-                var clickMessage = $"您所选择的信息为:\n 您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //注:执行方式 判断若所选择的行内的 adornid项 有值，就执行下面第一步，若没有。只需将在GridView内的行删除就行
@@ -577,26 +577,33 @@ namespace RD.UI.Order
 
                     //创建对应临时表
                     var tempdt = dtList.Get_AdornEmptydt();
-                    //获取GridView的DT
-                    var dt = (DataTable) gvdtl.DataSource;
                     //将所选择的记录赋值至tempdt临时表内
+
                     foreach (DataGridViewRow row in gvdtl.SelectedRows)
                     {
                         //若列adornid不为空时,才进行记录
-                        //if (row.Cells[2].Value.ToString() != "")
-                        //{
+                        if (row.Cells[2].Value.ToString() != "")
+                        {
                             var row1 = tempdt.NewRow();
                             for (var i = 0; i < tempdt.Columns.Count; i++)
                             {
                                 row1[i] = row.Cells[i].Value;
                             }
                             tempdt.Rows.Add(row1);
-                        dt.Rows.Remove(row1);
-                        //}
+                        }
                     }
-                    
-                    
-                    var a = tempdt;
+                    //若tempdt有值才赋值至_dtldt内,(供保存使用)
+                    if (tempdt.Rows.Count > 0)
+                    {
+                        _deldt = tempdt;
+                    }
+                    //最后使用循环将所选择的行在GridView内删除
+                    for (var i = this.gvdtl.SelectedRows.Count; i > 0; i--)
+                    {
+                        gvdtl.Rows.RemoveAt(gvdtl.SelectedRows[i - 1].Index);
+                    }
+                    //    var drv = this.gvdtl.SelectedRows[0].DataBoundItem as DataRowView;
+                    //drv.Delete();
                 }
             }
             catch (Exception ex)
