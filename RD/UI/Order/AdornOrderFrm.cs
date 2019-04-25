@@ -98,6 +98,8 @@ namespace RD.UI.Order
                 //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
                 gvdtl.DataSource = OnInitializeDtl();
             }
+            //初始化装修工程类别下拉列表
+            OnInitializeDropDownList();
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //展开根节点
@@ -131,6 +133,19 @@ namespace RD.UI.Order
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return dt;
+        }
+
+        /// <summary>
+        /// 初始化下拉列表
+        /// </summary>
+        private void OnInitializeDropDownList()
+        {
+            task.TaskId = 2;
+            task.FunctionId = "1";
+            task.StartTask();
+            comHtype.DataSource = task.ResultTable;
+            comHtype.DisplayMember = "HtypeName";     //设置显示值 HTypeid
+            comHtype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
         }
 
         /// <summary>
@@ -212,15 +227,37 @@ namespace RD.UI.Order
         {
             try
             {
+                //在选择其它下拉列表值时,若GridView内有新值,即提示是否保存，若是，即保存完成后进入要移换的下拉框的GridView页面
 
+                //获取下拉列表信息
+                var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
 
-
+                //获取在GridView存在的新记录
+                var dt = SearchNewRecordIntoDt();
+                //若返回的DT行数大于O，就作出提示
+                if (dt.Rows.Count>0)
+                {
+                    var clickMessage = $@"系统检测到该页面有没保存的记录'{dt.Rows.Count}'行 \n 是否需要保存? 
+                                        \n 注:若不保存而转移至下一页,将会导致新增的记录清空 \n 请谨慎处理.";
+                    if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        //保存GridView信息
+                        Savedtl();
+                    }
+                }
+                //获取下拉列表ID信息并跳转至对应下拉列表的GridView页(注:无论是否需要保存都会执行)
                 task.TaskId = 2;
-                task.FunctionId = "1";
-                task.StartTask();
-                comHtype.DataSource = task.ResultTable;
-                comHtype.DisplayMember = "HtypeName";     //设置显示值 HTypeid
-                comHtype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
+                task.FunctionId = "";
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                gvdtl.DataSource = task.ResultTable;
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
+
             }
             catch (Exception ex)
             {
@@ -692,6 +729,32 @@ namespace RD.UI.Order
             {
                 MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        /// <summary>
+        /// 查询GridView内的新记录,并保存至DT内并返回
+        /// </summary>
+        /// <returns></returns>
+        private DataTable SearchNewRecordIntoDt()
+        {
+            //创建对应临时表
+            var tempdt = dtList.Get_AdornEmptydt();
+            var dt = (DataTable) gvdtl.DataSource;
+            //将所选择的记录赋值至tempdt临时表内
+            foreach (DataRow row in dt.Rows)
+            {
+                //若列adornid不为空时,才进行记录
+                if (Convert.ToString(row[2]) == "")
+                {
+                    var rowdtl = tempdt.NewRow();
+                    for (var i = 0; i < tempdt.Columns.Count; i++)
+                    {
+                        rowdtl[i] = row[i];
+                    }
+                    tempdt.Rows.Add(rowdtl);
+                }
+            }
+            return tempdt;
         }
     }
 }
