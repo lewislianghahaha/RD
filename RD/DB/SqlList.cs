@@ -554,13 +554,21 @@
         {
             switch (factionName)
             {
-                case "AdornOrder":
+                case "AdornOrderHead":
                     _result =$@"delete from dbo.T_PRO_AdornTree where Treeid='{id}';
                                delete from dbo.T_PRO_AdornEntry  where Treeid='{id}'";
                     break;
-                case "MaterialOrder":
+                case "MaterialOrderHead":
                     _result =$@"delete from dbo.T_PRO_MaterialTree where Treeid='{id}';
                                 delete from dbo.T_PRO_MaterialEntry where Treeid='{id}'";
+                    break;
+                //删除“室内装修工程”表体信息
+                case "AdornOrder":
+                    _result = $@"DELETE FROM dbo.T_PRO_AdornEntry WHERE adornid='{id}'";
+                    break;
+                //删除"室内主材"表体信息
+                case "MaterialOrder":
+                    _result = $@"DELETE FROM dbo.T_PRO_MaterialEntry WHERE EntryID='{id}'";
                     break;
             }
             return _result;
@@ -636,6 +644,36 @@
                     _result = confirmid == 0 ? $@"UPDATE dbo.T_PRO_Material SET Fstatus='Y',FstatusDt=GETDATE() WHERE Id='{id}'"
                                                     : $@"UPDATE dbo.T_PRO_Material SET Fstatus='N',FstatusDt=NULL WHERE Id='{id}'";
                     break;
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public string Order_UpdateEntry(string tableName)
+        {
+            switch (tableName)
+            {
+                case "T_PRO_AdornEntry":
+                    _result = @"
+                                     UPDATE dbo.T_PRO_AdornEntry SET HTypeProjectName=@HTypeProjectName,Unit=@Unit,quantities=@quantities,FinalPrice=@FinalPrice,
+								                                     Ren_Cost=@Ren_Cost,Fu_Cost=@Fu_Cost,Price=@Price,Temp_Price=@Temp_Price,Amount=@Amount,
+								                                     FRemark=@FRemark
+                                     WHERE adornid=@id
+                                ";
+                    break;
+                case "T_PRO_MaterialEntry":
+                    _result = $@"
+                                    UPDATE dbo.T_PRO_MaterialEntry SET MaterialId=@MaterialId,MaterialName=@MaterialName,Unit=@Unit,quantities=@quantities,
+								                                       FinalPrice=@FinalPrice,Ren_Cost=@Ren_Cost,Fu_Cost=@Fu_Cost,Price=@Price,
+								                                       Temp_Price=@Temp_Price,Amount=@Amount,FRemark=@FRemark
+                                    WHERE EntryID=@id
+                                ";
+                    break;
+
             }
             return _result;
         }

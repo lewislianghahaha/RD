@@ -46,13 +46,27 @@ namespace RD.DB.Generate
         public bool DelBD_Rd(string functionName, int pid, DataTable dt)
         {
             var result = true;
+            string name;
             //设置主键临时表(用于保存要删除的ID值)
             var tempdt = dtList.Get_TreeidTemp();
+            
+            switch (functionName)
+            {
+                case "AdornOrder":
+                    name = "AdornOrderHead";
+                    break;
+                case "MaterialOrder":
+                    name = "MaterialOrderHead";
+                    break;
+                default:
+                    name = functionName;
+                    break;
+            }
 
             try
             {
                 //先将选择的节点ID赋值给临时表(基础信息库才使用)
-                if (functionName != "AdornOrder" && functionName != "MaterialOrder")
+                if (name != "AdornOrderHead" && name != "MaterialOrderHead")
                 {
                     var row = tempdt.NewRow();
                     row[0] = pid;
@@ -60,9 +74,9 @@ namespace RD.DB.Generate
                 }
                     
                 //使用递归将相关的节点信息添加至临时表内
-                var resultdt = GetTreeRecord(functionName, dt, tempdt, pid);
+                var resultdt = GetTreeRecord(name, dt, tempdt, pid);
                 //循环执行删除操作
-                result = Del(functionName, resultdt);
+                result = Del(name, resultdt);
             }
             catch (Exception)
             {
@@ -81,7 +95,7 @@ namespace RD.DB.Generate
             var rowdtl=new DataRow[0];
 
             //若factionname为AdornOrder 或 MaterialOrder时，是用treeid为条件
-            if (factionname == "AdornOrder" || factionname == "MaterialOrder")
+            if (factionname == "AdornOrderHead" || factionname == "MaterialOrderHead")
             {
                 rowdtl = dt.Select("Treeid='" + pid + "'");
             }
@@ -96,7 +110,7 @@ namespace RD.DB.Generate
             {
                 var row = tempdt.NewRow();
                 //当检测到单据类型为室内装修工程单 或 室内主材单时,要取第二列的ID记录才是树菜单的主键值
-                if (factionname == "AdornOrder" || factionname == "MaterialOrder")
+                if (factionname == "AdornOrderHead" || factionname == "MaterialOrderHead")
                 {
                     row[0] = t[1];
                     id = Convert.ToInt32(t[1]);
@@ -111,7 +125,7 @@ namespace RD.DB.Generate
                 tempdt.Rows.Add(row);
 
                 //若功能名称不是AdornOrder 或 MaterialOrder这两个单据类型时才执行递归
-                if (factionname != "AdornOrder" && factionname != "MaterialOrder")
+                if (factionname != "AdornOrderHead" && factionname != "MaterialOrderHead")
                 {
                     var result = dt.Select("Parentid='" + id + "'");
 
@@ -135,7 +149,7 @@ namespace RD.DB.Generate
         /// <param name="functionName"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        private bool Del(string functionName, DataTable dt)
+        public bool Del(string functionName, DataTable dt)
         {
             var result = true;
             foreach (DataRow row in dt.Rows)
@@ -154,11 +168,17 @@ namespace RD.DB.Generate
         /// <returns></returns>
         private string Get_DelScript(string functionName, DataRow row)
         {
-            var sqlscript = string.Empty;
-            //单据使用
-            if (functionName == "AdornOrder" || functionName == "MaterialOrder")
+            string sqlscript;
+
+            //单据(树菜单使用)
+            if (functionName == "AdornOrderHead" || functionName == "MaterialOrderHead")
             {
                 sqlscript= sqlList.OrderInfo_Del(functionName, Convert.ToInt32(row[0]));
+            }
+            //单据表体使用
+            else if (functionName == "AdornOrder" || functionName == "MaterialOrder")
+            {
+                sqlscript= sqlList.OrderInfo_Del(functionName, Convert.ToInt32(row[2]));
             }
             //基础信息库使用
             else

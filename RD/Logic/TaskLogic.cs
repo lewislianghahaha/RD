@@ -35,6 +35,7 @@ namespace RD.Logic
         private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
         private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单使用）
         private int _confirmid;          //审核ID
+        private DataTable _deldata;      //获取需要删除的表体记录信息(室内装修工程单 及 室内主材单使用)
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -121,7 +122,12 @@ namespace RD.Logic
         /// <summary>
         /// 审核ID
         /// </summary>
-        public int Confirmid {set { _confirmid = value; } } 
+        public int Confirmid {set { _confirmid = value; } }
+
+        /// <summary>
+        /// 获取需要删除的表体记录信息(室内装修工程单 及 室内主材单使用)
+        /// </summary>
+        public DataTable Deldata { set { _deldata = value; } }
 
         #endregion
 
@@ -158,7 +164,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid);
+                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata);
                     break;
                 //室内主材单
                 case 3:
@@ -270,8 +276,9 @@ namespace RD.Logic
         /// <param name="accountName">帐号名称</param>
         /// <param name="dt">初始化后的DT,获取数据库对应表的全部信息;</param>
         /// <param name="confirmid">审核ID</param>
+        /// <param name="deldt">获取需要删除的表体记录信息</param>
         private void ProAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
-                                  int custid,string accountName,DataTable dt,int confirmid)
+                                  int custid,string accountName,DataTable dt,int confirmid,DataTable deldt)
         {
             switch (functionId)
             {
@@ -304,9 +311,9 @@ namespace RD.Logic
                 case "2.1":
                     _resultMark = orderImport.UpdateTreeRd(functionName,pid, treeName);
                     break;
-                //保存(作用:对表体GridView进行导入)
+                //保存(作用:对表体GridView进行导入) (注:包括插入及更新 及删除操作)
                 case "2.2":
-                    _resultMark = true;
+                    _resultMark = orderImport.Save_OrderEntry(functionName,dt,deldt);
                     break;
                 //保存(作用:导入信息至表头T_PRO_Adorn 或 T_PRO_Material 注:插入成功后,返回单据ID,若异常返回0)
                 case "2.3":

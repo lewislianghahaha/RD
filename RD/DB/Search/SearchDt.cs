@@ -252,10 +252,18 @@ namespace RD.DB.Search
                     break;
                 //室内装修工程单
                 case "AdornOrder":
-                    resultDt = dlDtList.Get_ProAdorndt();
+                    resultDt = dlDtList.Get_AdornEmptydt();
                     break;
                 //室内主材单
                 case "MaterialOrder":
+                    resultDt = dlDtList.Get_ProMaterialEmtrydt();
+                    break;
+                //室内装修工程单-表头记录(用于生成单据头使用)
+                case "AdornOrderHead":
+                    resultDt = dlDtList.Get_ProAdorndt();
+                    break;
+                //室内主材单-表头记录(用于生成单据头使用)
+                case "MaterialOrderHead":
                     resultDt = dlDtList.Get_ProMaterialdt();
                     break;
             }

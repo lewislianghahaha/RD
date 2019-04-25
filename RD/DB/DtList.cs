@@ -491,7 +491,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"室内装修工程"表头临时表
+        /// 获取"室内装修工程"表头临时表(生成单据时使用)
         /// </summary>
         /// <returns></returns>
         public DataTable Get_ProAdorndt()
@@ -545,7 +545,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"室内主材单"表头临时表
+        /// 获取"室内主材单"表头临时表(生成单据时使用)
         /// </summary>
         /// <returns></returns>
         public DataTable Get_ProMaterialdt()

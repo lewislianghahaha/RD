@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using RD.DB.Import;
 
 namespace RD.Logic.Order
@@ -67,6 +68,27 @@ namespace RD.Logic.Order
                 throw new Exception(ex.Message);
             }
             return reslutid;
+        }
+
+        /// <summary>
+        /// (作用:对表体GridView进行导入) (注:包括插入及更新 及删除操作)
+        /// </summary>
+        /// <param name="functionName">功能名称(AdornOrder:室内装修工程 MaterialOrder:室内主材单)</param>
+        /// <param name="dt">获取GridView内的DataTable</param>
+        /// <param name="deldt">要进行删除的记录</param>
+        /// <returns></returns>
+        public bool Save_OrderEntry(string functionName,DataTable dt,DataTable deldt)
+        {
+            var result = true;
+            try
+            {
+                result = importDt.SaveOrderEntry(functionName, dt, deldt);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
         }
 
     }

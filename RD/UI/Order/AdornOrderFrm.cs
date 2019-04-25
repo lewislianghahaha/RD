@@ -342,12 +342,11 @@ namespace RD.UI.Order
             try
             {
                 if(gvdtl.Rows.Count==0) throw new Exception("没有任何记录,不能保存");
-                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
+                //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
                 //执行保存功能
                 Savedtl();
                 //保存成功后,再次进行初始化
                 OnInitialize();
-
             }
             catch (Exception ex)
             {
@@ -470,20 +469,27 @@ namespace RD.UI.Order
         {
             try
             {
-                //判断若GridView有内容时,就提示是否 先保存再继续
+                //判断若GridView有内容时,就提示是否“保存” 先保存再继续
+                //检测在GridView是否有还没有保存的记录(注:以adornid字段为空为条件)
                 if (gvdtl.Rows.Count > 0)
                 {
-                    
+                    var clickMessage = $"检测到有还没保存的记录. \n 是否继续?";
+                    if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        
+                    }
                 }
                 else
                 {
                     
                 }
+
                 task.TaskId = 2;
                 task.FunctionId = "1.4";
                 task.FunctionName = _funName;
                 task.Id = _pid;  //表头ID
                 task.Pid = (int)tvview.SelectedNode.Tag == 1 ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);  //树节点ID
+                //(int)comHtype.SelectedIndex  增加下拉框ID
 
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
@@ -569,7 +575,7 @@ namespace RD.UI.Order
             {
                 if(gvdtl.SelectedRows.Count==0) throw new Exception("请选择某一行进行删除");
                 
-                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续? \n 注:选择需删除的行时,请不要跨行选择. \n 请谨慎处理";
+                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //注:执行方式 判断若所选择的行内的 adornid项 有值，就执行下面第一步,若没有;只需将在GridView内的行删除就行
@@ -596,7 +602,7 @@ namespace RD.UI.Order
                     {
                         _deldt = tempdt;
                     }
-                    //最后使用循环将所选择的行在GridView内删除（注:所选择的行不能跨行选择!否则会出现漏删的情况）
+                    //最后使用循环将所选择的行在GridView内删除
                     for (var i = gvdtl.SelectedRows.Count; i > 0; i--)
                     {
                         gvdtl.Rows.RemoveAt(gvdtl.SelectedRows[i - 1].Index);
@@ -673,8 +679,9 @@ namespace RD.UI.Order
         {
             task.TaskId = 2;
             task.FunctionId = "2.2";
-
-            task.Data = _deldt;       //要进行删除的记录
+            task.FunctionName = _funName;                      //功能名称 (AdornOrder:室内装修工程 MaterialOrder:室内主材单)
+            task.Data = (DataTable) gvdtl.DataSource;         //获取GridView内的DataTable
+            task.Deldata = _deldt;                           //要进行删除的记录
 
             new Thread(Start).Start();
             load.StartPosition = FormStartPosition.CenterScreen;

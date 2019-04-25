@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using RD.DB.Generate;
 using RD.DB.Search;
 
 namespace RD.DB.Import
@@ -9,6 +10,7 @@ namespace RD.DB.Import
     public class ImportDt
     {
         SearchDt serDt=new SearchDt();
+        GenerateDt generateDt=new GenerateDt();
         SqlList sqlList=new SqlList();
 
         /// <summary>
@@ -264,7 +266,7 @@ namespace RD.DB.Import
         }
 
         /// <summary>
-        /// 更新“基础信息库”内的记录
+        /// 更新表体内的记录
         /// </summary>
         private void UpEntrydt(string tableName,DataTable updt)
         {
@@ -322,11 +324,17 @@ namespace RD.DB.Import
                 case "HouseProject":
                     result = "T_BD_HTypeProjectDtl";
                     break;
-                case "AdornOrder":
+                case "AdornOrderHead":
                     result = "T_PRO_Adorn";
                     break;
-                case "MaterialOrder":
+                case "MaterialOrderHead":
                     result = "T_PRO_Material";
+                    break;
+                case "AdornOrder":
+                    result = "T_PRO_AdornEntry";
+                    break;
+                case "MaterialOrder":
+                    result = "T_PRO_MaterialEntry";
                     break;
             }
             return result;
@@ -342,7 +350,11 @@ namespace RD.DB.Import
         private SqlDataAdapter GetUpdateAdapter(string tableName,SqlConnection conn,SqlDataAdapter da)
         {
             //根据标记获取对应的更新语句
-            da.UpdateCommand = new SqlCommand(sqlList.BD_UpdateEntry(tableName), conn);
+            var script = tableName == "T_PRO_AdornEntry" || tableName == "T_PRO_MaterialEntry"
+                ? sqlList.Order_UpdateEntry(tableName)
+                : sqlList.BD_UpdateEntry(tableName);
+
+            da.UpdateCommand = new SqlCommand(script, conn);
 
             switch (tableName)
             {
@@ -384,11 +396,39 @@ namespace RD.DB.Import
                     da.UpdateCommand.Parameters.Add("@Unit", SqlDbType.NVarChar, 10, "Unit");
                     da.UpdateCommand.Parameters.Add("@Price", SqlDbType.Decimal, 2, "Price");
                     break;
+                case "T_PRO_AdornEntry":
+                    da.UpdateCommand.Parameters.Add("@adornid", SqlDbType.Int, 8, "adornid");
+                    da.UpdateCommand.Parameters.Add("@HTypeProjectName", SqlDbType.NVarChar,300, "HTypeProjectName");
+                    da.UpdateCommand.Parameters.Add("@Unit", SqlDbType.NVarChar, 50, "Unit");
+                    da.UpdateCommand.Parameters.Add("@quantities",SqlDbType.Decimal,2, "quantities");
+                    da.UpdateCommand.Parameters.Add("@FinalPrice", SqlDbType.Decimal, 2, "FinalPrice");
+                    da.UpdateCommand.Parameters.Add("@Ren_Cost",SqlDbType.Decimal,2,"Ren_Cost");
+                    da.UpdateCommand.Parameters.Add("@Fu_Cost",SqlDbType.Decimal,2,"Fu_Cost");
+                    da.UpdateCommand.Parameters.Add("@Price", SqlDbType.Decimal, 2, "Price");
+                    da.UpdateCommand.Parameters.Add("@Temp_Price",SqlDbType.Decimal,2, "Temp_Price");
+                    da.UpdateCommand.Parameters.Add("@Amount",SqlDbType.Decimal,2, "Amount");
+                    da.UpdateCommand.Parameters.Add("@FRemark",SqlDbType.NVarChar,500, "FRemark");
+                    break;
+                case "T_PRO_MaterialEntry":
+                    da.UpdateCommand.Parameters.Add("@EntryID", SqlDbType.Int, 8, "EntryID");
+                    da.UpdateCommand.Parameters.Add("@MaterialId",SqlDbType.Int,8,"MaterialId");
+                    da.UpdateCommand.Parameters.Add("@MaterialName", SqlDbType.NVarChar, 300, "MaterialName");
+                    da.UpdateCommand.Parameters.Add("@Unit",SqlDbType.NVarChar,50, "Unit");
+                    da.UpdateCommand.Parameters.Add("@quantities",SqlDbType.Decimal,2, "quantities");
+                    da.UpdateCommand.Parameters.Add("@FinalPrice", SqlDbType.Decimal, 2, "FinalPrice");
+                    da.UpdateCommand.Parameters.Add("@Ren_Cost", SqlDbType.Decimal, 2, "Ren_Cost");
+                    da.UpdateCommand.Parameters.Add("@Fu_Cost", SqlDbType.Decimal, 2, "Fu_Cost");
+                    da.UpdateCommand.Parameters.Add("@Price", SqlDbType.Decimal, 2, "Price");
+                    da.UpdateCommand.Parameters.Add("@Temp_Price", SqlDbType.Decimal, 2, "Temp_Price");
+                    da.UpdateCommand.Parameters.Add("@Amount", SqlDbType.Decimal, 2, "Amount");
+                    da.UpdateCommand.Parameters.Add("@FRemark",SqlDbType.NVarChar,500,"FRemark");
+                    break;
             }
             return da;
         }
 
         #region 单据代码相关
+
         /// <summary>
         /// 根据相关条件插入信息至T_PRO_Material 或 T_PRO_Adorn表内,并返回新插入的主键ID值
         /// </summary>
@@ -404,23 +444,25 @@ namespace RD.DB.Import
 
             try
             {
-                var tablename = GetTableName(functionName);
+                var name = functionName == "AdornOrder" ? "AdornOrderHead" : "MaterialOrderHead";
 
-                switch (functionName)
+                var tablename = GetTableName(name);
+
+                switch (name)
                 {
                     //室内装修工程单
-                    case "AdornOrder":
+                    case "AdornOrderHead":
                         //获取T_PRO_Adorn表MAX(ID)值
                         reslutid = Maxid(tablename);
                         //插入相关记录至T_PRO_Adorn临时表内
-                        dt = Get_OrderTemp(functionName, custid, reslutid, accountname);
+                        dt = Get_OrderTemp(name, custid, reslutid, accountname);
                         break;
                     //室内主材单
-                    case "MaterialOrder":
+                    case "MaterialOrderHead":
                         //获取T_PRO_Material表MAX(ID)值
                         reslutid = Maxid(tablename);
                         //插入相关记录至T_PRO_Material临时表内
-                        dt = Get_OrderTemp(functionName, custid, reslutid, accountname);
+                        dt = Get_OrderTemp(name, custid, reslutid, accountname);
                         break;
                 }
                 //将相关记录进行插入
@@ -467,13 +509,13 @@ namespace RD.DB.Import
             switch (functionName)
             {
                 //室内装修工程
-                case "AdornOrder":
+                case "AdornOrderHead":
                     //获取对应临时表
                     dt = serDt.GetTempdt(functionName);
                     remark = "AD";
                     break;
                 //室内主材单
-                case "MaterialOrder":
+                case "MaterialOrderHead":
                     //获取对应临时表
                     dt = serDt.GetTempdt(functionName);
                     remark = "M";
@@ -492,6 +534,73 @@ namespace RD.DB.Import
             dt.Rows.Add(row);
 
             return dt;
+        }
+
+        /// <summary>
+        /// (作用:对表体GridView进行导入) (注:包括插入及更新 及删除操作)
+        /// </summary>
+        /// <param name="functionName">功能名称(AdornOrder:室内装修工程 MaterialOrder:室内主材单)</param>
+        /// <param name="dt">获取GridView内的DataTable</param>
+        /// <param name="deldt">要进行删除的记录</param>
+        /// <returns></returns>
+        public bool SaveOrderEntry(string functionName, DataTable dt, DataTable deldt)
+        {
+            var result = true;
+            //根据功能名称获取对应在的临时表信息
+            var tempInsertdt = serDt.GetTempdt(functionName);
+            var tempUpdt = serDt.GetTempdt(functionName);
+            //根据FunctionName获得对应的表体表名
+            var tableName = GetTableName(functionName);
+
+            try
+            {
+                //循环参数DT
+                foreach (DataRow row in dt.Rows)
+                {
+                    //若行状态为"已添加",就添加至Insert内;若行状态为"更新",就添加至Update内;
+                    switch (row.RowState.ToString())
+                    {
+                        //添加状态
+                        case "Added":
+                            tempInsertdt = GetOrderTempRd(row, tempInsertdt);
+                            break;
+                        //修改状态
+                        case "Modified":
+                            tempUpdt = GetOrderTempRd(row, tempUpdt);
+                            break;
+                    }
+                }
+                //循环结束后分别将累积的临时表信息,进行插入或更新操作
+                if (tempInsertdt.Rows.Count > 0)
+                    Importdt(tableName, tempInsertdt);
+                if (tempUpdt.Rows.Count > 0)
+                    UpEntrydt(tableName, tempUpdt);
+                //判断若deldt的行数>0的话,就循环将对应的记录删除
+                if (deldt.Rows.Count > 0)
+                    generateDt.Del(functionName, deldt);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 将记录插入至对应的临时表内(单据信息使用)
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="tempdt"></param>
+        /// <returns></returns>
+        private DataTable GetOrderTempRd(DataRow row, DataTable tempdt)
+        {
+            var temprow = tempdt.NewRow();
+            for (var j = 0; j < tempdt.Columns.Count; j++)
+            {
+                temprow[j] = row[j];
+            }
+            tempdt.Rows.Add(temprow);
+            return tempdt;
         }
 
         #endregion
