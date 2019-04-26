@@ -412,8 +412,9 @@
         public string Order_Adorn_SearchDtl(int pid)
         {
             var result = $@"
-                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
-	                               a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
+                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
+                                    a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
+	                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                              FROM dbo.T_PRO_AdornEntry a
                              WHERE a.Id='{pid}'
                           ";
@@ -580,43 +581,48 @@
         /// <param name="factionName"></param>
         /// <param name="id">主键ID</param>
         /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
+        /// <param name="dropdownlistid">室内装修工程下拉框使用</param>
         /// <returns></returns>
-        public string OrderInfo_dtl(string factionName, int id, int treeid)
+        public string OrderInfo_dtl(string factionName, int id, int treeid,int dropdownlistid)
         {
             switch (factionName)
             {
                 case "AdornOrder":
-                    //为-1表示读取全部
+                    //为-1表示读取ALL
                     if (treeid == -1)
                     {
-                        _result = $@"SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
-                                            a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
+                        _result = $@"SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
+                                            a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
+                                            a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_AdornEntry a
                                     WHERE a.Id='{id}'";
                     }
                     else
                     {
                         _result = $@"
-                                        SELECT a.id,a.Treeid,a.adornid,a.HTypeid,a.HTypeProjectName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,
-                                            a.Price,a.Amount,a.FRemark,a.InputUser,a.InputDt
+                                        SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
+                                               a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
+                                               a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                         FROM dbo.T_PRO_AdornEntry a
-                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}'
+                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}' AND a.HTypeid='{dropdownlistid}'
                                     ";
                     }
                     break;
                 case "MaterialOrder":
-                    //为-1表示读取全部
+                    //为-1表示读取ALL
                     if (treeid == -1)
                     {
-                        _result = $@"SELECT a.id,a.TreeId,a.EntryID,a.MaterialId,a.MaterialName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,a.Price,
-	                                        a.Temp_Price,a.Amount,a.FRemark,a.InputUser,a.InputDt 
+                        _result = $@"SELECT a.id,a.TreeId,a.EntryID,a.MaterialId 材料ID,a.MaterialName 材料名称,a.Unit 单位名称,
+                                            a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,a.Price 单价,
+	                                        a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_MaterialEntry a
                                     WHERE a.Id='{id}'";
                     }
                     else
                     {
-                        _result = $@"SELECT a.id,a.TreeId,a.EntryID,a.MaterialId,a.MaterialName,a.Unit,a.quantities,a.FinalPrice,a.Ren_Cost,a.Fu_Cost,a.Price,
-	                                        a.Temp_Price,a.Amount,a.FRemark,a.InputUser,a.InputDt 
+                        _result = $@"SELECT a.id,a.TreeId,a.EntryID,a.MaterialId 材料ID,a.MaterialName 材料名称,a.Unit 单位名称,
+                                            a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,a.Price 单价,
+	                                        a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_MaterialEntry a
                                     WHERE a.Id='{id}' AND a.TreeId='{treeid}'";
                     }
@@ -662,7 +668,7 @@
                                      UPDATE dbo.T_PRO_AdornEntry SET HTypeProjectName=@HTypeProjectName,Unit=@Unit,quantities=@quantities,FinalPrice=@FinalPrice,
 								                                     Ren_Cost=@Ren_Cost,Fu_Cost=@Fu_Cost,Price=@Price,Temp_Price=@Temp_Price,Amount=@Amount,
 								                                     FRemark=@FRemark
-                                     WHERE adornid=@id
+                                     WHERE adornid=@adornid
                                 ";
                     break;
                 case "T_PRO_MaterialEntry":
@@ -670,7 +676,7 @@
                                     UPDATE dbo.T_PRO_MaterialEntry SET MaterialId=@MaterialId,MaterialName=@MaterialName,Unit=@Unit,quantities=@quantities,
 								                                       FinalPrice=@FinalPrice,Ren_Cost=@Ren_Cost,Fu_Cost=@Fu_Cost,Price=@Price,
 								                                       Temp_Price=@Temp_Price,Amount=@Amount,FRemark=@FRemark
-                                    WHERE EntryID=@id
+                                    WHERE EntryID=@EntryID
                                 ";
                     break;
 

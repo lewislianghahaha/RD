@@ -88,18 +88,19 @@ namespace RD.Logic.Order
         }
 
         /// <summary>
-        ///  根据获取树菜单节点刷新表体内容
+        ///  (作用:树菜单节点击刷新 及 下拉列表刷新使用)
         /// </summary>
         /// <param name="factionname">功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单</param>
         /// <param name="pid">主键ID </param>
         /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
+        /// <param name="dropdownlistid">下拉列表ID</param>
         /// <returns></returns>
-        public DataTable Get_Orderdtl(string factionname,int pid,int treeid)
+        public DataTable Get_Orderdtl(string factionname,int pid,int treeid,int dropdownlistid)
         {
             DataTable dt;
             try
             {
-                dt = serDt.Get_Orderdtl(factionname,pid,treeid);
+                dt = serDt.Get_Orderdtl(factionname,pid,treeid,dropdownlistid);
             }
             catch (Exception ex)
             {

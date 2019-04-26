@@ -22,7 +22,7 @@ namespace RD.Logic
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
         private string _accountPwd;      //记录帐号密码
-        private string _functionId;      //记录"基础信息库"内的功能ID(创建:0 查询:1 保存:2 审核:3)
+        private string _functionId;      //功能ID
         private string _functinName;     //功能名称(确定是使用那个表系列)
         private string _functionType;    //记录表格类型ID(T:0 表体:1)
         private string _parentId;        //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
@@ -36,6 +36,8 @@ namespace RD.Logic
         private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单使用）
         private int _confirmid;          //审核ID
         private DataTable _deldata;      //获取需要删除的表体记录信息(室内装修工程单 及 室内主材单使用)
+        private int _treeid;             //树菜单ID(室内装修工程单 及 室内主材单使用)
+        private int _dropdownlistid;     //下拉列表ID(室内装修工程单 及 室内主材单使用)
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -129,6 +131,16 @@ namespace RD.Logic
         /// </summary>
         public DataTable Deldata { set { _deldata = value; } }
 
+        /// <summary>
+        /// 树菜单ID(室内装修工程单 及 室内主材单使用)
+        /// </summary>
+        public int Treeid { set { _treeid = value; } }
+
+        /// <summary>
+        /// 返回生成后的单据主键ID(室内装修工程单 及 室内主材单使用)
+        /// </summary>
+        public int Dropdownlistid { set { _dropdownlistid = value; } }
+
         #endregion
 
         #region Get
@@ -164,7 +176,7 @@ namespace RD.Logic
                     break;
                 //室内装修工程单
                 case 2:
-                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata);
+                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata,_treeid,_dropdownlistid);
                     break;
                 //室内主材单
                 case 3:
@@ -271,14 +283,16 @@ namespace RD.Logic
         /// <param name="funState">单据状态 C:创建 R:读取</param>
         /// <param name="pid">表头ID</param>
         /// <param name="treeName">节点名称</param>
-        /// <param name="id">上上级节点ID</param>
+        /// <param name="id">上级节点ID</param>
         /// <param name="custid">客户ID</param>
         /// <param name="accountName">帐号名称</param>
         /// <param name="dt">初始化后的DT,获取数据库对应表的全部信息;</param>
         /// <param name="confirmid">审核ID</param>
         /// <param name="deldt">获取需要删除的表体记录信息</param>
+        /// <param name="treeid">树菜单ID</param>
+        /// <param name="dropdownlistid">下拉列表ID</param>
         private void ProAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
-                                  int custid,string accountName,DataTable dt,int confirmid,DataTable deldt)
+                                  int custid,string accountName,DataTable dt,int confirmid,DataTable deldt,int treeid,int dropdownlistid)
         {
             switch (functionId)
             {
@@ -298,9 +312,9 @@ namespace RD.Logic
                 case "1.3":
                     _resultTable = orderSearch.Get_FirstOrderInfo(functionName,pid);
                     break;
-                //查询(作用:树菜单节点击刷新使用)
+                //查询(作用:树菜单节点击刷新 及 下拉列表刷新使用)
                 case "1.4":
-                    _resultTable = orderSearch.Get_Orderdtl(functionName, id, pid);
+                    _resultTable = orderSearch.Get_Orderdtl(functionName, pid,treeid, dropdownlistid);
                     break;
 
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
@@ -315,7 +329,7 @@ namespace RD.Logic
                 case "2.2":
                     _resultMark = orderImport.Save_OrderEntry(functionName,dt,deldt);
                     break;
-                //保存(作用:导入信息至表头T_PRO_Adorn 或 T_PRO_Material 注:插入成功后,返回单据ID,若异常返回0)
+                //保存(作用:导入信息至表头T_PRO_Adorn 或 T_PRO_Material 注:插入成功后,返回单据ID,若异常返回0) 生成单据表头时使用
                 case "2.3":
                     _orderid = orderImport.InsertOrderFirstDt(functionName,custid,accountName);
                     break;

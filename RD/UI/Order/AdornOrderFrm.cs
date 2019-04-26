@@ -51,7 +51,7 @@ namespace RD.UI.Order
 
         private void OnRegisterEvents()
         {
-            comHtype.Click += ComHtype_Click;
+            comHtype.SelectionChangeCommitted += ComHtype_SelectionChangeCommitted;
             tmSave.Click += TmSave_Click;
             tmConfirm.Click += TmConfirm_Click;
             tmExcel.Click += TmExcel_Click;
@@ -219,45 +219,17 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 装修类别下拉列表
+        /// 当从下拉列表中选择项而下拉列表"关闭"时发生
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ComHtype_Click(object sender, EventArgs e)
+        private void ComHtype_SelectionChangeCommitted(object sender, EventArgs e)
         {
             try
             {
-                //在选择其它下拉列表值时,若GridView内有新值,即提示是否保存，若是，即保存完成后进入要移换的下拉框的GridView页面
-
-                //获取下拉列表信息
-                var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
-
-                //获取在GridView存在的新记录
-                var dt = SearchNewRecordIntoDt();
-                //若返回的DT行数大于O，就作出提示
-                if (dt.Rows.Count>0)
-                {
-                    var clickMessage = $@"系统检测到该页面有没保存的记录'{dt.Rows.Count}'行 \n 是否需要保存? 
-                                        \n 注:若不保存而转移至下一页,将会导致新增的记录清空 \n 请谨慎处理.";
-                    if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                    {
-                        //保存GridView信息
-                        Savedtl();
-                    }
-                }
-                //获取下拉列表ID信息并跳转至对应下拉列表的GridView页(注:无论是否需要保存都会执行)
-                task.TaskId = 2;
-                task.FunctionId = "";
-
-                new Thread(Start).Start();
-                load.StartPosition = FormStartPosition.CenterScreen;
-                load.ShowDialog();
-
-                gvdtl.DataSource = task.ResultTable;
-                //设置GridView是否显示某些列
-                ControlGridViewisShow();
-
+                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+                var result = JumpNextGridViewdtl();
+                if (!result) throw new Exception("发生异常,请联系管理员");
             }
             catch (Exception ex)
             {
@@ -506,35 +478,9 @@ namespace RD.UI.Order
         {
             try
             {
-                //判断若GridView有内容时,就提示是否“保存” 先保存再继续
-                //检测在GridView是否有还没有保存的记录(注:以adornid字段为空为条件)
-                if (gvdtl.Rows.Count > 0)
-                {
-                    var clickMessage = $"检测到有还没保存的记录. \n 是否继续?";
-                    if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                    {
-                        
-                    }
-                }
-                else
-                {
-                    
-                }
-
-                task.TaskId = 2;
-                task.FunctionId = "1.4";
-                task.FunctionName = _funName;
-                task.Id = _pid;  //表头ID
-                task.Pid = (int)tvview.SelectedNode.Tag == 1 ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);  //树节点ID
-                //(int)comHtype.SelectedIndex  增加下拉框ID
-
-                new Thread(Start).Start();
-                load.StartPosition = FormStartPosition.CenterScreen;
-                load.ShowDialog();
-
-                gvdtl.DataSource = task.ResultTable;
-                //设置GridView是否显示某些列
-                ControlGridViewisShow();
+                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+                var result=JumpNextGridViewdtl();
+                if(!result)throw new Exception("发生异常,请联系管理员");
             }
             catch (Exception ex)
             {
@@ -546,7 +492,6 @@ namespace RD.UI.Order
         {
             task.StartTask();
 
-            //当完成后将Form2子窗体关闭
             this.Invoke((ThreadStart)(() =>
             {
                 load.Close();
@@ -664,7 +609,7 @@ namespace RD.UI.Order
                 if (e.ColumnIndex == 8 || e.ColumnIndex == 9 || e.ColumnIndex == 10 || e.ColumnIndex == 11)
                 {
                     decimal renCost = 0;  //人工费用
-                    decimal fuCost = 0; //辅材费用
+                    decimal fuCost = 0;  //辅材费用
                     decimal price = 0;  //单价
                     
                     //计算“综合单价”=人工费用(8)+辅材费用(9)+(单价(10) 或 临时价(11))
@@ -755,6 +700,96 @@ namespace RD.UI.Order
                 }
             }
             return tempdt;
+        }
+
+        /// <summary>
+        /// 查询GridView内的更新记录,并保存至DT内并返回
+        /// </summary>
+        /// <returns></returns>
+        private DataTable SearchUpdateRecordIntoDt()
+        {
+            //创建对应临时表
+            var tempdt = dtList.Get_AdornEmptydt();
+            var dt = (DataTable)gvdtl.DataSource;
+            //将所选择的记录赋值至tempdt临时表内
+            foreach (DataRow row in dt.Rows)
+            {
+                //若列adornid不为空时,才进行记录
+                if (row.RowState.ToString() == "Modified")
+                {
+                    var rowdtl = tempdt.NewRow();
+                    for (var i = 0; i < tempdt.Columns.Count; i++)
+                    {
+                        rowdtl[i] = row[i];
+                    }
+                    tempdt.Rows.Add(rowdtl);
+                }
+            }
+            return tempdt;
+        }
+
+        /// <summary>
+        /// 跳转至下一个GridView内容时使用(注:下拉列表 以及 树菜单节点改变时使用)
+        /// </summary>
+        /// <returns></returns>
+        private bool JumpNextGridViewdtl()
+        {
+            var result = true;
+            try
+            {
+                //在选择其它下拉列表值时,若GridView内有新值,即提示是否保存，若是，即保存完成后进入要移换的下拉框的GridView页面
+                //注:当单据状态标记为R(读取)时才执行,因为C(创建)的时候,树菜单还没有创建任何节点,故没有任何可获取的树菜单ID
+
+                if (_funState == "R")
+                {
+                    if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择");
+                    //if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能修改,请选择其它节点.");
+
+                    //获取下拉列表信息
+                    var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                    var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+
+                    var gridViewdt = (DataTable)gvdtl.DataSource;
+                    if (gridViewdt.Rows.Count > 0)
+                    {
+                        //获取在GridView存在的新记录
+                        var newRecorddt = SearchNewRecordIntoDt();
+                        //获取在GridView存在的更新记录
+                        var updateRecorddt = SearchUpdateRecordIntoDt();
+
+                        //若返回的DT行数大于O，就作出提示
+                        if (newRecorddt.Rows.Count > 0 || updateRecorddt.Rows.Count>0)
+                        {
+                            var clickMessage = $"系统检测到该页面有新建但没保存的记录 \n 是否需要保存? \n 注:若不保存而转移至下一页,将会导致新增(修改)的记录清空 \n 请谨慎处理.";
+                            if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                            {
+                                //保存GridView信息
+                                Savedtl();
+                            }
+                        }
+                    }
+                    //获取下拉列表ID信息并跳转至对应下拉列表的GridView页(注:无论是否需要保存都会执行)
+                    task.TaskId = 2;
+                    task.FunctionId = "1.4";
+                    task.FunctionName = _funName;                                                                               //功能名称
+                    task.Pid = _pid;                                                                                           //表头ID
+                    task.Treeid = (string)tvview.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);  //树节点ID
+                    task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
+
+                    new Thread(Start).Start();
+                    load.StartPosition = FormStartPosition.CenterScreen;
+                    load.ShowDialog();
+
+                    gvdtl.DataSource = task.ResultTable;
+                    //设置GridView是否显示某些列
+                    ControlGridViewisShow();
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
         }
     }
 }

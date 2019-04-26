@@ -480,15 +480,16 @@ namespace RD.DB.Search
         /// <param name="factionname"></param>
         /// <param name="pid">主键ID</param>
         /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
+        /// <param name="dropdownlistid">下拉列表ID</param>
         /// <returns></returns>
-        public DataTable Get_Orderdtl(string factionname, int pid, int treeid)
+        public DataTable Get_Orderdtl(string factionname, int pid, int treeid,int dropdownlistid)
         {
             var resultdt=new DataTable();
 
             try
             {
                 //获取对应SQL语句
-                var sqlscript = sqlList.OrderInfo_dtl(factionname, pid, treeid);
+                var sqlscript = sqlList.OrderInfo_dtl(factionname, pid, treeid,dropdownlistid);
                 //获取对应临时表信息(当没有查询结果时使用)
                 var tempdt = factionname == "AdornOrder" ? dlDtList.Get_AdornEmptydt() : dlDtList.Get_ProMaterialEmtrydt();
                 //若返回行数为0，即需用对应空表(临时表)填充
