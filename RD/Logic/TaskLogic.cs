@@ -174,28 +174,24 @@ namespace RD.Logic
                 case 1:
                     BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data,_pid,_treeName,_accountName);
                     break;
-                //室内装修工程单
+                //单据信息(包括：室内装修工程单 及 室内主材单)
                 case 2:
-                    ProAdornInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata,_treeid,_dropdownlistid);
-                    break;
-                //室内主材单
-                case 3:
-                    ProMaterialInfo(_functionId);
+                    OrderInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata,_treeid,_dropdownlistid);
                     break;
                 //导出EXCEL(Main窗体使用)
-                case 4:
+                case 3:
 
                     break;
                 //打印(Main窗体使用)
-                case 5:
+                case 4:
 
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
-                case 6:
+                case 5:
 
                     break;
                 //查询功能(Main窗体使用)
-                case 7:
+                case 6:
 
                     break;
             }
@@ -276,7 +272,7 @@ namespace RD.Logic
         }
 
         /// <summary>
-        /// 室内装修工程单
+        /// 单据信息(包括：室内装修工程单 及 室内主材单)
         /// </summary>
         /// <param name="functionId">功能ID</param>
         /// <param name="functionName"></param>
@@ -291,7 +287,7 @@ namespace RD.Logic
         /// <param name="deldt">获取需要删除的表体记录信息</param>
         /// <param name="treeid">树菜单ID</param>
         /// <param name="dropdownlistid">下拉列表ID</param>
-        private void ProAdornInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
+        private void OrderInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
                                   int custid,string accountName,DataTable dt,int confirmid,DataTable deldt,int treeid,int dropdownlistid)
         {
             switch (functionId)
@@ -333,6 +329,10 @@ namespace RD.Logic
                 case "2.3":
                     _orderid = orderImport.InsertOrderFirstDt(functionName,custid,accountName);
                     break;
+                //保存(作用:对“室内主材单”树型菜单信息导入)
+                case "2.4":
+
+                    break;
 
                 //删除节点及对应的表体信息
                 case "3":
@@ -343,18 +343,6 @@ namespace RD.Logic
                 case "4":
                     _resultMark = orderGenerate.ConfirmOrderDtl(functionName,confirmid,pid);
                     break;
-            }
-        }
-
-        /// <summary>
-        /// 主材单
-        /// </summary>
-        /// <param name="functionId"></param>
-        private void ProMaterialInfo(string functionId)
-        {
-            switch (functionId)
-            {
-                
             }
         }
 

@@ -69,13 +69,11 @@ namespace RD.UI.Order
             try
             {
                 //客户名称
-                var customerName = string.Empty;
+                string customerName;
                 //客户主键ID
                 var customerid = 0;
                 //记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
-                var frmName = string.Empty;
-                //主键ID(记录生成后的表头ID 即:T_PRO_Adorn 或 T_PRO_Material)
-                var id = 0;
+                string frmName;
 
                 if (gvdtl.SelectedRows.Count==0) throw new Exception("请选取某一行,然后再按此按钮");
 
@@ -97,7 +95,7 @@ namespace RD.UI.Order
 
                     task.StartTask();
                     //返回新插入的表头ID;即T_PRO_Adorn 或 T_PRO_Material表信息
-                    id = task.Orderid;                      
+                    var id = task.Orderid;                      
 
                     if (id == 0) throw new Exception("生成异常,请联系管理员.");
                     else
@@ -114,7 +112,7 @@ namespace RD.UI.Order
                             adornOrder.Pid = id;                //单据主键id
                             adornOrder.FunName = _funName;      //功能名称
 
-                            adornOrder.OnInitialize();
+                            adornOrder.OnInitialize();          //初始化信息
                             adornOrder.StartPosition = FormStartPosition.CenterParent;
                             adornOrder.ShowDialog();
 
@@ -125,8 +123,11 @@ namespace RD.UI.Order
                             //将当前窗体隐藏
                             this.Visible = false;
                             //弹出对应窗体相关设置
+                            materialOrder.FunState = _funState;
+                            materialOrder.Pid = id;              //单据主键id
+                            materialOrder.FunName = _funName;    //功能名称
 
-
+                            materialOrder.OnInitialize();        //初始化信息
                             materialOrder.StartPosition=FormStartPosition.CenterParent;
                             materialOrder.ShowDialog();
                         }
