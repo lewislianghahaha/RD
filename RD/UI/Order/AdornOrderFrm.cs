@@ -760,7 +760,7 @@ namespace RD.UI.Order
                         //若返回的DT行数大于O，就作出提示
                         if (newRecorddt.Rows.Count > 0 || updateRecorddt.Rows.Count>0)
                         {
-                            var clickMessage = $"系统检测到该页面有新建但没保存的记录 \n 是否需要保存? \n 注:若不保存而转移至下一页,将会导致新增(修改)的记录清空 \n 请谨慎处理.";
+                            var clickMessage = $"系统检测到该页面有变动的记录(包括新建或修改的记录) \n 是否需要保存? \n 注:若不保存而转移至下一页,将会导致新增(修改)的记录清空 \n 请谨慎处理.";
                             if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                             {
                                 //保存GridView信息
