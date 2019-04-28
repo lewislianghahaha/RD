@@ -266,6 +266,10 @@ namespace RD.DB.Search
                 case "MaterialOrderHead":
                     resultDt = dlDtList.Get_ProMaterialdt();
                     break;
+                //室内主材单-树菜单记录(用于生成室内主材单-树菜单信息记录)
+                case "MaterialOrderTree":
+                    resultDt = dlDtList.Get_ProMaterialTreedt();
+                    break;
             }
             return resultDt;
         }
@@ -371,16 +375,17 @@ namespace RD.DB.Search
         /// 读取表体信息(作用:初始化GridView内容)
         /// </summary>
         /// <param name="funState">单据状态</param>
+        /// <param name="functionname"></param>
         /// <param name="pid">表头ID</param>
         /// <returns></returns>
-        public DataTable SearchAdorndtl(string funState,int pid)
+        public DataTable SearchOrderdtl(string funState,string functionname,int pid)
         {
             var reslut = new DataTable();
 
             try
             {
                 //获取相关SQL查询语句
-                var sqlscript = sqlList.Order_Adorn_SearchDtl(pid);
+                var sqlscript = sqlList.Order_SearchDtl(functionname,pid);
                 //执行查询功能并将结填充到DataTable内
                 var dt = GetData(sqlscript);
 
@@ -407,16 +412,17 @@ namespace RD.DB.Search
         /// <summary>
         /// 读取“室内装修工程单”表头信息(TreeView使用)
         /// </summary>
+        /// <param name="functionname"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public DataTable SearchAdornTreeView(int pid)
+        public DataTable SearchOrderTreeView(string functionname,int pid)
         {
             var dt = new DataTable();
 
             try
             {
                 //获取相关SQL查询语句
-                var sqlscript = sqlList.Order_Adorn_SearchTreeView(pid);
+                var sqlscript = sqlList.Order_TreeView(functionname,pid);
                 //执行查询功能并将结填充到DataTable内
                 dt = GetData(sqlscript);
             }
@@ -432,16 +438,16 @@ namespace RD.DB.Search
         /// <summary>
         /// 根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息
         /// </summary>
-        /// <param name="factionname"></param>
+        /// <param name="functionname"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public DataTable SearFirstOrderInfo(string factionname,int pid)
+        public DataTable SearFirstOrderInfo(string functionname,int pid)
         {
             var dt = new DataTable();
 
             try
             {
-                var sqlscript = sqlList.Get_OrderInfo(factionname, pid);
+                var sqlscript = sqlList.Get_OrderInfo(functionname, pid);
                 dt = GetData(sqlscript);
             }
             catch (Exception)
@@ -458,7 +464,7 @@ namespace RD.DB.Search
         /// </summary>
         /// <param name="sqlscript"></param>
         /// <returns></returns>
-        private DataTable GetData(string sqlscript)
+        public DataTable GetData(string sqlscript)
         {
             var dt = new DataTable();
             try

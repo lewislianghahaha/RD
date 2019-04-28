@@ -396,53 +396,83 @@
         /// <returns></returns>
         public string Order_Adorn_SearchDropDownList()
         {
-            var result = @"
+            _result = @"
                                   SELECT a.HTypeid,a.HtypeName
                                   FROM dbo.T_BD_HTypeEntry a
                                   inner join dbo.T_BD_HType b on a.id=b.id
                                   where b.HType='装修工程'";
-            return result;
+            return _result;
         }
 
         /// <summary>
         /// 室内装修工程单-根据表头ID读取表体信息(单据状态为R时使用) (作用:初始化GridView内容)
         /// </summary>
+        /// <param name="functionname"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public string Order_Adorn_SearchDtl(int pid)
+        public string Order_SearchDtl(string functionname, int pid)
         {
-            var result = $@"
+            switch (functionname)
+            {
+                case "AdornOrder":
+                    _result = $@"
                              SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
                                     a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
 	                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                              FROM dbo.T_PRO_AdornEntry a
                              WHERE a.Id='{pid}'
                           ";
-            return result;
+                    break;
+                case "MaterialOrder":
+                    _result = $@"
+                               SELECT a.Id,a.TreeId,a.EntryID,a.MaterialId 材料ID,MaterialName 材料名称,
+	                                a.Unit 单位名称,a.quantities 工程量,a.FinalPrice  综合单价,a.Ren_Cost 人工费用,
+	                                a.Fu_Cost 辅材费用,a.Price 单价,a.Temp_Price 临时材料单价,
+	                                a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期                       
+                               FROM dbo.T_PRO_MaterialEntry a
+                               WHERE a.Id='{pid}'
+                                ";
+                    break;
+            }
+            return _result;
         }
 
         /// <summary>
         /// 室内装修工程单-根据表头ID读取表头信息(单据状态为R时使用)
         /// </summary>
+        /// <param name="functionname"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public string Order_Adorn_SearchTreeView(int pid)
+        public string Order_TreeView(string functionname,int pid)
         {
-            var result = $@"
+            switch (functionname)
+            {
+                case "AdornOrder":
+                    _result = $@"
                             SELECT a.Id,a.Treeid,a.ParentId,a.TypeName
                             FROM dbo.T_PRO_AdornTree a
                             WHERE a.Id='{pid}'
                            ";
-            return result;
+                    break;
+                case "MaterialOrder":
+                    _result = $@"
+                            SELECT a.Id,a.Treeid,a.ParentId,a.MaterialType
+                            FROM dbo.T_PRO_MaterialTree a
+                            WHERE a.Id='{pid}'
+                           ";
+                    break;
+            }
+
+            return _result;
         }
 
         /// <summary>
         /// 根据功能名称查询id=1时,各表头记录有没有值(室内装修工程 及 室内主材单使用)
         /// </summary>
         /// <returns></returns>
-        public string Order_SearchNum(string factionName)
+        public string Order_SearchNum(string functionname)
         {
-            switch (factionName)
+            switch (functionname)
             {
                 case "AdornOrder":
                     _result = "select a.* from dbo.T_PRO_AdornTree a where id=1";
@@ -655,7 +685,7 @@
         }
 
         /// <summary>
-        /// 
+        /// 更新订单表体记录
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns></returns>
@@ -684,7 +714,8 @@
             return _result;
         }
 
-        #endregion
 
+
+        #endregion
     }
 }

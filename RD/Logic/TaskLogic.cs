@@ -298,11 +298,11 @@ namespace RD.Logic
                     break;
                 //查询(作用:初始化树菜单内容)
                 case "1.1":
-                    _resultTable = orderSearch.Get_AdornTreeView(pid);
+                    _resultTable = orderSearch.Get_OrderTreeView(functionName,pid);
                     break;
                 //查询(作用:初始化GridView内容)
                 case "1.2":
-                    _resultTable = orderSearch.Get_AdornDtl(funState,pid);
+                    _resultTable = orderSearch.Get_OrderDtl(funState,functionName,pid);
                     break;
                 //查询(作用:根据PID获取T_Pro_Adorn 或 T_Pro_Material表头信息)
                 case "1.3":
@@ -329,9 +329,9 @@ namespace RD.Logic
                 case "2.3":
                     _orderid = orderImport.InsertOrderFirstDt(functionName,custid,accountName);
                     break;
-                //保存(作用:对“室内主材单”树型菜单信息导入)
+                //保存(作用:对“室内主材单”树型菜单信息导入->将“材料信息管理”的大类插入至对应的T_PRO_MaterialTree内)
                 case "2.4":
-
+                    _resultMark =orderImport.InsertMaterialIntoDt(functionName,pid);
                     break;
 
                 //删除节点及对应的表体信息

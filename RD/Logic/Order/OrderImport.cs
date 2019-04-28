@@ -91,5 +91,25 @@ namespace RD.Logic.Order
             return result;
         }
 
+        /// <summary>
+        /// 将“材料信息管理”的表头信息插入至T_Pro_MaterialTree表内
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="pid">表头ID</param>
+        /// <returns></returns>
+        public bool InsertMaterialIntoDt(string functionName,int pid)
+        {
+            var result = true;
+            try
+            {
+                result = importDt.InsertMaterialIntoDt(functionName,pid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
+        }
+
     }
 }

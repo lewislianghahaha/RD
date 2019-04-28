@@ -336,6 +336,9 @@ namespace RD.DB.Import
                 case "MaterialOrder":
                     result = "T_PRO_MaterialEntry";
                     break;
+                case "MaterialOrderTree":
+                    result = "T_PRO_MaterialTree";
+                    break;
             }
             return result;
         }
@@ -601,6 +604,53 @@ namespace RD.DB.Import
             }
             tempdt.Rows.Add(temprow);
             return tempdt;
+        }
+
+        /// <summary>
+        /// 将“材料信息管理”的表头信息插入至T_Pro_MaterialTree表内
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="pid">表头ID</param>
+        /// <returns></returns>
+        public bool InsertMaterialIntoDt(string functionName,int pid)
+        {
+            var result = true;
+            try
+            {
+                //获取临时表
+                var tempdt= serDt.GetTempdt(functionName);
+                //获取对应表名
+                var tablename= GetTableName(functionName);
+                //获取“材料信息管理”-表头信息
+                var sqlscript = sqlList.BD_SQLList("6", null);
+                var materialdt=serDt.GetData(sqlscript);
+
+                //循环将相关信息插入至临时表
+                foreach (DataRow rows in materialdt.Rows)
+                {
+                    var row = tempdt.NewRow();
+                    for (var i = 0; i < tempdt.Columns.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            row[0] = pid;
+                        }
+                        else
+                        {
+                            row[i] = rows[i-1];
+                        }
+                    }
+                    tempdt.Rows.Add(row);
+                }
+                //执行插入信息
+                if(tempdt.Rows.Count>0)
+                    Importdt(tablename, tempdt);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
         }
 
         #endregion

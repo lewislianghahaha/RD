@@ -9,7 +9,6 @@ namespace RD.UI.Order
 {
     public partial class MaterialOrderFrm : Form
     {
-
         TaskLogic task = new TaskLogic();
         Load load = new Load();
         AdornTypeFrm adornType = new AdornTypeFrm();
@@ -19,8 +18,9 @@ namespace RD.UI.Order
         //保存GridView内需要进行删除的临时表
         private DataTable _deldt = new DataTable();
         //保存树型菜单DataTable记录
-        private DataTable _treeviewdt = new DataTable();
-        //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
+        //private DataTable _treeviewdt = new DataTable();
+
+        //单据状态标记(作用:记录打开此功能窗体时是 创建记录 还是 读取记录) C:创建 R:读取
         private string _funState;
         //获取表头ID
         private int _pid;
@@ -73,19 +73,21 @@ namespace RD.UI.Order
             //单据状态:创建 C
             if (_funState == "C")
             {
-                //设置树菜单表头信息
-
-                //对GridView赋值(输出空白表)
-                gvdtl.DataSource = OnInitializeDtl();
+                //将“材料信息管理”的表头信息导入至对应的T_PRO_MaterialTree表内
+                InsertMaterialIntoDt();
             }
-            //单据状态:读取 R （读取顺序:树型菜单->表体内容）
-            else
-            {
-                //将材料信息管理的大类信息插入到这
 
-                //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
-                gvdtl.DataSource = OnInitializeDtl();
-            }
+            //读取树菜单信息至tview控件内
+            task.TaskId = 2;
+            task.FunctionId = "1.1";
+            task.FunctionName = _funName;
+            task.Pid = _pid;
+
+            task.StartTask();
+            //读取设置树菜单表头信息
+            ShowTreeList(task.ResultTable);
+            //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
+            gvdtl.DataSource = OnInitializeDtl();
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //展开根节点
@@ -107,6 +109,7 @@ namespace RD.UI.Order
                 task.TaskId = 2;
                 task.FunctionId = "1.2";
                 task.FunState = _funState;
+                task.FunctionName = _funName;
                 task.Pid = _pid;
 
                 task.StartTask();
@@ -119,6 +122,28 @@ namespace RD.UI.Order
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return dt;
+        }
+
+        /// <summary>
+        /// 将“材料信息管理”的表头信息插入至T_Pro_MaterialTree表
+        /// </summary>
+        /// <returns></returns>
+        private void InsertMaterialIntoDt()
+        {
+            try
+            {
+                task.TaskId = 2;
+                task.FunctionId = "2.4";
+                task.FunctionName = "MaterialOrderTree";
+                task.Id = _pid;
+
+                task.StartTask();
+                if(!task.ResultMark)throw new Exception("插入信息异常,请联系管理员");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -144,6 +169,83 @@ namespace RD.UI.Order
         }
 
         /// <summary>
+        /// 根据获取的DT读取树形列表
+        /// </summary>
+        /// <param name="dt">树型菜单Datatable</param>
+        private void ShowTreeList(DataTable dt)
+        {
+            var tnode = new TreeNode();
+            tnode.Tag = 1;
+            tnode.Text = "ALL";
+            tvView.Nodes.Add(tnode);
+            //展开根节点
+            tvView.ExpandAll();
+            //读取记录并增加至子节点内(从二级节点开始)
+            AddChildNode(tvView, dt);
+        }
+
+        /// <summary>
+        /// 读取记录并增加至子节点内(从二级节点开始)
+        /// </summary>
+        /// <returns></returns>
+        private void AddChildNode(TreeView tvview, DataTable dt)
+        {
+            var tnode = tvview.Nodes[0];
+            var rows = dt.Select("ParentId='" + Convert.ToInt32(tnode.Tag) + "' and Id = '" + _pid + "'");
+            //循环子节点信息(从二级节点开始)
+            foreach (var r in rows)
+            {
+                var tn = new TreeNode();
+                tn.Tag = Convert.ToInt32(r[1]);        //自身主键ID
+                tn.Text = Convert.ToString(r[3]);     //节点内容
+                //将二级节点添加至根节点下
+                tnode.Nodes.Add(tn);
+                //获取在二级节点以下的节点信息并进行添加(使用递归)
+                GetChildNode(dt, tn);
+            }
+        }
+
+        /// <summary>
+        /// 获取在二级节点以下的节点信息并进行添加(递归)
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="tr">节点信息</param>
+        private void GetChildNode(DataTable dt, TreeNode tr)
+        {
+            try
+            {
+                var pid = Convert.ToInt32(tr.Tag);
+                var rowdtl = dt.Select("ParentId='" + pid + "' and Id = '" + _pid + "'");
+
+                if (rowdtl.Length <= 0) return;
+                foreach (var t in rowdtl)
+                {
+                    var tn = new TreeNode();
+                    tn.Tag = Convert.ToInt32(t[0]);
+                    tn.Text = Convert.ToString(t[2]);
+                    tr.Nodes.Add(tn);
+                    //(重) 以子节点的ID作为条件,查询其有没有与它关联的记录,若有,执行递归调用
+                    var result = dt.Select("ParentId='" + Convert.ToInt32(tn.Tag) + "' and Id = '" + _pid + "'");
+                    //(重) 当没有记录时跳出当前循环;注:当跳出后,返回上一级节点继续执行循环
+                    if (result.Length == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        //(重)递归调用
+                        //可理解为:暂存,在递归时,将之前的记录暂时存放在一个位置,当跳出递归时,才解放暂存记录
+                        GetChildNode(dt, tn);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 树菜单节点跳转时使用
         /// </summary>
         /// <param name="sender"></param>
@@ -154,7 +256,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 
+        /// 获取材料信息明细记录
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -232,6 +334,8 @@ namespace RD.UI.Order
             gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true; //录入人
             gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true; //录入日期
         }
+
+
 
     }
 }

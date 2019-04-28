@@ -49,6 +49,7 @@
             this.tmEXCEL = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
@@ -70,7 +71,8 @@
             this.tmt = new System.Windows.Forms.Timer(this.components);
             this.showDtl = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmShowdtl = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmBackConfirm = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -208,19 +210,25 @@
             // tmEXCEL
             // 
             this.tmEXCEL.Name = "tmEXCEL";
-            this.tmEXCEL.Size = new System.Drawing.Size(152, 22);
+            this.tmEXCEL.Size = new System.Drawing.Size(112, 22);
             this.tmEXCEL.Text = "EXCEL";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(109, 6);
             // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(152, 22);
+            this.tmPrint.Size = new System.Drawing.Size(112, 22);
             this.tmPrint.Text = "打印";
+            // 
+            // tmRefresh
+            // 
+            this.tmRefresh.Name = "tmRefresh";
+            this.tmRefresh.Size = new System.Drawing.Size(44, 21);
+            this.tmRefresh.Text = "刷新";
             // 
             // panel1
             // 
@@ -387,10 +395,14 @@
             // 
             // gvdtl
             // 
+            this.gvdtl.AllowUserToAddRows = false;
+            this.gvdtl.AllowUserToDeleteRows = false;
+            this.gvdtl.AllowUserToOrderColumns = true;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";
+            this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
             this.gvdtl.Size = new System.Drawing.Size(1071, 542);
             this.gvdtl.TabIndex = 0;
@@ -403,9 +415,11 @@
             // showDtl
             // 
             this.showDtl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmShowdtl});
+            this.tmShowdtl,
+            this.toolStripSeparator7,
+            this.tmBackConfirm});
             this.showDtl.Name = "showDtl";
-            this.showDtl.Size = new System.Drawing.Size(149, 26);
+            this.showDtl.Size = new System.Drawing.Size(149, 54);
             // 
             // tmShowdtl
             // 
@@ -413,11 +427,16 @@
             this.tmShowdtl.Size = new System.Drawing.Size(148, 22);
             this.tmShowdtl.Text = "显示明细信息";
             // 
-            // tmRefresh
+            // tmBackConfirm
             // 
-            this.tmRefresh.Name = "tmRefresh";
-            this.tmRefresh.Size = new System.Drawing.Size(44, 21);
-            this.tmRefresh.Text = "刷新";
+            this.tmBackConfirm.Name = "tmBackConfirm";
+            this.tmBackConfirm.Size = new System.Drawing.Size(148, 22);
+            this.tmBackConfirm.Text = "反审核";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(145, 6);
             // 
             // Main
             // 
@@ -491,5 +510,7 @@
         private System.Windows.Forms.ContextMenuStrip showDtl;
         private System.Windows.Forms.ToolStripMenuItem tmShowdtl;
         private System.Windows.Forms.ToolStripMenuItem tmRefresh;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem tmBackConfirm;
     }
 }

@@ -597,5 +597,45 @@ namespace RD.DB
             }
             return dt;
         }
+
+        /// <summary>
+        /// 获取"室内主材单"树菜单临时表(生成树菜单时使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_ProMaterialTreedt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 4; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //树菜单ID
+                    case 1:
+                        dc.ColumnName = "Treeid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //(记录ALL父节点信息) 
+                    case 2:
+                        dc.ColumnName = "ParentId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //MaterialType
+                    case 3:
+                        dc.ColumnName = "材料大类名称";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
     }
 }

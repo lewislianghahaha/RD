@@ -89,6 +89,7 @@ namespace RD.UI.Order
                 task.TaskId = 2;
                 task.FunctionId = "1.1";
                 task.Pid = _pid;
+                task.FunctionName = _funName;
 
                 task.StartTask();
                 //将树菜单的DT保存（后面删除功能有用）

@@ -32,14 +32,15 @@ namespace RD.Logic.Order
         /// 获取“室内装修工程”表体信息(作用:初始化GridView内容)
         /// </summary>
         /// <param name="funState">单据状态 R:读取 C:创建</param>
+        /// <param name="functionname">功能名称</param>
         /// <param name="pid">表头ID</param>
         /// <returns></returns>
-        public DataTable Get_AdornDtl(string funState,int pid)
+        public DataTable Get_OrderDtl(string funState, string functionname, int pid)
         {
             DataTable dt;
             try
             {
-                dt = serDt.SearchAdorndtl(funState,pid);
+                dt = serDt.SearchOrderdtl(funState,functionname,pid);
             }
             catch (Exception ex)
             {
@@ -52,13 +53,13 @@ namespace RD.Logic.Order
         /// 读取“室内装修工程单”表头信息
         /// </summary>
         /// <returns></returns>
-        public DataTable Get_AdornTreeView(int pid)
+        public DataTable Get_OrderTreeView(string functionName,int pid)
         {
             DataTable dt;
 
             try
             {
-                dt = serDt.SearchAdornTreeView(pid);
+                dt = serDt.SearchOrderTreeView(functionName,pid);
             }
             catch (Exception ex)
             {
