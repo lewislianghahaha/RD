@@ -58,6 +58,7 @@ namespace RD.UI.Order
             tmConfirm.Click += TmConfirm_Click;
             tmExcel.Click += TmExcel_Click;
             tmPrint.Click += TmPrint_Click;
+            gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
         }
 
         /// <summary>
@@ -252,7 +253,16 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TvView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            
+            try
+            {
+                //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+                var result = JumpNextGridViewdtl();
+                if (!result) throw new Exception("发生异常,请联系管理员");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -262,7 +272,34 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void BtnGetdtl_Click(object sender, System.EventArgs e)
         {
-            
+            try
+            {
+                if (tvView.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((string)tvView.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
+                //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+
+                //获取下拉列表值
+                var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                //获取所选中的树菜单节点ID
+                var treeid = (int)tvView.SelectedNode.Tag;
+
+                typeInfoFrm.Funname = "HouseProject";
+                typeInfoFrm.Id = hTypeid;
+                //初始化记录
+                typeInfoFrm.OnInitialize();
+                typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
+                typeInfoFrm.ShowDialog();
+
+                //返回获取的行记录至GridView内
+                if (typeInfoFrm.ResultTable.Rows.Count == 0) throw new Exception("没有行记录,请重新选择");
+                //将返回的结果赋值至GridView内
+                InsertdtToGridView(_pid, treeid, hTypeid, typeInfoFrm.ResultTable);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -272,7 +309,12 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TmSave_Click(object sender, System.EventArgs e)
         {
-            
+            if (gvdtl.Rows.Count == 0) throw new Exception("没有任何记录,不能保存");
+            //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
+            //执行保存功能
+            Savedtl();
+            //保存成功后,再次进行初始化
+            OnInitialize();
         }
 
         /// <summary>
@@ -282,7 +324,32 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TmConfirm_Click(object sender, System.EventArgs e)
         {
-            
+            try
+            {
+                var clickMessage = $"您所选择的信息为:\n 单据名称:{txtOrderNo.Text} \n 是否继续? \n 注:审核后需反审核才能对该单据的记录进行修改, \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    task.TaskId = 2;
+                    task.FunctionId = "4";
+                    task.FunctionName = _funName;
+                    task.Id = _pid;      //表头ID
+                    task.Confirmid = 0; //记录审核操作标记 0:审核 1:反审核
+
+                    task.StartTask();
+
+                    if (!task.ResultMark) throw new Exception("审核异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    //审核完成后“刷新”(注:审核成功的单据,经刷新后为不可修改效果)
+                    OnInitialize();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -303,6 +370,63 @@ namespace RD.UI.Order
         private void TmPrint_Click(object sender, System.EventArgs e)
         {
             
+        }
+
+        /// <summary>
+        /// 当GridView内的单元格的值更改时发生（注:每当有其中一个单元格的值发生变化时,都会循环 行中所有单元格并执行此事件）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Gvdtl_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.ColumnIndex == 8 || e.ColumnIndex == 9 || e.ColumnIndex == 10 || e.ColumnIndex == 11)
+                {
+                    decimal renCost = 0;  //人工费用
+                    decimal fuCost = 0;  //辅材费用
+                    decimal price = 0;  //单价
+
+                    //计算“综合单价”=人工费用(8)+辅材费用(9)+(单价(10) 或 临时价(11))
+
+                    //人工费用
+                    renCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[8].Value);
+                    //辅材费用
+                    fuCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[9].Value);
+                    //单价(注:若临时价有值。就取临时价。反之用单价;若两者都没有的话,就为0)
+                    if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[11].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[11].Value);
+                    }
+                    else if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[10].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[10].Value);
+                    }
+                    else
+                    {
+                        price = 0;
+                    }
+                    gvdtl.Rows[e.RowIndex].Cells[7].Value = renCost + fuCost + price;
+                }
+                else if (e.ColumnIndex == 6 || e.ColumnIndex == 7)
+                {
+                    decimal quantities = 0;  //工程量
+                    decimal finalPrice = 0; //综合单价
+
+                    //计算“合计”=工程量(6) * 综合单价(7)
+
+                    //工程量
+                    quantities = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[6].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[6].Value);
+                    //综合单价
+                    finalPrice = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[7].Value);
+
+                    gvdtl.Rows[e.RowIndex].Cells[12].Value = quantities * finalPrice;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Start()
@@ -335,7 +459,171 @@ namespace RD.UI.Order
             gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true; //录入日期
         }
 
+        /// <summary>
+        /// 将获取的DT内容插入至GridView内
+        /// </summary>
+        /// <param name="id">主键ID</param>
+        /// <param name="treeid">树菜单ID</param>
+        /// <param name="hTypeid">工程类别ID</param>
+        /// <param name="sourcedt">明细窗体获取的DT</param>
+        private void InsertdtToGridView(int id, int treeid, int hTypeid, DataTable sourcedt)
+        {
+            //将GridView内的内容赋值到DT
+            var dt = (DataTable)gvdtl.DataSource;
+            //循环sourcedt内的内容,目的:将刚从明细窗体内获取的值插入到GridView内
+            foreach (DataRow sourcerow in sourcedt.Rows)
+            {
+                var row = dt.NewRow();
+                row[0] = id;                                        //表头ID
+                row[1] = treeid;                                   //树菜单ID
+                row[3] = hTypeid;                                 //工程类别ID
+                row[4] = Convert.ToString(sourcerow[2]);         //工程类别-项目名称
+                row[5] = Convert.ToString(sourcerow[3]);        //单位名称
+                row[10] = Convert.ToDecimal(sourcerow[4]);     //单价
+                row[14] = GlobalClasscs.User.StrUsrName;      //录入人
+                row[15] = DateTime.Now.Date;                 //录入日期
+                dt.Rows.Add(row);
+            }
+            gvdtl.DataSource = dt;
+        }
 
+        /// <summary>
+        /// 保存GridView记录(作用:在按“保存”按钮时,或转移树菜单节点 或 重新选择下拉框时使用)
+        /// </summary>
+        private void Savedtl()
+        {
+            task.TaskId = 2;
+            task.FunctionId = "2.2";
+            task.FunctionName = _funName;                      //功能名称 (AdornOrder:室内装修工程 MaterialOrder:室内主材单)
+            task.Data = (DataTable)gvdtl.DataSource;         //获取GridView内的DataTable
+            task.Deldata = _deldt;                           //要进行删除的记录
+
+            new Thread(Start).Start();
+            load.StartPosition = FormStartPosition.CenterScreen;
+            load.ShowDialog();
+
+            if (!task.ResultMark) throw new Exception("保存异常,请联系管理员");
+            else
+            {
+                MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 查询GridView内的新记录,并保存至DT内并返回
+        /// </summary>
+        /// <returns></returns>
+        private DataTable SearchNewRecordIntoDt()
+        {
+            //创建对应临时表
+            var tempdt = dtList.Get_AdornEmptydt();
+            var dt = (DataTable)gvdtl.DataSource;
+            //将所选择的记录赋值至tempdt临时表内
+            foreach (DataRow row in dt.Rows)
+            {
+                //若列adornid不为空时,才进行记录
+                if (Convert.ToString(row[2]) == "")
+                {
+                    var rowdtl = tempdt.NewRow();
+                    for (var i = 0; i < tempdt.Columns.Count; i++)
+                    {
+                        rowdtl[i] = row[i];
+                    }
+                    tempdt.Rows.Add(rowdtl);
+                }
+            }
+            return tempdt;
+        }
+
+        /// <summary>
+        /// 查询GridView内的更新记录,并保存至DT内并返回
+        /// </summary>
+        /// <returns></returns>
+        private DataTable SearchUpdateRecordIntoDt()
+        {
+            //创建对应临时表
+            var tempdt = dtList.Get_AdornEmptydt();
+            var dt = (DataTable)gvdtl.DataSource;
+            //将所选择的记录赋值至tempdt临时表内
+            foreach (DataRow row in dt.Rows)
+            {
+                //若列adornid不为空时,才进行记录
+                if (row.RowState.ToString() == "Modified")
+                {
+                    var rowdtl = tempdt.NewRow();
+                    for (var i = 0; i < tempdt.Columns.Count; i++)
+                    {
+                        rowdtl[i] = row[i];
+                    }
+                    tempdt.Rows.Add(rowdtl);
+                }
+            }
+            return tempdt;
+        }
+
+        /// <summary>
+        /// 跳转至下一个GridView内容时使用(注:下拉列表 以及 树菜单节点改变时使用)
+        /// </summary>
+        /// <returns></returns>
+        private bool JumpNextGridViewdtl()
+        {
+            var result = true;
+            try
+            {
+                //在选择其它下拉列表值时,若GridView内有新值,即提示是否保存，若是，即保存完成后进入要移换的下拉框的GridView页面
+                //注:当单据状态标记为R(读取)时才执行,因为C(创建)的时候,树菜单还没有创建任何节点,故没有任何可获取的树菜单ID
+
+                if (_funState == "R")
+                {
+                    if (tvView.SelectedNode == null) throw new Exception("没有选择任何节点,请选择");
+                    //if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能修改,请选择其它节点.");
+
+                    //获取下拉列表信息
+                    var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                    var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+
+                    var gridViewdt = (DataTable)gvdtl.DataSource;
+                    if (gridViewdt.Rows.Count > 0)
+                    {
+                        //获取在GridView存在的新记录
+                        var newRecorddt = SearchNewRecordIntoDt();
+                        //获取在GridView存在的更新记录
+                        var updateRecorddt = SearchUpdateRecordIntoDt();
+
+                        //若返回的DT行数大于O，就作出提示
+                        if (newRecorddt.Rows.Count > 0 || updateRecorddt.Rows.Count > 0)
+                        {
+                            var clickMessage = $"系统检测到该页面有变动的记录(包括新建或修改的记录) \n 是否需要保存? \n 注:若不保存而转移至下一页,将会导致新增(修改)的记录清空 \n 请谨慎处理.";
+                            if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                            {
+                                //保存GridView信息
+                                Savedtl();
+                            }
+                        }
+                    }
+                    //获取下拉列表ID信息并跳转至对应下拉列表的GridView页(注:无论是否需要保存都会执行)
+                    task.TaskId = 2;
+                    task.FunctionId = "1.4";
+                    task.FunctionName = _funName;                                                                               //功能名称
+                    task.Pid = _pid;                                                                                           //表头ID
+                    task.Treeid = (string)tvView.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvView.SelectedNode.Tag);  //树节点ID
+                    task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
+
+                    new Thread(Start).Start();
+                    load.StartPosition = FormStartPosition.CenterScreen;
+                    load.ShowDialog();
+
+                    gvdtl.DataSource = task.ResultTable;
+                    //设置GridView是否显示某些列
+                    ControlGridViewisShow();
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
 
     }
 }
