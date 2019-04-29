@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using ICSharpCode.SharpZipLib.Zip;
 using RD.DB;
 using RD.Logic;
 
@@ -11,21 +13,19 @@ namespace RD.UI.Order
     {
         TaskLogic task = new TaskLogic();
         Load load = new Load();
-        AdornTypeFrm adornType = new AdornTypeFrm();
         TypeInfoFrm typeInfoFrm = new TypeInfoFrm();
         DtList dtList = new DtList();
 
         //保存GridView内需要进行删除的临时表
         private DataTable _deldt = new DataTable();
-        //保存树型菜单DataTable记录
-        //private DataTable _treeviewdt = new DataTable();
-
         //单据状态标记(作用:记录打开此功能窗体时是 创建记录 还是 读取记录) C:创建 R:读取
         private string _funState;
         //获取表头ID
         private int _pid;
         //记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
         private string _funName;
+        //记录审核状态(Y:已审核;N:没审核)
+        private string _confirmMarkId;
 
         #region Set
 
@@ -58,6 +58,7 @@ namespace RD.UI.Order
             tmConfirm.Click += TmConfirm_Click;
             tmExcel.Click += TmExcel_Click;
             tmPrint.Click += TmPrint_Click;
+            tmdel.Click += Tmdel_Click;
             gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
         }
 
@@ -94,7 +95,7 @@ namespace RD.UI.Order
             //展开根节点
             tvView.ExpandAll();
             //预留(权限部份)
-
+            PrivilegeControl();
         }
 
         /// <summary>
@@ -140,6 +141,7 @@ namespace RD.UI.Order
 
                 task.StartTask();
                 if(!task.ResultMark)throw new Exception("插入信息异常,请联系管理员");
+                _funState = "R";
             }
             catch (Exception ex)
             {
@@ -167,6 +169,8 @@ namespace RD.UI.Order
             txtCustomer.Text = dt.Rows[0][1].ToString();
             txtHoseName.Text = dt.Rows[0][2].ToString();
             txtAdd.Text = dt.Rows[0][3].ToString();
+            //获取审核标记
+            _confirmMarkId = dt.Rows[0][4].ToString();
         }
 
         /// <summary>
@@ -222,8 +226,8 @@ namespace RD.UI.Order
                 foreach (var t in rowdtl)
                 {
                     var tn = new TreeNode();
-                    tn.Tag = Convert.ToInt32(t[0]);
-                    tn.Text = Convert.ToString(t[2]);
+                    tn.Tag = Convert.ToInt32(t[1]);
+                    tn.Text = Convert.ToString(t[3]);
                     tr.Nodes.Add(tn);
                     //(重) 以子节点的ID作为条件,查询其有没有与它关联的记录,若有,执行递归调用
                     var result = dt.Select("ParentId='" + Convert.ToInt32(tn.Tag) + "' and Id = '" + _pid + "'");
@@ -255,7 +259,6 @@ namespace RD.UI.Order
         {
             try
             {
-                //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
                 var result = JumpNextGridViewdtl();
                 if (!result) throw new Exception("发生异常,请联系管理员");
             }
@@ -279,13 +282,13 @@ namespace RD.UI.Order
                 //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
 
                 //获取下拉列表值
-                var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
                 //获取所选中的树菜单节点ID
                 var treeid = (int)tvView.SelectedNode.Tag;
 
-                typeInfoFrm.Funname = "HouseProject";
-                typeInfoFrm.Id = hTypeid;
+                typeInfoFrm.Funname = "Material";
+                typeInfoFrm.Id = treeid;
                 //初始化记录
                 typeInfoFrm.OnInitialize();
                 typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
@@ -294,7 +297,7 @@ namespace RD.UI.Order
                 //返回获取的行记录至GridView内
                 if (typeInfoFrm.ResultTable.Rows.Count == 0) throw new Exception("没有行记录,请重新选择");
                 //将返回的结果赋值至GridView内
-                InsertdtToGridView(_pid, treeid, hTypeid, typeInfoFrm.ResultTable);
+                InsertdtToGridView(_pid, treeid,typeInfoFrm.ResultTable);
             }
             catch (Exception ex)
             {
@@ -342,6 +345,7 @@ namespace RD.UI.Order
                     {
                         MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+                    tmConfirm.Visible = false;
                     //审核完成后“刷新”(注:审核成功的单据,经刷新后为不可修改效果)
                     OnInitialize();
                 }
@@ -464,9 +468,8 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="id">主键ID</param>
         /// <param name="treeid">树菜单ID</param>
-        /// <param name="hTypeid">工程类别ID</param>
         /// <param name="sourcedt">明细窗体获取的DT</param>
-        private void InsertdtToGridView(int id, int treeid, int hTypeid, DataTable sourcedt)
+        private void InsertdtToGridView(int id, int treeid,DataTable sourcedt)
         {
             //将GridView内的内容赋值到DT
             var dt = (DataTable)gvdtl.DataSource;
@@ -476,15 +479,66 @@ namespace RD.UI.Order
                 var row = dt.NewRow();
                 row[0] = id;                                        //表头ID
                 row[1] = treeid;                                   //树菜单ID
-                row[3] = hTypeid;                                 //工程类别ID
-                row[4] = Convert.ToString(sourcerow[2]);         //工程类别-项目名称
-                row[5] = Convert.ToString(sourcerow[3]);        //单位名称
-                row[10] = Convert.ToDecimal(sourcerow[4]);     //单价
+                row[3] = Convert.ToInt32(sourcerow[1]);           //材料ID
+                row[4] = Convert.ToString(sourcerow[2]);         //材料名称
+                row[5] = Convert.ToString(sourcerow[6]);        //单位名称
+                row[10] = Convert.ToDecimal(sourcerow[7]);     //单价
                 row[14] = GlobalClasscs.User.StrUsrName;      //录入人
                 row[15] = DateTime.Now.Date;                 //录入日期
                 dt.Rows.Add(row);
             }
             gvdtl.DataSource = dt;
+        }
+
+        /// <summary>
+        /// 删除GridView中所选择的行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmdel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选择某一行进行删除");
+
+                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //注:执行方式 判断若所选择的行内的 adornid项 有值，就执行下面第一步,若没有;只需将在GridView内的行删除就行
+                    //1)将所选择的行保存到_deldt内(在按“保存”时执行对该行的数据库删除)
+
+                    //创建对应临时表
+                    var tempdt = dtList.Get_ProMaterialEmtrydt();
+                    //将所选择的记录赋值至tempdt临时表内
+                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                    {
+                        //若列adornid不为空时,才进行记录
+                        if (row.Cells[2].Value.ToString() != "")
+                        {
+                            var row1 = tempdt.NewRow();
+                            for (var i = 0; i < tempdt.Columns.Count; i++)
+                            {
+                                row1[i] = row.Cells[i].Value;
+                            }
+                            tempdt.Rows.Add(row1);
+                        }
+                    }
+                    //若tempdt有值才赋值至_dtldt内,(供保存使用)
+                    if (tempdt.Rows.Count > 0)
+                    {
+                        _deldt = tempdt;
+                    }
+                    //最后使用循环将所选择的行在GridView内删除
+                    for (var i = gvdtl.SelectedRows.Count; i > 0; i--)
+                    {
+                        gvdtl.Rows.RemoveAt(gvdtl.SelectedRows[i - 1].Index);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -495,7 +549,7 @@ namespace RD.UI.Order
             task.TaskId = 2;
             task.FunctionId = "2.2";
             task.FunctionName = _funName;                      //功能名称 (AdornOrder:室内装修工程 MaterialOrder:室内主材单)
-            task.Data = (DataTable)gvdtl.DataSource;         //获取GridView内的DataTable
+            task.Data = (DataTable)gvdtl.DataSource;          //获取GridView内的DataTable
             task.Deldata = _deldt;                           //要进行删除的记录
 
             new Thread(Start).Start();
@@ -579,8 +633,8 @@ namespace RD.UI.Order
                     //if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能修改,请选择其它节点.");
 
                     //获取下拉列表信息
-                    var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                    var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                    //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                    //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
 
                     var gridViewdt = (DataTable)gvdtl.DataSource;
                     if (gridViewdt.Rows.Count > 0)
@@ -604,10 +658,10 @@ namespace RD.UI.Order
                     //获取下拉列表ID信息并跳转至对应下拉列表的GridView页(注:无论是否需要保存都会执行)
                     task.TaskId = 2;
                     task.FunctionId = "1.4";
-                    task.FunctionName = _funName;                                                                               //功能名称
-                    task.Pid = _pid;                                                                                           //表头ID
-                    task.Treeid = (string)tvView.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvView.SelectedNode.Tag);  //树节点ID
-                    task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
+                    task.FunctionName = _funName;                                                                                 //功能名称
+                    task.Pid = _pid;                                                                                             //表头ID
+                    task.Treeid = (string)tvView.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvView.SelectedNode.Tag);    //树节点ID
+                    //task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
 
                     new Thread(Start).Start();
                     load.StartPosition = FormStartPosition.CenterScreen;
@@ -623,6 +677,22 @@ namespace RD.UI.Order
                 result = false;
             }
             return result;
+        }
+
+        /// <summary>
+        /// 权限控制 
+        /// </summary>
+        private void PrivilegeControl()
+        {
+            //若为“审核”状态的话，就执行以下语句
+            if (_confirmMarkId == "Y")
+            {
+                //读取审核图片
+                pbimg.Visible = true;
+                pbimg.Image = Image.FromFile(Application.StartupPath+@"\PIC\1.png");
+                //设置整体FORM都不能修改
+                //this.Visible = false;
+            }
         }
 
     }

@@ -48,11 +48,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvView = new System.Windows.Forms.TreeView();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.gvdtl = new System.Windows.Forms.DataGridView();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btnGetdtl = new System.Windows.Forms.Button();
             this.ConMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnGetdtl = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -60,9 +61,10 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
-            this.panel2.SuspendLayout();
             this.ConMenu.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -82,6 +84,7 @@
             // 
             // tmSave
             // 
+            this.tmSave.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tmSave.Name = "tmSave";
             this.tmSave.Size = new System.Drawing.Size(44, 22);
             this.tmSave.Text = "保存";
@@ -131,16 +134,16 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(995, 27);
             this.panel1.TabIndex = 1;
             // 
             // txtOrderNo
             // 
-            this.txtOrderNo.Enabled = false;
             this.txtOrderNo.Location = new System.Drawing.Point(65, 3);
             this.txtOrderNo.Name = "txtOrderNo";
+            this.txtOrderNo.ReadOnly = true;
             this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
             this.txtOrderNo.TabIndex = 10;
             // 
@@ -155,9 +158,9 @@
             // 
             // txtAdd
             // 
-            this.txtAdd.Enabled = false;
             this.txtAdd.Location = new System.Drawing.Point(675, 3);
             this.txtAdd.Name = "txtAdd";
+            this.txtAdd.ReadOnly = true;
             this.txtAdd.Size = new System.Drawing.Size(315, 21);
             this.txtAdd.TabIndex = 5;
             // 
@@ -172,9 +175,9 @@
             // 
             // txtHoseName
             // 
-            this.txtHoseName.Enabled = false;
             this.txtHoseName.Location = new System.Drawing.Point(491, 3);
             this.txtHoseName.Name = "txtHoseName";
+            this.txtHoseName.ReadOnly = true;
             this.txtHoseName.Size = new System.Drawing.Size(127, 21);
             this.txtHoseName.TabIndex = 3;
             // 
@@ -189,9 +192,9 @@
             // 
             // txtCustomer
             // 
-            this.txtCustomer.Enabled = false;
             this.txtCustomer.Location = new System.Drawing.Point(273, 3);
             this.txtCustomer.Name = "txtCustomer";
+            this.txtCustomer.ReadOnly = true;
             this.txtCustomer.Size = new System.Drawing.Size(132, 21);
             this.txtCustomer.TabIndex = 1;
             // 
@@ -215,6 +218,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.pbimg);
             this.splitContainer1.Panel1.Controls.Add(this.tvView);
             // 
             // splitContainer1.Panel2
@@ -242,6 +246,17 @@
             this.panel3.Size = new System.Drawing.Size(797, 545);
             this.panel3.TabIndex = 1;
             // 
+            // pbimg
+            // 
+            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbimg.Location = new System.Drawing.Point(118, -13);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(65, 61);
+            this.pbimg.TabIndex = 1;
+            this.pbimg.TabStop = false;
+            this.pbimg.Visible = false;
+            // 
             // gvdtl
             // 
             this.gvdtl.AllowUserToDeleteRows = false;
@@ -254,6 +269,19 @@
             this.gvdtl.RowTemplate.Height = 23;
             this.gvdtl.Size = new System.Drawing.Size(797, 545);
             this.gvdtl.TabIndex = 0;
+            // 
+            // ConMenu
+            // 
+            this.ConMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmdel});
+            this.ConMenu.Name = "ConMenu";
+            this.ConMenu.Size = new System.Drawing.Size(149, 26);
+            // 
+            // tmdel
+            // 
+            this.tmdel.Name = "tmdel";
+            this.tmdel.Size = new System.Drawing.Size(148, 22);
+            this.tmdel.Text = "删除所选内容";
             // 
             // panel2
             // 
@@ -273,19 +301,6 @@
             this.btnGetdtl.TabIndex = 0;
             this.btnGetdtl.Text = "获取材料类别明细信息";
             this.btnGetdtl.UseVisualStyleBackColor = true;
-            // 
-            // ConMenu
-            // 
-            this.ConMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmdel});
-            this.ConMenu.Name = "ConMenu";
-            this.ConMenu.Size = new System.Drawing.Size(149, 26);
-            // 
-            // tmdel
-            // 
-            this.tmdel.Name = "tmdel";
-            this.tmdel.Size = new System.Drawing.Size(152, 22);
-            this.tmdel.Text = "删除所选内容";
             // 
             // MaterialOrderFrm
             // 
@@ -307,9 +322,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
-            this.panel2.ResumeLayout(false);
             this.ConMenu.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,5 +357,6 @@
         private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.ContextMenuStrip ConMenu;
         private System.Windows.Forms.ToolStripMenuItem tmdel;
+        private System.Windows.Forms.PictureBox pbimg;
     }
 }

@@ -133,9 +133,6 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TmClose_Click(object sender, EventArgs e)
         {
-            //退出前将GridView相关的行与列进行清空
-            gvdtl.Rows.Clear();
-            gvdtl.Columns.Clear();
             this.Close();
         }
 
