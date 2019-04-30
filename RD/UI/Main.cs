@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
@@ -14,10 +16,13 @@ namespace RD.UI
         Load load=new Load();
         CustInfoFrm custInfo=new CustInfoFrm();
 
+        private DataTable resultdt=new DataTable();
+
         public Main()
         {
             InitializeComponent();
             OnRegisterEvents();
+            OnInitialize();
         }
 
         private void OnRegisterEvents()
@@ -32,8 +37,47 @@ namespace RD.UI
             tmSuplierInfo.Click += TmSuplierInfo_Click;
             tmMaterialInfo.Click += TmMaterialInfo_Click;
             tmHouseInfo.Click += TmHouseInfo_Click;
+            btnShow.Click += BtnShow_Click;
         }
 
+        /// <summary>
+        /// 初始化相关记录
+        /// </summary>
+        private void OnInitialize()
+        {
+            btnShow.Text = "隐藏更多查询";
+
+        }
+
+        /// <summary>
+        /// 折叠或展开Panel1面板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnShow_Click(object sender, EventArgs e)
+        {
+            var a= splitContainer1.Panel1.Height;
+            //var b = this.Height;  splitContainer1.Panel1.Height == 30 || splitContainer1.Panel1.Height==47
+            //splitContainer1.Panel1.MinimumSize = new Size(1071, 30);
+
+            //标记折叠 展开状态 Y：展开 N：折叠
+            var showit = "Y";
+
+            //此为折叠状态
+            if (showit=="Y")
+            {
+                showit = "N";
+                splitContainer1.Panel1.MinimumSize = new Size(1071, 60);
+                btnShow.Text = "显示更多查询";
+            }
+            //此为展开状态
+            else
+            {
+                showit = "Y";
+                splitContainer1.Panel1.MinimumSize = new Size(1071, 30);
+                btnShow.Text = "隐藏更多查询";
+            }
+        }
         /// <summary>
         /// 客户信息管理
         /// </summary>
@@ -208,6 +252,13 @@ namespace RD.UI
         {
             try
             {
+
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+
 
             }
             catch (Exception ex)

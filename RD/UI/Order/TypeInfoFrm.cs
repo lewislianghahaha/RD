@@ -93,7 +93,7 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TmGet_Click(object sender, EventArgs e)
         {
-            var rowdtl = new DataRow[0];
+            DataRow[] rowdtl;
 
             try
             {

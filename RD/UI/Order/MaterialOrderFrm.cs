@@ -345,7 +345,7 @@ namespace RD.UI.Order
                     {
                         MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                    tmConfirm.Visible = false;
+                    tmConfirm.Enabled = false;
                     //审核完成后“刷新”(注:审核成功的单据,经刷新后为不可修改效果)
                     OnInitialize();
                 }
@@ -690,8 +690,8 @@ namespace RD.UI.Order
                 //读取审核图片
                 pbimg.Visible = true;
                 pbimg.Image = Image.FromFile(Application.StartupPath+@"\PIC\1.png");
-                //设置整体FORM都不能修改
-                //this.Visible = false;
+                //设置整体Form都不能修改
+                
             }
         }
 
