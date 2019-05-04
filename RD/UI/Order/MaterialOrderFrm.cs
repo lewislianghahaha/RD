@@ -3,7 +3,6 @@ using System.Data;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using ICSharpCode.SharpZipLib.Zip;
 using RD.DB;
 using RD.Logic;
 

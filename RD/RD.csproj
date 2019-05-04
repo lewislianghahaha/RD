@@ -226,9 +226,6 @@
     <EmbeddedResource Include="UI\Order\MaterialOrderFrm.resx">
       <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="bin\Debug\RD.exe.config" />
-    <None Include="bin\Debug\RD.vshost.exe.config" />
-    <None Include="bin\Debug\RD.vshost.exe.manifest" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="Properties\Settings.settings">
@@ -245,13 +242,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="bin\Debug\NPOI.dll" />
-    <Content Include="bin\Debug\NPOI.OOXML.dll" />
-    <Content Include="bin\Debug\NPOI.OpenXml4Net.dll" />
-    <Content Include="bin\Debug\NPOI.OpenXmlFormats.dll" />
-    <Content Include="bin\Debug\PIC\1.PNG" />
-    <Content Include="bin\Debug\RD.vshost.exe" />
     <Content Include="DLL\ICSharpCode.SharpZipLib.dll" />
     <Content Include="DLL\NPOI.dll" />
     <Content Include="DLL\NPOI.OOXML.dll" />
@@ -261,7 +251,6 @@
     <Content Include="RD.csproj.DotSettings.user" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Release\" />
     <Folder Include="Logic\Export\" />
     <Folder Include="Logic\Main\" />
     <Folder Include="obj\Debug\TempPE\" />
