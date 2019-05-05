@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
@@ -15,8 +14,6 @@ namespace RD.UI
         TaskLogic task=new TaskLogic();
         Load load=new Load();
         CustInfoFrm custInfo=new CustInfoFrm();
-
-        private DataTable resultdt=new DataTable();
 
         public Main()
         {
@@ -37,7 +34,7 @@ namespace RD.UI
             tmSuplierInfo.Click += TmSuplierInfo_Click;
             tmMaterialInfo.Click += TmMaterialInfo_Click;
             tmHouseInfo.Click += TmHouseInfo_Click;
-            btnShow.Click += BtnShow_Click;
+            tmRefresh.Click += TmRefresh_Click;
         }
 
         /// <summary>
@@ -45,39 +42,83 @@ namespace RD.UI
         /// </summary>
         private void OnInitialize()
         {
-            btnShow.Text = "隐藏更多查询";
-
+            //初始化各下拉列表信息
+            //客户名称信息
+            OnInitializeCustDropDownList();
+            //单据创建年份
+            OnInitializeYearDropDownList();
+            //单据类型
+            OnInitializeOrderTypeDropDownList();
+            //房屋类型
+            OnInitializeHouseTypeDropDownList();
+            //审核状态
+            OnInitializeConfirmTypeDropDownList();
         }
 
         /// <summary>
-        /// 折叠或展开Panel1面板
+        /// 初始化客户名称列表
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnShow_Click(object sender, EventArgs e)
+        private void OnInitializeCustDropDownList()
         {
-            var a= splitContainer1.Panel1.Height;
-            //var b = this.Height;  splitContainer1.Panel1.Height == 30 || splitContainer1.Panel1.Height==47
-            //splitContainer1.Panel1.MinimumSize = new Size(1071, 30);
-
-            //标记折叠 展开状态 Y：展开 N：折叠
-            var showit = "Y";
-
-            //此为折叠状态
-            if (showit=="Y")
-            {
-                showit = "N";
-                splitContainer1.Panel1.MinimumSize = new Size(1071, 60);
-                btnShow.Text = "显示更多查询";
-            }
-            //此为展开状态
-            else
-            {
-                showit = "Y";
-                splitContainer1.Panel1.MinimumSize = new Size(1071, 30);
-                btnShow.Text = "隐藏更多查询";
-            }
+            comcustomer.DataSource = GetDropdownListdt("Customer");
+            comcustomer.DisplayMember = "CustName";       //设置显示值
+            comcustomer.ValueMember = "Custid";          //设置默认值内码(即:列名)
         }
+
+        /// <summary>
+        /// 初始化单据创建年份
+        /// </summary>
+        private void OnInitializeYearDropDownList()
+        {
+            comyear.DataSource = GetDropdownListdt("OrderYear");
+            comyear.DisplayMember = "YearName";     //设置显示值
+            comyear.ValueMember = "Yearid";       //设置默认值内码(即:列名)
+        }
+
+        /// <summary>
+        /// 初始化单据类型
+        /// </summary>
+        private void OnInitializeOrderTypeDropDownList()
+        {
+            comordertype.DataSource = GetDropdownListdt("OrderType");
+            comordertype.DisplayMember = "OrderName";     //设置显示值
+            comordertype.ValueMember = "OrderId";       //设置默认值内码(即:列名)
+        }
+
+        /// <summary>
+        /// 初始化房屋类型
+        /// </summary>
+        private void OnInitializeHouseTypeDropDownList()
+        {
+            comhousetype.DataSource = GetDropdownListdt("HouseType");
+            comhousetype.DisplayMember = "HtypeName";     //设置显示值
+            comhousetype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
+        }
+
+        /// <summary>
+        /// 初始化审核状态
+        /// </summary>
+        private void OnInitializeConfirmTypeDropDownList()
+        {
+            comconfirm.DataSource = GetDropdownListdt("ConfirmType");
+            comconfirm.DisplayMember = "FStatusName";     //设置显示值
+            comconfirm.ValueMember = "FStatus";       //设置默认值内码(即:列名)
+        }
+
+        /// <summary>
+        /// 根据对应的功能名称获取对应的DataTable
+        /// </summary>
+        /// <param name="functionName"></param>
+        private DataTable GetDropdownListdt(string functionName)
+        {
+            task.TaskId = 4;
+            task.FunctionId = "1";
+            task.FunctionName = functionName;
+            task.StartTask();
+            var dt = task.ResultTable;
+            return dt;
+        }
+
         /// <summary>
         /// 客户信息管理
         /// </summary>
@@ -250,16 +291,68 @@ namespace RD.UI
         /// <param name="e"></param>
         private void BtnSearch_Click(object sender, EventArgs e)
         {
+            var confirmdt=new DateTime();
+
             try
             {
+                //获取"客户名称"下拉列表信息
+                var dvCustidlist = (DataRowView)comcustomer.Items[comcustomer.SelectedIndex];
+                var custid = Convert.ToInt32(dvCustidlist["Custid"]);
 
+                //获取"单据创建年份"下拉列表信息
+                var dvyearidlist = (DataRowView)comyear.Items[comyear.SelectedIndex];
+                var yearid = Convert.ToInt32(dvyearidlist["Yearid"]);
+
+                //获取"单据类型"下拉列表信息
+                var dvordertypelist = (DataRowView)comordertype.Items[comordertype.SelectedIndex];
+                var ordertypeId = Convert.ToInt32(dvordertypelist["OrderId"]);
+
+                //获取"房屋类型"下拉列表信息
+                var dvHTypeidlist = (DataRowView)comhousetype.Items[comhousetype.SelectedIndex];
+                var hTypeid = Convert.ToInt32(dvHTypeidlist["HTypeid"]);
+
+                //获取"审核状态"下拉列表信息
+                var dvConfirmIdlist = (DataRowView)comconfirm.Items[comconfirm.SelectedIndex];
+                var fStatus = Convert.ToString(dvConfirmIdlist["FStatus"]);
+
+                //获取“审核日期”(若“审核状态”选择了“已审核”才获取)
+                if (fStatus == "Y")
+                { var a = dtpick.Value.Date.ToShortDateString();}
+
+                task.TaskId = 4;
+                task.FunctionId = "1.1";
+                task.Custid = custid;
+                task.Yearid = yearid;
+                task.OrdertypeId = ordertypeId;
+                task.HTypeid = hTypeid;
+                task.ConfirmfStatus = fStatus;
+                task.Confirmdt = confirmdt;
 
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
 
+                gvdtl.DataSource = task.ResultTable;
+                label7.Text = $"此次查询的行数为:{task.ResultTable.Rows.Count}行";
+                //控制GridView单元格显示方式
+                ControlGridViewisShow();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OnInitialize();
             }
             catch (Exception ex)
             {
@@ -289,6 +382,15 @@ namespace RD.UI
             {
                 load.Close();
             }));
+        }
+
+        /// <summary>
+        /// 控制GridView单元格显示方式
+        /// </summary>
+        private void ControlGridViewisShow()
+        {
+            //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            gvdtl.Columns[0].Visible = false;
         }
     }
 }

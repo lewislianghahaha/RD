@@ -1,6 +1,8 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
+using RD.Logic.Main;
 using RD.Logic.Order;
 
 namespace RD.Logic
@@ -19,6 +21,9 @@ namespace RD.Logic
         OrderDel odrderDel=new OrderDel();
         OrderGenerate orderGenerate=new OrderGenerate();
 
+        //主窗体使用
+        MainSearch mainSearch=new MainSearch();
+
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
         private string _accountPwd;      //记录帐号密码
@@ -33,11 +38,16 @@ namespace RD.Logic
         private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
         private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
         private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
-        private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单使用）
+        private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单 主窗体使用）
         private int _confirmid;          //审核ID
         private DataTable _deldata;      //获取需要删除的表体记录信息(室内装修工程单 及 室内主材单使用)
         private int _treeid;             //树菜单ID(室内装修工程单 及 室内主材单使用)
         private int _dropdownlistid;     //下拉列表ID(室内装修工程单 及 室内主材单使用)
+        private int _yearid;             //单据创建年份（主窗体使用）
+        private int _ordertypeId;        //单据类型(主窗体使用)
+        private int _hTypeid;            //房屋类型(主窗体使用)
+        private string _confirmfStatus;  //审核状态(主窗体使用)
+        private DateTime _confirmdt;     //审核日期(主窗体使用)
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -141,6 +151,31 @@ namespace RD.Logic
         /// </summary>
         public int Dropdownlistid { set { _dropdownlistid = value; } }
 
+        /// <summary>
+        /// 单据创建年份（主窗体使用）
+        /// </summary>
+        public int Yearid { set { _yearid = value; } }
+
+        /// <summary>
+        /// 单据类型(主窗体使用)
+        /// </summary>
+        public int OrdertypeId { set { _ordertypeId = value; } }
+
+        /// <summary>
+        /// 房屋类型(主窗体使用)
+        /// </summary>
+        public int HTypeid { set { _hTypeid = value; } }
+
+        /// <summary>
+        /// 审核状态(主窗体使用)
+        /// </summary>
+        public string ConfirmfStatus { set { _confirmfStatus = value; } }
+
+        /// <summary>
+        /// 审核日期(主窗体使用)
+        /// </summary>
+        public DateTime Confirmdt { set { _confirmdt = value; } }
+
         #endregion
 
         #region Get
@@ -178,21 +213,13 @@ namespace RD.Logic
                 case 2:
                     OrderInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata,_treeid,_dropdownlistid);
                     break;
-                //导出EXCEL(Main窗体使用)
+                //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
 
                     break;
-                //打印(Main窗体使用)
+                //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
-
-                    break;
-                //帐户信息功能设定(帐号为:Admin时使用)
-                case 5:
-
-                    break;
-                //查询功能(Main窗体使用)
-                case 6:
-
+                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _confirmdt);
                     break;
             }
         }
@@ -275,7 +302,7 @@ namespace RD.Logic
         /// 单据信息(包括：室内装修工程单 及 室内主材单)
         /// </summary>
         /// <param name="functionId">功能ID</param>
-        /// <param name="functionName"></param>
+        /// <param name="functionName">功能名称</param>
         /// <param name="funState">单据状态 C:创建 R:读取</param>
         /// <param name="pid">表头ID</param>
         /// <param name="treeName">节点名称</param>
@@ -342,6 +369,45 @@ namespace RD.Logic
                 //审核（反审核）
                 case "4":
                     _resultMark = orderGenerate.ConfirmOrderDtl(functionName,confirmid,pid);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 主窗体
+        /// </summary>
+        /// <param name="functionId">功能ID</param>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="custid">客户ID</param>
+        /// <param name="yearid">单据创建年份ID</param>
+        /// <param name="ordertypeId">单据类型ID</param>
+        /// <param name="hTypeid">房屋类型ID</param>
+        /// <param name="confirmfStatus">审核状态</param>
+        /// <param name="confirmdt">审核日期</param>
+        private void MainInfo(string functionId,string functionName,int custid,int yearid,int ordertypeId,int hTypeid,string confirmfStatus, DateTime confirmdt)
+        {
+            switch (functionId)
+            {
+                //查询(初始化各下拉列表)
+                case "1":
+                    _resultTable = mainSearch.SearchDropdownDt(functionName);
+                    break;
+                //查询(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表)
+                case "1.1":
+                    _resultTable = mainSearch.Searchdtldt(custid, yearid, ordertypeId, hTypeid, confirmfStatus, confirmdt);
+                    break;
+
+                //审核(反审核)
+                case "2":
+
+                    break;
+                //导出-EXCEL
+                case "3":
+
+                    break;
+                //打印
+                case "4":
+
                     break;
             }
         }

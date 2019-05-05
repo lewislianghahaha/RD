@@ -514,9 +514,68 @@ namespace RD.DB.Search
 
         #endregion
 
-        #region 室内主材单
+        #region 主窗体
 
+        /// <summary>
+        /// 根据指定的功能名称获取对应的dt
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <returns></returns>
+        public DataTable SearchDropdownDt(string functionName)
+        {
+            var resultdt=new DataTable();
 
+            try
+            {
+                var sqlscript=sqlList.Main_Downdownlist(functionName);
+                resultdt=GetData(sqlscript);
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
+
+        /// <summary>
+        /// 查询内容
+        /// </summary>
+        /// <param name="custid">客户ID</param>
+        /// <param name="yearid">年份</param>
+        /// <param name="ordertypeId">单据类型 1:室内装修工程单 2:室内主材单</param>
+        /// <param name="hTypeid">房屋类型ID</param>
+        /// <param name="confirmfStatus">审核状态 Y:已审核 N:末审核</param>
+        /// <param name="confirmdt">审核日期</param>
+        /// <returns></returns>
+        public DataTable Searchdtldt(int custid, int yearid, int ordertypeId, int hTypeid, string confirmfStatus,DateTime confirmdt)
+        {
+            var resultdt = new DataTable();
+            DataTable tempdt;
+            string sqlscript;
+
+            try
+            {
+                //创建临时表(当没有查询到值时使用)
+                tempdt = dlDtList.Get_Maindtl();
+                //根据各参数获取对应的SQL语句
+                //单据类型:室内装修工程
+                sqlscript = ordertypeId == 1 ? sqlList.Main_Adorndtl(custid, yearid, hTypeid, confirmfStatus, confirmdt) : 
+                                                sqlList.Main_Material(custid, yearid, hTypeid, confirmfStatus, confirmdt);
+
+                //执行SQL语句,并返回DT
+                var dt = GetData(sqlscript);
+                resultdt = dt.Rows.Count == 0 ? tempdt : dt;
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
 
         #endregion
     }

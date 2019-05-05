@@ -1,4 +1,6 @@
-﻿namespace RD.DB
+﻿using System;
+
+namespace RD.DB
 {
     //作用:定义所需的SQL语句
     public class SqlList
@@ -714,8 +716,124 @@
             return _result;
         }
 
+        #endregion
 
+        #region 主窗体
+
+        /// <summary>
+        /// 主窗体下拉列表
+        /// </summary>
+        /// <returns></returns>
+        public string Main_Downdownlist(string functionName)
+        {
+            switch (functionName)
+            {
+                //客户名称信息
+                case "Customer":
+                    _result = @"SELECT a.Custid,a.CustName FROM dbo.T_BD_CustEntry a";
+                    break;
+                //单据创建年份
+                case "OrderYear":
+                    _result = @"SELECT 2019 Yearid,2019 YearName
+                                UNION
+                                SELECT year(getdate()) Yearid,YEAR(GETDATE()) YearName";
+                    break;
+                //单据类型
+                case "OrderType":
+                    _result = @"SELECT 1 OrderId,'室内装修工程单' OrderName
+                                UNION
+                                SELECT 2 OrderId,'室内主材单' OrderName";
+                    break;
+                //房屋类型
+                case "HouseType":
+                    _result = @"SELECT a.HTypeid,a.HtypeName 
+                                FROM dbo.T_BD_HTypeEntry a
+                                INNER JOIN dbo.T_BD_HType b ON a.id=b.Id
+                                WHERE b.Id=2";
+                    break;
+                //审核状态
+                case "ConfirmType":
+                    _result = @"SELECT 'Y' FStatus,'已审核' FStatusName
+                                UNION
+                                SELECT 'N' FStatus,'末审核' FStatusName";
+                    break;
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 主窗体查询内容-室内装修工程单
+        /// </summary>
+        /// <param name="custid"></param>
+        /// <param name="yearid"></param>
+        /// <param name="hTypeid"></param>
+        /// <param name="confirmfstatus"></param>
+        /// <param name="confirmdt"></param>
+        /// <returns></returns>
+        public string Main_Adorndtl(int custid,int yearid,int hTypeid,string confirmfstatus,DateTime confirmdt)
+        {
+            _result = confirmfstatus == "Y"
+                ? $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                               b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                               CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                               a.InputUser 单据录入人,a.InputDt 单据录入日期
+                            FROM dbo.T_PRO_Adorn a
+                            INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
+                            WHERE a.Custid='{custid}'			--客户ID
+                            AND YEAR(a.InputDt)='{yearid}'	    --年份
+                            AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                            AND A.Fstatus='{confirmfstatus}'    --审核状态
+                            AND a.FstatusDt='{confirmdt}'       --审核日期(注:当审核状态为Y时使用)"
+                : $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                               b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                               CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                               a.InputUser 单据录入人,a.InputDt 单据录入日期
+                            FROM dbo.T_PRO_Adorn a
+                            INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
+                            WHERE a.Custid='{custid}'			--客户ID
+                            AND YEAR(a.InputDt)='{yearid}'	    --年份
+                            AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                            AND A.Fstatus='{confirmfstatus}'    --审核状态";
+            return _result;
+        }
+
+        /// <summary>
+        /// 主窗体查询内容-室内主材单
+        /// </summary>
+        /// <param name="custid"></param>
+        /// <param name="yearid"></param>
+        /// <param name="hTypeid"></param>
+        /// <param name="confirmfstatus"></param>
+        /// <param name="confirmdt"></param>
+        /// <returns></returns>
+        public string Main_Material(int custid, int yearid, int hTypeid, string confirmfstatus, DateTime confirmdt)
+        {
+            _result = confirmfstatus == "Y"
+                ? $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                       b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                       CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                       a.InputUser 单据录入人,a.InputDt 单据录入日期
+                    FROM dbo.T_PRO_Material A
+                    INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
+                    WHERE a.Custid='{custid}'			--客户ID
+                    AND YEAR(a.InputDt)='{yearid}'	    --年份
+                    AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                    AND A.Fstatus='{confirmfstatus}'    --审核状态
+                    AND a.FstatusDt='{confirmdt}'       --审核日期(注:当审核状态为Y时使用)"
+                : $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                        b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                        CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                        a.InputUser 单据录入人,a.InputDt 单据录入日期
+                    FROM dbo.T_PRO_Material A
+                    INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
+                    WHERE a.Custid='{custid}'			--客户ID
+                    AND YEAR(a.InputDt)='{yearid}'	    --年份
+                    AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                    AND A.Fstatus='{confirmfstatus}'    --审核状态";
+            return _result;
+        }
 
         #endregion
+
     }
 }

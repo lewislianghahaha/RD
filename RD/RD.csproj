@@ -67,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\Main\MainGenerate.cs" />
+    <Compile Include="Logic\Main\MainSearch.cs" />
     <Compile Include="Logic\Order\OrderDel.cs" />
     <Compile Include="Logic\Order\OrderGenerate.cs" />
     <Compile Include="Logic\Order\OrderImport.cs" />
@@ -252,7 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\Export\" />
-    <Folder Include="Logic\Main\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="STI\" />
   </ItemGroup>

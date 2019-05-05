@@ -637,5 +637,87 @@ namespace RD.DB
             return dt;
         }
 
+        #region 主窗体
+
+        /// <summary>
+        /// 主窗体-查询功能使用
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_Maindtl()
+        {
+            var dt=new DataTable();
+            for (var i = 0; i < 12; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //Id
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //OrderNo
+                    case 1:
+                        dc.ColumnName = "单据编号";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //CustName
+                    case 2:
+                        dc.ColumnName = "客户名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //HTypeName
+                    case 3:
+                        dc.ColumnName = "房屋类型名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Spare
+                    case 4:
+                        dc.ColumnName = "装修地区";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //SpareAdd
+                    case 5:
+                        dc.ColumnName = "装修地址";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Cust_Add
+                    case 6:
+                        dc.ColumnName = "客户通讯地址";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Cust_Phone
+                    case 7:
+                        dc.ColumnName = "客户联系方式";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Fstatus
+                    case 8:
+                        dc.ColumnName = "审核状态";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //FstatusDt
+                    case 9:
+                        dc.ColumnName = "审核日期";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    //InputUser
+                    case 10:
+                        dc.ColumnName = "单据录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 11:
+                        dc.ColumnName = "单据录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        #endregion
+
     }
 }
