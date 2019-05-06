@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace RD.DB.Generate
 {
@@ -249,6 +250,37 @@ namespace RD.DB.Generate
             }
             return result;
         }
+
+        #region 单据审核（反审核）操作 主窗体使用
+
+        /// <summary>
+        /// 单据审核（反审核）操作 主窗体使用
+        /// </summary>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="confirmid">审核ID 0:审核 1:反审核</param>
+        /// <param name="datarow"></param>
+        /// <returns></returns>
+        public bool Main_ConfirmOrderDtl(string functionName, int confirmid, DataGridViewSelectedRowCollection datarow)
+        {
+            var result = true;
+
+            try
+            {
+                //循环从GridView中所选择的行记录
+                foreach (DataGridViewRow row in datarow)
+                {
+                    var sqlscript = sqlList.ChangeOrderState(functionName, confirmid, Convert.ToInt32(row.Cells[0].Value));
+                    result = GenerDt(sqlscript); 
+                }    
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        #endregion
 
     }
 }

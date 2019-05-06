@@ -46,9 +46,9 @@
             this.txtCustomer = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.tvView = new System.Windows.Forms.TreeView();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.pbimg = new System.Windows.Forms.PictureBox();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.ConMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,8 +60,8 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ConMenu.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -229,6 +229,17 @@
             this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 3;
             // 
+            // pbimg
+            // 
+            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbimg.Location = new System.Drawing.Point(118, -13);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(65, 61);
+            this.pbimg.TabIndex = 1;
+            this.pbimg.TabStop = false;
+            this.pbimg.Visible = false;
+            // 
             // tvView
             // 
             this.tvView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -245,17 +256,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(797, 545);
             this.panel3.TabIndex = 1;
-            // 
-            // pbimg
-            // 
-            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbimg.Location = new System.Drawing.Point(118, -13);
-            this.pbimg.Name = "pbimg";
-            this.pbimg.Size = new System.Drawing.Size(65, 61);
-            this.pbimg.TabIndex = 1;
-            this.pbimg.TabStop = false;
-            this.pbimg.Visible = false;
             // 
             // gvdtl
             // 
@@ -321,8 +321,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
+            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ConMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

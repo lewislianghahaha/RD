@@ -730,7 +730,9 @@ namespace RD.DB
             {
                 //客户名称信息
                 case "Customer":
-                    _result = @"SELECT a.Custid,a.CustName FROM dbo.T_BD_CustEntry a";
+                    _result = @"SELECT -1 Custid,'全部' CustName
+                                UNION
+                                SELECT a.Custid,a.CustName FROM dbo.T_BD_CustEntry a";
                     break;
                 //单据创建年份
                 case "OrderYear":
@@ -773,27 +775,48 @@ namespace RD.DB
         public string Main_Adorndtl(int custid,int yearid,int hTypeid,string confirmfstatus,DateTime confirmdt)
         {
             _result = confirmfstatus == "Y"
-                ? $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
-	                               b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
-	                               CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
-	                               a.InputUser 单据录入人,a.InputDt 单据录入日期
+                ? (custid == -1
+                    ? $@"SELECT a.Id,'AdornOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                    b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                    CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                    a.InputUser 单据录入人,a.InputDt 单据录入日期
+                            FROM dbo.T_PRO_Adorn a
+                            INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
+                            WHERE YEAR(a.InputDt)='{yearid}'	                  --年份
+                            AND b.HTypeid='{hTypeid}'		                  --房屋类型ID
+                            AND A.Fstatus='{confirmfstatus}'                  --审核状态
+                            AND CONVERT(DATE,a.FstatusDt)=CONVERT(DATE,'{confirmdt}')       --审核日期(注:当审核状态为Y时使用)"
+                    : $@"SELECT a.Id,'AdornOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                   b.Spare 装修地区,b.SpareAdd 装修地址, b.Cust_Add 客户通讯地址, b.Cust_Phone 客户联系方式,
+                                       CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态, a.FstatusDt 审核日期,
+                                       a.InputUser 单据录入人, a.InputDt 单据录入日期
+                                FROM dbo.T_PRO_Adorn a
+                                INNER JOIN dbo.T_BD_CustEntry b ON a.Custid = b.Custid
+                                WHERE a.Custid = '{custid}'--客户ID
+                                AND YEAR(a.InputDt) = '{yearid}'--年份
+                                AND b.HTypeid = '{hTypeid}'--房屋类型ID
+                                AND A.Fstatus = '{confirmfstatus}'--审核状态
+                                AND CONVERT(DATE, a.FstatusDt) = CONVERT(DATE, '{confirmdt}')--审核日期(注: 当审核状态为Y时使用)")
+                : (custid == -1
+                    ? $@"SELECT a.Id,'AdornOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                    b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                    CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                    a.InputUser 单据录入人,a.InputDt 单据录入日期
+                            FROM dbo.T_PRO_Adorn a
+                            INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
+                            WHERE YEAR(a.InputDt)='{yearid}'	    --年份
+                            AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                            AND A.Fstatus='{confirmfstatus}'    --审核状态"
+                    : $@"SELECT a.Id,'AdornOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                   b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                   CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                   a.InputUser 单据录入人,a.InputDt 单据录入日期
                             FROM dbo.T_PRO_Adorn a
                             INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
                             WHERE a.Custid='{custid}'			--客户ID
                             AND YEAR(a.InputDt)='{yearid}'	    --年份
                             AND b.HTypeid='{hTypeid}'		    --房屋类型ID
-                            AND A.Fstatus='{confirmfstatus}'    --审核状态
-                            AND a.FstatusDt='{confirmdt}'       --审核日期(注:当审核状态为Y时使用)"
-                : $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
-	                               b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
-	                               CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
-	                               a.InputUser 单据录入人,a.InputDt 单据录入日期
-                            FROM dbo.T_PRO_Adorn a
-                            INNER JOIN dbo.T_BD_CustEntry b ON a.Custid=b.Custid
-                            WHERE a.Custid='{custid}'			--客户ID
-                            AND YEAR(a.InputDt)='{yearid}'	    --年份
-                            AND b.HTypeid='{hTypeid}'		    --房屋类型ID
-                            AND A.Fstatus='{confirmfstatus}'    --审核状态";
+                            AND A.Fstatus='{confirmfstatus}'    --审核状态");
             return _result;
         }
 
@@ -809,27 +832,48 @@ namespace RD.DB
         public string Main_Material(int custid, int yearid, int hTypeid, string confirmfstatus, DateTime confirmdt)
         {
             _result = confirmfstatus == "Y"
-                ? $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
-	                       b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
-	                       CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
-	                       a.InputUser 单据录入人,a.InputDt 单据录入日期
-                    FROM dbo.T_PRO_Material A
-                    INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
-                    WHERE a.Custid='{custid}'			--客户ID
-                    AND YEAR(a.InputDt)='{yearid}'	    --年份
-                    AND b.HTypeid='{hTypeid}'		    --房屋类型ID
-                    AND A.Fstatus='{confirmfstatus}'    --审核状态
-                    AND a.FstatusDt='{confirmdt}'       --审核日期(注:当审核状态为Y时使用)"
-                : $@"SELECT a.Id,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
-	                        b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
-	                        CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
-	                        a.InputUser 单据录入人,a.InputDt 单据录入日期
-                    FROM dbo.T_PRO_Material A
-                    INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
-                    WHERE a.Custid='{custid}'			--客户ID
-                    AND YEAR(a.InputDt)='{yearid}'	    --年份
-                    AND b.HTypeid='{hTypeid}'		    --房屋类型ID
-                    AND A.Fstatus='{confirmfstatus}'    --审核状态";
+                ? (custid == -1
+                    ? $@"SELECT a.Id,'MaterialOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                   b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                   CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                   a.InputUser 单据录入人,a.InputDt 单据录入日期
+                                FROM dbo.T_PRO_Material A
+                                INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
+                                WHERE YEAR(a.InputDt)='{yearid}'	                           --年份
+                                AND b.HTypeid='{hTypeid}'		                               --房屋类型ID
+                                AND A.Fstatus='{confirmfstatus}'                               --审核状态
+                                AND CONVERT(DATE,a.FstatusDt)=CONVERT(DATE,'{confirmdt}')      --审核日期(注:当审核状态为Y时使用)"
+                    : $@"SELECT a.Id,'MaterialOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                   b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                   CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                   a.InputUser 单据录入人,a.InputDt 单据录入日期
+                                FROM dbo.T_PRO_Material A
+                                INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
+                                WHERE a.Custid='{custid}'			                           --客户ID
+                                AND YEAR(a.InputDt)='{yearid}'	                               --年份
+                                AND b.HTypeid='{hTypeid}'		                               --房屋类型ID
+                                AND A.Fstatus='{confirmfstatus}'                               --审核状态
+                                AND CONVERT(DATE,a.FstatusDt)=CONVERT(DATE,'{confirmdt}')      --审核日期(注:当审核状态为Y时使用)")
+                : (custid == -1
+                    ? $@"SELECT a.Id,'MaterialOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                    b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                    CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                    a.InputUser 单据录入人,a.InputDt 单据录入日期
+                                FROM dbo.T_PRO_Material A
+                                INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
+                                WHERE YEAR(a.InputDt)='{yearid}'	    --年份
+                                AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                                AND A.Fstatus='{confirmfstatus}'    --审核状态"
+                    : $@"SELECT a.Id,'MaterialOrder' ordertype,a.OrderNo 单据编号,b.CustName 客户名称,b.HTypeName 房屋类型名称,
+	                                    b.Spare 装修地区,b.SpareAdd 装修地址,b.Cust_Add 客户通讯地址,b.Cust_Phone 客户联系方式,
+	                                    CASE a.Fstatus WHEN 'Y' THEN '已审核' ELSE '末审核' END 审核状态,a.FstatusDt 审核日期,
+	                                    a.InputUser 单据录入人,a.InputDt 单据录入日期
+                                FROM dbo.T_PRO_Material A
+                                INNER JOIN dbo.T_BD_CustEntry B ON a.Custid=b.Custid
+                                WHERE a.Custid='{custid}'			--客户ID
+                                AND YEAR(a.InputDt)='{yearid}'	    --年份
+                                AND b.HTypeid='{hTypeid}'		    --房屋类型ID
+                                AND A.Fstatus='{confirmfstatus}'    --审核状态");
             return _result;
         }
 

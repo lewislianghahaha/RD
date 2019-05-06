@@ -278,11 +278,7 @@ namespace RD.UI.Order
             {
                 if (tvView.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
                 if ((string)tvView.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
-                //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
 
-                //获取下拉列表值
-                //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
                 //获取所选中的树菜单节点ID
                 var treeid = (int)tvView.SelectedNode.Tag;
 
@@ -334,8 +330,8 @@ namespace RD.UI.Order
                     task.TaskId = 2;
                     task.FunctionId = "4";
                     task.FunctionName = _funName;
-                    task.Id = _pid;      //表头ID
-                    task.Confirmid = 0; //记录审核操作标记 0:审核 1:反审核
+                    task.Pid = _pid;      //表头ID
+                    task.Confirmid = 0;  //记录审核操作标记 0:审核 1:反审核
 
                     task.StartTask();
 

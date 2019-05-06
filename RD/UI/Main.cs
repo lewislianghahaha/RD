@@ -14,6 +14,8 @@ namespace RD.UI
         TaskLogic task=new TaskLogic();
         Load load=new Load();
         CustInfoFrm custInfo=new CustInfoFrm();
+        AdornOrderFrm adornOrder=new AdornOrderFrm();
+        MaterialOrderFrm materialOrder=new MaterialOrderFrm();
 
         public Main()
         {
@@ -35,6 +37,8 @@ namespace RD.UI
             tmMaterialInfo.Click += TmMaterialInfo_Click;
             tmHouseInfo.Click += TmHouseInfo_Click;
             tmRefresh.Click += TmRefresh_Click;
+            tmShowdtl.Click += TmShowdtl_Click;
+            tmConfirm.Click += TmConfirm_Click;
         }
 
         /// <summary>
@@ -271,7 +275,14 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmEXCEL_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -281,7 +292,14 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmPrint_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -317,7 +335,7 @@ namespace RD.UI
 
                 //获取“审核日期”(若“审核状态”选择了“已审核”才获取)
                 if (fStatus == "Y")
-                { var a = dtpick.Value.Date.ToShortDateString();}
+                    confirmdt = dtpick.Value.Date;
 
                 task.TaskId = 4;
                 task.FunctionId = "1.1";
@@ -336,6 +354,101 @@ namespace RD.UI
                 label7.Text = $"此次查询的行数为:{task.ResultTable.Rows.Count}行";
                 //控制GridView单元格显示方式
                 ControlGridViewisShow();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 审核(反审核)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmConfirm_Click(object sender, EventArgs e)
+        {
+            string clickMessage;
+
+            try
+            {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count==0) throw new Exception("请至少选择一行进行审核");
+
+                //获取所选择的行中首行的“审核状态”及“单据类型”记录
+                //“审核状态”
+                var fStatus = Convert.ToString(gvdtl.SelectedRows[0].Cells[9].Value);
+                //“单据类型”
+                var ordertype = Convert.ToString(gvdtl.SelectedRows[0].Cells[1].Value);
+
+                if (fStatus == "已审核")
+                {
+                    //权限控制(注:若不是可以反审核的帐号就弹出异常)
+                    if(!Getpriavepower(GlobalClasscs.User.StrUsrName)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘反审核’权限,不能继续.");
+                    //提示信息
+                    clickMessage = $"您所选择需要进行反审核的信息有{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                }
+                else
+                {
+                    //提示信息
+                    clickMessage = $"您所选择需要进行审核的信息有{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                }
+
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //获取所选择的行记录并进行反审核
+                    if (!ChangeState(fStatus, ordertype)) throw new Exception("出现异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show($"已完成操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                //成功后,先将GridView记录清空
+                //(DataTable)gvdtl.DataSource
+                //gvdtl.Columns.Clear();
+               //OnInitialize();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 显示明细信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmShowdtl_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(gvdtl.Rows.Count==0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选择一行查看明细");
+
+                //获取从GridView所选择的功能名称
+                var funname= Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
+
+                if (funname == "AdornOrder")
+                {
+                    adornOrder.FunState = "R";
+                    adornOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                    adornOrder.FunName = funname;
+                    //初始化窗体信息
+                    adornOrder.OnInitialize();
+                    adornOrder.StartPosition = FormStartPosition.CenterParent;
+                    adornOrder.ShowDialog();
+                }
+                else
+                {
+                    materialOrder.FunState = "R";
+                    materialOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                    materialOrder.FunName = funname;
+                    //初始化窗体信息
+                    materialOrder.OnInitialize();
+                    materialOrder.StartPosition = FormStartPosition.CenterParent;
+                    materialOrder.ShowDialog();
+                }
             }
             catch (Exception ex)
             {
@@ -391,6 +504,52 @@ namespace RD.UI
         {
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
         }
+
+        /// <summary>
+        /// 根据用户名称获取其对应的权限
+        /// </summary>
+        private bool Getpriavepower(string username)
+        {
+            var result = true;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据从GridView获取所选的行。进行审核（反审核）操作
+        /// </summary>
+        /// <param name="fStatus">审核状态 Y：已审核 N:末审核 审核ID 0:审核 1:反审核</param>
+        /// <param name="ordertype">单据类型 (1:室内装修工程单 AdornOrder 2:室内主材单 MaterialOrder)</param>
+        /// <returns></returns>
+        private bool ChangeState(string fStatus,string ordertype)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 4;
+                task.FunctionId = "2";
+                task.FunctionName = ordertype;
+                task.Confirmid = fStatus == "已审核" ? 1 : 0;
+                task.Datarow = gvdtl.SelectedRows;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
     }
 }

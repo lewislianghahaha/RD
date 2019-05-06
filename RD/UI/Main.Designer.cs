@@ -286,6 +286,7 @@
             // 
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 25);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -320,10 +321,12 @@
             // 
             // dtpick
             // 
+            this.dtpick.CustomFormat = "";
             this.dtpick.Location = new System.Drawing.Point(315, 32);
             this.dtpick.Name = "dtpick";
             this.dtpick.Size = new System.Drawing.Size(163, 21);
             this.dtpick.TabIndex = 13;
+            this.dtpick.Value = new System.DateTime(2019, 5, 6, 0, 0, 0, 0);
             // 
             // label6
             // 
@@ -448,6 +451,7 @@
             this.gvdtl.AllowUserToDeleteRows = false;
             this.gvdtl.AllowUserToOrderColumns = true;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.ContextMenuStrip = this.showDtl;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";

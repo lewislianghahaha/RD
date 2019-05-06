@@ -646,7 +646,7 @@ namespace RD.DB
         public DataTable Get_Maindtl()
         {
             var dt=new DataTable();
-            for (var i = 0; i < 12; i++)
+            for (var i = 0; i < 13; i++)
             {
                 var dc = new DataColumn();
                 switch (i)
@@ -656,58 +656,63 @@ namespace RD.DB
                         dc.ColumnName = "Id";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    //OrderNo
+                    //ordertype
                     case 1:
+                        dc.ColumnName = "ordertype";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //OrderNo
+                    case 2:
                         dc.ColumnName = "单据编号";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //CustName
-                    case 2:
+                    case 3:
                         dc.ColumnName = "客户名称";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //HTypeName
-                    case 3:
+                    case 4:
                         dc.ColumnName = "房屋类型名称";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //Spare
-                    case 4:
+                    case 5:
                         dc.ColumnName = "装修地区";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //SpareAdd
-                    case 5:
+                    case 6:
                         dc.ColumnName = "装修地址";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //Cust_Add
-                    case 6:
+                    case 7:
                         dc.ColumnName = "客户通讯地址";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //Cust_Phone
-                    case 7:
+                    case 8:
                         dc.ColumnName = "客户联系方式";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //Fstatus
-                    case 8:
+                    case 9:
                         dc.ColumnName = "审核状态";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //FstatusDt
-                    case 9:
+                    case 10:
                         dc.ColumnName = "审核日期";
                         dc.DataType = Type.GetType("System.DateTime"); 
                         break;
                     //InputUser
-                    case 10:
+                    case 11:
                         dc.ColumnName = "单据录入人";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //InputDt
-                    case 11:
+                    case 12:
                         dc.ColumnName = "单据录入日期";
                         dc.DataType = Type.GetType("System.DateTime");
                         break;

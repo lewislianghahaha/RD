@@ -37,7 +37,7 @@ namespace RD.UI.Order
             /// </summary>
             public int Pid { set { _pid = value; } }
             /// <summary>
-            /// 记录功能名称 Adorn:室内装修工程 Material:室内主材单
+            /// 记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
             /// </summary>
             public string FunName { set { _funName = value; } }
 
@@ -416,8 +416,8 @@ namespace RD.UI.Order
                     task.TaskId = 2;
                     task.FunctionId = "4";
                     task.FunctionName = _funName;
-                    task.Id = _pid;      //表头ID
-                    task.Confirmid = 0; //记录审核操作标记 0:审核 1:反审核
+                    task.Pid = _pid;      //表头ID
+                    task.Confirmid = 0;  //记录审核操作标记 0:审核 1:反审核
 
                     task.StartTask();
 

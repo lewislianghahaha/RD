@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Windows.Forms;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
 using RD.Logic.Main;
@@ -23,6 +24,7 @@ namespace RD.Logic
 
         //主窗体使用
         MainSearch mainSearch=new MainSearch();
+        MainGenerate mainGenerate=new MainGenerate();
 
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
@@ -48,6 +50,7 @@ namespace RD.Logic
         private int _hTypeid;            //房屋类型(主窗体使用)
         private string _confirmfStatus;  //审核状态(主窗体使用)
         private DateTime _confirmdt;     //审核日期(主窗体使用)
+        private DataGridViewSelectedRowCollection _datarow; //保存从GridView中所选择的行
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -176,6 +179,11 @@ namespace RD.Logic
         /// </summary>
         public DateTime Confirmdt { set { _confirmdt = value; } }
 
+        /// <summary>
+        /// 保存从GridView中所选择的行
+        /// </summary>
+        public DataGridViewSelectedRowCollection Datarow { set { _datarow = value; } }
+
         #endregion
 
         #region Get
@@ -219,7 +227,7 @@ namespace RD.Logic
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
-                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _confirmdt);
+                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _confirmdt,_confirmid,_datarow);
                     break;
             }
         }
@@ -384,7 +392,10 @@ namespace RD.Logic
         /// <param name="hTypeid">房屋类型ID</param>
         /// <param name="confirmfStatus">审核状态</param>
         /// <param name="confirmdt">审核日期</param>
-        private void MainInfo(string functionId,string functionName,int custid,int yearid,int ordertypeId,int hTypeid,string confirmfStatus, DateTime confirmdt)
+        /// <param name="confirmid">审核ID</param>
+        /// <param name="datarow">保存从GridView选择的行</param>
+        private void MainInfo(string functionId,string functionName,int custid,int yearid,int ordertypeId,int hTypeid,string confirmfStatus, DateTime confirmdt,
+                              int confirmid, DataGridViewSelectedRowCollection datarow)
         {
             switch (functionId)
             {
@@ -399,7 +410,7 @@ namespace RD.Logic
 
                 //审核(反审核)
                 case "2":
-
+                    _resultMark = mainGenerate.Main_ConfirmOrderDtl(functionName, confirmid,datarow);
                     break;
                 //导出-EXCEL
                 case "3":

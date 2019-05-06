@@ -560,7 +560,7 @@ namespace RD.DB.Search
                 //创建临时表(当没有查询到值时使用)
                 tempdt = dlDtList.Get_Maindtl();
                 //根据各参数获取对应的SQL语句
-                //单据类型:室内装修工程
+                //单据类型:1:室内装修工程 2:室内主材单
                 sqlscript = ordertypeId == 1 ? sqlList.Main_Adorndtl(custid, yearid, hTypeid, confirmfStatus, confirmdt) : 
                                                 sqlList.Main_Material(custid, yearid, hTypeid, confirmfStatus, confirmdt);
 

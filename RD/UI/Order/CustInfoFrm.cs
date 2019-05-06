@@ -23,7 +23,7 @@ namespace RD.UI.Order
             /// </summary>
             public string FunState { set { _funState = value; } }
             /// <summary>
-            /// 记录功能名称 Adorn:室内装修工程 Material:室内主材单
+            /// 记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
             /// </summary>
             public string FunName { set { _funName = value; } }
 
