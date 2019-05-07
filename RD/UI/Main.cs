@@ -386,12 +386,12 @@ namespace RD.UI
                     //权限控制(注:若不是可以反审核的帐号就弹出异常)
                     if(!Getpriavepower(GlobalClasscs.User.StrUsrName)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘反审核’权限,不能继续.");
                     //提示信息
-                    clickMessage = $"您所选择需要进行反审核的信息有{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                    clickMessage = $"您所选择需要进行反审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续?";
                 }
                 else
                 {
                     //提示信息
-                    clickMessage = $"您所选择需要进行审核的信息有{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                    clickMessage = $"您所选择需要进行审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续?";
                 }
 
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
@@ -400,13 +400,12 @@ namespace RD.UI
                     if (!ChangeState(fStatus, ordertype)) throw new Exception("出现异常,请联系管理员");
                     else
                     {
-                        MessageBox.Show($"已完成操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"已完成操作,请重新查询", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 //成功后,先将GridView记录清空
-                //(DataTable)gvdtl.DataSource
-                //gvdtl.Columns.Clear();
-               //OnInitialize();
+                gvdtl.DataSource = null;
+                label7.Text = "";
             }
             catch (Exception ex)
             {

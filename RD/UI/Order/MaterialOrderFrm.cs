@@ -272,7 +272,7 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnGetdtl_Click(object sender, System.EventArgs e)
+        private void BtnGetdtl_Click(object sender, EventArgs e)
         {
             try
             {
@@ -305,10 +305,9 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmSave_Click(object sender, System.EventArgs e)
+        private void TmSave_Click(object sender, EventArgs e)
         {
             if (gvdtl.Rows.Count == 0) throw new Exception("没有任何记录,不能保存");
-            //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
             //执行保存功能
             Savedtl();
             //保存成功后,再次进行初始化
@@ -320,10 +319,19 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmConfirm_Click(object sender, System.EventArgs e)
+        private void TmConfirm_Click(object sender, EventArgs e)
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能审核.");
+                //注:需在“审核”前将还没有进行“保存”的记录进行“保存”才能继续审核
+
+                //获取在GridView存在的新记录
+                var newRecorddt = SearchNewRecordIntoDt();
+                //获取在GridView存在的更新记录
+                var updateRecorddt = SearchUpdateRecordIntoDt();
+                if (newRecorddt.Rows.Count > 0 || updateRecorddt.Rows.Count > 0) throw new Exception("检测到有记录没有保存,请先将记录保存再继续进行审核");
+
                 var clickMessage = $"您所选择的信息为:\n 单据名称:{txtOrderNo.Text} \n 是否继续? \n 注:审核后需反审核才能对该单据的记录进行修改, \n 请谨慎处理.";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
@@ -358,7 +366,15 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TmExcel_Click(object sender, System.EventArgs e)
         {
-            
+            try
+            {
+                if(gvdtl.SelectedRows.Count==0)throw new Exception("请选择一行进行导出.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -368,7 +384,15 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void TmPrint_Click(object sender, System.EventArgs e)
         {
-            
+            try
+            {
+                if(gvdtl.SelectedRows.Count==0)throw new Exception("请选择一行进行打印.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -625,11 +649,6 @@ namespace RD.UI.Order
                 if (_funState == "R")
                 {
                     if (tvView.SelectedNode == null) throw new Exception("没有选择任何节点,请选择");
-                    //if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能修改,请选择其它节点.");
-
-                    //获取下拉列表信息
-                    //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                    //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
 
                     var gridViewdt = (DataTable)gvdtl.DataSource;
                     if (gridViewdt.Rows.Count > 0)
@@ -656,7 +675,6 @@ namespace RD.UI.Order
                     task.FunctionName = _funName;                                                                                 //功能名称
                     task.Pid = _pid;                                                                                             //表头ID
                     task.Treeid = (string)tvView.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvView.SelectedNode.Tag);    //树节点ID
-                    //task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
 
                     new Thread(Start).Start();
                     load.StartPosition = FormStartPosition.CenterScreen;
@@ -684,11 +702,36 @@ namespace RD.UI.Order
             {
                 //读取审核图片
                 pbimg.Visible = true;
-                pbimg.Image = Image.FromFile(Application.StartupPath+@"\PIC\1.png");
+                pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+
+                #region
+
                 //设置整体Form都不能修改
-                
+                //foreach (Control control in this.Controls)
+                //{
+                //    //遍历后的操作...
+                //    control.Enabled = false;
+                //}
+
+                #endregion
+
+                //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
+                tmSave.Enabled = false;
+                tmConfirm.Enabled = false;
+                gvdtl.Enabled = false;
+                btnGetdtl.Enabled = false;
+            }
+            //若为“非审核”状态的,就执行以下语句
+            else
+            {
+                //将审核图片控件隐藏
+                pbimg.Visible = false;
+                //将所有功能的状态还原(即与审核时的控件状态相反)
+                tmSave.Enabled = true;
+                tmConfirm.Enabled = true;
+                gvdtl.Enabled = true;
+                btnGetdtl.Enabled = true;
             }
         }
-
     }
 }

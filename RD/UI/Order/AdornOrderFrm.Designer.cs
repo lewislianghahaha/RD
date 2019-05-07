@@ -62,6 +62,7 @@
             this.btnGetdtl = new System.Windows.Forms.Button();
             this.comHtype = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -76,6 +77,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ConMenu.SuspendLayout();
             this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -88,20 +90,21 @@
             this.tmExport});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1492, 32);
+            this.MainMenu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.MainMenu.Size = new System.Drawing.Size(995, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "menuStrip1";
             // 
             // tmSave
             // 
             this.tmSave.Name = "tmSave";
-            this.tmSave.Size = new System.Drawing.Size(58, 28);
+            this.tmSave.Size = new System.Drawing.Size(44, 22);
             this.tmSave.Text = "保存";
             // 
             // tmConfirm
             // 
             this.tmConfirm.Name = "tmConfirm";
-            this.tmConfirm.Size = new System.Drawing.Size(58, 28);
+            this.tmConfirm.Size = new System.Drawing.Size(44, 22);
             this.tmConfirm.Text = "审核";
             // 
             // tmExport
@@ -111,24 +114,24 @@
             this.toolStripSeparator1,
             this.tmPrint});
             this.tmExport.Name = "tmExport";
-            this.tmExport.Size = new System.Drawing.Size(58, 28);
+            this.tmExport.Size = new System.Drawing.Size(44, 22);
             this.tmExport.Text = "导出";
             // 
             // tmExcel
             // 
             this.tmExcel.Name = "tmExcel";
-            this.tmExcel.Size = new System.Drawing.Size(135, 30);
+            this.tmExcel.Size = new System.Drawing.Size(105, 22);
             this.tmExcel.Text = "Excel";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(102, 6);
             // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(135, 30);
+            this.tmPrint.Size = new System.Drawing.Size(105, 22);
             this.tmPrint.Text = "打印";
             // 
             // panel1
@@ -142,83 +145,78 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 32);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1492, 40);
+            this.panel1.Size = new System.Drawing.Size(995, 27);
             this.panel1.TabIndex = 1;
             // 
             // txtOrderNo
             // 
             this.txtOrderNo.Enabled = false;
-            this.txtOrderNo.Location = new System.Drawing.Point(96, 4);
-            this.txtOrderNo.Margin = new System.Windows.Forms.Padding(4);
+            this.txtOrderNo.Location = new System.Drawing.Point(64, 3);
             this.txtOrderNo.Name = "txtOrderNo";
-            this.txtOrderNo.Size = new System.Drawing.Size(222, 28);
+            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
             this.txtOrderNo.TabIndex = 8;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 12);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(6, 8);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 18);
+            this.label5.Size = new System.Drawing.Size(59, 12);
             this.label5.TabIndex = 7;
             this.label5.Text = "单据名称:";
             // 
             // txtCustomer
             // 
             this.txtCustomer.Enabled = false;
-            this.txtCustomer.Location = new System.Drawing.Point(411, 4);
-            this.txtCustomer.Margin = new System.Windows.Forms.Padding(4);
+            this.txtCustomer.Location = new System.Drawing.Point(274, 3);
             this.txtCustomer.Name = "txtCustomer";
-            this.txtCustomer.Size = new System.Drawing.Size(196, 28);
+            this.txtCustomer.Size = new System.Drawing.Size(132, 21);
             this.txtCustomer.TabIndex = 6;
             // 
             // txtAdd
             // 
             this.txtAdd.Enabled = false;
-            this.txtAdd.Location = new System.Drawing.Point(1017, 4);
-            this.txtAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAdd.Location = new System.Drawing.Point(678, 3);
             this.txtAdd.Name = "txtAdd";
-            this.txtAdd.Size = new System.Drawing.Size(469, 28);
+            this.txtAdd.Size = new System.Drawing.Size(314, 21);
             this.txtAdd.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(930, 12);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(620, 8);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 18);
+            this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 4;
             this.label3.Text = "装修地址:";
             // 
             // txtHoseName
             // 
             this.txtHoseName.Enabled = false;
-            this.txtHoseName.Location = new System.Drawing.Point(736, 4);
-            this.txtHoseName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtHoseName.Location = new System.Drawing.Point(491, 3);
             this.txtHoseName.Name = "txtHoseName";
-            this.txtHoseName.Size = new System.Drawing.Size(188, 28);
+            this.txtHoseName.Size = new System.Drawing.Size(127, 21);
             this.txtHoseName.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(614, 12);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(409, 8);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 18);
+            this.label2.Size = new System.Drawing.Size(83, 12);
             this.label2.TabIndex = 2;
             this.label2.Text = "房屋类型名称:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(326, 12);
+            this.label1.Location = new System.Drawing.Point(217, 8);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 18);
+            this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "客户名称:";
             // 
@@ -226,9 +224,10 @@
             // 
             this.panel2.Controls.Add(this.splitContainer1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 72);
+            this.panel2.Location = new System.Drawing.Point(0, 51);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1492, 867);
+            this.panel2.Size = new System.Drawing.Size(995, 575);
             this.panel2.TabIndex = 2;
             // 
             // splitContainer1
@@ -238,12 +237,12 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.Controls.Add(this.pbimg);
             this.splitContainer1.Panel1.Controls.Add(this.tvview);
             this.splitContainer1.Panel1.Controls.Add(this.panel3);
             // 
@@ -251,18 +250,16 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.gvdtl);
             this.splitContainer1.Panel2.Controls.Add(this.panel7);
-            this.splitContainer1.Size = new System.Drawing.Size(1492, 867);
+            this.splitContainer1.Size = new System.Drawing.Size(995, 575);
             this.splitContainer1.SplitterDistance = 214;
-            this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
             // 
             // tvview
             // 
             this.tvview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvview.Location = new System.Drawing.Point(0, 39);
-            this.tvview.Margin = new System.Windows.Forms.Padding(4);
+            this.tvview.Location = new System.Drawing.Point(0, 26);
             this.tvview.Name = "tvview";
-            this.tvview.Size = new System.Drawing.Size(210, 824);
+            this.tvview.Size = new System.Drawing.Size(210, 545);
             this.tvview.TabIndex = 1;
             // 
             // panel3
@@ -272,19 +269,17 @@
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(210, 39);
+            this.panel3.Size = new System.Drawing.Size(210, 26);
             this.panel3.TabIndex = 0;
             // 
             // panel6
             // 
             this.panel6.Controls.Add(this.btnChange);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(110, 0);
-            this.panel6.Margin = new System.Windows.Forms.Padding(4);
+            this.panel6.Location = new System.Drawing.Point(73, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(0, 39);
+            this.panel6.Size = new System.Drawing.Size(62, 26);
             this.panel6.TabIndex = 2;
             // 
             // btnChange
@@ -292,9 +287,8 @@
             this.btnChange.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnChange.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnChange.Location = new System.Drawing.Point(0, 0);
-            this.btnChange.Margin = new System.Windows.Forms.Padding(4);
             this.btnChange.Name = "btnChange";
-            this.btnChange.Size = new System.Drawing.Size(0, 39);
+            this.btnChange.Size = new System.Drawing.Size(62, 26);
             this.btnChange.TabIndex = 0;
             this.btnChange.Text = "修改类别";
             this.btnChange.UseVisualStyleBackColor = true;
@@ -303,10 +297,9 @@
             // 
             this.panel5.Controls.Add(this.btnDel);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel5.Location = new System.Drawing.Point(98, 0);
-            this.panel5.Margin = new System.Windows.Forms.Padding(4);
+            this.panel5.Location = new System.Drawing.Point(135, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(112, 39);
+            this.panel5.Size = new System.Drawing.Size(75, 26);
             this.panel5.TabIndex = 1;
             // 
             // btnDel
@@ -314,9 +307,8 @@
             this.btnDel.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDel.Location = new System.Drawing.Point(0, 0);
-            this.btnDel.Margin = new System.Windows.Forms.Padding(4);
             this.btnDel.Name = "btnDel";
-            this.btnDel.Size = new System.Drawing.Size(112, 39);
+            this.btnDel.Size = new System.Drawing.Size(75, 26);
             this.btnDel.TabIndex = 0;
             this.btnDel.Text = "删除类别";
             this.btnDel.UseVisualStyleBackColor = true;
@@ -326,9 +318,8 @@
             this.panel4.Controls.Add(this.btnCreate);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(110, 39);
+            this.panel4.Size = new System.Drawing.Size(73, 26);
             this.panel4.TabIndex = 0;
             // 
             // btnCreate
@@ -336,9 +327,8 @@
             this.btnCreate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCreate.Location = new System.Drawing.Point(0, 0);
-            this.btnCreate.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(110, 39);
+            this.btnCreate.Size = new System.Drawing.Size(73, 26);
             this.btnCreate.TabIndex = 0;
             this.btnCreate.Text = "新建类别";
             this.btnCreate.UseVisualStyleBackColor = true;
@@ -349,11 +339,10 @@
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.ContextMenuStrip = this.ConMenu;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvdtl.Location = new System.Drawing.Point(0, 39);
-            this.gvdtl.Margin = new System.Windows.Forms.Padding(4);
+            this.gvdtl.Location = new System.Drawing.Point(0, 26);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(1268, 824);
+            this.gvdtl.Size = new System.Drawing.Size(773, 545);
             this.gvdtl.TabIndex = 1;
             // 
             // ConMenu
@@ -362,12 +351,12 @@
             this.ConMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmdel});
             this.ConMenu.Name = "ConMenu";
-            this.ConMenu.Size = new System.Drawing.Size(189, 32);
+            this.ConMenu.Size = new System.Drawing.Size(149, 26);
             // 
             // tmdel
             // 
             this.tmdel.Name = "tmdel";
-            this.tmdel.Size = new System.Drawing.Size(188, 28);
+            this.tmdel.Size = new System.Drawing.Size(148, 22);
             this.tmdel.Text = "删除所选内容";
             // 
             // panel7
@@ -378,17 +367,15 @@
             this.panel7.Controls.Add(this.label4);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Margin = new System.Windows.Forms.Padding(4);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1268, 39);
+            this.panel7.Size = new System.Drawing.Size(773, 26);
             this.panel7.TabIndex = 0;
             // 
             // btnGetdtl
             // 
-            this.btnGetdtl.Location = new System.Drawing.Point(362, 2);
-            this.btnGetdtl.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGetdtl.Location = new System.Drawing.Point(241, 1);
             this.btnGetdtl.Name = "btnGetdtl";
-            this.btnGetdtl.Size = new System.Drawing.Size(218, 34);
+            this.btnGetdtl.Size = new System.Drawing.Size(145, 23);
             this.btnGetdtl.TabIndex = 2;
             this.btnGetdtl.Text = "获取工程类别明细信息";
             this.btnGetdtl.UseVisualStyleBackColor = true;
@@ -397,32 +384,40 @@
             // 
             this.comHtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comHtype.FormattingEnabled = true;
-            this.comHtype.Location = new System.Drawing.Point(146, 4);
-            this.comHtype.Margin = new System.Windows.Forms.Padding(4);
+            this.comHtype.Location = new System.Drawing.Point(97, 3);
             this.comHtype.Name = "comHtype";
-            this.comHtype.Size = new System.Drawing.Size(180, 26);
+            this.comHtype.Size = new System.Drawing.Size(121, 20);
             this.comHtype.TabIndex = 1;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 12);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(13, 8);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(125, 18);
+            this.label4.Size = new System.Drawing.Size(83, 12);
             this.label4.TabIndex = 0;
             this.label4.Text = "装修工程类别:";
             // 
+            // pbimg
+            // 
+            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbimg.Location = new System.Drawing.Point(142, 28);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(65, 61);
+            this.pbimg.TabIndex = 2;
+            this.pbimg.TabStop = false;
+            this.pbimg.Visible = false;
+            // 
             // AdornOrderFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1492, 939);
+            this.ClientSize = new System.Drawing.Size(995, 626);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AdornOrderFrm";
             this.Text = "室内装修工程单";
             this.MainMenu.ResumeLayout(false);
@@ -442,6 +437,7 @@
             this.ConMenu.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -482,5 +478,6 @@
         private System.Windows.Forms.Button btnGetdtl;
         private System.Windows.Forms.ContextMenuStrip ConMenu;
         private System.Windows.Forms.ToolStripMenuItem tmdel;
+        private System.Windows.Forms.PictureBox pbimg;
     }
 }

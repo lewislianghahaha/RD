@@ -233,7 +233,7 @@
             // 
             this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbimg.Location = new System.Drawing.Point(118, -13);
+            this.pbimg.Location = new System.Drawing.Point(116, 3);
             this.pbimg.Name = "pbimg";
             this.pbimg.Size = new System.Drawing.Size(65, 61);
             this.pbimg.TabIndex = 1;

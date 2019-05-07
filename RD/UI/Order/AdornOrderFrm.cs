@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using RD.DB;
@@ -25,13 +26,15 @@ namespace RD.UI.Order
         private int _pid;
         //记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
         private string _funName;
+        //记录审核状态(Y:已审核;N:没审核)
+        private string _confirmMarkId;
 
         #region Set
 
-            /// <summary>
-            /// 获取单据状态标记ID C:创建 R:读取
-            /// </summary>
-            public string FunState { set { _funState = value; } }
+        /// <summary>
+        /// 获取单据状态标记ID C:创建 R:读取
+        /// </summary>
+        public string FunState { set { _funState = value; } }
             /// <summary>
             /// 获取表头ID
             /// </summary>
@@ -106,7 +109,7 @@ namespace RD.UI.Order
             //展开根节点
             tvview.ExpandAll();
             //预留(权限部份)
-
+            PrivilegeControl();
         }
 
         /// <summary>
@@ -169,6 +172,8 @@ namespace RD.UI.Order
             txtCustomer.Text = dt.Rows[0][1].ToString();
             txtHoseName.Text = dt.Rows[0][2].ToString();
             txtAdd.Text = dt.Rows[0][3].ToString();
+            //获取审核标记
+            _confirmMarkId = dt.Rows[0][4].ToString();
         }
 
         /// <summary>
@@ -352,7 +357,6 @@ namespace RD.UI.Order
             try
             {
                 if(gvdtl.Rows.Count==0) throw new Exception("没有任何记录,不能保存");
-                //if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别.");
                 //执行保存功能
                 Savedtl();
                 //保存成功后,再次进行初始化
@@ -410,6 +414,15 @@ namespace RD.UI.Order
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能审核.");
+                //注:需在“审核”前将还没有进行“保存”的记录进行“保存”才能继续审核
+
+                //获取在GridView存在的新记录
+                var newRecorddt = SearchNewRecordIntoDt();
+                //获取在GridView存在的更新记录
+                var updateRecorddt = SearchUpdateRecordIntoDt();
+                if (newRecorddt.Rows.Count > 0 || updateRecorddt.Rows.Count > 0) throw new Exception("检测到有记录没有保存,请先将记录保存再继续进行审核");
+
                 var clickMessage = $"您所选择的信息为:\n 单据名称:{txtOrderNo.Text} \n 是否继续? \n 注:审核后需反审核才能对该单据的记录进行修改, \n 请谨慎处理.";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
@@ -744,7 +757,6 @@ namespace RD.UI.Order
                 if (_funState == "R")
                 {
                     if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择");
-                    //if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能修改,请选择其它节点.");
 
                     //获取下拉列表信息
                     var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
@@ -793,7 +805,37 @@ namespace RD.UI.Order
             return result;
         }
 
-
+        /// <summary>
+        /// 权限控制 
+        /// </summary>
+        private void PrivilegeControl()
+        {
+            //若为“审核”状态的话，就执行以下语句
+            if (_confirmMarkId == "Y")
+            {
+                //读取审核图片
+                pbimg.Visible = true;
+                pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
+                tmSave.Enabled = false;
+                tmConfirm.Enabled = false;
+                gvdtl.Enabled = false;
+                btnGetdtl.Enabled = false;
+                comHtype.Enabled = false;
+            }
+            //若为“非审核”状态的,就执行以下语句
+            else
+            {
+                //将审核图片控件隐藏
+                pbimg.Visible = false;
+                //将所有功能的状态还原(即与审核时的控件状态相反)
+                tmSave.Enabled = true;
+                tmConfirm.Enabled = true;
+                gvdtl.Enabled = true;
+                btnGetdtl.Enabled = true;
+                comHtype.Enabled = true;
+            }
+        }
 
     }
 }
