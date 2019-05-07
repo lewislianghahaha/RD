@@ -17,6 +17,9 @@ namespace RD.UI
         AdornOrderFrm adornOrder=new AdornOrderFrm();
         MaterialOrderFrm materialOrder=new MaterialOrderFrm();
 
+        //保存查询出来的GridView记录
+        private DataTable _dtl;
+
         public Main()
         {
             InitializeComponent();
@@ -351,7 +354,9 @@ namespace RD.UI
                 load.ShowDialog();
 
                 gvdtl.DataSource = task.ResultTable;
-                label7.Text = $"此次查询的行数为:{task.ResultTable.Rows.Count}行";
+                _dtl = task.ResultTable;
+                panel1.Visible = true;
+                //label7.Text = $"此次查询的行数为:{task.ResultTable.Rows.Count}行";
                 //控制GridView单元格显示方式
                 ControlGridViewisShow();
             }
@@ -405,7 +410,7 @@ namespace RD.UI
                 }
                 //成功后,先将GridView记录清空
                 gvdtl.DataSource = null;
-                label7.Text = "";
+                panel1.Visible = false;
             }
             catch (Exception ex)
             {
@@ -549,6 +554,8 @@ namespace RD.UI
             }
             return result;
         }
+
+        
 
     }
 }

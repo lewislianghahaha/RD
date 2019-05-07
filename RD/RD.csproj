@@ -254,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EXCEL\" />
+    <Folder Include="Logic\Admin\" />
     <Folder Include="Logic\Export\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="STI\" />

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RD.UI
+﻿namespace RD.UI
 {
+    //GridView控件的分页功能
     public class GridViewPageShow
     {
 

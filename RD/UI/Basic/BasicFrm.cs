@@ -64,7 +64,7 @@ namespace RD.UI.Basic
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //预留(权限部份)
-            
+            PrivilegeControl();
             //展开根节点
             tview.ExpandAll();
             //设置，若功能不是 房屋类型及装修工程类别信息管理明细,那就将右键菜单功能隐藏
@@ -646,5 +646,14 @@ namespace RD.UI.Basic
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// 权限控制
+        /// </summary>
+        private void PrivilegeControl()
+        {
+            
+        }
+
     }
 }
