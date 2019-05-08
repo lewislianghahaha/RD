@@ -42,6 +42,11 @@ namespace RD.UI
             tmRefresh.Click += TmRefresh_Click;
             tmShowdtl.Click += TmShowdtl_Click;
             tmConfirm.Click += TmConfirm_Click;
+            bnMoveFirstItem.Click += BnMoveFirstItem_Click;
+            bnMovePreviousItem.Click += BnMovePreviousItem_Click;
+            bnMoveNextItem.Click += BnMoveNextItem_Click;
+            bnMoveLastItem.Click += BnMoveLastItem_Click;
+            panel1.Visible = false;
         }
 
         /// <summary>
@@ -353,10 +358,11 @@ namespace RD.UI
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
 
-                gvdtl.DataSource = task.ResultTable;
+                //gvdtl.DataSource = task.ResultTable;
                 _dtl = task.ResultTable;
                 panel1.Visible = true;
-                //label7.Text = $"此次查询的行数为:{task.ResultTable.Rows.Count}行";
+                //GridView分页
+                GridViewPageChange();
                 //控制GridView单元格显示方式
                 ControlGridViewisShow();
             }
@@ -478,6 +484,78 @@ namespace RD.UI
         }
 
         /// <summary>
+        /// 首页按钮(GridView页面跳转使用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BnMoveLastItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                GridViewPageChange();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 上一页按钮(GridView页面跳转时使用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BnMoveNextItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                GridViewPageChange();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 下一页(GridView页面跳转时使用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BnMovePreviousItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                GridViewPageChange();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 末页(GridView页面跳转时使用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BnMoveFirstItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                GridViewPageChange();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 显示用户状态信息,如:动态显示时间
         /// </summary>
         /// <param name="sender"></param>
@@ -555,7 +633,48 @@ namespace RD.UI
             return result;
         }
 
-        
+        /// <summary>
+        /// GridView分页功能
+        /// </summary>
+        private void GridViewPageChange()
+        {
+            if (bnPositionItem.Enabled == false)
+            {
+                //初始化BindingNavigator控件内的各子控件
+                bnPositionItem.Enabled = true;       //跳转页
+                //bnMoveFirstItem.Enabled = true;    //首页
+                //bnMovePreviousItem.Enabled = true; //上一页
+                bnMoveNextItem.Enabled = true;       //下一页
+                bnMoveLastItem.Enabled = true;       //末页
+                tmshowrows.Enabled = true;           //每页显示行数（下拉框）
+                bnPositionItem.Text = "1";           //初始化填充跳转页为1
+                tmshowrows.SelectedItem = "10";      //初始化下拉框所选择的默认值
+            }
+            //获取查询的总行数
+            var dtltotalrows = _dtl.Rows.Count;
+            //获取“每页显示行数”所选择的行数
+            var pageCount = Convert.ToInt32(tmshowrows.SelectedItem);
+            //计算出总页数
+            var totalpagecount = dtltotalrows % pageCount == 0  ? dtltotalrows / pageCount : dtltotalrows / pageCount + 1;
+            //赋值
+            bnCountItem.Text = $"/ {totalpagecount} 页";
+
+            //
+
+
+            //显示_dtl的查询总行数
+            tstotalrow.Text = $"共 {_dtl.Rows.Count} 行";
+            //最后将刷新的DT重新赋值给GridView
+            gvdtl.DataSource = _dtl;
+
+            //BindingSource bindingSource = new BindingSource();
+            //bindingSource.DataSource = _dtl;
+            // bngat.BindingSource = bindingSource;
+
+
+        }
+
+
 
     }
 }
