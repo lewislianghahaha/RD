@@ -123,7 +123,6 @@
     </Compile>
     <Compile Include="UI\GlobalClasscs.cs" />
     <Compile Include="Logic\TaskLogic.cs" />
-    <Compile Include="UI\GridViewPageChange.cs" />
     <Compile Include="UI\Load.cs">
       <SubType>Form</SubType>
     </Compile>
