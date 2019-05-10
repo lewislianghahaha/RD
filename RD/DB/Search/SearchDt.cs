@@ -195,6 +195,15 @@ namespace RD.DB.Search
                     //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
                     dt = houserows.Length == 0 ? tempdt : IntoTempdt(houserows, tempdt, tempdt.Columns.Count);
                     break;
+                //装修工程类别
+                case "HouseProject":
+                    //根据功能名称创建对应的空表
+                    tempdt = GetTempdt(functionName);
+                    //根据条件从DT内获取对应记录
+                    var houseProjectrows = dtdtl.Select(sqlscript);
+                    //若rows返回的结果为0时,返回临时表,反之循环将数据插入至临时表并返回
+                    dt = houseProjectrows.Length == 0 ? tempdt : IntoTempdt(houseProjectrows, tempdt, tempdt.Columns.Count);
+                    break;
             }
             return dt;
         }

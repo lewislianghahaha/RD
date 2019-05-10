@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using RD.DB;
 using RD.Logic;
@@ -10,6 +11,7 @@ namespace RD.UI.Order
     public partial class TypeInfoFrm : Form
     {
         TaskLogic task=new TaskLogic();
+        Load load=new Load();
         DtList dtList=new DtList();
 
         //获取表体DT
@@ -105,8 +107,6 @@ namespace RD.UI.Order
             ControlGridViewisShow();
         }
 
-
-
         /// <summary>
         /// 获取
         /// </summary>
@@ -118,7 +118,7 @@ namespace RD.UI.Order
 
             try
             {
-                if(gvdtl.SelectedRows.Count==0) throw new Exception("请至少选中一行");
+                if(gvdtl.SelectedRows.Count==0) throw new Exception("请最少选中一行");
                 //根据Funname获取对应的临时表
                 _resultTable = _funname == "HouseProject" ? dtList.Get_HouseProjectEmptydt() : dtList.Get_MaterialEmptydt();
                 //获取所选择的行记录
@@ -197,7 +197,26 @@ namespace RD.UI.Order
             try
             {
                 if ((int)comlist.SelectedIndex == -1) throw new Exception("请选择查询条件");
+                //获取下拉列表值
+                var dvColIdlist = (DataRowView)comlist.Items[comlist.SelectedIndex];
+                var colName = Convert.ToString(dvColIdlist["ColName"]);
+                //TaskLogic各参数赋值
+                task.TaskId = 1;
+                task.FunctionId = "1.1";
+                task.FunctionName = _funname;
+                task.SearchName = colName;
+                task.SearchValue = txtValue.Text;
+                task.Data = _dt;
+                task.Pid = -1;
 
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                //连接GridView页面跳转功能
+                LinkGridViewPageChange(task.ResultTable);
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
             }
             catch (Exception ex)
             {
@@ -495,6 +514,20 @@ namespace RD.UI.Order
                 gvdtl.DataSource = dt;
                 panel3.Visible = false;
             }
+        }
+
+        /// <summary>
+        ///子线程使用(重:用于监视功能调用情况,当完成时进行关闭LoadForm)
+        /// </summary>
+        private void Start()
+        {
+            task.StartTask();
+
+            //当完成后将Form2子窗体关闭
+            this.Invoke((ThreadStart)(() =>
+            {
+                load.Close();
+            }));
         }
     }
 }
