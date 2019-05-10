@@ -280,6 +280,10 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = search.GetSearchDt(functionName, searchName, searchValue, dt);
                     break;
+                //查询 作用:客户类型名称下拉列表 CustInfoFrm窗体使用
+                case "1.5":
+                    _resultTable = search.GetCustList();
+                    break;
 
                 //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
                 case "2":

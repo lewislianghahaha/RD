@@ -389,9 +389,24 @@ namespace RD.DB
                         ";
             return _result;
         }
+
+        /// <summary>
+        /// 室内装修工程单-装修工程下拉列表使用
+        /// </summary>
+        /// <returns></returns>
+        public string CustInfoList()
+        {
+            _result = @"
+                           SELECT a.Id,a.CustType
+                           FROM dbo.T_BD_Cust a
+                           WHERE a.Id<>1";
+            return _result;
+        }
+
         #endregion
 
         #region 单据相关
+
         /// <summary>
         /// 室内装修工程单-装修工程下拉列表使用
         /// </summary>

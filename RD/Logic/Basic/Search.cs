@@ -114,5 +114,24 @@ namespace RD.Logic.Basic
             }
             return dt;
         }
+
+        /// <summary>
+        /// 获取客户类型名称
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetCustList()
+        {
+            DataTable dt;
+
+            try
+            {
+                dt = serDt.SearchCustList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
     }
 }

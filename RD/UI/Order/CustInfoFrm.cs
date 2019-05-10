@@ -50,8 +50,7 @@ namespace RD.UI.Order
         {
             tmGet.Click += TmGet_Click;
             tmClose.Click += TmClose_Click;
-
-
+            comlist.SelectionChangeCommitted += Comlist_SelectionChangeCommitted;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -67,24 +66,41 @@ namespace RD.UI.Order
         /// </summary>
         public void OnInitialize()
         {
-            //初始化 获取基础信息库-客户信息管理
-            task.TaskId = 1;
-            task.FunctionId = "1";
-            task.FunctionName = "Customer";
-            task.FunctionType = "G";
-            task.ParentId = null;
-
-            task.StartTask();
-
-            //连接GridView页面跳转功能
-            LinkGridViewPageChange(task.ResultTable);
-
-            //gvdtl.DataSource = task.ResultTable;
-            //设置GridView是否显示某些列
-            ControlGridViewisShow();
+            //初始化 客户类型名称列表
+            OnInitializeDropDownList();
+            //初始化Dt并返回至GridView
+            ShowCustInfoIntoGridView();
         }
 
+        /// <summary>
+        /// 初始化-客户类型名称列表
+        /// </summary>
+        private void OnInitializeDropDownList()
+        {
+            task.TaskId = 1;
+            task.FunctionId = "1.5";
+            task.StartTask();
+            comlist.DataSource = task.ResultTable;
+            comlist.DisplayMember = "CustType";     //设置显示值
+            comlist.ValueMember = "Id";             //设置默认值内码(即:列名)
+        }
 
+        /// <summary>
+        /// 下拉列表选择后执行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Comlist_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowCustInfoIntoGridView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         /// <summary>
         /// 获取
@@ -464,6 +480,30 @@ namespace RD.UI.Order
                 gvdtl.DataSource = dt;
                 panel3.Visible = false;
             }
+        }
+
+        /// <summary>
+        /// 根据下拉列表所选择的值，查询到结果后返回DT至GridView
+        /// </summary>
+        private void ShowCustInfoIntoGridView()
+        {
+            //获取下拉列表信息
+            var dvColIdlist = (DataRowView)comlist.Items[comlist.SelectedIndex];
+            var pid = Convert.ToString(dvColIdlist["Id"]);
+
+            //初始化 根据“客户类型名称列表”主键ID 获取基础信息库-客户信息管理明细客户信息
+            task.TaskId = 1;
+            task.FunctionId = "1";
+            task.FunctionName = "Customer";
+            task.FunctionType = "G";
+            task.ParentId = pid;
+
+            task.StartTask();
+
+            //连接GridView页面跳转功能
+            LinkGridViewPageChange(task.ResultTable);
+            //设置GridView是否显示某些列
+            ControlGridViewisShow();
         }
 
     }

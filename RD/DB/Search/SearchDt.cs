@@ -365,6 +365,17 @@ namespace RD.DB.Search
             return dt;
         }
 
+        /// <summary>
+        /// 室内装修工程(装修工程类别下拉列表使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SearchCustList()
+        {
+            var sqlscript = sqlList.CustInfoList();
+            var dt = GetData(sqlscript);
+            return dt;
+        }
+
         #endregion
 
         #region 室内装修工程
