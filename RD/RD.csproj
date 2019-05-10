@@ -74,10 +74,10 @@
     <Compile Include="Logic\Order\OrderGenerate.cs" />
     <Compile Include="Logic\Order\OrderImport.cs" />
     <Compile Include="Logic\Order\OrderSearch.cs" />
-    <Compile Include="UI\AdminFrm.cs">
+    <Compile Include="UI\Admin\AdminFrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\AdminFrm.Designer.cs">
+    <Compile Include="UI\Admin\AdminFrm.Designer.cs">
       <DependentUpon>AdminFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\Conn.cs" />
@@ -176,7 +176,7 @@
     <Compile Include="UI\Order\MaterialOrderFrm.Designer.cs">
       <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\AdminFrm.resx">
+    <EmbeddedResource Include="UI\Admin\AdminFrm.resx">
       <DependentUpon>AdminFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Account\AccountFrm.resx">

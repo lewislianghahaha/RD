@@ -20,6 +20,8 @@ namespace RD.UI.Basic
         //保存初始化的表体内容
         public DataTable _dtldt =new DataTable();
 
+        //保存查询出来的GridView记录（GridView页面跳转时使用）
+        private DataTable _dtl;
         //记录当前页数(GridView页面跳转使用)
         private int _pageCurrent = 1;
         //记录计算出来的总页数(GridView页面跳转使用)
@@ -53,7 +55,7 @@ namespace RD.UI.Basic
             bnMoveLastItem.Click += BnMoveLastItem_Click;
             bnPositionItem.TextChanged += BnPositionItem_TextChanged;
             tmshowrows.DropDownClosed += Tmshowrows_DropDownClosed;
-            panel1.Visible = false;
+            panel6.Visible = false;
         }
 
         //初始化树形列表及GridView控件
@@ -75,8 +77,10 @@ namespace RD.UI.Basic
             _dtldt = OnInitializeDtl(1, "1", functionName, "G", null);
             //导出记录至树形菜单内
             ShowTreeList(_dt);
-            //对GridView赋值(将对应功能点的表体全部信息赋值给GV控件内)
-            gvdtl.DataSource = _dtldt;
+
+            //连接GridView页面跳转功能
+            LinkGridViewPageChange(_dtldt);
+
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //预留(权限部份)
@@ -371,7 +375,8 @@ namespace RD.UI.Basic
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
 
-                gvdtl.DataSource = task.ResultTable;
+                //连接GridView页面跳转功能
+                LinkGridViewPageChange(task.ResultTable);
                 //设置GridView是否显示某些列
                 ControlGridViewisShow();
             }
@@ -471,8 +476,9 @@ namespace RD.UI.Basic
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
                 load.ShowDialog();
-                
-                gvdtl.DataSource = task.ResultTable;
+
+                //连接GridView页面跳转功能
+                LinkGridViewPageChange(task.ResultTable);
                 //设置GridView是否显示某些列
                 ControlGridViewisShow();
             }
@@ -856,7 +862,7 @@ namespace RD.UI.Basic
             try
             {
                 //获取查询的总行数
-                var dtltotalrows = _dtldt.Rows.Count;
+                var dtltotalrows = _dtl.Rows.Count;
                 //获取“每页显示行数”所选择的行数
                 var pageCount = Convert.ToInt32(tmshowrows.SelectedItem);
                 //计算出总页数
@@ -889,7 +895,7 @@ namespace RD.UI.Basic
                 }
 
                 //显示_dtl的查询总行数
-                tstotalrow.Text = $"共 {_dtldt.Rows.Count} 行";
+                tstotalrow.Text = $"共 {_dtl.Rows.Count} 行";
 
                 //根据“当前页” 及 “固定行数” 计算出新的行数记录并进行赋值
                 //计算进行循环的起始行
@@ -897,11 +903,11 @@ namespace RD.UI.Basic
                 //计算进行循环的结束行
                 var endrow = _pageCurrent == _totalpagecount ? dtltotalrows : _pageCurrent * pageCount;
                 //复制 查询的DT的列信息（不包括行）至临时表内
-                var tempdt = _dtldt.Clone();
+                var tempdt = _dtl.Clone();
                 //循环将所需的_dtl的行记录复制至临时表内
                 for (var i = startrow; i < endrow; i++)
                 {
-                    tempdt.ImportRow(_dtldt.Rows[i]);
+                    tempdt.ImportRow(_dtl.Rows[i]);
                 }
 
                 //最后将刷新的DT重新赋值给GridView
@@ -912,6 +918,31 @@ namespace RD.UI.Basic
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 连接GridView页面跳转功能
+        /// </summary>
+        /// <param name="dt"></param>
+        private void LinkGridViewPageChange(DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                _dtl = dt;
+                panel6.Visible = true;
+                //初始化下拉框所选择的默认值
+                tmshowrows.SelectedItem = "10";
+                //定义初始化标记
+                _pageChange = true;
+                //GridView分页
+                GridViewPageChange();
+            }
+            //注:当为空记录时,不显示跳转页;只需将临时表赋值至GridView内
+            else
+            {
+                gvdtl.DataSource = dt;
+                panel6.Visible = false;
             }
         }
 

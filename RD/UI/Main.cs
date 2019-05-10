@@ -49,6 +49,7 @@ namespace RD.UI
             tmRefresh.Click += TmRefresh_Click;
             tmShowdtl.Click += TmShowdtl_Click;
             tmConfirm.Click += TmConfirm_Click;
+
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
             bnMoveNextItem.Click += BnMoveNextItem_Click;
@@ -382,7 +383,8 @@ namespace RD.UI
                 else
                 {
                     gvdtl.DataSource = task.ResultTable;
-                } 
+                    panel1.Visible = false;
+                }
                 //控制GridView单元格显示方式
                 ControlGridViewisShow();
             }

@@ -627,7 +627,7 @@ namespace RD.DB
                                             a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                             a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_AdornEntry a
-                                    WHERE a.Id='{id}'";
+                                    WHERE a.Id='{id}' AND a.HTypeid='{dropdownlistid}'";
                     }
                     else
                     {
