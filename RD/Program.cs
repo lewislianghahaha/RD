@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using RD.UI;
+using RD.UI.Admin;
 
 namespace RD
 {
@@ -28,8 +29,17 @@ namespace RD
                 {
                     return;
                 }
-                var main = new Main();
-                main.ShowDialog();
+                //判断若进入的帐号为Admin的话就进入"帐户信息功能设定"窗体，反之进入主窗体
+                if (GlobalClasscs.User.StrUsrName == "Admin")
+                {
+                    var adminFrm = new AdminFrm();
+                    adminFrm.ShowDialog();
+                }
+                else
+                {
+                    var main = new Main();
+                    main.ShowDialog();
+                }
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿namespace RD
+﻿namespace RD.UI.Admin
 {
     partial class AdminFrm
     {

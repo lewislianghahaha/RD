@@ -27,7 +27,7 @@ namespace RD.UI
             try
             {
                 if (txtName.Text == "" || txtpwd.Text == "") throw new Exception("请输入帐号及密码进行登录");
-                if (txtName.Text == "Lewis" && txtpwd.Text == "124")
+                if (txtName.Text == "Lewis" && txtpwd.Text == "124" || txtName.Text=="Admin" && txtpwd.Text=="8888")
                 {
                     GlobalClasscs.User.StrUsrName = txtName.Text;
                     GlobalClasscs.User.StrUsrpwd = txtpwd.Text;
@@ -40,7 +40,6 @@ namespace RD.UI
                     txtName.Text = "";
                     txtpwd.Text = "";
                     throw new Exception("帐号或密码错误,不能登录");
-
                 }
             }
             catch (Exception ex)
