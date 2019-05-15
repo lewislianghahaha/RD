@@ -124,6 +124,12 @@
     <Compile Include="Logic\Order\OrderGenerate.cs" />
     <Compile Include="Logic\Order\OrderImport.cs" />
     <Compile Include="Logic\Order\OrderSearch.cs" />
+    <Compile Include="UI\Admin\AccountAddFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\AccountAddFrm.Designer.cs">
+      <DependentUpon>AccountAddFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Admin\AdminFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,18 @@
     </Compile>
     <Compile Include="UI\Account\AccountFrm.Designer.cs">
       <DependentUpon>AccountFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\RoleInfoDtlFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\RoleInfoDtlFrm.Designer.cs">
+      <DependentUpon>RoleInfoDtlFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\RoleInfoFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\RoleInfoFrm.Designer.cs">
+      <DependentUpon>RoleInfoFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Basic\AddEditor.cs">
       <SubType>Form</SubType>
@@ -299,6 +317,18 @@
     <Content Include="DLL\NPOI.OOXML.dll" />
     <Content Include="DLL\NPOI.OpenXml4Net.dll" />
     <Content Include="DLL\NPOI.OpenXmlFormats.dll" />
+    <Content Include="DLL\Stimulsoft.Base.dll" />
+    <Content Include="DLL\Stimulsoft.Controls.dll" />
+    <Content Include="DLL\Stimulsoft.Controls.Win.dll" />
+    <Content Include="DLL\Stimulsoft.Database.dll" />
+    <Content Include="DLL\Stimulsoft.Design.dll" />
+    <Content Include="DLL\Stimulsoft.Editor.dll" />
+    <Content Include="DLL\Stimulsoft.Report.Check.dll" />
+    <Content Include="DLL\Stimulsoft.Report.Design.dll" />
+    <Content Include="DLL\Stimulsoft.Report.dll" />
+    <Content Include="DLL\Stimulsoft.Report.Helper.dll" />
+    <Content Include="DLL\Stimulsoft.Report.Web.dll" />
+    <Content Include="DLL\Stimulsoft.Report.Win.dll" />
     <Content Include="obj\Debug\RD.csproj.FileListAbsolute.txt" />
     <Content Include="RD.csproj.DotSettings.user" />
   </ItemGroup>
