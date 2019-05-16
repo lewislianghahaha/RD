@@ -547,7 +547,7 @@ namespace RD.DB.Search
 
             try
             {
-                var sqlscript=sqlList.Main_Downdownlist(functionName);
+                var sqlscript=sqlList.Main_Admin_Dropdownlist(functionName);
                 resultdt=GetData(sqlscript);
             }
             catch (Exception)
@@ -598,5 +598,43 @@ namespace RD.DB.Search
         }
 
         #endregion
+
+        #region 帐户信息功能设定
+
+        /// <summary>
+        /// 查询内容(权限窗体)
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="sexid"></param>
+        /// <param name="closeid"></param>
+        /// <param name="dtTime"></param>
+        /// <returns></returns>
+        public DataTable Admin_Searchdtldt(int userid, int sexid, string closeid, DateTime dtTime)
+        {
+            var resultdt=new DataTable();
+            DataTable tempdt;
+            string sqlscript;
+
+            try
+            {
+                //创建临时表(当没有查询到值时使用)
+                tempdt = dlDtList.Get_Maindtl();
+                //获取SQL语句
+                sqlscript = "";
+                //执行SQL语句,并返回DT
+                var dt = GetData(sqlscript);
+                resultdt = dt.Rows.Count == 0 ? tempdt : dt;
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
+
+        #endregion
+
     }
 }

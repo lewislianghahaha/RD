@@ -32,8 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminFrm));
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmroleinfo = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.comColseStatus = new System.Windows.Forms.ComboBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.comconfirm = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -71,7 +72,6 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
-            this.comColseStatus = new System.Windows.Forms.ComboBox();
             this.Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -89,7 +89,7 @@
             this.Menu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmAdd,
-            this.toolStripMenuItem2});
+            this.tmroleinfo});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(1071, 25);
@@ -103,12 +103,12 @@
             this.tmAdd.Size = new System.Drawing.Size(68, 21);
             this.tmAdd.Text = "帐户新增";
             // 
-            // toolStripMenuItem2
+            // tmroleinfo
             // 
-            this.toolStripMenuItem2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(92, 21);
-            this.toolStripMenuItem2.Text = "角色信息管理";
+            this.tmroleinfo.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.tmroleinfo.Name = "tmroleinfo";
+            this.tmroleinfo.Size = new System.Drawing.Size(92, 21);
+            this.tmroleinfo.Text = "角色信息管理";
             // 
             // splitContainer1
             // 
@@ -141,6 +141,15 @@
             this.splitContainer1.Size = new System.Drawing.Size(1071, 634);
             this.splitContainer1.SplitterDistance = 59;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // comColseStatus
+            // 
+            this.comColseStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comColseStatus.FormattingEnabled = true;
+            this.comColseStatus.Location = new System.Drawing.Point(464, 33);
+            this.comColseStatus.Name = "comColseStatus";
+            this.comColseStatus.Size = new System.Drawing.Size(156, 20);
+            this.comColseStatus.TabIndex = 11;
             // 
             // btnSearch
             // 
@@ -175,7 +184,7 @@
             this.comsex.FormattingEnabled = true;
             this.comsex.Location = new System.Drawing.Point(464, 5);
             this.comsex.Name = "comsex";
-            this.comsex.Size = new System.Drawing.Size(121, 20);
+            this.comsex.Size = new System.Drawing.Size(156, 20);
             this.comsex.TabIndex = 7;
             // 
             // label4
@@ -456,15 +465,6 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
-            // comColseStatus
-            // 
-            this.comColseStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comColseStatus.FormattingEnabled = true;
-            this.comColseStatus.Location = new System.Drawing.Point(464, 33);
-            this.comColseStatus.Name = "comColseStatus";
-            this.comColseStatus.Size = new System.Drawing.Size(121, 20);
-            this.comColseStatus.TabIndex = 11;
-            // 
             // AdminFrm
             // 
             this.AcceptButton = this.btnSearch;
@@ -499,7 +499,7 @@
 
         private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmAdd;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tmroleinfo;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comUser;

@@ -736,13 +736,14 @@ namespace RD.DB
         #region 主窗体
 
         /// <summary>
-        /// 主窗体下拉列表
+        /// 主窗体(帐号权限)窗体下拉列表
         /// </summary>
         /// <returns></returns>
-        public string Main_Downdownlist(string functionName)
+        public string Main_Admin_Dropdownlist(string functionName)
         {
             switch (functionName)
             {
+                //主窗体使用
                 //客户名称信息
                 case "Customer":
                     _result = @"SELECT -1 Custid,'全部' CustName
@@ -770,9 +771,39 @@ namespace RD.DB
                     break;
                 //审核状态
                 case "ConfirmType":
-                    _result = @"SELECT 'Y' FStatus,'已审核' FStatusName
+                    _result = @"SELECT 'N' FStatus,'末审核' FStatusName
                                 UNION
-                                SELECT 'N' FStatus,'末审核' FStatusName";
+                                SELECT 'Y' FStatus,'已审核' FStatusName";
+                    break;
+                //帐号权限窗体使用
+                //职员名称
+                case "AccountUser":
+                    _result = @"
+                                    SELECT '' Userid,'全部' UserName
+                                    union
+                                    SELECT a.UserId,a.UserName
+                                    FROM dbo.T_AD_User a
+                                    WHERE a.CloseStatus!='Y'
+                                    AND a.Fstatus='Y'
+                                ";
+                    break;
+                //职员性别
+                case "AccountSex":
+                    _result = @"
+                                    SELECT 0 Sexid,'全部' SexName
+                                    union
+                                    SELECT 1 Sexid,'男' SexName
+                                    union
+                                    SELECT 2 Sexid,'女' SexName
+                               ";
+                    break;
+                //职员帐号关闭状态
+                case "AccountCloseStatue":
+                    _result = @"
+                                    SELECT 'N' Closeid,'末关闭' CloseName
+                                    union
+                                    SELECT 'Y' Closeid,'已关闭' CloseName
+                                ";
                     break;
             }
             return _result;
@@ -891,6 +922,10 @@ namespace RD.DB
                                 AND A.Fstatus='{confirmfstatus}'    --审核状态");
             return _result;
         }
+
+        #endregion
+
+        #region 帐号权限
 
         #endregion
 

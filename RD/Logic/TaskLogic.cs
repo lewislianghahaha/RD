@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using RD.Logic.Admin;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
 using RD.Logic.Main;
@@ -16,7 +17,7 @@ namespace RD.Logic
         Import import=new Import();
         Del del=new Del();
 
-        //室内装修工程 及 主材单使用
+        //室内装修工程 及 室内主材单使用
         OrderSearch orderSearch=new OrderSearch();
         OrderImport orderImport=new OrderImport();
         OrderDel odrderDel=new OrderDel();
@@ -25,6 +26,9 @@ namespace RD.Logic
         //主窗体使用
         MainSearch mainSearch=new MainSearch();
         MainGenerate mainGenerate=new MainGenerate();
+
+        //帐户角色权限使用
+        AdminSearch AdminSearch=new AdminSearch();
 
         private int _taskid;             //记录中转ID
         private string _accountName;     //记录帐号名称
@@ -49,8 +53,13 @@ namespace RD.Logic
         private int _ordertypeId;        //单据类型(主窗体使用)
         private int _hTypeid;            //房屋类型(主窗体使用)
         private string _confirmfStatus;  //审核状态(主窗体使用)
-        private DateTime _confirmdt;     //审核日期(主窗体使用)
+        private DateTime _dtime;            //日期(主窗体使用)
         private DataGridViewSelectedRowCollection _datarow; //保存从GridView中所选择的行
+
+        private int _userid;             //职员名称ID(权限窗体使用)
+        private int _sexid;              //职员性别ID(权限窗体使用)
+        private string _closeid;         //职员帐号关闭状态(权限窗体使用)
+
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -175,14 +184,29 @@ namespace RD.Logic
         public string ConfirmfStatus { set { _confirmfStatus = value; } }
 
         /// <summary>
-        /// 审核日期(主窗体使用)
+        /// 日期
         /// </summary>
-        public DateTime Confirmdt { set { _confirmdt = value; } }
+        public DateTime Dtime { set { _dtime = value; } }
 
         /// <summary>
         /// 保存从GridView中所选择的行
         /// </summary>
         public DataGridViewSelectedRowCollection Datarow { set { _datarow = value; } }
+
+        /// <summary>
+        /// 职员名称ID
+        /// </summary>
+        public int Userid { set { _userid = value; } }
+
+        /// <summary>
+        /// 职员性别ID(权限窗体使用)
+        /// </summary>
+        public int Sexid {set { _sexid = value; } }
+
+        /// <summary>
+        ///  //职员帐号关闭状态(权限窗体使用)
+        /// </summary>
+        public string Closeid {set { _closeid = value; } }        
 
         #endregion
 
@@ -223,11 +247,11 @@ namespace RD.Logic
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
-
+                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_dtime);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
-                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _confirmdt,_confirmid,_datarow);
+                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _dtime, _confirmid,_datarow);
                     break;
             }
         }
@@ -386,6 +410,30 @@ namespace RD.Logic
         }
 
         /// <summary>
+        /// 帐户信息功能设定
+        /// </summary>
+        /// <param name="functionId"></param>
+        /// <param name="functionName"></param>
+        /// <param name="userid"></param>
+        /// <param name="sexid"></param>
+        /// <param name="closeid"></param>
+        /// <param name="dtTime"></param>
+        private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,DateTime dtTime)
+        {
+            switch (functionId)
+            {
+                //下拉列表初始化
+                case "1":
+                    _resultTable = AdminSearch.SearchDropdownDt(functionName);
+                    break;
+                //查询功能(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表)
+                case "2":
+                    _resultTable = AdminSearch.Searchdtldt(userid,sexid,closeid,dtTime);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// 主窗体
         /// </summary>
         /// <param name="functionId">功能ID</param>
@@ -426,6 +474,5 @@ namespace RD.Logic
                     break;
             }
         }
-
     }
 }

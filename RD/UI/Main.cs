@@ -362,7 +362,7 @@ namespace RD.UI
                 task.OrdertypeId = ordertypeId;
                 task.HTypeid = hTypeid;
                 task.ConfirmfStatus = fStatus;
-                task.Confirmdt = confirmdt;
+                task.Dtime = confirmdt;
 
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;
