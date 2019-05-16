@@ -34,29 +34,17 @@
             this.tmAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.bngat = new System.Windows.Forms.BindingNavigator(this.components);
-            this.bnMoveFirstItem = new System.Windows.Forms.ToolStripButton();
-            this.bnMovePreviousItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.bnPositionItem = new System.Windows.Forms.ToolStripTextBox();
-            this.bnCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.bnMoveNextItem = new System.Windows.Forms.ToolStripButton();
-            this.bnMoveLastItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.gvdtl = new System.Windows.Forms.DataGridView();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.comconfirm = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comsex = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dtin = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comUser = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.gvdtl = new System.Windows.Forms.DataGridView();
             this.showDtl = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmshowDtl = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -65,23 +53,35 @@
             this.tmCloseAccount = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tmChangeAccountPwd = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.bngat = new System.Windows.Forms.BindingNavigator(this.components);
+            this.bnCountItem = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.bnPositionItem = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.bnMoveFirstItem = new System.Windows.Forms.ToolStripButton();
+            this.bnMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.bnMoveNextItem = new System.Windows.Forms.ToolStripButton();
+            this.bnMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.tmshowrows = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
+            this.comColseStatus = new System.Windows.Forms.ComboBox();
             this.Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.showDtl.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
-            this.showDtl.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -98,12 +98,14 @@
             // 
             // tmAdd
             // 
+            this.tmAdd.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tmAdd.Name = "tmAdd";
             this.tmAdd.Size = new System.Drawing.Size(68, 21);
             this.tmAdd.Text = "帐户新增";
             // 
             // toolStripMenuItem2
             // 
+            this.toolStripMenuItem2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(92, 21);
             this.toolStripMenuItem2.Text = "角色信息管理";
@@ -120,16 +122,16 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel1.Controls.Add(this.comColseStatus);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearch);
-            this.splitContainer1.Panel1.Controls.Add(this.comboBox3);
+            this.splitContainer1.Panel1.Controls.Add(this.comconfirm);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
-            this.splitContainer1.Panel1.Controls.Add(this.comboBox2);
+            this.splitContainer1.Panel1.Controls.Add(this.comsex);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
-            this.splitContainer1.Panel1.Controls.Add(this.dateTimePicker2);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
-            this.splitContainer1.Panel1.Controls.Add(this.dateTimePicker1);
+            this.splitContainer1.Panel1.Controls.Add(this.dtin);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
-            this.splitContainer1.Panel1.Controls.Add(this.comboBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.comUser);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             // 
             // splitContainer1.Panel2
@@ -140,23 +142,66 @@
             this.splitContainer1.SplitterDistance = 59;
             this.splitContainer1.TabIndex = 1;
             // 
-            // label1
+            // btnSearch
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "职员名称:";
+            this.btnSearch.Location = new System.Drawing.Point(896, 4);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 10;
+            this.btnSearch.Text = "查询";
+            this.btnSearch.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // comconfirm
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(105, 5);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 1;
+            this.comconfirm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comconfirm.FormattingEnabled = true;
+            this.comconfirm.Location = new System.Drawing.Point(729, 5);
+            this.comconfirm.Name = "comconfirm";
+            this.comconfirm.Size = new System.Drawing.Size(115, 20);
+            this.comconfirm.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(675, 9);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "审核状态:";
+            // 
+            // comsex
+            // 
+            this.comsex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comsex.FormattingEnabled = true;
+            this.comsex.Location = new System.Drawing.Point(464, 5);
+            this.comsex.Name = "comsex";
+            this.comsex.Size = new System.Drawing.Size(121, 20);
+            this.comsex.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(404, 10);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 12);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "职员性别:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(356, 39);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(107, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "职员帐号关闭状态:";
+            // 
+            // dtin
+            // 
+            this.dtin.Location = new System.Drawing.Point(105, 33);
+            this.dtin.Name = "dtin";
+            this.dtin.Size = new System.Drawing.Size(184, 21);
+            this.dtin.TabIndex = 3;
             // 
             // label2
             // 
@@ -167,118 +212,23 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "职员入职日期:";
             // 
-            // panel1
+            // comUser
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.bngat);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 543);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1069, 26);
-            this.panel1.TabIndex = 0;
+            this.comUser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comUser.FormattingEnabled = true;
+            this.comUser.Location = new System.Drawing.Point(105, 5);
+            this.comUser.Name = "comUser";
+            this.comUser.Size = new System.Drawing.Size(184, 20);
+            this.comUser.TabIndex = 1;
             // 
-            // bngat
+            // label1
             // 
-            this.bngat.AddNewItem = null;
-            this.bngat.CountItem = this.bnCountItem;
-            this.bngat.CountItemFormat = "/ {0} 页";
-            this.bngat.DeleteItem = null;
-            this.bngat.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bngat.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel1,
-            this.bnPositionItem,
-            this.toolStripLabel2,
-            this.bnCountItem,
-            this.bindingNavigatorSeparator,
-            this.bnMoveFirstItem,
-            this.bnMovePreviousItem,
-            this.bindingNavigatorSeparator1,
-            this.bnMoveNextItem,
-            this.bnMoveLastItem,
-            this.bindingNavigatorSeparator2,
-            this.toolStripLabel3,
-            this.tmshowrows,
-            this.toolStripLabel4,
-            this.toolStripLabel5,
-            this.tstotalrow});
-            this.bngat.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.bngat.Location = new System.Drawing.Point(550, 0);
-            this.bngat.MoveFirstItem = this.bnMoveFirstItem;
-            this.bngat.MoveLastItem = this.bnMoveLastItem;
-            this.bngat.MoveNextItem = this.bnMoveNextItem;
-            this.bngat.MovePreviousItem = this.bnMovePreviousItem;
-            this.bngat.Name = "bngat";
-            this.bngat.PositionItem = this.bnPositionItem;
-            this.bngat.Size = new System.Drawing.Size(517, 24);
-            this.bngat.TabIndex = 0;
-            this.bngat.Text = "bindingNavigator1";
-            // 
-            // bnMoveFirstItem
-            // 
-            this.bnMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bnMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveFirstItem.Image")));
-            this.bnMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
-            this.bnMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bnMoveFirstItem.Size = new System.Drawing.Size(23, 21);
-            this.bnMoveFirstItem.Text = "移到第一条记录";
-            // 
-            // bnMovePreviousItem
-            // 
-            this.bnMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bnMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMovePreviousItem.Image")));
-            this.bnMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
-            this.bnMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bnMovePreviousItem.Size = new System.Drawing.Size(23, 21);
-            this.bnMovePreviousItem.Text = "移到上一条记录";
-            // 
-            // bindingNavigatorSeparator
-            // 
-            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 24);
-            // 
-            // bnPositionItem
-            // 
-            this.bnPositionItem.AccessibleName = "位置";
-            this.bnPositionItem.AutoSize = false;
-            this.bnPositionItem.Name = "bindingNavigatorPositionItem";
-            this.bnPositionItem.Size = new System.Drawing.Size(50, 23);
-            this.bnPositionItem.Text = "0";
-            this.bnPositionItem.ToolTipText = "当前位置";
-            // 
-            // bnCountItem
-            // 
-            this.bnCountItem.Name = "bindingNavigatorCountItem";
-            this.bnCountItem.Size = new System.Drawing.Size(48, 21);
-            this.bnCountItem.Text = "/ {0} 页";
-            this.bnCountItem.ToolTipText = "总项数";
-            // 
-            // bindingNavigatorSeparator1
-            // 
-            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 24);
-            // 
-            // bnMoveNextItem
-            // 
-            this.bnMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bnMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveNextItem.Image")));
-            this.bnMoveNextItem.Name = "bindingNavigatorMoveNextItem";
-            this.bnMoveNextItem.RightToLeftAutoMirrorImage = true;
-            this.bnMoveNextItem.Size = new System.Drawing.Size(23, 21);
-            this.bnMoveNextItem.Text = "移到下一条记录";
-            // 
-            // bnMoveLastItem
-            // 
-            this.bnMoveLastItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bnMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveLastItem.Image")));
-            this.bnMoveLastItem.Name = "bindingNavigatorMoveLastItem";
-            this.bnMoveLastItem.RightToLeftAutoMirrorImage = true;
-            this.bnMoveLastItem.Size = new System.Drawing.Size(23, 21);
-            this.bnMoveLastItem.Text = "移到最后一条记录";
-            // 
-            // bindingNavigatorSeparator2
-            // 
-            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 24);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(44, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "职员名称:";
             // 
             // gvdtl
             // 
@@ -293,74 +243,6 @@
             this.gvdtl.RowTemplate.Height = 23;
             this.gvdtl.Size = new System.Drawing.Size(1069, 543);
             this.gvdtl.TabIndex = 1;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(105, 33);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 21);
-            this.dateTimePicker1.TabIndex = 3;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(440, 33);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 21);
-            this.dateTimePicker2.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(356, 39);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 12);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "职员离职日期:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(380, 10);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 12);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "职员性别:";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(440, 5);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 20);
-            this.comboBox2.TabIndex = 7;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(695, 9);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "审核状态:";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(755, 5);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(88, 20);
-            this.comboBox3.TabIndex = 9;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(896, 4);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 10;
-            this.btnSearch.Text = "查询";
-            this.btnSearch.UseVisualStyleBackColor = true;
             // 
             // showDtl
             // 
@@ -414,17 +296,130 @@
             this.tmChangeAccountPwd.Size = new System.Drawing.Size(184, 22);
             this.tmChangeAccountPwd.Text = "职员帐户密码修改";
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.bngat);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 543);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1069, 26);
+            this.panel1.TabIndex = 0;
+            // 
+            // bngat
+            // 
+            this.bngat.AddNewItem = null;
+            this.bngat.CountItem = this.bnCountItem;
+            this.bngat.CountItemFormat = "/ {0} 页";
+            this.bngat.DeleteItem = null;
+            this.bngat.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bngat.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.bnPositionItem,
+            this.toolStripLabel2,
+            this.bnCountItem,
+            this.bindingNavigatorSeparator,
+            this.bnMoveFirstItem,
+            this.bnMovePreviousItem,
+            this.bindingNavigatorSeparator1,
+            this.bnMoveNextItem,
+            this.bnMoveLastItem,
+            this.bindingNavigatorSeparator2,
+            this.toolStripLabel3,
+            this.tmshowrows,
+            this.toolStripLabel4,
+            this.toolStripLabel5,
+            this.tstotalrow});
+            this.bngat.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.bngat.Location = new System.Drawing.Point(581, 0);
+            this.bngat.MoveFirstItem = this.bnMoveFirstItem;
+            this.bngat.MoveLastItem = this.bnMoveLastItem;
+            this.bngat.MoveNextItem = this.bnMoveNextItem;
+            this.bngat.MovePreviousItem = this.bnMovePreviousItem;
+            this.bngat.Name = "bngat";
+            this.bngat.PositionItem = this.bnPositionItem;
+            this.bngat.Size = new System.Drawing.Size(486, 24);
+            this.bngat.TabIndex = 0;
+            this.bngat.Text = "bindingNavigator1";
+            // 
+            // bnCountItem
+            // 
+            this.bnCountItem.Name = "bnCountItem";
+            this.bnCountItem.Size = new System.Drawing.Size(48, 21);
+            this.bnCountItem.Text = "/ {0} 页";
+            this.bnCountItem.ToolTipText = "总项数";
+            // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(20, 21);
             this.toolStripLabel1.Text = "第";
             // 
+            // bnPositionItem
+            // 
+            this.bnPositionItem.AccessibleName = "位置";
+            this.bnPositionItem.AutoSize = false;
+            this.bnPositionItem.Name = "bnPositionItem";
+            this.bnPositionItem.Size = new System.Drawing.Size(50, 23);
+            this.bnPositionItem.Text = "0";
+            this.bnPositionItem.ToolTipText = "当前位置";
+            // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
             this.toolStripLabel2.Size = new System.Drawing.Size(20, 21);
             this.toolStripLabel2.Text = "页";
+            // 
+            // bindingNavigatorSeparator
+            // 
+            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 24);
+            // 
+            // bnMoveFirstItem
+            // 
+            this.bnMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bnMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveFirstItem.Image")));
+            this.bnMoveFirstItem.Name = "bnMoveFirstItem";
+            this.bnMoveFirstItem.RightToLeftAutoMirrorImage = true;
+            this.bnMoveFirstItem.Size = new System.Drawing.Size(23, 21);
+            this.bnMoveFirstItem.Text = "移到第一条记录";
+            // 
+            // bnMovePreviousItem
+            // 
+            this.bnMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bnMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMovePreviousItem.Image")));
+            this.bnMovePreviousItem.Name = "bnMovePreviousItem";
+            this.bnMovePreviousItem.RightToLeftAutoMirrorImage = true;
+            this.bnMovePreviousItem.Size = new System.Drawing.Size(23, 21);
+            this.bnMovePreviousItem.Text = "移到上一条记录";
+            // 
+            // bindingNavigatorSeparator1
+            // 
+            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 24);
+            // 
+            // bnMoveNextItem
+            // 
+            this.bnMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bnMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveNextItem.Image")));
+            this.bnMoveNextItem.Name = "bnMoveNextItem";
+            this.bnMoveNextItem.RightToLeftAutoMirrorImage = true;
+            this.bnMoveNextItem.Size = new System.Drawing.Size(23, 21);
+            this.bnMoveNextItem.Text = "移到下一条记录";
+            // 
+            // bnMoveLastItem
+            // 
+            this.bnMoveLastItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bnMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveLastItem.Image")));
+            this.bnMoveLastItem.Name = "bnMoveLastItem";
+            this.bnMoveLastItem.RightToLeftAutoMirrorImage = true;
+            this.bnMoveLastItem.Size = new System.Drawing.Size(23, 21);
+            this.bnMoveLastItem.Text = "移到最后一条记录";
+            // 
+            // bindingNavigatorSeparator2
+            // 
+            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 24);
             // 
             // toolStripLabel3
             // 
@@ -461,6 +456,15 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
+            // comColseStatus
+            // 
+            this.comColseStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comColseStatus.FormattingEnabled = true;
+            this.comColseStatus.Location = new System.Drawing.Point(464, 33);
+            this.comColseStatus.Name = "comColseStatus";
+            this.comColseStatus.Size = new System.Drawing.Size(121, 20);
+            this.comColseStatus.TabIndex = 11;
+            // 
             // AdminFrm
             // 
             this.AcceptButton = this.btnSearch;
@@ -479,13 +483,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.showDtl.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
-            this.showDtl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,12 +497,12 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip Menu;
+        private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmAdd;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comUser;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.BindingNavigator bngat;
@@ -512,12 +516,11 @@
         private System.Windows.Forms.ToolStripButton bnMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.DataGridView gvdtl;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dtin;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comsex;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comconfirm;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.ContextMenuStrip showDtl;
@@ -535,5 +538,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
+        private System.Windows.Forms.ComboBox comColseStatus;
     }
 }

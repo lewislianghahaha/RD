@@ -244,11 +244,20 @@
     <Compile Include="UI\Order\MaterialOrderFrm.Designer.cs">
       <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\Admin\AccountAddFrm.resx">
+      <DependentUpon>AccountAddFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Admin\AdminFrm.resx">
       <DependentUpon>AdminFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Account\AccountFrm.resx">
       <DependentUpon>AccountFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Admin\RoleInfoDtlFrm.resx">
+      <DependentUpon>RoleInfoDtlFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Admin\RoleInfoFrm.resx">
+      <DependentUpon>RoleInfoFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Basic\AddEditor.resx">
       <DependentUpon>AddEditor.cs</DependentUpon>
