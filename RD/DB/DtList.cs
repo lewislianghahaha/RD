@@ -724,9 +724,113 @@ namespace RD.DB
 
         #endregion
 
-        #region 
+        #region 帐号权限
 
+        /// <summary>
+        /// 帐号权限主窗体查询使用
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_Admindtl()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //UserId
+                    case 0:
+                        dc.ColumnName = "UserId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //UserName
+                    case 1:
+                        dc.ColumnName = "职员名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserSex
+                    case 2:
+                        dc.ColumnName = "职员性别";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserInDt
+                    case 3:
+                        dc.ColumnName = "入职日期";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    //CloseStatus
+                    case 4:
+                        dc.ColumnName = "关闭状态";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Fstatus
+                    case 5:
+                        dc.ColumnName = "审核状态";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //FstatusDt
+                    case 6:
+                        dc.ColumnName = "审核日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
 
+        /// <summary>
+        /// 角色信息管理查询
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_Admin_roledtl()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //RoleId
+                    case 0:
+                        dc.ColumnName = "RoleId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //RoleName
+                    case 1:
+                        dc.ColumnName = "角色名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 2:
+                        dc.ColumnName = "创建人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 3:
+                        dc.ColumnName = "创建日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    //CloseStatus
+                    case 4:
+                        dc.ColumnName = "关闭状态";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Fstatus
+                    case 5:
+                        dc.ColumnName = "审核状态";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //FstatusDt
+                    case 6:
+                        dc.ColumnName = "审核日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
 
         #endregion
 

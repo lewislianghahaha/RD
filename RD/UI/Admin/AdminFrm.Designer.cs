@@ -241,8 +241,10 @@
             // 
             // gvdtl
             // 
+            this.gvdtl.AllowDrop = true;
             this.gvdtl.AllowUserToAddRows = false;
             this.gvdtl.AllowUserToDeleteRows = false;
+            this.gvdtl.AllowUserToOrderColumns = true;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.ContextMenuStrip = this.showDtl;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -264,45 +266,45 @@
             this.toolStripSeparator3,
             this.tmChangeAccountPwd});
             this.showDtl.Name = "showDtl";
-            this.showDtl.Size = new System.Drawing.Size(185, 110);
+            this.showDtl.Size = new System.Drawing.Size(217, 110);
             // 
             // tmshowDtl
             // 
             this.tmshowDtl.Name = "tmshowDtl";
-            this.tmshowDtl.Size = new System.Drawing.Size(184, 22);
+            this.tmshowDtl.Size = new System.Drawing.Size(216, 22);
             this.tmshowDtl.Text = "查阅明细信息";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(213, 6);
             // 
             // tmConfirm
             // 
             this.tmConfirm.Name = "tmConfirm";
-            this.tmConfirm.Size = new System.Drawing.Size(184, 22);
-            this.tmConfirm.Text = "审核(反审核)";
+            this.tmConfirm.Size = new System.Drawing.Size(216, 22);
+            this.tmConfirm.Text = "审核(反审核)相关信息";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(213, 6);
             // 
             // tmCloseAccount
             // 
             this.tmCloseAccount.Name = "tmCloseAccount";
-            this.tmCloseAccount.Size = new System.Drawing.Size(184, 22);
-            this.tmCloseAccount.Text = "关闭帐户及相关信息";
+            this.tmCloseAccount.Size = new System.Drawing.Size(216, 22);
+            this.tmCloseAccount.Text = "关闭(恢复)帐户及相关信息";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(213, 6);
             // 
             // tmChangeAccountPwd
             // 
             this.tmChangeAccountPwd.Name = "tmChangeAccountPwd";
-            this.tmChangeAccountPwd.Size = new System.Drawing.Size(184, 22);
+            this.tmChangeAccountPwd.Size = new System.Drawing.Size(216, 22);
             this.tmChangeAccountPwd.Text = "职员帐户密码修改";
             // 
             // panel1

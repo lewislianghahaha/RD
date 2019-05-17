@@ -779,7 +779,7 @@ namespace RD.DB
                 //职员名称
                 case "AccountUser":
                     _result = @"
-                                    SELECT '' Userid,'全部' UserName
+                                    SELECT '-1' Userid,'全部' UserName
                                     union
                                     SELECT a.UserId,a.UserName
                                     FROM dbo.T_AD_User a
@@ -803,6 +803,22 @@ namespace RD.DB
                                     SELECT 'N' Closeid,'末关闭' CloseName
                                     union
                                     SELECT 'Y' Closeid,'已关闭' CloseName
+                                ";
+                    break;
+                //角色名称
+                case "Role":
+                    _result = @"
+                                    SELECT 0 Roleid ,'全部' RoleName
+                                    UNION
+                                    SELECT a.Roleid,a.RoleName FROM dbo.T_AD_Role a
+                                ";
+                    break;
+                //功能大类名称
+                case "FunType":
+                    _result = @"
+                                    SELECT a.Funid,a.FunName
+                                    FROM dbo.T_AD_Fun a
+                                    WHERE a.ParentId=0
                                 ";
                     break;
             }
@@ -927,7 +943,67 @@ namespace RD.DB
 
         #region 帐号权限
 
-        #endregion
+        /// <summary>
+        /// 帐号权限主窗体查询
+        /// </summary>
+        /// <returns></returns>
+        public string Admindtl(int userid, int sexid, string closeid, string confirmstatus, DateTime dtTime)
+        {
+            //显示全部记录
+            _result = userid == -1
+                ? $@"SELECT a.UserId,a.UserName 职员名称,
+                               CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
+	                           a.UserInDt 入职日期,
+	                           CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
+	                           a.FstatusDt 审核日期
+                        FROM dbo.T_AD_User a
+                        WHERE a.UserSex='{sexid}'       --性别
+                        AND a.Fstatus='{confirmstatus}'     --审核状态
+                        AND a.CloseStatus='{closeid}'  --关闭状态
+                        AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期"
+                : $@"SELECT a.UserId,a.UserName 职员名称,
+                               CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
+	                           a.UserInDt 入职日期,
+	                           CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
+	                           a.FstatusDt 审核日期
+                        FROM dbo.T_AD_User a
+                        WHERE a.UserId='{userid}'     --帐号ID
+                        AND a.UserSex='{sexid}'       --性别
+                        AND a.Fstatus='{confirmstatus}'     --审核状态
+                        AND a.CloseStatus='{closeid}'  --关闭状态
+                        AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期";
 
+            return _result;
+        }
+
+        /// <summary>
+        /// 角色信息管理查询
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public string Admin_roledtl(int roleid)
+        {
+            _result = roleid == 0
+                ? $@"SELECT A.RoleId,A.RoleName 角色名称,
+                                   A.InputUser 创建人,A.InputDt 创建日期,
+	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
+	                               a.FstatusDt 审核日期
+                            FROM dbo.T_AD_Role A"
+                : $@"SELECT A.RoleId,A.RoleName 角色名称,
+                                   A.InputUser 创建人,A.InputDt 创建日期,
+	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
+	                               a.FstatusDt 审核日期
+                            FROM dbo.T_AD_Role A
+                            WHERE a.RoleId='{roleid}'";
+            return _result;
+        }
+
+
+
+        #endregion
     }
 }

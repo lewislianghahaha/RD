@@ -51,6 +51,9 @@ namespace RD.UI.Admin
             panel1.Visible = false;
         }
 
+        /// <summary>
+        /// 初始化下拉列表
+        /// </summary>
         private void OnInitializeDropDownList()
         {
             //初始化职员名称
@@ -97,7 +100,7 @@ namespace RD.UI.Admin
                 var indt = dtin.Value.Date;
 
                 task.TaskId = 3;
-                task.FunctionId = "2";
+                task.FunctionId = "1.1";
                 task.Userid = userid;
                 task.Sexid = sexid;
                 task.ConfirmfStatus = confirmStatus;
@@ -144,7 +147,7 @@ namespace RD.UI.Admin
             try
             {
                 var accountAddFrm=new AccountAddFrm();
-                //
+                //将相关变量传递至指定窗体内
 
                 accountAddFrm.StartPosition = FormStartPosition.CenterScreen;
                 accountAddFrm.ShowDialog();
@@ -160,7 +163,7 @@ namespace RD.UI.Admin
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Tmroleinfo_Click(object sender, System.EventArgs e)
+        private void Tmroleinfo_Click(object sender, EventArgs e)
         {
             try
             {
@@ -521,7 +524,6 @@ namespace RD.UI.Admin
         {
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
-            gvdtl.Columns[1].Visible = false;
         }
 
     }

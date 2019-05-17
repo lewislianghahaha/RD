@@ -41,10 +41,10 @@ namespace RD.UI.Order
 
         #region Set
 
-        /// <summary>
-        /// 获取单据状态标记ID C:创建 R:读取
-        /// </summary>
-        public string FunState { set { _funState = value; } }
+            /// <summary>
+            /// 获取单据状态标记ID C:创建 R:读取
+            /// </summary>
+            public string FunState { set { _funState = value; } }
             /// <summary>
             /// 获取表头ID
             /// </summary>

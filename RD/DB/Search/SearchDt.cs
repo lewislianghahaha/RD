@@ -607,9 +607,10 @@ namespace RD.DB.Search
         /// <param name="userid"></param>
         /// <param name="sexid"></param>
         /// <param name="closeid"></param>
+        /// <param name="confirmstatus"></param>
         /// <param name="dtTime"></param>
         /// <returns></returns>
-        public DataTable Admin_Searchdtldt(int userid, int sexid, string closeid, DateTime dtTime)
+        public DataTable Admin_Searchdtldt(int userid, int sexid, string closeid, string confirmstatus, DateTime dtTime)
         {
             var resultdt=new DataTable();
             DataTable tempdt;
@@ -618,9 +619,39 @@ namespace RD.DB.Search
             try
             {
                 //创建临时表(当没有查询到值时使用)
-                tempdt = dlDtList.Get_Maindtl();
+                tempdt = dlDtList.Get_Admindtl();
                 //获取SQL语句
-                sqlscript = "";
+                sqlscript = sqlList.Admindtl(userid, sexid, closeid, confirmstatus, dtTime);
+                //执行SQL语句,并返回DT
+                var dt = GetData(sqlscript);
+                resultdt = dt.Rows.Count == 0 ? tempdt : dt;
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
+
+        /// <summary>
+        /// 角色信息管理查询
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public DataTable Admin_Searchroledt(int roleid)
+        {
+            var resultdt = new DataTable();
+            DataTable tempdt;
+            string sqlscript;
+
+            try
+            {
+                //创建临时表(当没有查询到值时使用)
+                tempdt = dlDtList.Get_Admin_roledtl();
+                //获取SQL语句
+                sqlscript = sqlList.Admin_roledtl(roleid);
                 //执行SQL语句,并返回DT
                 var dt = GetData(sqlscript);
                 resultdt = dt.Rows.Count == 0 ? tempdt : dt;

@@ -33,15 +33,16 @@ namespace RD.Logic.Admin
         /// <param name="userid"></param>
         /// <param name="sexid"></param>
         /// <param name="closeid"></param>
+        /// <param name="confirmstatus"></param>
         /// <param name="dtTime"></param>
         /// <returns></returns>
-        public DataTable Searchdtldt(int userid, int sexid, string closeid, DateTime dtTime)
+        public DataTable Searchdtldt(int userid, int sexid, string closeid, string confirmstatus, DateTime dtTime)
         {
             DataTable dt;
 
             try
             {
-                dt = serDt.Admin_Searchdtldt(userid,sexid,closeid,dtTime);
+                dt = serDt.Admin_Searchdtldt(userid,sexid,closeid, confirmstatus, dtTime);
             }
             catch (Exception ex)
             {
@@ -49,6 +50,28 @@ namespace RD.Logic.Admin
             }
             return dt;
         }
+
+        /// <summary>
+        /// 角色信息管理查询
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public DataTable SearchRoledt(int roleid)
+        {
+            DataTable dt;
+
+            try
+            {
+                dt = serDt.Admin_Searchroledt(roleid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
+
+
 
     }
 }

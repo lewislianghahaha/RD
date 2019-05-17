@@ -52,7 +52,7 @@
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtrolename = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -62,13 +62,12 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmSetConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmCanDel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmSetCanDel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.comType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.tmreset = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbadmin = new System.Windows.Forms.CheckBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
@@ -90,8 +89,7 @@
             this.Menu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmSave,
-            this.tmConfirm,
-            this.tmreset});
+            this.tmConfirm});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(995, 25);
@@ -282,7 +280,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.splitContainer1.Panel1.Controls.Add(this.textBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.txtrolename);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             // 
             // splitContainer1.Panel2
@@ -292,12 +290,12 @@
             this.splitContainer1.SplitterDistance = 33;
             this.splitContainer1.TabIndex = 2;
             // 
-            // textBox1
+            // txtrolename
             // 
-            this.textBox1.Location = new System.Drawing.Point(75, 5);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(169, 21);
-            this.textBox1.TabIndex = 1;
+            this.txtrolename.Location = new System.Drawing.Point(75, 5);
+            this.txtrolename.Name = "txtrolename";
+            this.txtrolename.Size = new System.Drawing.Size(169, 21);
+            this.txtrolename.TabIndex = 1;
             // 
             // label1
             // 
@@ -352,37 +350,37 @@
             this.toolStripSeparator1,
             this.tmSetConfirm,
             this.toolStripSeparator2,
-            this.tmCanDel});
+            this.tmSetCanDel});
             this.CMenu.Name = "CMenu";
-            this.CMenu.Size = new System.Drawing.Size(169, 82);
+            this.CMenu.Size = new System.Drawing.Size(161, 82);
             // 
             // tmSetshow
             // 
             this.tmSetshow.Name = "tmSetshow";
-            this.tmSetshow.Size = new System.Drawing.Size(168, 22);
-            this.tmSetshow.Text = "设置显示(不显示)";
+            this.tmSetshow.Size = new System.Drawing.Size(160, 22);
+            this.tmSetshow.Text = "设置能否显示";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
             // 
             // tmSetConfirm
             // 
             this.tmSetConfirm.Name = "tmSetConfirm";
-            this.tmSetConfirm.Size = new System.Drawing.Size(168, 22);
+            this.tmSetConfirm.Size = new System.Drawing.Size(160, 22);
             this.tmSetConfirm.Text = "设置能否反审核";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(165, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(157, 6);
             // 
-            // tmCanDel
+            // tmSetCanDel
             // 
-            this.tmCanDel.Name = "tmCanDel";
-            this.tmCanDel.Size = new System.Drawing.Size(168, 22);
-            this.tmCanDel.Text = "设置能否可删除";
+            this.tmSetCanDel.Name = "tmSetCanDel";
+            this.tmSetCanDel.Size = new System.Drawing.Size(160, 22);
+            this.tmSetCanDel.Text = "设置能否可删除";
             // 
             // panel3
             // 
@@ -399,7 +397,7 @@
             // 
             this.comType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comType.FormattingEnabled = true;
-            this.comType.Location = new System.Drawing.Point(73, 2);
+            this.comType.Location = new System.Drawing.Point(98, 2);
             this.comType.Name = "comType";
             this.comType.Size = new System.Drawing.Size(163, 20);
             this.comType.TabIndex = 1;
@@ -409,35 +407,29 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(14, 6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 12);
+            this.label2.Size = new System.Drawing.Size(83, 12);
             this.label2.TabIndex = 0;
-            this.label2.Text = "角色名称:";
+            this.label2.Text = "功能大类名称:";
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.checkBox1);
+            this.panel2.Controls.Add(this.cbadmin);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(979, 26);
             this.panel2.TabIndex = 0;
             // 
-            // checkBox1
+            // cbadmin
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(14, 5);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(84, 16);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "管理员权限";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // tmreset
-            // 
-            this.tmreset.Name = "tmreset";
-            this.tmreset.Size = new System.Drawing.Size(44, 21);
-            this.tmreset.Text = "刷新";
+            this.cbadmin.AutoSize = true;
+            this.cbadmin.Location = new System.Drawing.Point(14, 5);
+            this.cbadmin.Name = "cbadmin";
+            this.cbadmin.Size = new System.Drawing.Size(84, 16);
+            this.cbadmin.TabIndex = 0;
+            this.cbadmin.Text = "管理员权限";
+            this.cbadmin.UseVisualStyleBackColor = true;
             // 
             // RoleInfoDtlFrm
             // 
@@ -492,19 +484,19 @@
         private System.Windows.Forms.ToolStripButton bnMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtrolename;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ContextMenuStrip CMenu;
         private System.Windows.Forms.ToolStripMenuItem tmSetshow;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tmSetConfirm;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem tmCanDel;
+        private System.Windows.Forms.ToolStripMenuItem tmSetCanDel;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbadmin;
         private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.ComboBox comType;
         private System.Windows.Forms.Label label2;
@@ -515,6 +507,5 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
-        private System.Windows.Forms.ToolStripMenuItem tmreset;
     }
 }

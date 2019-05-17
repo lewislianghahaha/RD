@@ -59,7 +59,7 @@ namespace RD.Logic
         private int _userid;             //职员名称ID(权限窗体使用)
         private int _sexid;              //职员性别ID(权限窗体使用)
         private string _closeid;         //职员帐号关闭状态(权限窗体使用)
-
+        private int _roleid;             //角色ID(权限窗体使用)
 
         private DataTable _resultTable;  //返回DT类型
         private bool _resultMark;        //返回是否成功标记
@@ -208,6 +208,11 @@ namespace RD.Logic
         /// </summary>
         public string Closeid {set { _closeid = value; } }        
 
+        /// <summary>
+        /// 角色ID(权限窗体使用)
+        /// </summary>
+        public int Roleid { set { _roleid = value; } }
+
         #endregion
 
         #region Get
@@ -247,7 +252,7 @@ namespace RD.Logic
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
-                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_dtime);
+                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -412,13 +417,15 @@ namespace RD.Logic
         /// <summary>
         /// 帐户信息功能设定
         /// </summary>
-        /// <param name="functionId"></param>
-        /// <param name="functionName"></param>
-        /// <param name="userid"></param>
-        /// <param name="sexid"></param>
-        /// <param name="closeid"></param>
-        /// <param name="dtTime"></param>
-        private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,DateTime dtTime)
+        /// <param name="functionId">功能ID</param>
+        /// <param name="functionName">功能名称</param>
+        /// <param name="userid">帐号ID</param>
+        /// <param name="sexid">性别ID</param>
+        /// <param name="closeid">关闭状态ID</param>
+        /// <param name="confirmstatus">审核状态ID</param>
+        /// <param name="dtTime">入职日期</param>
+        /// <param name="roleid">角色ID</param>
+        private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,DateTime dtTime,int roleid)
         {
             switch (functionId)
             {
@@ -427,8 +434,16 @@ namespace RD.Logic
                     _resultTable = AdminSearch.SearchDropdownDt(functionName);
                     break;
                 //查询功能(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表)
-                case "2":
-                    _resultTable = AdminSearch.Searchdtldt(userid,sexid,closeid,dtTime);
+                case "1.1":
+                    _resultTable = AdminSearch.Searchdtldt(userid,sexid,closeid, confirmstatus,dtTime);
+                    break;
+                //查询功能(角色信息管理查询)
+                case "1.2":
+                    _resultTable = AdminSearch.SearchRoledt(roleid);
+                    break;
+                //查询功能(角色信息管理-功能权限明细查询)
+                case "1.3":
+                    _resultTable = ;
                     break;
             }
         }
