@@ -808,9 +808,9 @@ namespace RD.DB
                 //角色名称
                 case "Role":
                     _result = @"
-                                    SELECT 0 Roleid ,'全部' RoleName
+                                    SELECT 0 id ,'全部' RoleName
                                     UNION
-                                    SELECT a.Roleid,a.RoleName FROM dbo.T_AD_Role a
+                                    SELECT a.id,a.RoleName FROM dbo.T_AD_Role a
                                 ";
                     break;
                 //功能大类名称
@@ -958,9 +958,9 @@ namespace RD.DB
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
-                        WHERE a.UserSex='{sexid}'       --性别
+                        WHERE a.UserSex='{sexid}'           --性别
                         AND a.Fstatus='{confirmstatus}'     --审核状态
-                        AND a.CloseStatus='{closeid}'  --关闭状态
+                        AND a.CloseStatus='{closeid}'       --关闭状态
                         AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期"
                 : $@"SELECT a.UserId,a.UserName 职员名称,
                                CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
@@ -969,10 +969,10 @@ namespace RD.DB
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
-                        WHERE a.UserId='{userid}'     --帐号ID
-                        AND a.UserSex='{sexid}'       --性别
+                        WHERE a.UserId='{userid}'           --帐号ID
+                        AND a.UserSex='{sexid}'             --性别
                         AND a.Fstatus='{confirmstatus}'     --审核状态
-                        AND a.CloseStatus='{closeid}'  --关闭状态
+                        AND a.CloseStatus='{closeid}'       --关闭状态
                         AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期";
 
             return _result;
@@ -986,23 +986,41 @@ namespace RD.DB
         public string Admin_roledtl(int roleid)
         {
             _result = roleid == 0
-                ? $@"SELECT A.RoleId,A.RoleName 角色名称,
+                ? $@"SELECT A.Id,A.RoleName 角色名称,
                                    A.InputUser 创建人,A.InputDt 创建日期,
 	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
 	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                               a.FstatusDt 审核日期
                             FROM dbo.T_AD_Role A"
-                : $@"SELECT A.RoleId,A.RoleName 角色名称,
+                : $@"SELECT A.Id,A.RoleName 角色名称,
                                    A.InputUser 创建人,A.InputDt 创建日期,
 	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
 	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                               a.FstatusDt 审核日期
                             FROM dbo.T_AD_Role A
-                            WHERE a.RoleId='{roleid}'";
+                            WHERE a.Id='{roleid}'";
             return _result;
         }
 
-
+        /// <summary>
+        /// 功能权限明细查询
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <param name="funtypeid"></param>
+        /// <returns></returns>
+        public string Admin_roleFundtl(int roleid ,int funtypeid )
+        {
+            _result = $@"SELECT a.EntryID,
+	                            a.FunName 功能名称,
+	                            CASE WHEN a.CanShow='Y' THEN '是' ELSE '否' END 是否显示,
+	                            CASE WHEN a.CanBackConfirm='Y' THEN '是' ELSE '否' END 是否反审核,
+	                            CASE WHEN a.CanDel='Y' THEN '是' ELSE '否' END 是否可删除,
+	                            a.InputUser 权限创建人,a.InputDt 权限创建日期
+                        FROM dbo.T_AD_RoleDtl a
+                        WHERE a.Id='{roleid}'
+                        AND a.Funid='{funtypeid}'";
+            return _result;
+        }
 
         #endregion
     }

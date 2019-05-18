@@ -832,6 +832,59 @@ namespace RD.DB
             return dt;
         }
 
+        /// <summary>
+        /// 功能权限明细查询
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_Admin_roleFundtl()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //EntryID
+                    case 0:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //FunName
+                    case 1:
+                        dc.ColumnName = "功能名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //CanShow
+                    case 2:
+                        dc.ColumnName = "是否显示";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //CanBackConfirm
+                    case 3:
+                        dc.ColumnName = "是否反审核";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    //CanDel
+                    case 4:
+                        dc.ColumnName = "是否可删除";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 5:
+                        dc.ColumnName = "权限创建人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 6:
+                        dc.ColumnName = "权限创建日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
         #endregion
 
     }

@@ -71,7 +71,26 @@ namespace RD.Logic.Admin
             return dt;
         }
 
+        /// <summary>
+        /// 角色信息管理-功能权限明细查询
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <param name="funtypeid"></param>
+        /// <returns></returns>
+        public DataTable SearchRoleFundt(int roleid ,int funtypeid )
+        {
+            DataTable dt;
 
+            try
+            {
+                dt = serDt.Admin_SearchRoleFundt(roleid,funtypeid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
 
     }
 }

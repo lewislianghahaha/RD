@@ -81,6 +81,7 @@ namespace RD.UI.Admin
             bnPositionItem.TextChanged += BnPositionItem_TextChanged;
             tmshowrows.DropDownClosed += Tmshowrows_DropDownClosed;
             panel1.Visible = false;
+            tabControl1.Visible = false;
         }
 
         /// <summary>
@@ -95,14 +96,16 @@ namespace RD.UI.Admin
             //"创建"状态时,将“功能名称”相关内容插入至T_AD_RoleDtl
             if (_funState == "C")
             {
-                //将利用相关条件将明细记录插入至T_AD_RoleDtl表内
+                
 
+                
             }
             //若为“读取”状态时执行(根据roleid读取角色明细记录)
             else
             {
-                
-
+                //若_rolename不为空的话,就将其赋值到“职员名称”文本框内
+                if (_rolename != "")
+                    txtrolename.Text = _rolename;
             }
             //读取明细记录至GridView
             OnInitializeDtl();
@@ -125,7 +128,7 @@ namespace RD.UI.Admin
         }
 
         /// <summary>
-        /// 初始化表体信息(读取时使用)
+        /// 初始化表体信息("读取" 及 "刷新下拉列表"时使用)
         /// </summary>
         /// <returns></returns>
         private void OnInitializeDtl()
@@ -138,7 +141,7 @@ namespace RD.UI.Admin
             task.TaskId = 3;
             task.FunctionId = "1.3";
             task.Roleid = _roleid;   //角色ID
-                                        //功能大类ID
+            task.Funtypeid = funid;  //功能大类ID
 
             task.StartTask();
             //连接GridView页面跳转功能
@@ -147,10 +150,28 @@ namespace RD.UI.Admin
             ControlGridViewisShow();
         }
 
-
+        /// <summary>
+        /// 根据相关条件将功能权限记录插入至T_AD_ROLEDTL内(状态"创建"时使用)
+        /// </summary>
+        private void InsertRecordIntoRoledtl()
+        {
+            try
+            {
+                task.TaskId = 3;
+                task.FunctionId = "2";
+                task.StartTask();
+                if(!task.ResultMark) throw new Exception("发生异常,请联系管理员");
+                //当成功后将状态更改为“读取”
+                _funState = "R";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         /// <summary>
-        /// 角色名称文本框值发生变化时执行(检证所输入的角色名称是否已存在)
+        /// 角色名称文本框值发生变化时执行
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -158,6 +179,8 @@ namespace RD.UI.Admin
         {
             try
             {
+                //验证所输入的"角色名称"是否已存在
+                var dt = _roledt;
 
             }
             catch (Exception ex)
@@ -171,11 +194,21 @@ namespace RD.UI.Admin
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmSave_Click(object sender, System.EventArgs e)
+        private void TmSave_Click(object sender, EventArgs e)
         {
             try
             {
-
+                //根据“角色名称”文本框是否为空，来判定是使用“插入”或“更新”功能
+                //执行插入效果
+                if (txtrolename.Text == "")
+                {
+                    
+                }
+                //执行更新效果
+                else
+                {
+                    
+                }
             }
             catch (Exception ex)
             {
@@ -207,7 +240,14 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void Cbadmin_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -217,7 +257,14 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void ComType_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            
+            try
+            {
+                OnInitializeDtl();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -227,7 +274,14 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetshow_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -237,7 +291,14 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetConfirm_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -247,7 +308,14 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetCanDel_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>

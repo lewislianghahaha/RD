@@ -28,43 +28,48 @@ namespace RD.Logic
         MainGenerate mainGenerate=new MainGenerate();
 
         //帐户角色权限使用
-        AdminSearch AdminSearch=new AdminSearch();
+        AdminSearch adminSearch=new AdminSearch();
+        AdminImport adminImport=new AdminImport();
 
-        private int _taskid;             //记录中转ID
-        private string _accountName;     //记录帐号名称
-        private string _accountPwd;      //记录帐号密码
-        private string _functionId;      //功能ID
-        private string _functinName;     //功能名称(确定是使用那个表系列)
-        private string _functionType;    //记录表格类型ID(T:0 表体:1)
-        private string _parentId;        //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
-        private string _searchName;      //查询选择列名-查询框有值时使用
-        private string _searchValue;     //查询所填值-查询框有值时使用
-        private DataTable _data;         //获取初始化的表体信息
-        private int _pid;                //获取父级节点ID(新增或更新树形节点时使用)
-        private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
-        private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
-        private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
-        private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单 主窗体使用）
-        private int _confirmid;          //审核ID
-        private DataTable _deldata;      //获取需要删除的表体记录信息(室内装修工程单 及 室内主材单使用)
-        private int _treeid;             //树菜单ID(室内装修工程单 及 室内主材单使用)
-        private int _dropdownlistid;     //下拉列表ID(室内装修工程单 及 室内主材单使用)
-        private int _yearid;             //单据创建年份（主窗体使用）
-        private int _ordertypeId;        //单据类型(主窗体使用)
-        private int _hTypeid;            //房屋类型(主窗体使用)
-        private string _confirmfStatus;  //审核状态(主窗体使用)
-        private DateTime _dtime;            //日期(主窗体使用)
-        private DataGridViewSelectedRowCollection _datarow; //保存从GridView中所选择的行
+        #region 变量定义
 
-        private int _userid;             //职员名称ID(权限窗体使用)
-        private int _sexid;              //职员性别ID(权限窗体使用)
-        private string _closeid;         //职员帐号关闭状态(权限窗体使用)
-        private int _roleid;             //角色ID(权限窗体使用)
+            private int _taskid;             //记录中转ID
+            private string _accountName;     //记录帐号名称
+            private string _accountPwd;      //记录帐号密码
+            private string _functionId;      //功能ID
+            private string _functinName;     //功能名称(确定是使用那个表系列)
+            private string _functionType;    //记录表格类型ID(T:0 表体:1)
+            private string _parentId;        //主键ID,用于表体查询时使用 注:当为null时,表示按了"全部"树形列表节点 或获取对应功能表体的全部内容
+            private string _searchName;      //查询选择列名-查询框有值时使用
+            private string _searchValue;     //查询所填值-查询框有值时使用
+            private DataTable _data;         //获取初始化的表体信息
+            private int _pid;                //获取父级节点ID(新增或更新树形节点时使用)
+            private string _treeName;        //获取同级节点时使用(新增或更新树形节点时使用)
+            private string _funState;        //获取单据状态(室内装修工程单 及 室内主材单使用) R:读取 C:创建
+            private int _id;                 //获取上上级节点ID(室内装修工程单 及 室内主材单使用)
+            private int _custid;             //获取客户ID（室内装修工程单 及 室内主材单 主窗体使用）
+            private int _confirmid;          //审核ID
+            private DataTable _deldata;      //获取需要删除的表体记录信息(室内装修工程单 及 室内主材单使用)
+            private int _treeid;             //树菜单ID(室内装修工程单 及 室内主材单使用)
+            private int _dropdownlistid;     //下拉列表ID(室内装修工程单 及 室内主材单使用)
+            private int _yearid;             //单据创建年份（主窗体使用）
+            private int _ordertypeId;        //单据类型(主窗体使用)
+            private int _hTypeid;            //房屋类型(主窗体使用)
+            private string _confirmfStatus;  //审核状态(主窗体使用)
+            private DateTime _dtime;            //日期(主窗体使用)
+            private DataGridViewSelectedRowCollection _datarow; //保存从GridView中所选择的行
 
-        private DataTable _resultTable;  //返回DT类型
-        private bool _resultMark;        //返回是否成功标记
-        private int _orderid;            //返回生成后的单据主键ID(室内装修工程单 及 室内主材单使用)
+            private int _userid;             //职员名称ID(权限窗体使用)
+            private int _sexid;              //职员性别ID(权限窗体使用)
+            private string _closeid;         //职员帐号关闭状态(权限窗体使用)
+            private int _roleid;             //角色ID(权限窗体使用)
 
+            private DataTable _resultTable;  //返回DT类型
+            private bool _resultMark;        //返回是否成功标记
+            private int _orderid;            //返回生成后的单据主键ID(室内装修工程单 及 室内主材单使用)
+            private int _funtypeid;          //返回功能大类ID
+
+        #endregion
 
         #region Set
 
@@ -213,6 +218,11 @@ namespace RD.Logic
         /// </summary>
         public int Roleid { set { _roleid = value; } }
 
+        /// <summary>
+        /// 返回功能大类ID
+        /// </summary>
+        public int Funtypeid { set { _funtypeid = value; } }
+
         #endregion
 
         #region Get
@@ -252,7 +262,7 @@ namespace RD.Logic
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
-                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid);
+                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -425,26 +435,34 @@ namespace RD.Logic
         /// <param name="confirmstatus">审核状态ID</param>
         /// <param name="dtTime">入职日期</param>
         /// <param name="roleid">角色ID</param>
-        private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,DateTime dtTime,int roleid)
+        /// <param name="funtypeid">功能大类ID</param>
+        private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,
+                               DateTime dtTime,int roleid,int funtypeid)
         {
             switch (functionId)
             {
                 //下拉列表初始化
                 case "1":
-                    _resultTable = AdminSearch.SearchDropdownDt(functionName);
+                    _resultTable = adminSearch.SearchDropdownDt(functionName);
                     break;
                 //查询功能(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表)
                 case "1.1":
-                    _resultTable = AdminSearch.Searchdtldt(userid,sexid,closeid, confirmstatus,dtTime);
+                    _resultTable = adminSearch.Searchdtldt(userid,sexid,closeid, confirmstatus,dtTime);
                     break;
                 //查询功能(角色信息管理查询)
                 case "1.2":
-                    _resultTable = AdminSearch.SearchRoledt(roleid);
+                    _resultTable = adminSearch.SearchRoledt(roleid);
                     break;
                 //查询功能(角色信息管理-功能权限明细查询)
                 case "1.3":
-                    _resultTable = ;
+                    _resultTable = adminSearch.SearchRoleFundt(roleid,funtypeid);
                     break;
+                
+                //根据相关条件将功能权限记录插入至T_AD_ROLEDTL内
+                case "2":
+                    _resultMark = adminImport.InsertDtlIntoRole(roleid, funtypeid);
+                    break;
+                
             }
         }
 
