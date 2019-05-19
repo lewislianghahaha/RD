@@ -117,11 +117,10 @@ namespace RD.UI.Admin
                 //将当前窗体隐藏
                 this.Visible = false;
 
-                var roleInfo=new RoleInfoDtlFrm();
+                var roleInfo = new RoleInfoDtlFrm();
                 //初始化信息赋值
                 roleInfo.Roledt = _roledt;
                 roleInfo.FunState = "C";
-               // roleInfo.OnInitialize();
                 roleInfo.StartPosition = FormStartPosition.CenterScreen;
                 roleInfo.ShowDialog();
             }

@@ -657,7 +657,54 @@ namespace RD.DB.Import
 
         #region 角色权限
 
+        /// <summary>
+        /// 利用DT将相关记录插入至T_AD_Role 及 T_AD_RoleDtl内
+        /// </summary>
+        /// <param name="rolename"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public int InsertDtlIntoRole(string rolename,DataTable dt)
+        {
+            //获取对应表的最大ID值
+            var reslutid = 0;
+            //定义表头及表体临时表
+            var tempdt=new DataTable();
+            var tempdtdtl=new DataTable();
+
+            try
+            {
+                //获取T_AD_Role表MAX(ID)值
+                reslutid = Maxid("T_AD_Role");
+                //将相关记录分别插入至T_AD_Role 及 T_AD_RoleDtl内
+
+
+                //先将T_AD_ROLE表头信息插入
+                Importdt("T_AD_Role", tempdt);
+                //再将T_AD_RoleDtl表体信息插入
+                Importdt("T_AD_RoleDtl", tempdtdtl);
+            }
+            catch (Exception)
+            {
+                reslutid = 0;
+            }
+            return reslutid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Get_RoleTemp()
+        {
             
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Get_RoleDtlTemp()
+        {
+            
+        }
 
         #endregion
 

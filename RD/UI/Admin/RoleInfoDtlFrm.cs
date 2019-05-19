@@ -60,7 +60,6 @@ namespace RD.UI.Admin
         {
             InitializeComponent();
             OnRegisterEvents();
-            OnInitializeDropDownList();
         }
 
         private void OnRegisterEvents()
@@ -89,30 +88,17 @@ namespace RD.UI.Admin
         /// </summary>
         public void OnInitialize()
         {
+            txtrolename.Text =_rolename;
             //初始化下拉列表
             OnInitializeDropDownList();
-
-            //当状态标记为“创建”时执行
-            //"创建"状态时,将“功能名称”相关内容插入至T_AD_RoleDtl
-            if (_funState == "C")
-            {
-                
-
-                
-            }
-            //若为“读取”状态时执行(根据roleid读取角色明细记录)
-            else
-            {
-                //若_rolename不为空的话,就将其赋值到“职员名称”文本框内
-                if (_rolename != "")
-                    txtrolename.Text = _rolename;
-            }
             //读取明细记录至GridView
             OnInitializeDtl();
             //控制GridView显示
             GridViewPageChange();
             //窗体权限控制
             PrivilegeControl();
+            //将隐藏的部份开启
+            tabControl1.Visible = true;
         }
 
         /// <summary>
@@ -121,7 +107,7 @@ namespace RD.UI.Admin
         private void OnInitializeDropDownList()
         {
             //初始化功能大类名称
-            _funTypedt= GetDropdownListdt("FunType");
+            _funTypedt= GetListdt("FunType");
             comType.DataSource = _funTypedt;
             comType.DisplayMember = "FunName";
             comType.ValueMember = "Funid";
@@ -159,8 +145,13 @@ namespace RD.UI.Admin
             {
                 task.TaskId = 3;
                 task.FunctionId = "2";
+                task.FunctionName = _rolename;
+                task.Data = _roledt;
+
                 task.StartTask();
-                if(!task.ResultMark) throw new Exception("发生异常,请联系管理员");
+                //返回新插入的表头ID;即T_AD_Role.Id值
+                _roleid = task.Orderid;
+                if (_roleid == 0) throw new Exception("发生异常,请联系管理员");
                 //当成功后将状态更改为“读取”
                 _funState = "R";
             }
@@ -179,9 +170,13 @@ namespace RD.UI.Admin
         {
             try
             {
+                //获取最新的T_AD_Role的DataTable
+                _roledt= GetListdt("Role");
                 //验证所输入的"角色名称"是否已存在
-                var dt = _roledt;
-
+                var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
+                if(rows.Length>0) throw new Exception("已存在相同的‘角色名称’,请再输入");
+                //若所输入的值没有重复,即将其赋值公共变量_rolename
+                _rolename = txtrolename.Text;
             }
             catch (Exception ex)
             {
@@ -198,16 +193,27 @@ namespace RD.UI.Admin
         {
             try
             {
-                //根据“角色名称”文本框是否为空，来判定是使用“插入”或“更新”功能
+                //根据"状态"，来判定是使用“插入”或“更新”功能
                 //执行插入效果
-                if (txtrolename.Text == "")
+                if (_funState=="C")
                 {
-                    
+                    //执行插入T_AD_RoleDtl方法
+                    InsertRecordIntoRoledtl();
+                    //执行初始化方法;重新读取
+                    OnInitialize();
                 }
-                //执行更新效果
+                //执行更新效果(主要是对T_AD_Role表头信息进行更新)
                 else
                 {
-                    
+                    //执行更新
+                    task.TaskId = 3;
+                    task.FunctionId = "3";
+                    task.Roleid = _roleid;
+
+                    task.StartTask();
+                    if(!task.ResultMark) throw new Exception("更新异常,请联系管理员");
+                    //执行初始化;重新读取
+                    OnInitialize();
                 }
             }
             catch (Exception ex)
@@ -580,7 +586,7 @@ namespace RD.UI.Admin
         /// 根据对应的功能名称获取对应的DataTable
         /// </summary>
         /// <param name="functionName"></param>
-        private DataTable GetDropdownListdt(string functionName)
+        private DataTable GetListdt(string functionName)
         {
             task.TaskId = 3;
             task.FunctionId = "1";
@@ -655,6 +661,8 @@ namespace RD.UI.Admin
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
         }
+
+
 
     }
 }

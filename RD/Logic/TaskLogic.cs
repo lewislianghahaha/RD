@@ -262,7 +262,7 @@ namespace RD.Logic
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
-                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid);
+                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -436,8 +436,9 @@ namespace RD.Logic
         /// <param name="dtTime">入职日期</param>
         /// <param name="roleid">角色ID</param>
         /// <param name="funtypeid">功能大类ID</param>
+        /// <param name="dt">获取所需的表体DT</param>
         private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,
-                               DateTime dtTime,int roleid,int funtypeid)
+                               DateTime dtTime,int roleid,int funtypeid,DataTable dt)
         {
             switch (functionId)
             {
@@ -460,9 +461,13 @@ namespace RD.Logic
                 
                 //根据相关条件将功能权限记录插入至T_AD_ROLEDTL内
                 case "2":
-                    _resultMark = adminImport.InsertDtlIntoRole(roleid, funtypeid);
+                    _orderid = adminImport.InsertDtlIntoRole(functionName,dt);
                     break;
-                
+
+                //更新功能
+                case "3":
+                    _resultMark = true;
+                    break;
             }
         }
 
