@@ -28,5 +28,26 @@ namespace RD.Logic.Admin
             }
             return reslutid;
         }
+
+        /// <summary>
+        /// 根据条件更新T_AD_ROLE表头信息
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public bool UpdateRole(string functionName , int roleid)
+        {
+            var result = true;
+            try
+            {
+                result = importDt.UpdateRole(functionName, roleid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
+        }
+
     }
 }

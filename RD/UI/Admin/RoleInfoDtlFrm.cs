@@ -75,7 +75,6 @@ namespace RD.UI.Admin
             tmSetCanDel.Click += TmSetCanDel_Click;
             comType.SelectionChangeCommitted += ComType_SelectionChangeCommitted;
             cbadmin.Click += Cbadmin_Click;
-            txtrolename.MouseLeave += Txtrolename_MouseLeave;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -159,27 +158,6 @@ namespace RD.UI.Admin
         }
 
         /// <summary>
-        /// 当Mouse离开时执行
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Txtrolename_MouseLeave(object sender, EventArgs e)
-        {
-            try
-            {
-                //获取最新的T_AD_Role的DataTable
-                _roledt = GetListdt("Role");
-                //验证所输入的"角色名称"是否已存在
-                var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
-                if (rows.Length > 0) throw new Exception("已存在相同的‘角色名称’,请再输入");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
         /// 根据相关条件将功能权限记录插入至T_AD_ROLEDTL内(状态"创建"时使用)
         /// </summary>
         private void InsertRecordIntoRoledtl()
@@ -214,6 +192,13 @@ namespace RD.UI.Admin
         {
             try
             {
+                //保存前先检测文本框的值是否重复
+                //获取最新的T_AD_Role的DataTable
+                _roledt = GetListdt("Role");
+                //验证所输入的"角色名称"是否已存在
+                var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
+                if (rows.Length > 0) throw new Exception("已存在相同的‘角色名称’,请再输入");
+
                 //根据"状态"，来判定是使用“插入”或“更新”功能
                 //执行插入效果
                 if (_funState=="C")
@@ -230,7 +215,7 @@ namespace RD.UI.Admin
                     task.TaskId = 3;
                     task.FunctionId = "3";
                     task.Roleid = _roleid;
-                    task.FunctionName = txtrolename.Text;
+                    task.FunctionName = txtrolename.Text;   //角色名称
 
                     task.StartTask();
                     if(!task.ResultMark) throw new Exception("更新异常,请联系管理员");
@@ -240,6 +225,7 @@ namespace RD.UI.Admin
             }
             catch (Exception ex)
             {
+                txtrolename.Text = "";
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -253,10 +239,22 @@ namespace RD.UI.Admin
         {
             try
             {
-                task.TaskId = 3;
+                var clickMessage = $"您所选择的信息为:\n 角色名称:{txtrolename.Text} \n 是否继续? \n 注:若不进行审核,职员帐户不能使用 \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    task.TaskId = 3;
+                    task.FunctionId = "4";
+                    task.Roleid = _roleid;
 
-                task.StartTask();
-
+                    task.StartTask();
+                    if (!task.ResultMark) throw new Exception("审核异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                //审核完成后“刷新”(注:审核成功的单据,经刷新后为不可修改效果)
+                OnInitialize();
             }
             catch (Exception ex)
             {

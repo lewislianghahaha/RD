@@ -472,7 +472,16 @@ namespace RD.Logic
 
                 //更新功能
                 case "3":
-                    _resultMark = true;
+                    _resultMark = adminImport.UpdateRole(functionName,roleid);
+                    break;
+
+                //审核(反审核)
+                case "4":
+
+                    break;
+                //关闭(反关闭)
+                case "5":
+
                     break;
             }
         }

@@ -1042,6 +1042,18 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 根据条件更新T_AD_ROLE表头信息
+        /// </summary>
+        /// <param name="rolename"></param>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public string Update_Role(string rolename,int roleid)
+        {
+            _result = $@"update t_ad_role set rolename='{rolename}' where id='{roleid}'";
+            return _result;
+        }
+
         #endregion
     }
 }

@@ -115,7 +115,7 @@ namespace RD.DB.Import
         }
 
         /// <summary>
-        /// 对指定表格执行新增或更新操作(树形菜单使用)
+        /// 对指定表格执行新增或更新操作
         /// </summary>
         /// <param name="sqlscript"></param> 
         private bool EditDt(string sqlscript)
@@ -748,6 +748,19 @@ namespace RD.DB.Import
             }
 
             return dt;
+        }
+
+        /// <summary>
+        /// 根据条件更新T_AD_ROLE表头信息
+        /// </summary>
+        /// <param name="rolename">角色名称</param>
+        /// <param name="roleid">角色id</param>
+        /// <returns></returns>
+        public bool UpdateRole(string rolename , int roleid)
+        {
+            var sqlscript = sqlList.Update_Role(rolename, roleid);
+            var result = EditDt(sqlscript);
+            return result;
         }
 
         #endregion
