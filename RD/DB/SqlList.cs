@@ -1022,6 +1022,26 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 获取T_AD_Role角色表-表头信息
+        /// </summary>
+        /// <returns></returns>
+        public string Get_RoleHead(int roleid)
+        {
+            _result = $@"SELECT * FROM dbo.T_AD_Role where id='{roleid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 获取T_AD_Fun表明细功能信息
+        /// </summary>
+        /// <returns></returns>
+        public string Get_RoleDtl(int parentid)
+        {
+            _result = $@"SELECT * FROM dbo.T_AD_Fun a WHERE a.ParentId={parentid}";
+            return _result;
+        }
+
         #endregion
     }
 }

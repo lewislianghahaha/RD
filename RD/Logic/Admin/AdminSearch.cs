@@ -92,5 +92,25 @@ namespace RD.Logic.Admin
             return dt;
         }
 
+        /// <summary>
+        /// 根据roleid获取T_AD_Role表头信息
+        /// </summary>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public DataTable SearchRoleHeaddt(int roleid)
+        {
+            DataTable dt;
+            try
+            {
+                var markid = 0;
+                dt = serDt.SearchRoleHeadorFundt(markid,roleid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
+
     }
 }

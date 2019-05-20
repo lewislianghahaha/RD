@@ -696,6 +696,43 @@ namespace RD.DB.Search
             return resultdt;
         }
 
+        /// <summary>
+        /// 根据roleid获取T_AD_Role 或 T_AD_Fun表头内容
+        /// </summary>
+        /// <param name="markid">标记ID;0:读T_AD_Role记录 1:读T_AD_Fun记录</param>
+        /// <param name="roleid"></param>
+        /// <returns></returns>
+        public DataTable SearchRoleHeadorFundt(int markid,int roleid)
+        {
+            var resultdt = new DataTable();
+            var sqlscript=string.Empty;
+
+            try
+            {
+                switch (markid)
+                {
+                    case 0:
+                        sqlscript = sqlList.Get_RoleHead(roleid);
+                        break;
+                    case 1:
+                        sqlscript = sqlList.Get_RoleDtl(roleid);
+                        break;
+                }
+
+                //执行SQL语句,并返回DT
+                resultdt = GetData(sqlscript);
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
+
+
+
         #endregion
 
     }

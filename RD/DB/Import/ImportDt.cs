@@ -12,6 +12,7 @@ namespace RD.DB.Import
         SearchDt serDt=new SearchDt();
         GenerateDt generateDt=new GenerateDt();
         SqlList sqlList=new SqlList();
+        DtList dtList=new DtList();
 
         /// <summary>
         /// 插入树形菜单记录
@@ -660,24 +661,22 @@ namespace RD.DB.Import
         /// <summary>
         /// 利用DT将相关记录插入至T_AD_Role 及 T_AD_RoleDtl内
         /// </summary>
-        /// <param name="rolename"></param>
-        /// <param name="dt"></param>
+        /// <param name="rolename">新RoleID</param>
+        /// <param name="dt">功能大类DT</param>
+        /// <param name="accountName">帐号名称</param>
         /// <returns></returns>
-        public int InsertDtlIntoRole(string rolename,DataTable dt)
+        public int InsertDtlIntoRole(string rolename,DataTable dt,string accountName)
         {
             //获取对应表的最大ID值
-            var reslutid = 0;
-            //定义表头及表体临时表
-            var tempdt=new DataTable();
-            var tempdtdtl=new DataTable();
+            var roleid = 0;
 
             try
             {
                 //获取T_AD_Role表MAX(ID)值
-                reslutid = Maxid("T_AD_Role");
+                roleid = Maxid("T_AD_Role");
                 //将相关记录分别插入至T_AD_Role 及 T_AD_RoleDtl内
-
-
+                var tempdt = Get_RoleTemp(roleid,rolename,accountName);
+                var tempdtdtl = Get_RoleDtlTemp(roleid,dt, accountName);
                 //先将T_AD_ROLE表头信息插入
                 Importdt("T_AD_Role", tempdt);
                 //再将T_AD_RoleDtl表体信息插入
@@ -685,25 +684,70 @@ namespace RD.DB.Import
             }
             catch (Exception)
             {
-                reslutid = 0;
+                roleid = 0;
             }
-            return reslutid;
+            return roleid;
         }
 
         /// <summary>
-        /// 
+        /// 将记录插入至T_AD_Role表内
         /// </summary>
-        private void Get_RoleTemp()
+        /// <param name="roleid">新RoleID</param>
+        /// <param name="rolename">角色名称</param>
+        /// <param name="accountName">帐号名称</param>
+        /// <returns></returns>
+        private DataTable Get_RoleTemp(int roleid,string rolename,string accountName)
         {
-            
+            //获取对应临时表
+            var dt = dtList.Get_T_AD_RoleTemp();
+            //对临时表进行赋值
+            var newrow = dt.NewRow();
+            newrow[0] = roleid;
+            newrow[1] = rolename;
+            newrow[2] = accountName;
+            newrow[3] = DateTime.Now.Date;
+            newrow[4] = "N";
+            newrow[5] = "N";
+            newrow[6] = "N";
+            newrow[7] = DateTime.Now.Date;
+            dt.Rows.Add(newrow);
+            return dt;
         }
 
         /// <summary>
-        /// 
+        /// 将记录插入至T_AD_RoleDtl表内
         /// </summary>
-        private void Get_RoleDtlTemp()
+        /// <param name="roleid">新RoleID</param>
+        /// <param name="funtypeDt">功能大类名称DT</param>
+        /// <param name="accountName">帐号名称</param>
+        /// <returns></returns>
+        private DataTable Get_RoleDtlTemp(int roleid, DataTable funtypeDt,string accountName)
         {
-            
+            //获取对应临时表
+            var dt = dtList.Get_T_AD_RoleDtlTemp();
+            //循环将T_AD_Fun明细信息插入至临时表内
+            foreach (DataRow rows in funtypeDt.Rows)
+            {
+                //根据功能大类的Funid,获取大类对应的明细记录Dt
+                var funtypeid = Convert.ToInt32(rows[0]);
+                var fundtdtl = serDt.SearchRoleHeadorFundt(1, funtypeid);
+                //循环将明细记录插入至T_AD_RoleDtl
+                foreach (DataRow row in fundtdtl.Rows)
+                {
+                    var newrow = dt.NewRow();
+                    newrow[0] = roleid;                   //角色表外键
+                    newrow[1] = funtypeid;               //功能表外键
+                    newrow[3] = row[1];                 //功能名称
+                    newrow[4] = "N";                   //是否显示标记
+                    newrow[5] = "N";                  //能否反审核标记
+                    newrow[6] = "N";                 //可删除标记
+                    newrow[7] = accountName;        //录入人
+                    newrow[8] = DateTime.Now.Date; //录入日期
+                    dt.Rows.Add(newrow);
+                }
+            }
+
+            return dt;
         }
 
         #endregion

@@ -69,6 +69,9 @@ namespace RD.UI.Admin
             OnInitializedtl();
         }
 
+        /// <summary>
+        /// 初始化获取角色表体内容
+        /// </summary>
         private void OnInitializedtl()
         {
             //获取下拉列表所选的值
@@ -167,7 +170,6 @@ namespace RD.UI.Admin
                 roleInfo.FunState = "R";
                 roleInfo.Roledt = _roledt;
                 roleInfo.Roleid = _roleid;
-                roleInfo.Rolename = _rolename;
                 roleInfo.OnInitialize();
 
                 roleInfo.StartPosition = FormStartPosition.CenterScreen;

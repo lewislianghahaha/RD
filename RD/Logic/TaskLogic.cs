@@ -30,6 +30,7 @@ namespace RD.Logic
         //帐户角色权限使用
         AdminSearch adminSearch=new AdminSearch();
         AdminImport adminImport=new AdminImport();
+        AdminGenerate adminGenerate=new AdminGenerate();
 
         #region 变量定义
 
@@ -262,7 +263,7 @@ namespace RD.Logic
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
-                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data);
+                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data,_accountName);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -436,9 +437,10 @@ namespace RD.Logic
         /// <param name="dtTime">入职日期</param>
         /// <param name="roleid">角色ID</param>
         /// <param name="funtypeid">功能大类ID</param>
-        /// <param name="dt">获取所需的表体DT</param>
+        /// <param name="dt">功能大类名称DT</param>
+        /// <param name="accountName">帐户名称</param>
         private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,
-                               DateTime dtTime,int roleid,int funtypeid,DataTable dt)
+                               DateTime dtTime,int roleid,int funtypeid,DataTable dt,string accountName)
         {
             switch (functionId)
             {
@@ -458,10 +460,14 @@ namespace RD.Logic
                 case "1.3":
                     _resultTable = adminSearch.SearchRoleFundt(roleid,funtypeid);
                     break;
+                //查询(作用:利用roleid获取T_AD_Role表内容)
+                case "1.4":
+                    _resultTable = adminSearch.SearchRoleHeaddt(roleid);
+                    break;
                 
                 //根据相关条件将功能权限记录插入至T_AD_ROLEDTL内
                 case "2":
-                    _orderid = adminImport.InsertDtlIntoRole(functionName,dt);
+                    _orderid = adminImport.InsertDtlIntoRole(functionName,dt, accountName);
                     break;
 
                 //更新功能

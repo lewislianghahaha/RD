@@ -13,13 +13,14 @@ namespace RD.Logic.Admin
         /// </summary>
         /// <param name="rolename">功能名称</param>
         /// <param name="dt">功能大类名称DT</param>
+        /// <param name="accountName">帐号名称</param>
         /// <returns></returns>
-        public int InsertDtlIntoRole(string rolename,DataTable dt)
+        public int InsertDtlIntoRole(string rolename,DataTable dt,string accountName)
         {
             var reslutid = 0;
             try
             {
-                reslutid = importDt.InsertDtlIntoRole(rolename, dt);
+                reslutid = importDt.InsertDtlIntoRole(rolename, dt,accountName);
             }
             catch (Exception ex)
             {

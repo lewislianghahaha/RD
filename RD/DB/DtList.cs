@@ -640,7 +640,7 @@ namespace RD.DB
         #region 主窗体
 
         /// <summary>
-        /// 主窗体-查询功能使用
+        /// 主窗体-查询功能使用(AdminFrm.cs)
         /// </summary>
         /// <returns></returns>
         public DataTable Get_Maindtl()
@@ -727,7 +727,7 @@ namespace RD.DB
         #region 帐号权限
 
         /// <summary>
-        /// 帐号权限主窗体查询使用
+        /// 帐号权限主窗体查询使用(AccountAddFrm.cs)
         /// </summary>
         /// <returns></returns>
         public DataTable Get_Admindtl()
@@ -780,7 +780,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 角色信息管理查询
+        /// 角色信息管理查询(RoleInfoFrm.cs)
         /// </summary>
         /// <returns></returns>
         public DataTable Get_Admin_roledtl()
@@ -793,7 +793,7 @@ namespace RD.DB
                 {
                     //RoleId
                     case 0:
-                        dc.ColumnName = "RoleId";
+                        dc.ColumnName = "Id";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
                     //RoleName
@@ -833,7 +833,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 功能权限明细查询
+        /// 功能权限明细查询(RoleInfoDtlFrm.cs)
         /// </summary>
         /// <returns></returns>
         public DataTable Get_Admin_roleFundtl()
@@ -878,6 +878,127 @@ namespace RD.DB
                     case 6:
                         dc.ColumnName = "权限创建日期";
                         dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取T_AD_Role临时表(插入信息至T_AD_Role表内)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_T_AD_RoleTemp()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 8; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //Id
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //RoleName
+                    case 1:
+                        dc.ColumnName = "RoleName";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //InputUser
+                    case 2:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 3:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    //CanALLMark
+                    case 4:
+                        dc.ColumnName = "CanALLMark";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //CloseStatus
+                    case 5:
+                        dc.ColumnName = "CloseStatus";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Fstatus
+                    case 6:
+                        dc.ColumnName = "Fstatus";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //FstatusDt
+                    case 7:
+                        dc.ColumnName = "FstatusDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取T_AD_RoleDtl临时表(插入信息至T_AD_RoleDtl表内)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_T_AD_RoleDtlTemp()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 9; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //Id
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //Funid
+                    case 1:
+                        dc.ColumnName = "Funid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //EntryID
+                    case 2:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //FunName
+                    case 3:
+                        dc.ColumnName = "FunName";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //CanShow
+                    case 4:
+                        dc.ColumnName = "CanShow";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //CanBackConfirm
+                    case 5:
+                        dc.ColumnName = "CanBackConfirm";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //CanDel
+                    case 6:
+                        dc.ColumnName = "CanDel";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 7:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 8:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
                         break;
                 }
                 dt.Columns.Add(dc);

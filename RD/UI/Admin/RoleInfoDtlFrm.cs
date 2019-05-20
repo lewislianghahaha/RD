@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -18,8 +19,6 @@ namespace RD.UI.Admin
         private DataTable _roledt;
         //获取传递过来的角色ID("读取"状态时使用)
         private int _roleid;
-        //获取传递过来的角色名称("读取"状态时使用)
-        private string _rolename;
         //获取功能大类名称DT("创建"状态时使用)
         private DataTable _funTypedt;
 
@@ -31,6 +30,13 @@ namespace RD.UI.Admin
         private int _totalpagecount;
         //记录初始化标记(GridView页面跳转 初始化时使用)
         private bool _pageChange;
+
+        //记录审核状态(Y:已审核;N:没审核)
+        private string _confirmMarkId;
+        //记录关闭状态(Y:已关闭;N:末关闭)
+        private string _closeMarkId;
+        //记录是否管理员状态(Y:是 N:否)
+        private string _adminMarkId;
 
         #region Set
 
@@ -48,18 +54,16 @@ namespace RD.UI.Admin
             /// 角色ID("读取"状态时使用)
             /// </summary>
             public int Roleid { set { _roleid = value; } }
-            
-            /// <summary>
-            /// 角色名称(“读取”状态时使用)
-            /// </summary>
-            public string Rolename { set { _rolename = value; } }
 
         #endregion
 
         public RoleInfoDtlFrm()
         {
             InitializeComponent();
+            //初始化窗体各控件
             OnRegisterEvents();
+            //初始化下拉列表
+            OnInitializeDropDownList();
         }
 
         private void OnRegisterEvents()
@@ -71,7 +75,7 @@ namespace RD.UI.Admin
             tmSetCanDel.Click += TmSetCanDel_Click;
             comType.SelectionChangeCommitted += ComType_SelectionChangeCommitted;
             cbadmin.Click += Cbadmin_Click;
-            txtrolename.TextChanged += Txtrolename_TextChanged;
+            txtrolename.MouseLeave += Txtrolename_MouseLeave;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -88,9 +92,8 @@ namespace RD.UI.Admin
         /// </summary>
         public void OnInitialize()
         {
-            txtrolename.Text =_rolename;
-            //初始化下拉列表
-            OnInitializeDropDownList();
+            //读取表头信息
+            ShowHead(_roleid);
             //读取明细记录至GridView
             OnInitializeDtl();
             //控制GridView显示
@@ -137,23 +140,38 @@ namespace RD.UI.Admin
         }
 
         /// <summary>
-        /// 根据相关条件将功能权限记录插入至T_AD_ROLEDTL内(状态"创建"时使用)
+        /// 根据ID获取角色名称表头信息(包括“角色名称”，“审核状态”等)
         /// </summary>
-        private void InsertRecordIntoRoledtl()
+        /// <param name="roleid">角色ID</param>
+        private void ShowHead(int roleid)
+        {
+            task.TaskId = 3;
+            task.FunctionId = "1.4";
+            task.Roleid = roleid;
+
+            task.StartTask();
+            //并将结果赋给对应的文本框内(表头信息)
+            var dt = task.ResultTable;
+            txtrolename.Text = dt.Rows[0][1].ToString();           //角色名称
+            _adminMarkId = dt.Rows[0][4].ToString();              //管理员权限标记
+            _closeMarkId = dt.Rows[0][5].ToString();             //关闭状态
+            _confirmMarkId = dt.Rows[0][6].ToString();          //审核状态
+        }
+
+        /// <summary>
+        /// 当Mouse离开时执行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Txtrolename_MouseLeave(object sender, EventArgs e)
         {
             try
             {
-                task.TaskId = 3;
-                task.FunctionId = "2";
-                task.FunctionName = _rolename;
-                task.Data = _roledt;
-
-                task.StartTask();
-                //返回新插入的表头ID;即T_AD_Role.Id值
-                _roleid = task.Orderid;
-                if (_roleid == 0) throw new Exception("发生异常,请联系管理员");
-                //当成功后将状态更改为“读取”
-                _funState = "R";
+                //获取最新的T_AD_Role的DataTable
+                _roledt = GetListdt("Role");
+                //验证所输入的"角色名称"是否已存在
+                var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
+                if (rows.Length > 0) throw new Exception("已存在相同的‘角色名称’,请再输入");
             }
             catch (Exception ex)
             {
@@ -162,21 +180,24 @@ namespace RD.UI.Admin
         }
 
         /// <summary>
-        /// 角色名称文本框值发生变化时执行
+        /// 根据相关条件将功能权限记录插入至T_AD_ROLEDTL内(状态"创建"时使用)
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Txtrolename_TextChanged(object sender, EventArgs e)
+        private void InsertRecordIntoRoledtl()
         {
             try
             {
-                //获取最新的T_AD_Role的DataTable
-                _roledt= GetListdt("Role");
-                //验证所输入的"角色名称"是否已存在
-                var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
-                if(rows.Length>0) throw new Exception("已存在相同的‘角色名称’,请再输入");
-                //若所输入的值没有重复,即将其赋值公共变量_rolename
-                _rolename = txtrolename.Text;
+                task.TaskId = 3;
+                task.FunctionId = "2";
+                task.FunctionName = txtrolename.Text;
+                task.Data = _funTypedt;
+                task.AccountName = GlobalClasscs.User.StrUsrName;
+
+                task.StartTask();
+                //返回新插入的表头ID;即T_AD_Role.Id值
+                _roleid = task.Orderid;
+                if (_roleid == 0) throw new Exception("发生异常,请联系管理员");
+                //当成功后将状态更改为“读取”
+                _funState = "R";
             }
             catch (Exception ex)
             {
@@ -209,6 +230,7 @@ namespace RD.UI.Admin
                     task.TaskId = 3;
                     task.FunctionId = "3";
                     task.Roleid = _roleid;
+                    task.FunctionName = txtrolename.Text;
 
                     task.StartTask();
                     if(!task.ResultMark) throw new Exception("更新异常,请联系管理员");
@@ -231,6 +253,9 @@ namespace RD.UI.Admin
         {
             try
             {
+                task.TaskId = 3;
+
+                task.StartTask();
 
             }
             catch (Exception ex)
@@ -248,7 +273,18 @@ namespace RD.UI.Admin
         {
             try
             {
-
+                //当为选中状态时
+                if (cbadmin.Checked)
+                {
+                    comType.Enabled = false;
+                    gvdtl.Enabled = false;
+                }
+                //当为非选中状态时
+                else
+                {
+                    comType.Enabled = true;
+                    gvdtl.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -601,31 +637,41 @@ namespace RD.UI.Admin
         /// </summary>
         private void PrivilegeControl()
         {
-            ////若为“审核”状态的话，就执行以下语句
-            //if (_confirmMarkId == "Y")
-            //{
-            //    //读取审核图片
-            //    pbimg.Visible = true;
-            //    pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
-            //    //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
-            //    tmSave.Enabled = false;
-            //    tmConfirm.Enabled = false;
-            //    gvdtl.Enabled = false;
-            //    btnGetdtl.Enabled = false;
-            //    comHtype.Enabled = false;
-            //}
-            ////若为“非审核”状态的,就执行以下语句
-            //else
-            //{
-            //    //将审核图片控件隐藏
-            //    pbimg.Visible = false;
-            //    //将所有功能的状态还原(即与审核时的控件状态相反)
-            //    tmSave.Enabled = true;
-            //    tmConfirm.Enabled = true;
-            //    gvdtl.Enabled = true;
-            //    btnGetdtl.Enabled = true;
-            //    comHtype.Enabled = true;
-            //}
+            //若为“审核”或 "关闭" 状态的话，就执行以下语句
+            if (_confirmMarkId == "Y" || _closeMarkId == "Y")
+            {
+                //读取审核图片
+                //pbimg.Visible = true;
+                //pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
+                tmSave.Enabled = false;
+                tmConfirm.Enabled = false;
+                gvdtl.Enabled = false;
+            }
+            //若为“非审核”状态的,就执行以下语句
+            else
+            {
+                //将审核图片控件隐藏
+                //pbimg.Visible = false;
+                //将所有功能的状态还原(即与审核时的控件状态相反)
+                tmSave.Enabled = true;
+                tmConfirm.Enabled = true;
+                gvdtl.Enabled = true;
+            }
+
+            //若为"管理员"状态的话,就将“功能大类名称”下拉列表 及 DataGrid控件设置为不启用;并将“管理员权限”复选框设置为选中
+            if (_adminMarkId == "Y")
+            {
+                cbadmin.Checked = true;
+                comType.Enabled = false;
+                gvdtl.Enabled = false;
+            }
+            else
+            {
+                cbadmin.Checked = false;
+                comType.Enabled = true;
+                gvdtl.Enabled = true;
+            }
         }
 
         /// <summary>
@@ -661,8 +707,6 @@ namespace RD.UI.Admin
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
         }
-
-
 
     }
 }
