@@ -383,12 +383,28 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetConfirm_Click(object sender, EventArgs e)
         {
+            //创建Ntempdt 及 Ytempdt临时表
+            var ntempdt = CreateTable();
+            var ytempdt = CreateTable();
+
+            //设置返回值
+            var nbool = new bool();
+            var ybool = new bool();
+
             try
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
                  
+                //先检测所选中的行是否已设置了“已显示”，若没有，跳出异常
+                if(CheckCanShowMark(gvdtl.SelectedRows)==0) throw new Exception("检测到所选择的行中有没有设置‘已显示’,请先设置,再继续");
 
+                foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                {
+                    var entryid = Convert.ToInt32(row.Cells[0].Value);     //获取T_AD_RoleDtl.EntryId
+                    var canBackConfirm = Convert.ToString(row.Cells[2].Value); //获取"是否反审核"标记
+
+                }
 
             }
             catch (Exception ex)
@@ -821,6 +837,21 @@ namespace RD.UI.Admin
                 dt.Columns.Add(dc);
             }
             return dt;
+        }
+
+        /// <summary>
+        /// 检测所选中的GridView行是否有设置“已显示”标记
+        /// </summary>
+        /// <param name="datarow"></param>
+        /// <returns></returns>
+        private int CheckCanShowMark(DataGridViewSelectedRowCollection datarow)
+        {
+            var result = 0;
+            foreach (DataGridViewRow row in datarow)
+            {
+                
+            }
+            return result;
         }
 
     }
