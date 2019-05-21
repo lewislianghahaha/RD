@@ -34,13 +34,14 @@ namespace RD.Logic.Admin
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="roleid"></param>
+        /// <param name="canallmark"></param>
         /// <returns></returns>
-        public bool UpdateRole(string functionName , int roleid)
+        public bool UpdateRole(string functionName , int roleid,string canallmark)
         {
             var result = true;
             try
             {
-                result = importDt.UpdateRole(functionName, roleid);
+                result = importDt.UpdateRole(functionName, roleid, canallmark);
             }
             catch (Exception ex)
             {

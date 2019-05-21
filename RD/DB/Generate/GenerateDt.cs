@@ -282,5 +282,104 @@ namespace RD.DB.Generate
 
         #endregion
 
+        #region 角色权限 相关操作-包括审核(反审核) 关闭
+
+        /// <summary>
+        /// 角色权限明细审核（反审核）操作
+        /// </summary>
+        /// <param name="confirmid">审核标记;0:审核 1:反审核</param>
+        /// <param name="roleid">角色ID</param>
+        /// <param name="datarow">所选择的行</param>
+        /// <returns></returns>
+        public bool ConfirmRoleFunOrderDtl(int confirmid, int roleid,DataGridViewSelectedRowCollection datarow)
+        {
+            var result = true;
+            try
+            {
+                //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
+                if (datarow.Count == 0)
+                {
+                    var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, roleid);
+                    result = GenerDt(sqlscript);
+                }
+                //循环从GridView中所选择的行记录 RoleInfoFrm.cs
+                else
+                {
+                    foreach (DataGridViewRow row in datarow)
+                    {
+                        var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, Convert.ToInt32(row.Cells[0].Value));
+                        result = GenerDt(sqlscript);
+                    }
+                }  
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 角色权限明细关闭(反关闭)操作
+        /// </summary>
+        /// <param name="closeid">关闭标记;0:关闭 1:反关闭</param>
+        /// <param name="roleid">角色ID</param>
+        /// <param name="datarow">所选择的行</param>
+        /// <returns></returns>
+        public bool CloseRoleFunOrderDtl(int closeid, int roleid, DataGridViewSelectedRowCollection datarow)
+        {
+            var result = true;
+            try
+            {
+                //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
+                if (datarow.Count == 0)
+                {
+                    var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, roleid);
+                    result = GenerDt(sqlscipt);
+                }
+                //循环从GridView中所选择的行记录 RoleInfoFrm.cs
+                else
+                {
+                    foreach (DataGridViewRow row in datarow)
+                    {
+                        var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, Convert.ToInt32(row.Cells[0].Value));
+                        result = GenerDt(sqlscipt);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据指定条件-对“显示” “反审核” “删除”权限设置
+        /// </summary>
+        /// <param name="functionname">功能分类名称</param>
+        /// <param name="typeid">0:正面操作(如:显示) 1:反面操作(如:不显示)</param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool Update_RoleFunStatus(string functionname, int typeid, DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    var sqlscipt = sqlList.Update_RoleFunStatus(functionname, typeid, Convert.ToInt32(row[0]));
+                    result = GenerDt(sqlscipt);
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        #endregion
+
     }
 }

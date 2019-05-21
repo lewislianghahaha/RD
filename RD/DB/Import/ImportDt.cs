@@ -755,10 +755,11 @@ namespace RD.DB.Import
         /// </summary>
         /// <param name="rolename">角色名称</param>
         /// <param name="roleid">角色id</param>
+        /// <param name="canallmark">管理员权限标记</param>
         /// <returns></returns>
-        public bool UpdateRole(string rolename , int roleid)
+        public bool UpdateRole(string rolename , int roleid,string canallmark)
         {
-            var sqlscript = sqlList.Update_Role(rolename, roleid);
+            var sqlscript = sqlList.Update_Role(rolename, roleid,canallmark);
             var result = EditDt(sqlscript);
             return result;
         }

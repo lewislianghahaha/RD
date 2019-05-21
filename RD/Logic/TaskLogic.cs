@@ -64,6 +64,7 @@ namespace RD.Logic
             private int _sexid;              //职员性别ID(权限窗体使用)
             private string _closeid;         //职员帐号关闭状态(权限窗体使用)
             private int _roleid;             //角色ID(权限窗体使用)
+            private string _canallmark;      //管理员权限标记         
 
             private DataTable _resultTable;  //返回DT类型
             private bool _resultMark;        //返回是否成功标记
@@ -224,6 +225,11 @@ namespace RD.Logic
         /// </summary>
         public int Funtypeid { set { _funtypeid = value; } }
 
+        /// <summary>
+        /// 管理员权限标记
+        /// </summary>
+        public string Canallmark { set { _canallmark = value; } }
+
         #endregion
 
         #region Get
@@ -263,7 +269,8 @@ namespace RD.Logic
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
-                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data,_accountName);
+                    AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data,_accountName, 
+                              _canallmark,_confirmid,_datarow,_id);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -439,8 +446,13 @@ namespace RD.Logic
         /// <param name="funtypeid">功能大类ID</param>
         /// <param name="dt">功能大类名称DT</param>
         /// <param name="accountName">帐户名称</param>
+        /// <param name="canallmark">管理员权限标记</param>
+        /// <param name="confirmid">审核ID</param>
+        /// <param name="datarow">保存从GridView选择的行</param>
+        /// <param name="id">获取关闭等相关标记信息</param>
         private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,
-                               DateTime dtTime,int roleid,int funtypeid,DataTable dt,string accountName)
+                               DateTime dtTime,int roleid,int funtypeid,DataTable dt,string accountName,string canallmark,int confirmid,
+                               DataGridViewSelectedRowCollection datarow,int id)
         {
             switch (functionId)
             {
@@ -470,18 +482,23 @@ namespace RD.Logic
                     _orderid = adminImport.InsertDtlIntoRole(functionName,dt, accountName);
                     break;
 
-                //更新功能
+                //更新功能(更新:角色名称 管理员权限T_AD_Role)
                 case "3":
-                    _resultMark = adminImport.UpdateRole(functionName,roleid);
+                    _resultMark = adminImport.UpdateRole(functionName,roleid,canallmark);
                     break;
 
-                //审核(反审核)
+                //审核(反审核) 针对T_AD_Role进行操作 datarow 作用:从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)
                 case "4":
-
+                    _resultMark = adminGenerate.ConfirmRoleFunOrderDtl(confirmid,roleid,datarow);
                     break;
-                //关闭(反关闭)
-                case "5":
 
+                //关闭(反关闭) 针对T_AD_Role进行操作 datarow 作用:从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)
+                case "5":
+                    _resultMark = adminGenerate.CloseRoleFunOrderDtl(id,roleid,datarow);
+                    break;
+                //针对T_AD_RoleDtl进行'显示' ‘反审核’ ‘能删除’ 权限标记改变
+                case "6":
+                    _resultMark = adminGenerate.Update_RoleFunStatus(functionName,funtypeid, dt);
                     break;
             }
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -192,17 +191,17 @@ namespace RD.UI.Admin
         {
             try
             {
-                //保存前先检测文本框的值是否重复
-                //获取最新的T_AD_Role的DataTable
-                _roledt = GetListdt("Role");
-                //验证所输入的"角色名称"是否已存在
-                var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
-                if (rows.Length > 0) throw new Exception("已存在相同的‘角色名称’,请再输入");
-
                 //根据"状态"，来判定是使用“插入”或“更新”功能
                 //执行插入效果
                 if (_funState=="C")
                 {
+                    //保存前先检测文本框的值是否重复
+                    //获取最新的T_AD_Role的DataTable
+                    _roledt = GetListdt("Role");
+                    //验证所输入的"角色名称"是否已存在
+                    var rows = _roledt.Select("RoleName='" + txtrolename.Text + "'");
+                    if (rows.Length > 0) throw new Exception("已存在相同的‘角色名称’,请再输入");
+
                     //执行插入T_AD_RoleDtl方法
                     InsertRecordIntoRoledtl();
                     //执行初始化方法;重新读取
@@ -215,10 +214,15 @@ namespace RD.UI.Admin
                     task.TaskId = 3;
                     task.FunctionId = "3";
                     task.Roleid = _roleid;
-                    task.FunctionName = txtrolename.Text;   //角色名称
+                    task.FunctionName = txtrolename.Text;                //角色名称
+                    task.Canallmark = cbadmin.Checked ? "Y" : "N";       //管理员权限复选框
 
                     task.StartTask();
                     if(!task.ResultMark) throw new Exception("更新异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                     //执行初始化;重新读取
                     OnInitialize();
                 }
@@ -235,15 +239,21 @@ namespace RD.UI.Admin
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmConfirm_Click(object sender, System.EventArgs e)
+        private void TmConfirm_Click(object sender, EventArgs e)
         {
             try
             {
+                var newcbadmin = cbadmin.Checked?"Y":"N";
+
+                //当检测到“管理员权限”不相同的,会提示异常
+                if (_adminMarkId != newcbadmin) throw new Exception("检测到'管理员权限'已修改但没有保存,请先进行保存后再进行审核");
+
                 var clickMessage = $"您所选择的信息为:\n 角色名称:{txtrolename.Text} \n 是否继续? \n 注:若不进行审核,职员帐户不能使用 \n 请谨慎处理.";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     task.TaskId = 3;
                     task.FunctionId = "4";
+                    task.Confirmid = 0;        //审核标记 0:审核 1:反审核
                     task.Roleid = _roleid;
 
                     task.StartTask();
@@ -314,9 +324,51 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetshow_Click(object sender, EventArgs e)
         {
+            //创建Ntempdt 及 Ytempdt临时表
+            var ntempdt = CreateTable();
+            var ytempdt = CreateTable();
+
+            //设置返回值
+            var nbool=new bool();
+            var ybool=new bool();
+
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
 
+                //循环所选择的行中有多少个是设置为"显示"或"不显示"
+                foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                {
+                    var entryid = Convert.ToInt32(row.Cells[0].Value);     //获取T_AD_RoleDtl.EntryId
+                    var canshowmark = Convert.ToString(row.Cells[2].Value); //获取"是否显示"标记
+                    //判断若canshowmark变量为N,就将以上两个变量赋值到'Ntempdt'临时表内,反之,赋值到'Ytempdt'临时表内
+                    if (canshowmark=="否")
+                    {
+                        var newrow = ntempdt.NewRow();
+                        newrow[0] = entryid;
+                        ntempdt.Rows.Add(newrow);
+                    }
+                    else
+                    {
+                        var newrow = ytempdt.NewRow();
+                        newrow[0] = entryid;
+                        ytempdt.Rows.Add(newrow);
+                    }
+                }
+                //判断若以上两个临时表其中一个有值的话,就进行更新操作
+                var message = $"检测到所选择的行中有 \n 已设置显示'{ytempdt.Rows.Count}'行 \n 末设置显示'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                if (MessageBox.Show(message, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    if (ntempdt.Rows.Count > 0)
+                        nbool=ChangeState("CanShow", 0, ntempdt);
+                    if (ytempdt.Rows.Count > 0)
+                        ybool=ChangeState("CanShow", 1,ytempdt);
+                    if(nbool || ybool)
+                        MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                //完成后进行刷新
+                OnInitialize();
             }
             catch (Exception ex)
             {
@@ -333,6 +385,10 @@ namespace RD.UI.Admin
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+                 
+
 
             }
             catch (Exception ex)
@@ -350,6 +406,10 @@ namespace RD.UI.Admin
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+
+
 
             }
             catch (Exception ex)
@@ -645,6 +705,8 @@ namespace RD.UI.Admin
                 tmSave.Enabled = false;
                 tmConfirm.Enabled = false;
                 gvdtl.Enabled = false;
+                cbadmin.Enabled = false;
+                txtrolename.Enabled = false;
             }
             //若为“非审核”状态的,就执行以下语句
             else
@@ -655,6 +717,8 @@ namespace RD.UI.Admin
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
                 gvdtl.Enabled = true;
+                cbadmin.Enabled = true;
+                txtrolename.Enabled = true;
             }
 
             //若为"管理员"状态的话,就将“功能大类名称”下拉列表 及 DataGrid控件设置为不启用;并将“管理员权限”复选框设置为选中
@@ -704,6 +768,59 @@ namespace RD.UI.Admin
         {
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
+        }
+
+        /// <summary>
+        /// 更改明细功能内各状态信息(如:显示 反审核 删除权限)
+        /// </summary>
+        /// <param name="functionName">功能分类名称</param>
+        /// <param name="funtypeid">0:正面操作(如:显示) 1:反面操作(如:不显示)</param>
+        /// <param name="dt">要执行操作的DT</param>
+        /// <returns></returns>
+        private bool ChangeState(string functionName, int funtypeid,DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 3;
+                task.FunctionId = "6";
+                task.FunctionName = functionName;
+                task.Funtypeid = funtypeid;
+                task.Data = dt;
+                //task.Confirmid = fStatus == "已审核" ? 1 : 0;
+                task.Datarow = gvdtl.SelectedRows;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 创建临时表(表体明细功能权限设置使用)
+        /// </summary>
+        /// <returns></returns>
+        private DataTable CreateTable()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 1; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //EntryID
+                    case 0:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
         }
 
     }

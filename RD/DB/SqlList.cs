@@ -1047,10 +1047,67 @@ namespace RD.DB
         /// </summary>
         /// <param name="rolename"></param>
         /// <param name="roleid"></param>
+        /// <param name="canallmark"></param>
         /// <returns></returns>
-        public string Update_Role(string rolename,int roleid)
+        public string Update_Role(string rolename,int roleid,string canallmark)
         {
-            _result = $@"update t_ad_role set rolename='{rolename}' where id='{roleid}'";
+            _result = $@"update t_ad_role set rolename='{rolename}',CanALLMark='{canallmark}' where id='{roleid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据条件对角色明细审核(反审核)
+        /// </summary>
+        /// <param name="confirmid">审核标记;0:审核 1:反审核</param>
+        /// <param name="roleid">角色ID</param>
+        /// <returns></returns>
+        public string Update_RoleConfirmStatus(int confirmid,int roleid)
+        {
+            _result = confirmid==0 ? $@"UPDATE dbo.T_AD_Role SET Fstatus='Y',FstatusDt='{DateTime.Now.Date}' WHERE id='{roleid}'" 
+                                    : $@"UPDATE dbo.T_AD_Role SET Fstatus='N',FstatusDt='{DateTime.Now.Date}' WHERE id='{roleid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据条件对角色明细进行关闭(反关闭)
+        /// </summary>
+        /// <param name="closeid">关闭标记;0:关闭 1:反关闭</param>
+        /// <param name="roleid">角色ID</param>
+        /// <returns></returns>
+        public string Update_RoleCloseStatus(int closeid, int roleid)
+        {
+            _result = closeid == 0 ? $@"UPDATE dbo.T_AD_Role SET CloseStatus='Y' WHERE id='{roleid}'" 
+                                     : $@"UPDATE dbo.T_AD_Role SET CloseStatus='N' WHERE id='{roleid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据指定条件-对“显示” “反审核” “删除”权限设置
+        /// </summary>
+        /// <param name="functionname">功能名称</param>
+        /// <param name="typeid">0:正面操作(如:显示) 1:反面操作(如:不显示)</param>
+        /// <param name="entryid">T_AD_RoleDtl.EntryID字段</param>
+        /// <returns></returns>
+        public string Update_RoleFunStatus(string functionname,int typeid,int entryid)
+        {
+            switch (functionname)
+            {
+                //显示
+                case "CanShow":
+                    _result = typeid == 0 ? $@"UPDATE dbo.T_AD_RoleDtl SET CanShow='Y' WHERE EntryID='{entryid}'" 
+                                            : $@"UPDATE dbo.T_AD_RoleDtl SET CanShow='N' WHERE EntryID='{entryid}'";
+                    break;
+                //反审核
+                case "CanBackConfirm":
+                    _result = typeid == 0 ? $@"UPDATE dbo.T_AD_RoleDtl SET CanBackConfirm='Y' WHERE EntryID='{entryid}'" 
+                                            : $@"UPDATE dbo.T_AD_RoleDtl SET CanBackConfirm='N' WHERE EntryID='{entryid}'";
+                    break;
+                //删除
+                case "CanDel":
+                    _result = typeid == 0 ? $@"UPDATE dbo.T_AD_RoleDtl SET CanDel='Y' WHERE EntryID='{entryid}'" 
+                                            : $@"UPDATE dbo.T_AD_RoleDtl SET CanDel='N' WHERE EntryID='{entryid}'";
+                    break;
+            }
             return _result;
         }
 

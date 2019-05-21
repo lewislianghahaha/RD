@@ -16,8 +16,6 @@ namespace RD.UI.Admin
         private DataTable _roledt;
         //保存所选择的roleid
         private int _roleid;
-        //保存所选择的rolename
-        private string _rolename;
 
         //保存查询出来的GridView记录
         private DataTable _dtl;
@@ -77,7 +75,6 @@ namespace RD.UI.Admin
             //获取下拉列表所选的值
             var dvrolelist = (DataRowView)comrole.Items[comrole.SelectedIndex];
             _roleid = Convert.ToInt32(dvrolelist["id"]);
-            _rolename = Convert.ToString(dvrolelist["RoleName"]);
 
             //初始化角色明细信息
             task.TaskId = 3;
@@ -122,8 +119,9 @@ namespace RD.UI.Admin
 
                 var roleInfo = new RoleInfoDtlFrm();
                 //初始化信息赋值
-                roleInfo.Roledt = _roledt;
                 roleInfo.FunState = "C";
+                roleInfo.Roledt = _roledt;
+
                 roleInfo.StartPosition = FormStartPosition.CenterScreen;
                 roleInfo.ShowDialog();
             }
@@ -162,14 +160,14 @@ namespace RD.UI.Admin
                 if(gvdtl.Rows.Count==0)throw new Exception("没有内容,不能查阅");
                 if(gvdtl.SelectedRows.Count==0) throw new Exception("没有选中的行,请选中后继续.");
 
-                ////将当前窗体隐藏
+                //将当前窗体隐藏
                 //this.Visible = false;
 
                 var roleInfo = new RoleInfoDtlFrm();
                 //初始化信息赋值
                 roleInfo.FunState = "R";
                 roleInfo.Roledt = _roledt;
-                roleInfo.Roleid = _roleid;
+                roleInfo.Roleid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);  //获取所选择行的roleid
                 roleInfo.OnInitialize();
 
                 roleInfo.StartPosition = FormStartPosition.CenterScreen;
@@ -190,7 +188,22 @@ namespace RD.UI.Admin
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
 
+                //
+
+                task.TaskId = 3;
+                task.FunctionId = "5";
+                task.Confirmid = 0;        //审核标记 0:审核 1:反审核
+                task.Roleid = _roleid;
+
+                task.StartTask();
+                if(!task.ResultMark) throw new Exception("发生异常,请联系管理员");
+                else
+                {
+                    MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
@@ -207,6 +220,13 @@ namespace RD.UI.Admin
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+
+                //
+                task.TaskId = 3;
+                task.FunctionId = "5";
+
 
             }
             catch (Exception ex)
@@ -529,6 +549,33 @@ namespace RD.UI.Admin
                 gvdtl.DataSource = dt;
                 panel1.Visible = false;
             }
+        }
+
+        /// <summary>
+        /// 更改功能内各状态信息(如:审核 关闭权限)
+        /// </summary>
+        /// <param name="fStatus"></param>
+        /// <param name="ordertype"></param>
+        /// <returns></returns>
+        private bool ChangeState(string fStatus, string ordertype)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 3;
+                task.FunctionId = "5";
+                task.FunctionName = ordertype;
+                task.Confirmid = fStatus == "已审核" ? 1 : 0;
+                task.Datarow = gvdtl.SelectedRows;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
         }
     }
 }

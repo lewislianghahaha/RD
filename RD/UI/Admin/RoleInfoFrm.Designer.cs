@@ -53,24 +53,26 @@
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.comrole = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.gvdtl = new System.Windows.Forms.DataGridView();
             this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmshowdtl = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmCloseInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tmconfirm = new System.Windows.Forms.ToolStripMenuItem();
-            this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.comrole = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comconfirm = new System.Windows.Forms.ComboBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.CMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.CMenu.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -83,27 +85,26 @@
             this.tmclose});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
-            this.Menu.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.Menu.Size = new System.Drawing.Size(1005, 34);
+            this.Menu.Size = new System.Drawing.Size(659, 25);
             this.Menu.TabIndex = 0;
             this.Menu.Text = "menuStrip1";
             // 
             // tmaddrole
             // 
             this.tmaddrole.Name = "tmaddrole";
-            this.tmaddrole.Size = new System.Drawing.Size(58, 28);
+            this.tmaddrole.Size = new System.Drawing.Size(44, 21);
             this.tmaddrole.Text = "新增";
             // 
             // tmreset
             // 
             this.tmreset.Name = "tmreset";
-            this.tmreset.Size = new System.Drawing.Size(58, 28);
+            this.tmreset.Size = new System.Drawing.Size(44, 21);
             this.tmreset.Text = "刷新";
             // 
             // tmclose
             // 
             this.tmclose.Name = "tmclose";
-            this.tmclose.Size = new System.Drawing.Size(58, 28);
+            this.tmclose.Size = new System.Drawing.Size(44, 21);
             this.tmclose.Text = "关闭";
             // 
             // panel1
@@ -111,10 +112,9 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.bngat);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 553);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(0, 368);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1005, 38);
+            this.panel1.Size = new System.Drawing.Size(659, 26);
             this.panel1.TabIndex = 1;
             // 
             // bngat
@@ -143,29 +143,28 @@
             this.toolStripLabel5,
             this.tstotalrow});
             this.bngat.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.bngat.Location = new System.Drawing.Point(337, 0);
+            this.bngat.Location = new System.Drawing.Point(151, 0);
             this.bngat.MoveFirstItem = this.bnMoveFirstItem;
             this.bngat.MoveLastItem = this.bnMoveLastItem;
             this.bngat.MoveNextItem = this.bnMoveNextItem;
             this.bngat.MovePreviousItem = this.bnMovePreviousItem;
             this.bngat.Name = "bngat";
-            this.bngat.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.bngat.PositionItem = this.bnPositionItem;
-            this.bngat.Size = new System.Drawing.Size(666, 36);
+            this.bngat.Size = new System.Drawing.Size(506, 24);
             this.bngat.TabIndex = 0;
             this.bngat.Text = "bindingNavigator1";
             // 
             // bnCountItem
             // 
             this.bnCountItem.Name = "bnCountItem";
-            this.bnCountItem.Size = new System.Drawing.Size(69, 33);
+            this.bnCountItem.Size = new System.Drawing.Size(48, 21);
             this.bnCountItem.Text = "/ {0} 页";
             this.bnCountItem.ToolTipText = "总项数";
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(28, 33);
+            this.toolStripLabel1.Size = new System.Drawing.Size(20, 21);
             this.toolStripLabel1.Text = "第";
             // 
             // bnPositionItem
@@ -173,20 +172,20 @@
             this.bnPositionItem.AccessibleName = "位置";
             this.bnPositionItem.AutoSize = false;
             this.bnPositionItem.Name = "bnPositionItem";
-            this.bnPositionItem.Size = new System.Drawing.Size(73, 30);
+            this.bnPositionItem.Size = new System.Drawing.Size(50, 23);
             this.bnPositionItem.Text = "0";
             this.bnPositionItem.ToolTipText = "当前位置";
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(28, 33);
+            this.toolStripLabel2.Size = new System.Drawing.Size(20, 21);
             this.toolStripLabel2.Text = "页";
             // 
             // bindingNavigatorSeparator
             // 
             this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 36);
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 24);
             // 
             // bnMoveFirstItem
             // 
@@ -194,7 +193,7 @@
             this.bnMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveFirstItem.Image")));
             this.bnMoveFirstItem.Name = "bnMoveFirstItem";
             this.bnMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bnMoveFirstItem.Size = new System.Drawing.Size(28, 33);
+            this.bnMoveFirstItem.Size = new System.Drawing.Size(28, 21);
             this.bnMoveFirstItem.Text = "移到第一条记录";
             // 
             // bnMovePreviousItem
@@ -203,13 +202,13 @@
             this.bnMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMovePreviousItem.Image")));
             this.bnMovePreviousItem.Name = "bnMovePreviousItem";
             this.bnMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bnMovePreviousItem.Size = new System.Drawing.Size(28, 33);
+            this.bnMovePreviousItem.Size = new System.Drawing.Size(28, 21);
             this.bnMovePreviousItem.Text = "移到上一条记录";
             // 
             // bindingNavigatorSeparator1
             // 
             this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 36);
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 24);
             // 
             // bnMoveNextItem
             // 
@@ -217,7 +216,7 @@
             this.bnMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveNextItem.Image")));
             this.bnMoveNextItem.Name = "bnMoveNextItem";
             this.bnMoveNextItem.RightToLeftAutoMirrorImage = true;
-            this.bnMoveNextItem.Size = new System.Drawing.Size(28, 33);
+            this.bnMoveNextItem.Size = new System.Drawing.Size(28, 21);
             this.bnMoveNextItem.Text = "移到下一条记录";
             // 
             // bnMoveLastItem
@@ -226,18 +225,18 @@
             this.bnMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bnMoveLastItem.Image")));
             this.bnMoveLastItem.Name = "bnMoveLastItem";
             this.bnMoveLastItem.RightToLeftAutoMirrorImage = true;
-            this.bnMoveLastItem.Size = new System.Drawing.Size(28, 33);
+            this.bnMoveLastItem.Size = new System.Drawing.Size(28, 21);
             this.bnMoveLastItem.Text = "移到最后一条记录";
             // 
             // bindingNavigatorSeparator2
             // 
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 24);
             // 
             // toolStripLabel3
             // 
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(86, 33);
+            this.toolStripLabel3.Size = new System.Drawing.Size(59, 21);
             this.toolStripLabel3.Text = "每页显示:";
             // 
             // tmshowrows
@@ -249,24 +248,24 @@
             "100",
             "1000"});
             this.tmshowrows.Name = "tmshowrows";
-            this.tmshowrows.Size = new System.Drawing.Size(110, 36);
+            this.tmshowrows.Size = new System.Drawing.Size(75, 24);
             // 
             // toolStripLabel4
             // 
             this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(28, 33);
+            this.toolStripLabel4.Size = new System.Drawing.Size(20, 21);
             this.toolStripLabel4.Text = "行";
             // 
             // toolStripLabel5
             // 
             this.toolStripLabel5.Name = "toolStripLabel5";
-            this.toolStripLabel5.Size = new System.Drawing.Size(18, 33);
+            this.toolStripLabel5.Size = new System.Drawing.Size(13, 21);
             this.toolStripLabel5.Text = "/";
             // 
             // tstotalrow
             // 
             this.tstotalrow.Name = "tstotalrow";
-            this.tstotalrow.Size = new System.Drawing.Size(79, 33);
+            this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
             // panel2
@@ -274,43 +273,24 @@
             this.panel2.Controls.Add(this.gvdtl);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 34);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Location = new System.Drawing.Point(0, 25);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1005, 519);
+            this.panel2.Size = new System.Drawing.Size(659, 343);
             this.panel2.TabIndex = 2;
             // 
-            // panel3
+            // gvdtl
             // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.comrole);
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1005, 41);
-            this.panel3.TabIndex = 1;
-            // 
-            // comrole
-            // 
-            this.comrole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comrole.FormattingEnabled = true;
-            this.comrole.Location = new System.Drawing.Point(105, 4);
-            this.comrole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.comrole.Name = "comrole";
-            this.comrole.Size = new System.Drawing.Size(180, 26);
-            this.comrole.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 10);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 18);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "角色名称:";
+            this.gvdtl.AllowUserToAddRows = false;
+            this.gvdtl.AllowUserToDeleteRows = false;
+            this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.ContextMenuStrip = this.CMenu;
+            this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvdtl.Location = new System.Drawing.Point(0, 28);
+            this.gvdtl.Name = "gvdtl";
+            this.gvdtl.ReadOnly = true;
+            this.gvdtl.RowTemplate.Height = 23;
+            this.gvdtl.Size = new System.Drawing.Size(659, 315);
+            this.gvdtl.TabIndex = 2;
             // 
             // CMenu
             // 
@@ -322,63 +302,98 @@
             this.toolStripSeparator2,
             this.tmconfirm});
             this.CMenu.Name = "CMenu";
-            this.CMenu.Size = new System.Drawing.Size(255, 100);
+            this.CMenu.Size = new System.Drawing.Size(193, 82);
             // 
             // tmshowdtl
             // 
             this.tmshowdtl.Name = "tmshowdtl";
-            this.tmshowdtl.Size = new System.Drawing.Size(254, 28);
+            this.tmshowdtl.Size = new System.Drawing.Size(192, 22);
             this.tmshowdtl.Text = "查看明细信息";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(251, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(189, 6);
             // 
             // tmCloseInfo
             // 
             this.tmCloseInfo.Name = "tmCloseInfo";
-            this.tmCloseInfo.Size = new System.Drawing.Size(254, 28);
+            this.tmCloseInfo.Size = new System.Drawing.Size(192, 22);
             this.tmCloseInfo.Text = "关闭(恢复)指定信息";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(251, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(189, 6);
             // 
             // tmconfirm
             // 
             this.tmconfirm.Name = "tmconfirm";
-            this.tmconfirm.Size = new System.Drawing.Size(254, 28);
+            this.tmconfirm.Size = new System.Drawing.Size(192, 22);
             this.tmconfirm.Text = "审核(反审核)指定信息";
             // 
-            // gvdtl
+            // panel3
             // 
-            this.gvdtl.AllowDrop = true;
-            this.gvdtl.AllowUserToAddRows = false;
-            this.gvdtl.AllowUserToDeleteRows = false;
-            this.gvdtl.AllowUserToOrderColumns = true;
-            this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvdtl.ContextMenuStrip = this.CMenu;
-            this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvdtl.Location = new System.Drawing.Point(0, 41);
-            this.gvdtl.Name = "gvdtl";
-            this.gvdtl.ReadOnly = true;
-            this.gvdtl.RowTemplate.Height = 30;
-            this.gvdtl.Size = new System.Drawing.Size(1005, 478);
-            this.gvdtl.TabIndex = 2;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.comconfirm);
+            this.panel3.Controls.Add(this.label2);
+            this.panel3.Controls.Add(this.comrole);
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(659, 28);
+            this.panel3.TabIndex = 1;
+            // 
+            // comrole
+            // 
+            this.comrole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comrole.FormattingEnabled = true;
+            this.comrole.Location = new System.Drawing.Point(70, 3);
+            this.comrole.Name = "comrole";
+            this.comrole.Size = new System.Drawing.Size(121, 20);
+            this.comrole.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "角色名称:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(229, 8);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "审核状态:";
+            // 
+            // comconfirm
+            // 
+            this.comconfirm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comconfirm.FormattingEnabled = true;
+            this.comconfirm.Items.AddRange(new object[] {
+            "已审核",
+            "末审核"});
+            this.comconfirm.Location = new System.Drawing.Point(288, 3);
+            this.comconfirm.Name = "comconfirm";
+            this.comconfirm.Size = new System.Drawing.Size(121, 20);
+            this.comconfirm.TabIndex = 3;
             // 
             // RoleInfoFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1005, 591);
+            this.ClientSize = new System.Drawing.Size(659, 394);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "RoleInfoFrm";
             this.Text = "角色信息管理";
             this.Menu.ResumeLayout(false);
@@ -389,10 +404,10 @@
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.CMenu.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.CMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -433,5 +448,7 @@
         private System.Windows.Forms.ComboBox comrole;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView gvdtl;
+        private System.Windows.Forms.ComboBox comconfirm;
+        private System.Windows.Forms.Label label2;
     }
 }
