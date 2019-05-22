@@ -821,6 +821,14 @@ namespace RD.DB
                                     WHERE a.ParentId=0
                                 ";
                     break;
+                //职员性别
+                case "Sex":
+                    _result = @"
+                                    SELECT 1 Sexid,'男' SexName
+                                    union
+                                    SELECT 2 Sexid,'女' SexName
+                               ";
+                    break;
             }
             return _result;
         }

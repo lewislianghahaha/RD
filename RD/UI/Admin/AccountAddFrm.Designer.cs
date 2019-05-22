@@ -47,9 +47,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.cbshow = new System.Windows.Forms.CheckBox();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmaddclose = new System.Windows.Forms.ToolStripMenuItem();
@@ -193,9 +191,6 @@
             // 
             this.comsex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comsex.FormattingEnabled = true;
-            this.comsex.Items.AddRange(new object[] {
-            "男",
-            "女"});
             this.comsex.Location = new System.Drawing.Point(114, 38);
             this.comsex.Name = "comsex";
             this.comsex.Size = new System.Drawing.Size(164, 20);
@@ -251,42 +246,22 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.checkBox1);
-            this.panel2.Controls.Add(this.comboBox1);
-            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.cbshow);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(979, 27);
             this.panel2.TabIndex = 1;
             // 
-            // checkBox1
+            // cbshow
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(215, 5);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(192, 16);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "显示已添加但末关闭的权限记录";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(74, 2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 1;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 6);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 12);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "角色名称:";
+            this.cbshow.AutoSize = true;
+            this.cbshow.Location = new System.Drawing.Point(5, 5);
+            this.cbshow.Name = "cbshow";
+            this.cbshow.Size = new System.Drawing.Size(192, 16);
+            this.cbshow.TabIndex = 2;
+            this.cbshow.Text = "显示已添加并末关闭的权限记录";
+            this.cbshow.UseVisualStyleBackColor = true;
             // 
             // gvdtl
             // 
@@ -550,8 +525,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbshow;
     }
 }

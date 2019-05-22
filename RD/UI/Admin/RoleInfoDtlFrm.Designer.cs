@@ -68,6 +68,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbadmin = new System.Windows.Forms.CheckBox();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
@@ -82,6 +83,7 @@
             this.CMenu.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.SuspendLayout();
             // 
             // Menu
@@ -318,6 +320,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pbimg);
             this.tabPage1.Controls.Add(this.gvdtl);
             this.tabPage1.Controls.Add(this.panel3);
             this.tabPage1.Controls.Add(this.panel2);
@@ -431,6 +434,17 @@
             this.cbadmin.Text = "管理员权限";
             this.cbadmin.UseVisualStyleBackColor = true;
             // 
+            // pbimg
+            // 
+            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbimg.Location = new System.Drawing.Point(913, 58);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(65, 61);
+            this.pbimg.TabIndex = 3;
+            this.pbimg.TabStop = false;
+            this.pbimg.Visible = false;
+            // 
             // RoleInfoDtlFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -462,6 +476,7 @@
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -507,5 +522,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
+        private System.Windows.Forms.PictureBox pbimg;
     }
 }

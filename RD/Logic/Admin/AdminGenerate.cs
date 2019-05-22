@@ -13,12 +13,12 @@ namespace RD.Logic.Admin
         /// </summary>
         /// <param name="confirmid">审核ID 0:审核 1:反审核</param>
         /// <param name="roleid">角色ID</param>
-        /// <param name="datarow">从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)</param>
+        /// <param name="dt">从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)</param>
         /// <returns></returns>
-        public bool ConfirmRoleFunOrderDtl(int confirmid, int roleid, DataGridViewSelectedRowCollection datarow)
+        public bool ConfirmRoleFunOrderDtl(int confirmid, int roleid, DataTable dt)
         {
             var result = true;
-            result = generateDt.ConfirmRoleFunOrderDtl(confirmid, roleid, datarow);
+            result = generateDt.ConfirmRoleFunOrderDtl(confirmid, roleid, dt);
             return result;
         }
 
@@ -27,12 +27,12 @@ namespace RD.Logic.Admin
         /// </summary>
         /// <param name="closeid">关闭标记;0:关闭 1:反关闭</param>
         /// <param name="roleid">角色ID</param>
-        /// <param name="datarow">从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)</param>
+        /// <param name="dt">从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)</param>
         /// <returns></returns>
-        public bool CloseRoleFunOrderDtl(int closeid, int roleid, DataGridViewSelectedRowCollection datarow)
+        public bool CloseRoleFunOrderDtl(int closeid, int roleid, DataTable dt)
         {
             var result = true;
-            result = generateDt.CloseRoleFunOrderDtl(closeid, roleid,datarow);
+            result = generateDt.CloseRoleFunOrderDtl(closeid, roleid,dt);
             return result;
         }
 

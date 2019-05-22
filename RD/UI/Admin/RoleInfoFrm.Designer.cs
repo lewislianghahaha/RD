@@ -63,8 +63,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.comrole = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comconfirm = new System.Windows.Forms.ComboBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
@@ -335,8 +333,6 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.comconfirm);
-            this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.comrole);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
@@ -362,27 +358,6 @@
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "角色名称:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(229, 8);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 12);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "审核状态:";
-            // 
-            // comconfirm
-            // 
-            this.comconfirm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comconfirm.FormattingEnabled = true;
-            this.comconfirm.Items.AddRange(new object[] {
-            "已审核",
-            "末审核"});
-            this.comconfirm.Location = new System.Drawing.Point(288, 3);
-            this.comconfirm.Name = "comconfirm";
-            this.comconfirm.Size = new System.Drawing.Size(121, 20);
-            this.comconfirm.TabIndex = 3;
             // 
             // RoleInfoFrm
             // 
@@ -448,7 +423,5 @@
         private System.Windows.Forms.ComboBox comrole;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView gvdtl;
-        private System.Windows.Forms.ComboBox comconfirm;
-        private System.Windows.Forms.Label label2;
     }
 }

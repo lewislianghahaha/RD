@@ -64,6 +64,7 @@ namespace RD.UI.Admin
             comrole.DataSource = _roledt;
             comrole.DisplayMember = "RoleName";
             comrole.ValueMember = "id";
+            //初始化表体
             OnInitializedtl();
         }
 
@@ -72,7 +73,7 @@ namespace RD.UI.Admin
         /// </summary>
         private void OnInitializedtl()
         {
-            //获取下拉列表所选的值
+            //获取角色名称下拉列表所选的值
             var dvrolelist = (DataRowView)comrole.Items[comrole.SelectedIndex];
             _roleid = Convert.ToInt32(dvrolelist["id"]);
 
@@ -190,20 +191,10 @@ namespace RD.UI.Admin
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-
-                //
-
-                task.TaskId = 3;
-                task.FunctionId = "5";
-                task.Confirmid = 0;        //审核标记 0:审核 1:反审核
-                task.Roleid = _roleid;
-
-                task.StartTask();
-                if(!task.ResultMark) throw new Exception("发生异常,请联系管理员");
-                else
-                {
-                    MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                //批量修改角色功能权限(包括:是否关闭 审核)
+                ChangeRoleStatue("5", 4, gvdtl.SelectedRows);
+                //完成后刷新
+                OnInitializedtl();
             }
             catch (Exception ex)
             {
@@ -222,12 +213,10 @@ namespace RD.UI.Admin
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-
-                //
-                task.TaskId = 3;
-                task.FunctionId = "5";
-
-
+                //批量修改角色功能权限(包括:是否关闭 审核)
+                ChangeRoleStatue("4", 5, gvdtl.SelectedRows);
+                //完成后刷新
+                OnInitializedtl();
             }
             catch (Exception ex)
             {
@@ -554,19 +543,28 @@ namespace RD.UI.Admin
         /// <summary>
         /// 更改功能内各状态信息(如:审核 关闭权限)
         /// </summary>
-        /// <param name="fStatus"></param>
-        /// <param name="ordertype"></param>
+        /// <param name="functionid">功能ID 4：审核 5：关闭</param>
+        /// <param name="id">0:审核(关闭) 1:反审核(反审核)</param>
+        /// <param name="dt">要执行操作的DT</param>
         /// <returns></returns>
-        private bool ChangeState(string fStatus, string ordertype)
+        private bool ChangeState(string functionid,int id,DataTable dt)
         {
             var result = true;
             try
             {
                 task.TaskId = 3;
-                task.FunctionId = "5";
-                task.FunctionName = ordertype;
-                task.Confirmid = fStatus == "已审核" ? 1 : 0;
-                task.Datarow = gvdtl.SelectedRows;
+                task.FunctionId = functionid;
+                task.Data = dt;
+
+                switch (functionid)
+                {
+                    case "4":
+                        task.Confirmid = id;
+                        break;
+                    case "5":
+                        task.Id = id;
+                        break;
+                }
 
                 task.StartTask();
                 result = task.ResultMark;
@@ -577,5 +575,98 @@ namespace RD.UI.Admin
             }
             return result;
         }
+
+        /// <summary>
+        /// 创建临时表(表体明细功能权限设置使用)
+        /// </summary>
+        /// <returns></returns>
+        private DataTable CreateTable()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 1; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //ID
+                    case 0:
+                        dc.ColumnName = "ID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 修改角色功能权限(包括:审核 关闭)
+        /// </summary>
+        /// <param name="functionid">功能ID 4：审核 5：关闭</param>
+        /// <param name="rowid">行ID</param>
+        /// <param name="datarow">所选择的行</param>
+        private void ChangeRoleStatue(string functionid, int rowid, DataGridViewSelectedRowCollection datarow)
+        {
+            //创建Ntempdt 及 Ytempdt临时表
+            var ntempdt = CreateTable();
+            var ytempdt = CreateTable();
+
+            //设置返回值
+            var nbool = new bool();
+            var ybool = new bool();
+
+            //提示变量
+            var message = string.Empty;
+
+            try
+            {
+                //循环所选择的行中的设置状态
+                foreach (DataGridViewRow row in datarow)
+                {
+                    var roleid = Convert.ToInt32(row.Cells[0].Value);           //获取T_AD_Role.Id
+                    var mark = Convert.ToString(row.Cells[rowid].Value);       //根据ID获取相关标记
+                    
+                    if (mark == "末关闭" || mark == "末审核")
+                    {
+                        var newrow = ntempdt.NewRow();
+                        newrow[0] = roleid;
+                        ntempdt.Rows.Add(newrow);
+                    }
+                    else
+                    {
+                        var newrow = ytempdt.NewRow();
+                        newrow[0] = roleid;
+                        ytempdt.Rows.Add(newrow);
+                    }
+                }
+
+                switch (rowid)
+                {
+                    //关闭
+                    case 4:
+                        message = $"检测到所选择的行中有 \n 已设置关闭'{ytempdt.Rows.Count}'行 \n 末设置关闭'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                    //审核
+                    case 5:
+                        message = $"检测到所选择的行中有 \n 已设置审核'{ytempdt.Rows.Count}'行 \n 末设置审核'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                }
+                //判断若以上两个临时表其中一个有值的话,就进行更新操作
+                if (MessageBox.Show(message, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    if (ntempdt.Rows.Count > 0)
+                        nbool = ChangeState(functionid, 0, ntempdt);
+                    if (ytempdt.Rows.Count > 0)
+                        ybool = ChangeState(functionid, 1, ytempdt);
+                    if (nbool || ybool)
+                        MessageBox.Show("操作成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

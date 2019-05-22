@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -324,49 +325,12 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetshow_Click(object sender, EventArgs e)
         {
-            //创建Ntempdt 及 Ytempdt临时表
-            var ntempdt = CreateTable();
-            var ytempdt = CreateTable();
-
-            //设置返回值
-            var nbool=new bool();
-            var ybool=new bool();
-
             try
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-
-                //循环所选择的行中有多少个是设置为"显示"或"不显示"
-                foreach (DataGridViewRow row in gvdtl.SelectedRows)
-                {
-                    var entryid = Convert.ToInt32(row.Cells[0].Value);     //获取T_AD_RoleDtl.EntryId
-                    var canshowmark = Convert.ToString(row.Cells[2].Value); //获取"是否显示"标记
-                    //判断若canshowmark变量为N,就将以上两个变量赋值到'Ntempdt'临时表内,反之,赋值到'Ytempdt'临时表内
-                    if (canshowmark=="否")
-                    {
-                        var newrow = ntempdt.NewRow();
-                        newrow[0] = entryid;
-                        ntempdt.Rows.Add(newrow);
-                    }
-                    else
-                    {
-                        var newrow = ytempdt.NewRow();
-                        newrow[0] = entryid;
-                        ytempdt.Rows.Add(newrow);
-                    }
-                }
-                //判断若以上两个临时表其中一个有值的话,就进行更新操作
-                var message = $"检测到所选择的行中有 \n 已设置显示'{ytempdt.Rows.Count}'行 \n 末设置显示'{ntempdt.Rows.Count}'行 \n 是否继续?";
-                if (MessageBox.Show(message, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                {
-                    if (ntempdt.Rows.Count > 0)
-                        nbool=ChangeState("CanShow", 0, ntempdt);
-                    if (ytempdt.Rows.Count > 0)
-                        ybool=ChangeState("CanShow", 1,ytempdt);
-                    if(nbool || ybool)
-                        MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                //修改角色功能权限(包括:是否显示 显示反审核 是否可删除)
+                ChangeRoleFunState(2, "CanShow", gvdtl.SelectedRows);
                 //完成后进行刷新
                 OnInitialize();
             }
@@ -383,29 +347,17 @@ namespace RD.UI.Admin
         /// <param name="e"></param>
         private void TmSetConfirm_Click(object sender, EventArgs e)
         {
-            //创建Ntempdt 及 Ytempdt临时表
-            var ntempdt = CreateTable();
-            var ytempdt = CreateTable();
-
-            //设置返回值
-            var nbool = new bool();
-            var ybool = new bool();
-
             try
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
                  
                 //先检测所选中的行是否已设置了“已显示”，若没有，跳出异常
-                if(CheckCanShowMark(gvdtl.SelectedRows)==0) throw new Exception("检测到所选择的行中有没有设置‘已显示’,请先设置,再继续");
-
-                foreach (DataGridViewRow row in gvdtl.SelectedRows)
-                {
-                    var entryid = Convert.ToInt32(row.Cells[0].Value);     //获取T_AD_RoleDtl.EntryId
-                    var canBackConfirm = Convert.ToString(row.Cells[2].Value); //获取"是否反审核"标记
-
-                }
-
+                if(CheckCanShowMark(gvdtl.SelectedRows)>0) throw new Exception("检测到所选择的行中没有设置‘已显示’权限,请先进行设置,再继续");
+                //修改角色功能权限(包括:是否显示 显示反审核 是否可删除)
+                ChangeRoleFunState(3, "CanBackConfirm", gvdtl.SelectedRows);
+                //完成后进行刷新
+                OnInitialize();
             }
             catch (Exception ex)
             {
@@ -425,8 +377,12 @@ namespace RD.UI.Admin
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
 
-
-
+                //先检测所选中的行是否已设置了“已显示”，若没有，跳出异常
+                if (CheckCanShowMark(gvdtl.SelectedRows) > 0) throw new Exception("检测到所选择的行中没有设置‘已显示’权限,请先进行设置,再继续");
+                //修改角色功能权限(包括:是否显示 显示反审核 是否可删除)
+                ChangeRoleFunState(4, "CanDel", gvdtl.SelectedRows);
+                //完成后进行刷新
+                OnInitialize();
             }
             catch (Exception ex)
             {
@@ -711,44 +667,34 @@ namespace RD.UI.Admin
         /// </summary>
         private void PrivilegeControl()
         {
-            //若为“审核”或 "关闭" 状态的话，就执行以下语句
+            //若为“审核” 或 "关闭" 状态的话，就执行以下语句
             if (_confirmMarkId == "Y" || _closeMarkId == "Y")
             {
                 //读取审核图片
-                //pbimg.Visible = true;
-                //pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                pbimg.Visible = true;
+                pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
                 //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
                 tmSave.Enabled = false;
                 tmConfirm.Enabled = false;
-                gvdtl.Enabled = false;
                 cbadmin.Enabled = false;
                 txtrolename.Enabled = false;
+                comType.Enabled = false;
+                gvdtl.Enabled = false;
+                cbadmin.Checked = _adminMarkId == "Y";
             }
             //若为“非审核”状态的,就执行以下语句
             else
             {
                 //将审核图片控件隐藏
-                //pbimg.Visible = false;
+                pbimg.Visible = false;
                 //将所有功能的状态还原(即与审核时的控件状态相反)
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
-                gvdtl.Enabled = true;
                 cbadmin.Enabled = true;
                 txtrolename.Enabled = true;
-            }
-
-            //若为"管理员"状态的话,就将“功能大类名称”下拉列表 及 DataGrid控件设置为不启用;并将“管理员权限”复选框设置为选中
-            if (_adminMarkId == "Y")
-            {
-                cbadmin.Checked = true;
-                comType.Enabled = false;
-                gvdtl.Enabled = false;
-            }
-            else
-            {
-                cbadmin.Checked = false;
                 comType.Enabled = true;
                 gvdtl.Enabled = true;
+                cbadmin.Checked = _adminMarkId == "Y";
             }
         }
 
@@ -803,7 +749,6 @@ namespace RD.UI.Admin
                 task.FunctionName = functionName;
                 task.Funtypeid = funtypeid;
                 task.Data = dt;
-                //task.Confirmid = fStatus == "已审核" ? 1 : 0;
                 task.Datarow = gvdtl.SelectedRows;
 
                 task.StartTask();
@@ -847,11 +792,87 @@ namespace RD.UI.Admin
         private int CheckCanShowMark(DataGridViewSelectedRowCollection datarow)
         {
             var result = 0;
+
             foreach (DataGridViewRow row in datarow)
             {
-                
+                //获取"是否显示"标记
+                var canshowmark = Convert.ToString(row.Cells[2].Value); 
+                if (canshowmark == "否")
+                {
+                    result++;
+                }
             }
             return result;
+        }
+
+        /// <summary>
+        /// 修改角色功能权限(包括:是否显示 显示反审核 是否可删除)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="funname"></param>
+        /// <param name="datarow"></param>
+        private void ChangeRoleFunState(int id,string funname,DataGridViewSelectedRowCollection datarow)
+        {
+            //创建Ntempdt 及 Ytempdt临时表
+            var ntempdt = CreateTable();
+            var ytempdt = CreateTable();
+
+            //设置返回值
+            var nbool = new bool();
+            var ybool = new bool();
+
+            //提示变量
+            var message = string.Empty;
+
+            try
+            {
+                //循环所选择的行中的设置状态
+                foreach (DataGridViewRow row in datarow)
+                {
+                    var entryid = Convert.ToInt32(row.Cells[0].Value);       //获取T_AD_RoleDtl.EntryId
+                    var mark = Convert.ToString(row.Cells[id].Value);       //根据ID获取相关标记
+                    //判断若mark变量为N,就将以上两个变量赋值到'Ntempdt'临时表内,反之,赋值到'Ytempdt'临时表内
+                    if (mark == "否")
+                    {
+                        var newrow = ntempdt.NewRow();
+                        newrow[0] = entryid;
+                        ntempdt.Rows.Add(newrow);
+                    }
+                    else
+                    {
+                        var newrow = ytempdt.NewRow();
+                        newrow[0] = entryid;
+                        ytempdt.Rows.Add(newrow);
+                    }
+                }
+                //判断若以上两个临时表其中一个有值的话,就进行更新操作
+                switch (id)
+                {
+                    case 2:
+                        message = $"检测到所选择的行中有 \n 已设置显示'{ytempdt.Rows.Count}'行 \n 末设置显示'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                    case 3:
+                        message = $"检测到所选择的行中有 \n 已设置反审核'{ytempdt.Rows.Count}'行 \n 末设置反审核'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                    case 4:
+                        message = $"检测到所选择的行中有 \n 已设置可删除'{ytempdt.Rows.Count}'行 \n 末设置可删除'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                }
+
+                if (MessageBox.Show(message, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    if (ntempdt.Rows.Count > 0)
+                        nbool = ChangeState(funname, 0, ntempdt);
+                    if (ytempdt.Rows.Count > 0)
+                        ybool = ChangeState(funname, 1, ytempdt);
+                    if (nbool || ybool)
+                        MessageBox.Show("操作成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

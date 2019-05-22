@@ -289,15 +289,15 @@ namespace RD.DB.Generate
         /// </summary>
         /// <param name="confirmid">审核标记;0:审核 1:反审核</param>
         /// <param name="roleid">角色ID</param>
-        /// <param name="datarow">所选择的行</param>
+        /// <param name="dt">所选择的表</param>
         /// <returns></returns>
-        public bool ConfirmRoleFunOrderDtl(int confirmid, int roleid,DataGridViewSelectedRowCollection datarow)
+        public bool ConfirmRoleFunOrderDtl(int confirmid, int roleid,DataTable dt)
         {
             var result = true;
             try
             {
                 //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
-                if (datarow.Count == 0)
+                if (dt.Rows.Count == 0)
                 {
                     var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, roleid);
                     result = GenerDt(sqlscript);
@@ -305,9 +305,9 @@ namespace RD.DB.Generate
                 //循环从GridView中所选择的行记录 RoleInfoFrm.cs
                 else
                 {
-                    foreach (DataGridViewRow row in datarow)
+                    foreach (DataRow row in dt.Rows)
                     {
-                        var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, Convert.ToInt32(row.Cells[0].Value));
+                        var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, Convert.ToInt32(row[0]));
                         result = GenerDt(sqlscript);
                     }
                 }  
@@ -324,15 +324,15 @@ namespace RD.DB.Generate
         /// </summary>
         /// <param name="closeid">关闭标记;0:关闭 1:反关闭</param>
         /// <param name="roleid">角色ID</param>
-        /// <param name="datarow">所选择的行</param>
+        /// <param name="dt">所选择的表</param>
         /// <returns></returns>
-        public bool CloseRoleFunOrderDtl(int closeid, int roleid, DataGridViewSelectedRowCollection datarow)
+        public bool CloseRoleFunOrderDtl(int closeid, int roleid, DataTable dt)
         {
             var result = true;
             try
             {
                 //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
-                if (datarow.Count == 0)
+                if (dt.Rows.Count == 0)
                 {
                     var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, roleid);
                     result = GenerDt(sqlscipt);
@@ -340,9 +340,9 @@ namespace RD.DB.Generate
                 //循环从GridView中所选择的行记录 RoleInfoFrm.cs
                 else
                 {
-                    foreach (DataGridViewRow row in datarow)
+                    foreach (DataRow row in dt.Rows)
                     {
-                        var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, Convert.ToInt32(row.Cells[0].Value));
+                        var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, Convert.ToInt32(row[0]));
                         result = GenerDt(sqlscipt);
                     }
                 }

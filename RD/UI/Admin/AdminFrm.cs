@@ -148,7 +148,7 @@ namespace RD.UI.Admin
             {
                 var accountAddFrm=new AccountAddFrm();
                 //将相关变量传递至指定窗体内
-
+                accountAddFrm.FunState = "C";
                 accountAddFrm.StartPosition = FormStartPosition.CenterScreen;
                 accountAddFrm.ShowDialog();
             }
@@ -186,6 +186,10 @@ namespace RD.UI.Admin
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+
+
 
             }
             catch (Exception ex)

@@ -65,6 +65,8 @@ namespace RD.Logic
             private string _closeid;         //职员帐号关闭状态(权限窗体使用)
             private int _roleid;             //角色ID(权限窗体使用)
             private string _canallmark;      //管理员权限标记         
+            private string _usercontact;     //职员联系方式
+            private string _useremail;       //职员邮箱
 
             private DataTable _resultTable;  //返回DT类型
             private bool _resultMark;        //返回是否成功标记
@@ -230,6 +232,16 @@ namespace RD.Logic
         /// </summary>
         public string Canallmark { set { _canallmark = value; } }
 
+        /// <summary>
+        /// 职员联系方式
+        /// </summary>
+        public string Usercontact { set { _usercontact = value; } }
+
+        /// <summary>
+        /// 职员邮箱
+        /// </summary>
+        public string Useremail { set { _useremail = value; } }
+
         #endregion
 
         #region Get
@@ -270,7 +282,7 @@ namespace RD.Logic
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
                     AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data,_accountName, 
-                              _canallmark,_confirmid,_datarow,_id);
+                              _canallmark,_confirmid,_id);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -448,11 +460,12 @@ namespace RD.Logic
         /// <param name="accountName">帐户名称</param>
         /// <param name="canallmark">管理员权限标记</param>
         /// <param name="confirmid">审核ID</param>
-        /// <param name="datarow">保存从GridView选择的行</param>
         /// <param name="id">获取关闭等相关标记信息</param>
+        /// <param name="usercontact">职员联系方式</param>
+        /// <param name="useremail">职员邮箱</param>
         private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,
                                DateTime dtTime,int roleid,int funtypeid,DataTable dt,string accountName,string canallmark,int confirmid,
-                               DataGridViewSelectedRowCollection datarow,int id)
+                               int id,int usercontact,int useremail)
         {
             switch (functionId)
             {
@@ -476,11 +489,20 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = adminSearch.SearchRoleHeaddt(roleid);
                     break;
-                
-                //根据相关条件将功能权限记录插入至T_AD_ROLEDTL内
+                //查询(作用:利用userid获取T_AD_User表内容 AccountAddFrm.cs使用)
+                case "1.5":
+                   // _resultTable = ;
+                    break;
+
+                //根据相关条件将功能权限记录插入至T_AD_Role 及 T_AD_ROLEDTL内
                 case "2":
                     _orderid = adminImport.InsertDtlIntoRole(functionName,dt, accountName);
                     break;
+                //根据相关条件将功能权限记录插入至T_AD_User内
+                case "2.1":
+                    _orderid = adminImport.InsertRecordIntoUser(functionName,sexid,usercontact,useremail,dtTime,accountName);
+                    break;
+                
 
                 //更新功能(更新:角色名称 管理员权限T_AD_Role)
                 case "3":
@@ -489,12 +511,12 @@ namespace RD.Logic
 
                 //审核(反审核) 针对T_AD_Role进行操作 datarow 作用:从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)
                 case "4":
-                    _resultMark = adminGenerate.ConfirmRoleFunOrderDtl(confirmid,roleid,datarow);
+                    _resultMark = adminGenerate.ConfirmRoleFunOrderDtl(confirmid,roleid,dt);
                     break;
 
                 //关闭(反关闭) 针对T_AD_Role进行操作 datarow 作用:从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)
                 case "5":
-                    _resultMark = adminGenerate.CloseRoleFunOrderDtl(id,roleid,datarow);
+                    _resultMark = adminGenerate.CloseRoleFunOrderDtl(id,roleid,dt);
                     break;
                 //针对T_AD_RoleDtl进行'显示' ‘反审核’ ‘能删除’ 权限标记改变
                 case "6":
