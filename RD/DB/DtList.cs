@@ -1006,6 +1006,137 @@ namespace RD.DB
             return dt;
         }
 
+        /// <summary>
+        /// 获取T_AD_User临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_T_AD_UserTemp()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 12; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //UserId
+                    case 0:
+                        dc.ColumnName = "UserId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //UserName
+                    case 1:
+                        dc.ColumnName = "UserName";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //UserPassword
+                    case 2:
+                        dc.ColumnName = "UserPassword";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserSex
+                    case 3:
+                        dc.ColumnName = "UserSex";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserContact
+                    case 4:
+                        dc.ColumnName = "UserContact";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserMail
+                    case 5:
+                        dc.ColumnName = "UserMail";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserInDt
+                    case 6:
+                        dc.ColumnName = "UserInDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    //CloseStatus
+                    case 7:
+                        dc.ColumnName = "CloseStatus";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 8:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 9:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    //Fstatus
+                    case 10:
+                        dc.ColumnName = "Fstatus";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //FstatusDt
+                    case 11:
+                        dc.ColumnName = "FstatusDt";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取T_AD_UserDtl临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_T_AD_UserDtlTemp()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //UserId
+                    case 0:
+                        dc.ColumnName = "UserId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //RoleId
+                    case 1:
+                        dc.ColumnName = "RoleId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //EntryID
+                    case 2:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //RoleName
+                    case 3:
+                        dc.ColumnName = "RoleName";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //AddId
+                    case 4:
+                        dc.ColumnName = "AddId";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 5:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 6:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
         #endregion
 
     }

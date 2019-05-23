@@ -46,11 +46,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.gvdtl = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbshow = new System.Windows.Forms.CheckBox();
-            this.gvdtl = new System.Windows.Forms.DataGridView();
-            this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tmaddclose = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bngat = new System.Windows.Forms.BindingNavigator(this.components);
             this.bnCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -69,6 +67,8 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
+            this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmaddclose = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -76,12 +76,12 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
-            this.CMenu.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
+            this.CMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -233,8 +233,8 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Controls.Add(this.gvdtl);
+            this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -242,6 +242,22 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "角色权限选择";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // gvdtl
+            // 
+            this.gvdtl.AllowDrop = true;
+            this.gvdtl.AllowUserToAddRows = false;
+            this.gvdtl.AllowUserToDeleteRows = false;
+            this.gvdtl.AllowUserToOrderColumns = true;
+            this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.ContextMenuStrip = this.CMenu;
+            this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvdtl.Location = new System.Drawing.Point(3, 30);
+            this.gvdtl.Name = "gvdtl";
+            this.gvdtl.ReadOnly = true;
+            this.gvdtl.RowTemplate.Height = 23;
+            this.gvdtl.Size = new System.Drawing.Size(979, 415);
+            this.gvdtl.TabIndex = 2;
             // 
             // panel2
             // 
@@ -262,35 +278,6 @@
             this.cbshow.TabIndex = 2;
             this.cbshow.Text = "显示已添加并末关闭的权限记录";
             this.cbshow.UseVisualStyleBackColor = true;
-            // 
-            // gvdtl
-            // 
-            this.gvdtl.AllowDrop = true;
-            this.gvdtl.AllowUserToAddRows = false;
-            this.gvdtl.AllowUserToDeleteRows = false;
-            this.gvdtl.AllowUserToOrderColumns = true;
-            this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvdtl.ContextMenuStrip = this.CMenu;
-            this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvdtl.Location = new System.Drawing.Point(3, 3);
-            this.gvdtl.Name = "gvdtl";
-            this.gvdtl.ReadOnly = true;
-            this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(979, 442);
-            this.gvdtl.TabIndex = 0;
-            // 
-            // CMenu
-            // 
-            this.CMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmaddclose});
-            this.CMenu.Name = "CMenu";
-            this.CMenu.Size = new System.Drawing.Size(133, 26);
-            // 
-            // tmaddclose
-            // 
-            this.tmaddclose.Name = "tmaddclose";
-            this.tmaddclose.Size = new System.Drawing.Size(132, 22);
-            this.tmaddclose.Text = "添加(取消)";
             // 
             // panel1
             // 
@@ -452,6 +439,19 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
+            // CMenu
+            // 
+            this.CMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmaddclose});
+            this.CMenu.Name = "CMenu";
+            this.CMenu.Size = new System.Drawing.Size(133, 26);
+            // 
+            // tmaddclose
+            // 
+            this.tmaddclose.Name = "tmaddclose";
+            this.tmaddclose.Size = new System.Drawing.Size(132, 22);
+            this.tmaddclose.Text = "添加(取消)";
+            // 
             // AccountAddFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -471,15 +471,15 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
-            this.CMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
+            this.CMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -516,7 +516,6 @@
         private System.Windows.Forms.ToolStripButton bnMoveNextItem;
         private System.Windows.Forms.ToolStripButton bnMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
-        private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
@@ -526,5 +525,6 @@
         private System.Windows.Forms.ToolStripLabel tstotalrow;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox cbshow;
+        private System.Windows.Forms.DataGridView gvdtl;
     }
 }

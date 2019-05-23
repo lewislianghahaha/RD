@@ -379,6 +379,89 @@ namespace RD.DB.Generate
             return result;
         }
 
+        /// <summary>
+        /// 审核(反审核) 针对T_AD_User进行操作
+        /// </summary>
+        /// <param name="confirmid">审核标记;0:审核 1:反审核</param>
+        /// <param name="userid">职员ID</param>
+        /// <param name="dt">所选择的表</param>
+        /// <returns></returns>
+        public bool ConfirmUser(int confirmid, int userid, DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                //此为帐户权限明细窗体使用 AccountAddFrm.cs
+                if (dt.Rows.Count == 0)
+                {
+                    var sqlscript = sqlList.Update_UserConfirmStatus(confirmid, userid);
+                    result = GenerDt(sqlscript);
+                }
+                //循环从GridView中所选择的行记录 AdminFrm.cs
+                else
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        var sqlscript = sqlList.Update_UserConfirmStatus(confirmid, Convert.ToInt32(row[0]));
+                        result = GenerDt(sqlscript);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 更新功能(对T_AD_UserDtl更新) ‘是否添加’功能
+        /// </summary>
+        /// <param name="id">审核标记0:审核 1:末审核</param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool AddRoleIntoUserdtl(int id,DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    var sqlscript = sqlList.Update_UserRoleAddStatus(id, Convert.ToInt32(row[0]));
+                    result = GenerDt(sqlscript);
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据条件对角色明细进行关闭(反关闭) 对T_AD_Role表使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool CloseUser(int id,DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    var sqlscript = sqlList.Update_UserCloseStatus(id, Convert.ToInt32(row[0]));
+                    result = GenerDt(sqlscript);
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
         #endregion
 
     }

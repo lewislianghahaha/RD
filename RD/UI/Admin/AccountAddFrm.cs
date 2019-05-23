@@ -27,12 +27,19 @@ namespace RD.UI.Admin
         //记录初始化标记(GridView页面跳转 初始化时使用)
         private bool _pageChange;
 
+        //记录审核状态(Y:已审核;N:没审核)
+        private string _confirmMarkId;
+        //记录关闭状态(Y:已关闭;N:末关闭)
+        private string _closeMarkId;
+        //记录复选框点击值
+        private string _cbshowMarkid="N";
+
         #region set
-        
-            /// <summary>
-            /// 获取单据状态标记ID C:创建 R:读取
-            /// </summary>
-            public string FunState { set { _funState = value; } }
+
+        /// <summary>
+        /// 获取单据状态标记ID C:创建 R:读取
+        /// </summary>
+        public string FunState { set { _funState = value; } }
             /// <summary>
             /// 获取传递过来的帐号ID
             /// </summary>
@@ -63,6 +70,7 @@ namespace RD.UI.Admin
             bnPositionItem.TextChanged += BnPositionItem_TextChanged;
             tmshowrows.DropDownClosed += Tmshowrows_DropDownClosed;
             panel1.Visible = false;
+            tabControl1.Visible = false;
         }
 
         /// <summary>
@@ -71,7 +79,7 @@ namespace RD.UI.Admin
         private void OnInitializeDropDownList()
         {
             //初始化职员性别
-            comsex.DataSource = GetDropdownListdt("Sex");
+            comsex.DataSource = GetListdt("Sex");
             comsex.DisplayMember = "SexName";
             comsex.ValueMember = "Sexid";
         }
@@ -85,10 +93,10 @@ namespace RD.UI.Admin
             ShowHead(_userid);
             //读取明细记录至GridView
             OnInitializeDtl();
-            //控制GridView显示
-            GridViewPageChange();
             //窗体权限控制
             PrivilegeControl();
+            //将隐藏的部份开启
+            tabControl1.Visible = true;
         }
 
         /// <summary>
@@ -98,27 +106,38 @@ namespace RD.UI.Admin
         {
             //读取数据
             task.TaskId = 3;
-            task.FunctionId = "1.5";
-            //
-            //角色名称ID
+            task.FunctionId = "1.6";
+            task.Userid = _userid;               //职员帐号ID
+            task.ConfirmfStatus = _cbshowMarkid; //获取“显示已添加并末关闭的权限记录”复选框标记
 
+            task.StartTask();
+            //连接GridView页面跳转功能
+            LinkGridViewPageChange(task.ResultTable);
+            //控制GridView单元格显示方式
+            ControlGridViewisShow();
         }
 
         /// <summary>
-        ///  根据ID获取角色名称表头信息(包括“职员名称”，“审核状态”等)
+        ///  根据ID获取角色名称表头信息(包括“职员名称”,“审核状态”等)
         /// </summary>
         /// <param name="userid"></param>
         private void ShowHead(int userid)
         {
             task.TaskId = 3;
-            task.FunctionId = "1.4";
-            task.Id = userid;
+            task.FunctionId = "1.5";
+            task.Userid = userid;
 
             task.StartTask();
             //并将结果赋给对应的文本框内(表头信息)
             var dt = task.ResultTable;
-            //
-
+            //并将结果赋给对应的文本框内(表头信息)
+            txtName.Text = dt.Rows[0][1].ToString();                 //职员名称
+            txtEmail.Text = dt.Rows[0][5].ToString();               //职员邮箱
+            comsex.SelectedIndex = Convert.ToInt32(dt.Rows[0][3]) == 1 ? 0 : 1; //职员性别 0:男 1:女
+            dtin.Value = Convert.ToDateTime(dt.Rows[0][6]);       //职员入职日期
+            txtAdder.Text = dt.Rows[0][4].ToString();            //职员联系方式
+            _closeMarkId = dt.Rows[0][7].ToString();            //帐号关闭状态
+            _confirmMarkId = dt.Rows[0][10].ToString();         //审核状态
         }
 
         /// <summary>
@@ -131,7 +150,7 @@ namespace RD.UI.Admin
                 task.TaskId = 3;
                 task.FunctionId = "2.1";
                 task.FunctionName = txtName.Text;                     //职员名称
-                task.Sexid = _sexid;                                  //职员性别
+                task.Sexid = _sexid == 0 ? 1 : _sexid;                //职员性别                        
                 task.Usercontact = txtAdder.Text;                     //职员联系方式
                 task.Useremail = txtEmail.Text;                       //职员邮箱
                 task.Dtime= dtin.Value.Date;                          //职员入职日期
@@ -177,7 +196,9 @@ namespace RD.UI.Admin
         {
             try
             {
-
+                _cbshowMarkid = cbshow.Checked ? "Y" : "N";
+                //刷新数据
+                OnInitializeDtl();
             }
             catch (Exception ex)
             {
@@ -198,6 +219,12 @@ namespace RD.UI.Admin
                 //执行插入效果
                 if (_funState == "C")
                 {
+                    //在保存前需检测‘职员名称’不能与已录入的记录重复
+                    var dt = GetListdt("User");
+                    //验证所输入的"职员名称"是否已存在
+                    var rows = dt.Select("UserName='" + txtName.Text + "'");
+                    if (rows.Length > 0) throw new Exception("已存在相同的‘职员名称’,请再输入");
+
                     //执行插入T_AD_UserDtl方法
                     InsertRecordIntoUser();
                     //执行初始化方法;重新读取
@@ -207,8 +234,23 @@ namespace RD.UI.Admin
                 {
                     //执行更新
                     task.TaskId = 3;
+                    task.FunctionId = "3.1";
+                    task.Userid = _userid;
+                    //获取文本框字段(更新时使用)
+                    task.FunctionName = txtName.Text;                     //职员名称
+                    task.Sexid = _sexid == 0 ? 1 : _sexid;                //职员性别                        
+                    task.Usercontact = txtAdder.Text;                     //职员联系方式
+                    task.Useremail = txtEmail.Text;                       //职员邮箱
+                    task.Dtime = dtin.Value.Date;                         //职员入职日期
 
-
+                    task.StartTask();
+                    if (!task.ResultMark) throw new Exception("更新异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    //重新读取
+                    OnInitialize();
                 }
             }
             catch (Exception ex)
@@ -226,7 +268,23 @@ namespace RD.UI.Admin
         {
             try
             {
+                var clickMessage = $"您所选择的信息为:\n 职员名称:{txtName.Text} \n 是否继续? \n 注:若不进行审核,不能使用 \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    task.TaskId = 3;
+                    task.FunctionId = "4.1";
+                    task.Confirmid = 0;        //审核标记 0:审核 1:反审核
+                    task.Userid = _userid;
 
+                    task.StartTask();
+                    if (!task.ResultMark) throw new Exception("审核异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show("审核成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                //审核完成后“刷新”(注:审核成功的单据,经刷新后为不可修改效果)
+                OnInitialize();
             }
             catch (Exception ex)
             {
@@ -243,7 +301,12 @@ namespace RD.UI.Admin
         {
             try
             {
-
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+                //修改帐户对应的角色权限(包括:是否添加)
+                ChangeUserRoleAddState(4, gvdtl.SelectedRows);
+                //完成后进行刷新
+                OnInitialize();
             }
             catch (Exception ex)
             {
@@ -499,7 +562,7 @@ namespace RD.UI.Admin
         /// 根据对应的功能名称获取对应的DataTable
         /// </summary>
         /// <param name="functionName"></param>
-        private DataTable GetDropdownListdt(string functionName)
+        private DataTable GetListdt(string functionName)
         {
             task.TaskId = 3;
             task.FunctionId = "1";
@@ -549,34 +612,146 @@ namespace RD.UI.Admin
         private void PrivilegeControl()
         {
             //若为“审核” 或 "关闭" 状态的话，就执行以下语句
-            //if (_confirmMarkId == "Y" || _closeMarkId == "Y")
-            //{
-            //    //读取审核图片
-            //    pbimg.Visible = true;
-            //    pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
-            //    //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
-            //    tmSave.Enabled = false;
-            //    tmConfirm.Enabled = false;
-            //    cbadmin.Enabled = false;
-            //    txtrolename.Enabled = false;
-            //    comType.Enabled = false;
-            //    gvdtl.Enabled = false;
-            //    cbadmin.Checked = _adminMarkId == "Y";
-            //}
-            ////若为“非审核”状态的,就执行以下语句
-            //else
-            //{
-            //    //将审核图片控件隐藏
-            //    pbimg.Visible = false;
-            //    //将所有功能的状态还原(即与审核时的控件状态相反)
-            //    tmSave.Enabled = true;
-            //    tmConfirm.Enabled = true;
-            //    cbadmin.Enabled = true;
-            //    txtrolename.Enabled = true;
-            //    comType.Enabled = true;
-            //    gvdtl.Enabled = true;
-            //    cbadmin.Checked = _adminMarkId == "Y";
-            //}
+            if (_confirmMarkId == "Y" || _closeMarkId == "Y")
+            {
+                //读取审核图片
+                //pbimg.Visible = true;
+                //pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
+                tmSave.Enabled = false;
+                tmConfirm.Enabled = false;
+                //cbadmin.Enabled = false;
+                //txtrolename.Enabled = false;
+                //comType.Enabled = false;
+                //gvdtl.Enabled = false;
+                //cbadmin.Checked = _adminMarkId == "Y";
+            }
+            //若为“非审核”状态的,就执行以下语句
+            else
+            {
+                //将审核图片控件隐藏
+                //pbimg.Visible = false;
+                //将所有功能的状态还原(即与审核时的控件状态相反)
+                tmSave.Enabled = true;
+                tmConfirm.Enabled = true;
+                //cbadmin.Enabled = true;
+                //txtrolename.Enabled = true;
+                //comType.Enabled = true;
+                //gvdtl.Enabled = true;
+                //cbadmin.Checked = _adminMarkId == "Y";
+            }
+        }
+
+        /// <summary>
+        /// 更改明细功能内各状态信息(如:可添加权限)
+        /// </summary>
+        /// <param name="id">功能分类名称</param>
+        /// <param name="dt">要执行操作的DT</param>
+        /// <returns></returns>
+        private bool ChangeState(int id, DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 3;
+                task.FunctionId = "3.2";
+                task.Id = id;
+                task.Data = dt;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 创建临时表(表体明细功能权限设置使用)
+        /// </summary>
+        /// <returns></returns>
+        private DataTable CreateTable()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 1; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //EntryID
+                    case 0:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 修改帐户角色功能权限(包括:是否添加)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="datarow"></param>
+        private void ChangeUserRoleAddState(int id,DataGridViewSelectedRowCollection datarow)
+        {
+            //创建Ntempdt 及 Ytempdt临时表
+            var ntempdt = CreateTable();
+            var ytempdt = CreateTable();
+
+            //设置返回值
+            var nbool = new bool();
+            var ybool = new bool();
+
+            //提示变量
+            var message = string.Empty;
+
+            try
+            {
+                //循环所选择的行中的设置状态
+                foreach (DataGridViewRow row in datarow)
+                {
+                    var entryid = Convert.ToInt32(row.Cells[0].Value);       //获取T_AD_UserDtl.EntryId
+                    var mark = Convert.ToString(row.Cells[id].Value);       //根据ID获取相关标记
+                    //判断若mark变量为N,就将以上两个变量赋值到'Ntempdt'临时表内,反之,赋值到'Ytempdt'临时表内
+                    if (mark == "否")
+                    {
+                        var newrow = ntempdt.NewRow();
+                        newrow[0] = entryid;
+                        ntempdt.Rows.Add(newrow);
+                    }
+                    else
+                    {
+                        var newrow = ytempdt.NewRow();
+                        newrow[0] = entryid;
+                        ytempdt.Rows.Add(newrow);
+                    }
+                }
+                //判断若以上两个临时表其中一个有值的话,就进行更新操作
+                switch (id)
+                {
+                    case 4:
+                        message = $"检测到所选择的行中有 \n 已设置添加'{ytempdt.Rows.Count}'行 \n 末设置添加'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                }
+
+                if (MessageBox.Show(message, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    if (ntempdt.Rows.Count > 0)
+                        nbool = ChangeState(0, ntempdt);
+                    if (ytempdt.Rows.Count > 0)
+                        ybool = ChangeState(1, ytempdt);
+                    if (nbool || ybool)
+                        MessageBox.Show("操作成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

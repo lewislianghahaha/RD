@@ -51,7 +51,7 @@ namespace RD.Logic.Admin
         }
 
         /// <summary>
-        /// 根据相关条件将功能权限记录插入至T_AD_ROLEDTL内
+        /// 根据相关条件将功能权限记录插入至T_AD_User 及 T_AD_UserDtl内
         /// </summary>
         /// <param name="functionName"></param>
         /// <param name="sexid"></param>
@@ -72,6 +72,30 @@ namespace RD.Logic.Admin
                 throw new Exception(ex.Message);
             }
             return reslutid;
+        }
+
+        /// <summary>
+        /// 对T_AD_User更新 (AccountAddFrm.cs使用)
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="functionName"></param>
+        /// <param name="sexid"></param>
+        /// <param name="usercontact"></param>
+        /// <param name="useremail"></param>
+        /// <param name="dtTime"></param>
+        /// <returns></returns>
+        public bool UpdateUser(int userid,string functionName,int sexid,string usercontact,string useremail,DateTime dtTime)
+        {
+            var result = true;
+            try
+            {
+                result = importDt.UpdateUser(userid, functionName, sexid, usercontact, useremail, dtTime);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
         }
 
     }

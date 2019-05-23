@@ -282,7 +282,7 @@ namespace RD.Logic
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
                     AdminInfo(_functionId, _functinName,_userid,_sexid,_closeid,_confirmfStatus,_dtime,_roleid,_funtypeid,_data,_accountName, 
-                              _canallmark,_confirmid,_id);
+                              _canallmark,_confirmid,_id,_usercontact,_useremail);
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
@@ -465,59 +465,79 @@ namespace RD.Logic
         /// <param name="useremail">职员邮箱</param>
         private void AdminInfo(string functionId, string functionName,int userid,int sexid,string closeid,string confirmstatus,
                                DateTime dtTime,int roleid,int funtypeid,DataTable dt,string accountName,string canallmark,int confirmid,
-                               int id,int usercontact,int useremail)
+                               int id,string usercontact,string useremail)
         {
             switch (functionId)
             {
-                //下拉列表初始化
+                //下拉列表初始化 AdminFrm.cs使用
                 case "1":
                     _resultTable = adminSearch.SearchDropdownDt(functionName);
                     break;
-                //查询功能(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表)
+                //查询功能(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表) AdminFrm.cs使用
                 case "1.1":
                     _resultTable = adminSearch.Searchdtldt(userid,sexid,closeid, confirmstatus,dtTime);
                     break;
-                //查询功能(角色信息管理查询)
+                //查询功能(角色信息管理查询) (RoleInfoFrm.cs使用)
                 case "1.2":
                     _resultTable = adminSearch.SearchRoledt(roleid);
                     break;
-                //查询功能(角色信息管理-功能权限明细查询)
+                //查询功能(角色信息管理-功能权限明细查询) (RoleInfoDtlFrm.cs使用)
                 case "1.3":
                     _resultTable = adminSearch.SearchRoleFundt(roleid,funtypeid);
                     break;
-                //查询(作用:利用roleid获取T_AD_Role表内容)
+                //查询(作用:根据roleid获取T_AD_Role 或 T_AD_Fun表头内容)
                 case "1.4":
                     _resultTable = adminSearch.SearchRoleHeaddt(roleid);
                     break;
                 //查询(作用:利用userid获取T_AD_User表内容 AccountAddFrm.cs使用)
                 case "1.5":
-                   // _resultTable = ;
+                    _resultTable = adminSearch.SearchUser(userid);
+                    break;
+                //查询(作用:利用userid获取T_AD_Userdtl表内容 AccountAddFrm.cs使用)
+                case "1.6":
+                    _resultTable = adminSearch.SearchUserdtl(userid, confirmstatus);
                     break;
 
-                //根据相关条件将功能权限记录插入至T_AD_Role 及 T_AD_ROLEDTL内
+                //根据相关条件将功能权限记录插入至T_AD_Role 及 T_AD_ROLEDTL内 (RoleInfoDtlFrm.cs使用)
                 case "2":
                     _orderid = adminImport.InsertDtlIntoRole(functionName,dt, accountName);
                     break;
-                //根据相关条件将功能权限记录插入至T_AD_User内
+                //根据相关条件将功能权限记录插入至T_AD_User 及 T_AD_UserDtl内 (AccountAddFrm.cs使用)
                 case "2.1":
                     _orderid = adminImport.InsertRecordIntoUser(functionName,sexid,usercontact,useremail,dtTime,accountName);
                     break;
-                
 
                 //更新功能(更新:角色名称 管理员权限T_AD_Role)
                 case "3":
                     _resultMark = adminImport.UpdateRole(functionName,roleid,canallmark);
                     break;
+                //更新功能(对T_AD_User更新) AccountAddFrm.cs使用
+                case "3.1":
+                    _resultMark = adminImport.UpdateUser(userid,functionName,sexid,usercontact,useremail,dtTime);
+                    break;
+                //更新功能(对T_AD_UserDtl更新) ‘是否添加’功能
+                case "3.2":
+                    _resultMark = adminGenerate.AddRoleIntoUserdtl(id,dt);
+                    break;
 
-                //审核(反审核) 针对T_AD_Role进行操作 datarow 作用:从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)
+                //审核(反审核) 针对T_AD_Role进行操作
                 case "4":
                     _resultMark = adminGenerate.ConfirmRoleFunOrderDtl(confirmid,roleid,dt);
                     break;
+                //审核(反审核) 针对T_AD_User进行操作
+                case "4.1":
+                    _resultMark = adminGenerate.ConfirmUser(confirmid,userid,dt);
+                    break;
 
-                //关闭(反关闭) 针对T_AD_Role进行操作 datarow 作用:从GridView中所选择的行(注:角色信息管理界面-批量选择多行时使用)
+                //关闭(反关闭) 针对T_AD_Role进行操作
                 case "5":
                     _resultMark = adminGenerate.CloseRoleFunOrderDtl(id,roleid,dt);
                     break;
+                //关闭(反关闭) 针对T_AD_User进行操作
+                case "5.1":
+                    _resultMark = adminGenerate.CloseUser(id,dt);
+                    break;
+
                 //针对T_AD_RoleDtl进行'显示' ‘反审核’ ‘能删除’ 权限标记改变
                 case "6":
                     _resultMark = adminGenerate.Update_RoleFunStatus(functionName,funtypeid, dt);

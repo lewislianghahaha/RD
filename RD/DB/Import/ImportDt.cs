@@ -457,14 +457,14 @@ namespace RD.DB.Import
                     //室内装修工程单
                     case "AdornOrderHead":
                         //获取T_PRO_Adorn表MAX(ID)值
-                        reslutid = Maxid(tablename);
+                        reslutid = Maxid(tablename,"id");
                         //插入相关记录至T_PRO_Adorn临时表内
                         dt = Get_OrderTemp(name, custid, reslutid, accountname);
                         break;
                     //室内主材单
                     case "MaterialOrderHead":
                         //获取T_PRO_Material表MAX(ID)值
-                        reslutid = Maxid(tablename);
+                        reslutid = Maxid(tablename,"id");
                         //插入相关记录至T_PRO_Material临时表内
                         dt = Get_OrderTemp(name, custid, reslutid, accountname);
                         break;
@@ -483,12 +483,13 @@ namespace RD.DB.Import
         /// 获取主键ID值
         /// </summary>
         /// <param name="tableName"></param>
+        /// <param name="columnname"></param>
         /// <returns></returns>
-        private int Maxid(string tableName)
+        private int Maxid(string tableName, string columnname)
         {
             var dt = new DataTable();
             //获取对应的SQL语句
-            var sqlscript = sqlList.Get_OrderMaxid(tableName);
+            var sqlscript = sqlList.Get_OrderMaxid(tableName,columnname);
             //执行SQL
             var sqlDataAdapter = new SqlDataAdapter(sqlscript, serDt.GetConn());
             sqlDataAdapter.Fill(dt);
@@ -673,7 +674,7 @@ namespace RD.DB.Import
             try
             {
                 //获取T_AD_Role表MAX(ID)值
-                roleid = Maxid("T_AD_Role");
+                roleid = Maxid("T_AD_Role","id");
                 //将相关记录分别插入至T_AD_Role 及 T_AD_RoleDtl内
                 var tempdt = Get_RoleTemp(roleid,rolename,accountName);
                 var tempdtdtl = Get_RoleDtlTemp(roleid,dt, accountName);
@@ -764,7 +765,108 @@ namespace RD.DB.Import
             return result;
         }
 
+        /// <summary>
+        /// 根据相关条件将功能权限记录插入至T_AD_User 及 T_AD_UserDtl内
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="sexid"></param>
+        /// <param name="usercontact"></param>
+        /// <param name="useremail"></param>
+        /// <param name="dtTime"></param>
+        /// <param name="accountName"></param>
+        /// <returns></returns>
+        public int InsertRecordIntoUser(string functionName ,int sexid ,string usercontact ,string useremail ,DateTime dtTime ,string accountName)
+        {
+            //获取对应表的最大ID值
+            var userid = 0;
+            try
+            {
+                //获取T_AD_Role表MAX(ID)值
+                userid = Maxid("T_AD_User","userid");
+                //将相关记录分别插入至T_AD_User 及 T_AD_UserDtl内
+                var tempdt = Get_UserTemp(userid,functionName, sexid,usercontact,useremail,dtTime,accountName);
+                var tempdtdtl = Get_UserDtlTemp(userid,accountName);
+                //先将T_AD_User表头信息插入
+                Importdt("T_AD_User", tempdt);
+                //再将T_AD_UserDtl表体信息插入
+                Importdt("T_AD_UserDtl", tempdtdtl);
+            }
+            catch (Exception)
+            {
+                userid = 0;
+            }
+            return userid;
+        }
 
+        /// <summary>
+        /// 将记录插入至T_AD_User临时表内
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="userName"></param>
+        /// <param name="sexid"></param>
+        /// <param name="usercontact"></param>
+        /// <param name="useremail"></param>
+        /// <param name="dtTime"></param>
+        /// <param name="accountName"></param>
+        /// <returns></returns>
+        private DataTable Get_UserTemp(int userid,string userName, int sexid, string usercontact, string useremail,DateTime dtTime, string accountName)
+        {
+            //获取对应临时表
+            var dt = dtList.Get_T_AD_UserTemp();
+            //对临时表进行赋值
+            var newrow = dt.NewRow();
+            newrow[0] = userid;
+            newrow[1] = userName;
+            newrow[2] = "8888";
+            newrow[3] = sexid;
+            newrow[4] = usercontact;
+            newrow[5] = useremail;
+            newrow[6] = dtTime;
+            newrow[7] = "N";
+            newrow[8] = accountName;
+            newrow[9] = DateTime.Now.Date;
+            newrow[10] = "N";
+            dt.Rows.Add(newrow);
+            return dt;
+        }
+
+        /// <summary>
+        /// 将记录插入至T_AD_UserDtl临时表内
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="accountName"></param>
+        /// <returns></returns>
+        private DataTable Get_UserDtlTemp(int userid ,string accountName)
+        {
+            //获取对应临时表
+            var dt = dtList.Get_T_AD_UserDtlTemp();
+            //获取T_AD_Role表体信息
+            var roledt=serDt.GetData(sqlList.Get_RoleHead(0));
+            //通过循环读取T_AD_Role角色表,将记录插入至T_AD_UserDtl表内
+            foreach (DataRow row in roledt.Rows)
+            {
+                var newrow = dt.NewRow();
+                newrow[0] = userid;
+                newrow[1] = Convert.ToInt32(row[0]);   //角色表外键
+                newrow[3] = Convert.ToString(row[1]);  //角色表名称
+                newrow[4] = "N";
+                newrow[5] = accountName;
+                newrow[6] = DateTime.Now.Date;
+                dt.Rows.Add(newrow);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 根据条件更新T_AD_User表头信息
+        /// </summary>
+        /// <returns></returns>
+        public bool UpdateUser(int userid, string functionName, int sexid, string usercontact, string useremail, DateTime dtTime)
+        {
+            var sqlscript = sqlList.Update_User(userid, functionName, sexid, usercontact, useremail, dtTime);
+            var result = EditDt(sqlscript);
+            return result;
+        }
 
         #endregion
 

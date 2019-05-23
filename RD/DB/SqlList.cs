@@ -554,10 +554,10 @@ namespace RD.DB
         /// 获取最大的单据ID (室内装修工程 及 室内主材单使用)
         /// </summary>
         /// <returns></returns>
-        public string Get_OrderMaxid(string tablename)
+        public string Get_OrderMaxid(string tablename,string columnname)
         {
             _result = $@"
-                         SELECT ISNULL(MAX(id),0)+1
+                         SELECT ISNULL(MAX({columnname}),0)+1
                          FROM dbo.{tablename}";
             return _result;
         }
@@ -829,6 +829,10 @@ namespace RD.DB
                                     SELECT 2 Sexid,'女' SexName
                                ";
                     break;
+                //职员名称
+                case "User":
+                    _result = "SELECT a.UserName FROM dbo.T_AD_User a";
+                    break;
             }
             return _result;
         }
@@ -1036,7 +1040,7 @@ namespace RD.DB
         /// <returns></returns>
         public string Get_RoleHead(int roleid)
         {
-            _result = $@"SELECT * FROM dbo.T_AD_Role where id='{roleid}'";
+            _result = roleid == 0 ? "SELECT Id,RoleName FROM dbo.T_AD_Role" : $@"SELECT * FROM dbo.T_AD_Role where id='{roleid}'";
             return _result;
         }
 
@@ -1077,7 +1081,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 根据条件对角色明细进行关闭(反关闭)
+        /// 根据条件对角色明细进行关闭(反关闭) 对T_AD_Role表使用
         /// </summary>
         /// <param name="closeid">关闭标记;0:关闭 1:反关闭</param>
         /// <param name="roleid">角色ID</param>
@@ -1116,6 +1120,99 @@ namespace RD.DB
                                             : $@"UPDATE dbo.T_AD_RoleDtl SET CanDel='N' WHERE EntryID='{entryid}'";
                     break;
             }
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据ID查询T_AD_USER表相关信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public string Search_User(int userid)
+        {
+            _result = $@"SELECT * FROM dbo.T_AD_User a WHERE a.UserId='{userid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据ID查询T_AD_USERdtl表相关信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="choseid"></param>
+        /// <returns></returns>
+        public string Search_Userdtl(int userid, string choseid)
+        {
+            //注:当choseid为Y时,表示只显示“已添加，但角色没有关闭的记录”
+            _result = choseid == "Y"
+                ? $@"SELECT a.EntryID,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
+	                               CASE WHEN a.AddId='Y' THEN '是' ELSE '否' END 是否添加,
+	                               a.InputUser 创建人,a.InputDt 创建日期
+                            FROM dbo.T_AD_UserDtl a
+                            INNER JOIN dbo.T_AD_Role b ON a.RoleId=b.Id
+                            WHERE a.UserId='{userid}' --职员ID
+                            AND a.AddId='Y' AND b.CloseStatus='N'  --显示已添加，但角色没有关闭的记录"
+                : $@"SELECT a.EntryID,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
+	                               CASE WHEN a.AddId='Y' THEN '是' ELSE '否' END 是否添加,
+	                               a.InputUser 创建人,a.InputDt 创建日期
+                            FROM dbo.T_AD_UserDtl a
+                            INNER JOIN dbo.T_AD_Role b ON a.RoleId=b.Id
+                            WHERE a.UserId='{userid}' --职员ID";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据条件更新T_AD_User表头信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="username"></param>
+        /// <param name="sexid"></param>
+        /// <param name="usercontact"></param>
+        /// <param name="useremail"></param>
+        /// <param name="dtTime"></param>
+        /// <returns></returns>
+        public string Update_User(int userid, string username, int sexid, string usercontact, string useremail, DateTime dtTime)
+        {
+            _result = $@"UPDATE dbo.T_AD_User SET UserName='{username}',UserSex='{sexid}',UserContact='{usercontact}',UserMail='{useremail}',UserInDt='{dtTime}' 
+                        WHERE UserId='{userid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 审核(反审核)T_AD_User 
+        /// </summary>
+        /// <param name="confirmid"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public string Update_UserConfirmStatus(int confirmid, int userid)
+        {
+            _result = confirmid == 0 ? $@"UPDATE dbo.T_AD_User SET Fstatus='Y',FstatusDt='{DateTime.Now.Date}' WHERE UserId='{userid}'"
+                                    : $@"UPDATE dbo.T_AD_User SET Fstatus='N',FstatusDt='{DateTime.Now.Date}' WHERE UserId='{userid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 更新功能(对T_AD_UserDtl更新) ‘是否添加’功能
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="entryid"></param>
+        /// <returns></returns>
+        public string Update_UserRoleAddStatus(int id, int entryid)
+        {
+            _result = id == 0 ? $@"UPDATE dbo.T_AD_UserDtl SET AddId='Y' WHERE EntryID='{entryid}'"
+                                    : $@"UPDATE dbo.T_AD_UserDtl SET AddId='N' WHERE EntryID='{entryid}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据条件对角色明细进行关闭(反关闭) 对T_AD_Role表使用
+        /// </summary>
+        /// <param name="closeid">关闭标记;0:关闭 1:反关闭</param>
+        /// <param name="userid">职员ID</param>
+        /// <returns></returns>
+        public string Update_UserCloseStatus(int closeid, int userid)
+        {
+            _result = closeid == 0 ? $@"UPDATE dbo.T_AD_User SET CloseStatus='Y' WHERE id='{userid}'"
+                                     : $@"UPDATE dbo.T_AD_User SET CloseStatus='N' WHERE id='{userid}'";
             return _result;
         }
 

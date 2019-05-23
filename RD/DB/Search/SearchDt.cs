@@ -731,7 +731,50 @@ namespace RD.DB.Search
             return resultdt;
         }
 
+        /// <summary>
+        /// 利用userid获取T_AD_User表内容 AccountAddFrm.cs使用
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public DataTable SearchUser(int userid)
+        {
+            var resultdt = new DataTable();
+            try
+            {
+                var sqlscript = sqlList.Search_User(userid);
+                resultdt=GetData(sqlscript);
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
 
+        /// <summary>
+        /// 利用userid获取T_AD_Userdtl表内容 AccountAddFrm.cs使用
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="choseid"></param>
+        /// <returns></returns>
+        public DataTable SearchUserdtl(int userid ,string choseid)
+        {
+            var resultdt=new DataTable();
+            try
+            {
+                var sqlscript = sqlList.Search_Userdtl(userid,choseid);
+                resultdt = GetData(sqlscript);
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                throw;
+            }
+            return resultdt;
+        }
 
         #endregion
 

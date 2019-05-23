@@ -189,8 +189,13 @@ namespace RD.UI.Admin
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
 
-
-
+                var accountAddFrm = new AccountAddFrm();
+                //将相关变量传递至指定窗体内
+                accountAddFrm.FunState = "R";
+                accountAddFrm.Userid= Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);  //获取所选择行的userid
+                accountAddFrm.OnInitialize();
+                accountAddFrm.StartPosition = FormStartPosition.CenterScreen;
+                accountAddFrm.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -207,7 +212,12 @@ namespace RD.UI.Admin
         {
             try
             {
-
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+                ChangeUserState("4.1", 10, gvdtl.SelectedRows);
+                //成功后,先将GridView记录清空(因需要用户重新进行查询)
+                gvdtl.DataSource = null;
+                panel1.Visible = false;
             }
             catch (Exception ex)
             {
@@ -224,7 +234,12 @@ namespace RD.UI.Admin
         {
             try
             {
-
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
+                ChangeUserState("5.1", 7, gvdtl.SelectedRows);
+                //成功后,先将GridView记录清空(因需要用户重新进行查询)
+                gvdtl.DataSource = null;
+                panel1.Visible = false;
             }
             catch (Exception ex)
             {
@@ -528,6 +543,123 @@ namespace RD.UI.Admin
         {
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
+        }
+
+        /// <summary>
+        /// 更改明细功能内各状态信息(如:可添加权限)
+        /// </summary>
+        /// <param name="typeid">功能ID 4.1:审核(反审核)功能 5.1:关闭(反关闭)功能</param>
+        /// <param name="id">功能分类名称</param>
+        /// <param name="dt">要执行操作的DT</param>
+        /// <returns></returns>
+        private bool ChangeState(string typeid,int id, DataTable dt)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 3;
+                task.FunctionId = typeid;
+                task.Id = id;
+                task.Data = dt;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 创建临时表(表体明细功能权限设置使用)
+        /// </summary>
+        /// <returns></returns>
+        private DataTable CreateTable()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 1; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //EntryID
+                    case 0:
+                        dc.ColumnName = "Userid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 修改帐户状态(包括:审核 关闭)
+        /// </summary>
+        /// <param name="typeid">功能ID 4.1:审核(反审核)功能 5.1:关闭(反关闭)功能</param>
+        /// <param name="id">0:审核(关闭) 1:反审核(反关闭)</param>
+        /// <param name="datarow">所选择的行</param>
+        private void ChangeUserState(string typeid,int id, DataGridViewSelectedRowCollection datarow)
+        {
+            //创建Ntempdt 及 Ytempdt临时表
+            var ntempdt = CreateTable();
+            var ytempdt = CreateTable();
+
+            //设置返回值
+            var nbool = new bool();
+            var ybool = new bool();
+
+            //提示变量
+            var message = string.Empty;
+
+            try
+            {
+                //循环所选择的行中的设置状态
+                foreach (DataGridViewRow row in datarow)
+                {
+                    var userId = Convert.ToInt32(row.Cells[0].Value);       //获取T_AD_RoleDtl.UserId
+                    var mark = Convert.ToString(row.Cells[id].Value);       //根据ID获取相关标记
+                    //判断若mark变量为N,就将以上两个变量赋值到'Ntempdt'临时表内,反之,赋值到'Ytempdt'临时表内
+                    if (mark == "末关闭" || mark=="末审核")
+                    {
+                        var newrow = ntempdt.NewRow();
+                        newrow[0] = userId;
+                        ntempdt.Rows.Add(newrow);
+                    }
+                    else
+                    {
+                        var newrow = ytempdt.NewRow();
+                        newrow[0] = userId;
+                        ytempdt.Rows.Add(newrow);
+                    }
+                }
+                //判断若以上两个临时表其中一个有值的话,就进行更新操作
+                switch (id)
+                {
+                    case 7:
+                        message = $"检测到所选择的行中有 \n 已设置关闭'{ytempdt.Rows.Count}'行 \n 末设置关闭'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                    case 10:
+                        message = $"检测到所选择的行中有 \n 已设置审核'{ytempdt.Rows.Count}'行 \n 末设置审核'{ntempdt.Rows.Count}'行 \n 是否继续?";
+                        break;
+                }
+
+                if (MessageBox.Show(message, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    if (ntempdt.Rows.Count > 0)
+                        nbool = ChangeState(typeid,0,ntempdt);
+                    if (ytempdt.Rows.Count > 0)
+                        ybool = ChangeState(typeid,1,ytempdt);
+                    if (nbool || ybool)
+                        MessageBox.Show("操作成功,请重新进行查询", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

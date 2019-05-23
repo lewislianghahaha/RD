@@ -95,8 +95,6 @@ namespace RD.UI.Admin
             ShowHead(_roleid);
             //读取明细记录至GridView
             OnInitializeDtl();
-            //控制GridView显示
-            GridViewPageChange();
             //窗体权限控制
             PrivilegeControl();
             //将隐藏的部份开启
@@ -749,7 +747,6 @@ namespace RD.UI.Admin
                 task.FunctionName = functionName;
                 task.Funtypeid = funtypeid;
                 task.Data = dt;
-                task.Datarow = gvdtl.SelectedRows;
 
                 task.StartTask();
                 result = task.ResultMark;

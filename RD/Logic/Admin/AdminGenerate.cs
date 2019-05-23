@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Windows.Forms;
 using RD.DB.Generate;
 
 namespace RD.Logic.Admin
@@ -9,7 +8,7 @@ namespace RD.Logic.Admin
         GenerateDt generateDt = new GenerateDt();
 
         /// <summary>
-        /// 角色权限明细审核（反审核）操作
+        /// 角色权限明细审核（反审核）操作 T_AD_Role表使用
         /// </summary>
         /// <param name="confirmid">审核ID 0:审核 1:反审核</param>
         /// <param name="roleid">角色ID</param>
@@ -47,6 +46,46 @@ namespace RD.Logic.Admin
         {
             var result = true;
             result = generateDt.Update_RoleFunStatus(functionname, typeid, dt);
+            return result;
+        }
+
+        /// <summary>
+        /// 审核(反审核) 针对T_AD_User进行操作
+        /// </summary>
+        /// <param name="confirmid"></param>
+        /// <param name="userid"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool ConfirmUser(int confirmid,int userid,DataTable dt)
+        {
+            var result = true;
+            result = generateDt.ConfirmUser(confirmid, userid, dt);
+            return result;
+        }
+
+        /// <summary>
+        /// 更新功能(对T_AD_UserDtl更新) ‘是否添加’功能
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool AddRoleIntoUserdtl(int id ,DataTable dt)
+        {
+            var result = true;
+            result = generateDt.AddRoleIntoUserdtl(id,dt);
+            return result;
+        }
+
+        /// <summary>
+        /// 批量关闭帐户信息 针对T_AD_User进行操作
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool CloseUser(int id, DataTable dt)
+        {
+            var result = true;
+            result = generateDt.CloseUser(id, dt);
             return result;
         }
 

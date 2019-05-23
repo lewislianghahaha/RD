@@ -52,7 +52,7 @@ namespace RD.Logic.Admin
         }
 
         /// <summary>
-        /// 角色信息管理查询
+        /// 角色信息管理查询(RoleInfoFrm.cs使用)
         /// </summary>
         /// <param name="roleid"></param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace RD.Logic.Admin
         }
 
         /// <summary>
-        /// 角色信息管理-功能权限明细查询
+        /// 角色信息管理-功能权限明细查询(RoleInfoDtlFrm.cs使用)
         /// </summary>
         /// <param name="roleid"></param>
         /// <param name="funtypeid"></param>
@@ -93,7 +93,7 @@ namespace RD.Logic.Admin
         }
 
         /// <summary>
-        /// 根据roleid获取T_AD_Role表头信息
+        /// 根据roleid获取T_AD_Role 或 T_AD_Fun表头内容
         /// </summary>
         /// <param name="roleid"></param>
         /// <returns></returns>
@@ -112,7 +112,44 @@ namespace RD.Logic.Admin
             return dt;
         }
 
+        /// <summary>
+        /// 利用userid获取T_AD_User表内容 AccountAddFrm.cs使用
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public DataTable SearchUser(int userid)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.SearchUser(userid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
 
+        /// <summary>
+        /// 利用userid获取T_AD_Userdtl表内容 AccountAddFrm.cs使用
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="choseid">复选框点击ID</param>
+        /// <returns></returns>
+        public DataTable SearchUserdtl(int userid ,string choseid)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.SearchUserdtl(userid, choseid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
 
     }
 }
