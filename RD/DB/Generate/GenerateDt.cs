@@ -296,21 +296,21 @@ namespace RD.DB.Generate
             var result = true;
             try
             {
-                //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
-                if (dt.Rows.Count == 0)
-                {
-                    var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, roleid);
-                    result = GenerDt(sqlscript);
-                }
                 //循环从GridView中所选择的行记录 RoleInfoFrm.cs
-                else
+                if (roleid == -1)
                 {
                     foreach (DataRow row in dt.Rows)
                     {
                         var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, Convert.ToInt32(row[0]));
                         result = GenerDt(sqlscript);
                     }
-                }  
+                }
+                //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
+                else
+                {
+                    var sqlscript = sqlList.Update_RoleConfirmStatus(confirmid, roleid);
+                    result = GenerDt(sqlscript);
+                }
             }
             catch (Exception)
             {
@@ -331,20 +331,20 @@ namespace RD.DB.Generate
             var result = true;
             try
             {
-                //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
-                if (dt.Rows.Count == 0)
-                {
-                    var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, roleid);
-                    result = GenerDt(sqlscipt);
-                }
                 //循环从GridView中所选择的行记录 RoleInfoFrm.cs
-                else
+                if (roleid == -1)
                 {
                     foreach (DataRow row in dt.Rows)
                     {
                         var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, Convert.ToInt32(row[0]));
                         result = GenerDt(sqlscipt);
                     }
+                }
+                //此为角色权限明细窗体使用 RoleInfoDtlFrm.cs
+                else
+                {
+                    var sqlscipt = sqlList.Update_RoleCloseStatus(closeid, roleid);
+                    result = GenerDt(sqlscipt);
                 }
             }
             catch (Exception)
@@ -391,20 +391,20 @@ namespace RD.DB.Generate
             var result = true;
             try
             {
-                //此为帐户权限明细窗体使用 AccountAddFrm.cs
-                if (dt.Rows.Count == 0)
-                {
-                    var sqlscript = sqlList.Update_UserConfirmStatus(confirmid, userid);
-                    result = GenerDt(sqlscript);
-                }
                 //循环从GridView中所选择的行记录 AdminFrm.cs
-                else
+                if (userid == -1)
                 {
                     foreach (DataRow row in dt.Rows)
                     {
                         var sqlscript = sqlList.Update_UserConfirmStatus(confirmid, Convert.ToInt32(row[0]));
                         result = GenerDt(sqlscript);
                     }
+                }
+                //此为帐户权限明细窗体使用 AccountAddFrm.cs
+                else
+                {
+                    var sqlscript = sqlList.Update_UserConfirmStatus(confirmid, userid);
+                    result = GenerDt(sqlscript);
                 }
             }
             catch (Exception)

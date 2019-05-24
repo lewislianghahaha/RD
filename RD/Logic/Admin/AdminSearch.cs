@@ -42,7 +42,7 @@ namespace RD.Logic.Admin
 
             try
             {
-                dt = serDt.Admin_Searchdtldt(userid,sexid,closeid, confirmstatus, dtTime);
+                dt = serDt.Admin_Searchdtldt(userid,sexid,closeid,confirmstatus,dtTime);
             }
             catch (Exception ex)
             {

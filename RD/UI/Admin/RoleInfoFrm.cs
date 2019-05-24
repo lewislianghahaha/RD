@@ -555,6 +555,7 @@ namespace RD.UI.Admin
                 task.TaskId = 3;
                 task.FunctionId = functionid;
                 task.Data = dt;
+                task.Roleid = -1;
 
                 switch (functionid)
                 {

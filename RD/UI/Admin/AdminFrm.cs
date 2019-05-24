@@ -214,7 +214,7 @@ namespace RD.UI.Admin
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-                ChangeUserState("4.1", 10, gvdtl.SelectedRows);
+                ChangeUserState("4.1", 5, gvdtl.SelectedRows);
                 //成功后,先将GridView记录清空(因需要用户重新进行查询)
                 gvdtl.DataSource = null;
                 panel1.Visible = false;
@@ -236,7 +236,7 @@ namespace RD.UI.Admin
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-                ChangeUserState("5.1", 7, gvdtl.SelectedRows);
+                ChangeUserState("5.1", 4, gvdtl.SelectedRows);
                 //成功后,先将GridView记录清空(因需要用户重新进行查询)
                 gvdtl.DataSource = null;
                 panel1.Visible = false;
@@ -561,6 +561,7 @@ namespace RD.UI.Admin
                 task.FunctionId = typeid;
                 task.Id = id;
                 task.Data = dt;
+                task.Userid = -1;
 
                 task.StartTask();
                 result = task.ResultMark;
@@ -638,10 +639,10 @@ namespace RD.UI.Admin
                 //判断若以上两个临时表其中一个有值的话,就进行更新操作
                 switch (id)
                 {
-                    case 7:
+                    case 4:
                         message = $"检测到所选择的行中有 \n 已设置关闭'{ytempdt.Rows.Count}'行 \n 末设置关闭'{ntempdt.Rows.Count}'行 \n 是否继续?";
                         break;
-                    case 10:
+                    case 5:
                         message = $"检测到所选择的行中有 \n 已设置审核'{ytempdt.Rows.Count}'行 \n 末设置审核'{ntempdt.Rows.Count}'行 \n 是否继续?";
                         break;
                 }
