@@ -967,12 +967,16 @@ namespace RD.DB
         public string Admindtl(int userid, int sexid, string closeid, string confirmstatus, DateTime dtTime)
         {
 
-            if (userid == -1)
+            if (userid == -1 && sexid !=0)
             {
                 _result = $@"SELECT a.UserId,a.UserName 职员名称,
                                CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
+		                       a.UserContact 联系方式,
+		                       a.UserContact 职员邮箱,
 	                           a.UserInDt 入职日期,
 	                           CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+                               a.InputUser 创建人,
+		                       a.InputDt 创建日期,
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
@@ -981,13 +985,17 @@ namespace RD.DB
                         AND a.CloseStatus='{closeid}'       --关闭状态
                         AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期";
             }
-            else if (sexid == 0)
+            else if (userid !=-1 && sexid == 0)
             {
                 _result =
                     $@"SELECT a.UserId,a.UserName 职员名称,
                                CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
+		                       a.UserContact 联系方式,
+		                       a.UserContact 职员邮箱,
 	                           a.UserInDt 入职日期,
 	                           CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+                               a.InputUser 创建人,
+		                       a.InputDt 创建日期,
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
@@ -1001,8 +1009,12 @@ namespace RD.DB
                 _result =
                     $@"SELECT a.UserId,a.UserName 职员名称,
                                CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
+		                       a.UserContact 联系方式,
+		                       a.UserContact 职员邮箱,
 	                           a.UserInDt 入职日期,
 	                           CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+                               a.InputUser 创建人,
+		                       a.InputDt 创建日期,
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a

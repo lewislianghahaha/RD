@@ -733,7 +733,7 @@ namespace RD.DB
         public DataTable Get_Admindtl()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 7; i++)
+            for (var i = 0; i < 11; i++)
             {
                 var dc = new DataColumn();
                 switch (i)
@@ -753,23 +753,43 @@ namespace RD.DB
                         dc.ColumnName = "职员性别";
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    //UserInDt
+                    //UserContact
                     case 3:
+                        dc.ColumnName = "联系方式";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserContact
+                    case 4:
+                        dc.ColumnName = "职员邮箱";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //UserInDt
+                    case 5:
                         dc.ColumnName = "入职日期";
                         dc.DataType = Type.GetType("System.DateTime"); 
                         break;
                     //CloseStatus
-                    case 4:
+                    case 6:
                         dc.ColumnName = "关闭状态";
                         dc.DataType = Type.GetType("System.String");
                         break;
+                    //InputUser
+                    case 7:
+                        dc.ColumnName = "创建人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 8:
+                        dc.ColumnName = "创建日期";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
                     //Fstatus
-                    case 5:
+                    case 9:
                         dc.ColumnName = "审核状态";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //FstatusDt
-                    case 6:
+                    case 10:
                         dc.ColumnName = "审核日期";
                         dc.DataType = Type.GetType("System.DateTime");
                         break;

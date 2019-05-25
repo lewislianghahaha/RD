@@ -256,6 +256,7 @@ namespace RD.UI.Admin
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtName.Text = "";
             }
         }
 
@@ -620,11 +621,12 @@ namespace RD.UI.Admin
                 //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
                 tmSave.Enabled = false;
                 tmConfirm.Enabled = false;
-                //cbadmin.Enabled = false;
-                //txtrolename.Enabled = false;
-                //comType.Enabled = false;
-                //gvdtl.Enabled = false;
-                //cbadmin.Checked = _adminMarkId == "Y";
+                txtName.Enabled = false;
+                txtEmail.Enabled = false;
+                comsex.Enabled = false;
+                dtin.Enabled = false;
+                txtAdder.Enabled = false;
+                gvdtl.Enabled = false;
             }
             //若为“非审核”状态的,就执行以下语句
             else
@@ -634,11 +636,12 @@ namespace RD.UI.Admin
                 //将所有功能的状态还原(即与审核时的控件状态相反)
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
-                //cbadmin.Enabled = true;
-                //txtrolename.Enabled = true;
-                //comType.Enabled = true;
-                //gvdtl.Enabled = true;
-                //cbadmin.Checked = _adminMarkId == "Y";
+                txtName.Enabled = true;
+                txtEmail.Enabled = true;
+                comsex.Enabled = true;
+                dtin.Enabled = true;
+                txtAdder.Enabled = true;
+                gvdtl.Enabled = true;
             }
         }
 
