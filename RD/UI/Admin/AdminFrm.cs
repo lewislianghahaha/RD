@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
+using RD.UI.Account;
 
 namespace RD.UI.Admin
 {
@@ -256,7 +257,18 @@ namespace RD.UI.Admin
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
 
+                var account = new AccountFrm();
+                //获取所选中行中的帐号名称及帐号密码
+                var a= Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                var b = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+
+                account.Username = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                account.Userpwd = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                account.StartPosition = FormStartPosition.CenterScreen;
+                account.ShowDialog();
             }
             catch (Exception ex)
             {

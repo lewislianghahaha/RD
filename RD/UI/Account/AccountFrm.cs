@@ -6,6 +6,25 @@ namespace RD.UI.Account
 {
     public partial class AccountFrm : Form
     {
+        //获取帐号名称
+        private string _username;
+        //获取帐号密码
+        private string _userpwd;
+
+        #region Set
+
+            /// <summary>
+            /// 获取帐号名称
+            /// </summary>
+            public string Username { set { _username = value; } }
+
+            /// <summary>
+            /// 获取帐号密码
+            /// </summary>
+            public string Userpwd { set { _userpwd = value; } }
+
+        #endregion
+
         TaskLogic task = new TaskLogic();
 
         public AccountFrm()
@@ -18,13 +37,12 @@ namespace RD.UI.Account
         private void OnRegisterEvents()
         {
             btnChange.Click += BtnChange_Click;
-            btnexit.Click += Btnexit_Click;
         }
 
         private new void Show()
         {
-            txtname.Text = GlobalClasscs.User.StrUsrName;
-            txtoldpwd.Text = GlobalClasscs.User.StrUsrpwd;
+            txtname.Text = _username;
+            txtoldpwd.Text = _userpwd;
         }
 
         /// <summary>
@@ -59,16 +77,6 @@ namespace RD.UI.Account
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtnewpwd.Text = "";
             }
-        }
-
-        /// <summary>
-        /// 退出
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Btnexit_Click(object sender, EventArgs e)
-        {
-           this.Close();
         }
     }
 }

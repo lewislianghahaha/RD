@@ -231,6 +231,8 @@ namespace RD.UI
             try
             {
                 var account = new AccountFrm();
+                account.Username = GlobalClasscs.User.StrUsrName;
+                account.Userpwd = GlobalClasscs.User.StrUsrpwd;
                 account.StartPosition = FormStartPosition.CenterScreen;
                 account.ShowDialog();
             }

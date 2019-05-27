@@ -36,10 +36,10 @@ namespace RD.UI.Admin
 
         #region set
 
-        /// <summary>
-        /// 获取单据状态标记ID C:创建 R:读取
-        /// </summary>
-        public string FunState { set { _funState = value; } }
+            /// <summary>
+            /// 获取单据状态标记ID C:创建 R:读取
+            /// </summary>
+            public string FunState { set { _funState = value; } }
             /// <summary>
             /// 获取传递过来的帐号ID
             /// </summary>

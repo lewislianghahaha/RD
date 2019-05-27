@@ -833,6 +833,10 @@ namespace RD.DB
                 case "User":
                     _result = "SELECT a.UserName FROM dbo.T_AD_User a";
                     break;
+                //职员表(所有列获取) 注:显示末关闭 并 已审核的数据
+                case "T_AD_User":
+                    _result = "SELECT a.* FROM dbo.T_AD_User a where a.CloseStatus='N' and a.Fstatus='Y'";
+                    break;
             }
             return _result;
         }

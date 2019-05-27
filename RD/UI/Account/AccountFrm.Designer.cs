@@ -37,14 +37,13 @@
             this.txtnewpwd = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnChange = new System.Windows.Forms.Button();
-            this.btnexit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 44);
+            this.label1.Location = new System.Drawing.Point(30, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 12);
             this.label1.TabIndex = 0;
@@ -53,9 +52,9 @@
             // txtname
             // 
             this.txtname.Enabled = false;
-            this.txtname.Location = new System.Drawing.Point(79, 40);
+            this.txtname.Location = new System.Drawing.Point(66, 40);
             this.txtname.Name = "txtname";
-            this.txtname.Size = new System.Drawing.Size(144, 21);
+            this.txtname.Size = new System.Drawing.Size(208, 21);
             this.txtname.TabIndex = 1;
             // 
             // panel1
@@ -80,16 +79,16 @@
             // txtoldpwd
             // 
             this.txtoldpwd.Enabled = false;
-            this.txtoldpwd.Location = new System.Drawing.Point(79, 67);
+            this.txtoldpwd.Location = new System.Drawing.Point(66, 67);
             this.txtoldpwd.Name = "txtoldpwd";
-            this.txtoldpwd.Size = new System.Drawing.Size(144, 21);
+            this.txtoldpwd.Size = new System.Drawing.Size(208, 21);
             this.txtoldpwd.TabIndex = 4;
             this.txtoldpwd.UseSystemPasswordChar = true;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(34, 71);
+            this.label3.Location = new System.Drawing.Point(20, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 12);
             this.label3.TabIndex = 3;
@@ -97,16 +96,16 @@
             // 
             // txtnewpwd
             // 
-            this.txtnewpwd.Location = new System.Drawing.Point(79, 94);
+            this.txtnewpwd.Location = new System.Drawing.Point(66, 94);
             this.txtnewpwd.Name = "txtnewpwd";
-            this.txtnewpwd.Size = new System.Drawing.Size(144, 21);
+            this.txtnewpwd.Size = new System.Drawing.Size(208, 21);
             this.txtnewpwd.TabIndex = 6;
             this.txtnewpwd.UseSystemPasswordChar = true;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(34, 98);
+            this.label4.Location = new System.Drawing.Point(20, 98);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 12);
             this.label4.TabIndex = 5;
@@ -114,29 +113,18 @@
             // 
             // btnChange
             // 
-            this.btnChange.Location = new System.Drawing.Point(32, 129);
+            this.btnChange.Location = new System.Drawing.Point(199, 128);
             this.btnChange.Name = "btnChange";
             this.btnChange.Size = new System.Drawing.Size(75, 23);
             this.btnChange.TabIndex = 7;
             this.btnChange.Text = "更改";
             this.btnChange.UseVisualStyleBackColor = true;
             // 
-            // btnexit
-            // 
-            this.btnexit.Location = new System.Drawing.Point(164, 129);
-            this.btnexit.Name = "btnexit";
-            this.btnexit.Size = new System.Drawing.Size(75, 23);
-            this.btnexit.TabIndex = 8;
-            this.btnexit.Text = "关闭";
-            this.btnexit.UseVisualStyleBackColor = true;
-            // 
             // AccountFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(286, 163);
-            this.ControlBox = false;
-            this.Controls.Add(this.btnexit);
             this.Controls.Add(this.btnChange);
             this.Controls.Add(this.txtnewpwd);
             this.Controls.Add(this.label4);
@@ -166,6 +154,5 @@
         private System.Windows.Forms.TextBox txtnewpwd;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnChange;
-        private System.Windows.Forms.Button btnexit;
     }
 }
