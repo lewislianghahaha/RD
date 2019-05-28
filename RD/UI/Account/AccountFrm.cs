@@ -31,7 +31,6 @@ namespace RD.UI.Account
         {
             InitializeComponent();
             OnRegisterEvents();
-            Show();
         }
 
         private void OnRegisterEvents()
@@ -39,10 +38,12 @@ namespace RD.UI.Account
             btnChange.Click += BtnChange_Click;
         }
 
-        private new void Show()
+        public void ShowDtl()
         {
             txtname.Text = _username;
             txtoldpwd.Text = _userpwd;
+            //将‘最大化’按钮设置为不可用
+            this.MaximizeBox = false;
         }
 
         /// <summary>
@@ -63,13 +64,10 @@ namespace RD.UI.Account
                 //开始执行Task,进行分派任务
                 task.StartTask();
 
-                if (task.ResultMark)
+                if (!task.ResultMark) throw new Exception("更新失败,请联系管理员");
                 {
                     MessageBox.Show(@"帐号密码修改成功,请在下一次登录时填上新的密码进入登录","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                }
-                else
-                {
-                    throw new Exception("更新失败,请联系管理员");
+                    this.Close();
                 }
             }
             catch (Exception ex)

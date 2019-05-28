@@ -833,9 +833,18 @@ namespace RD.DB
                 case "User":
                     _result = "SELECT a.UserName FROM dbo.T_AD_User a";
                     break;
-                //职员表(所有列获取) 注:显示末关闭 并 已审核的数据
+                //职员表(所有列获取) 注:需满足三个条件;1)末关闭 已审核的数据 2)至少设置一个角色权限 3)已添加的角色权限应符合"已审核 末关闭" 
                 case "T_AD_User":
-                    _result = "SELECT a.* FROM dbo.T_AD_User a where a.CloseStatus='N' and a.Fstatus='Y'";
+                    _result = @"SELECT a.* FROM dbo.T_AD_User a 
+                                where a.CloseStatus='N' and a.Fstatus='Y'
+                                AND EXISTS (
+				                                SELECT NULL 
+				                                FROM dbo.T_AD_UserDtl b
+				                                WHERE a.UserId=b.UserId
+				                                AND b.AddId='Y'
+                                                AND c.CloseStatus='N' AND c.Fstatus='Y'
+			                                )
+                                ";
                     break;
             }
             return _result;
@@ -955,6 +964,27 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 根据userid获取角色权限相关记录(窗体及功能权限控制时使用)
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <returns></returns>
+        public string Get_UserRoleDtl(int userid)
+        {
+            _result = $@"
+                            SELECT D.FunName 功能名称,C.CanALLMark 管理员权限,D.CanShow 能否显示,D.CanBackConfirm 能否反审核,D.CanDel 能否删除
+                            FROM dbo.T_AD_User a
+                            INNER JOIN dbo.T_AD_UserDtl b ON a.UserId=b.UserId
+                            INNER JOIN dbo.T_AD_Role C ON B.RoleId=C.Id
+                            INNER JOIN dbo.T_AD_RoleDtl D ON C.Id=D.Id
+                            WHERE a.UserId='{userid}'  --2
+                            AND b.AddId='Y'   --已添加角色
+                            AND C.CloseStatus='N' AND C.Fstatus='Y'  --需角色‘已审核’ ‘末关闭’
+                        ";
+            return _result;
+        }
+        
+
         #endregion
 
         #region 帐号权限
@@ -973,16 +1003,16 @@ namespace RD.DB
 
             if (userid == -1 && sexid !=0)
             {
-                _result = $@"SELECT a.UserId,a.UserName 职员名称,
-                               CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
-		                       a.UserContact 联系方式,
-		                       a.UserContact 职员邮箱,
-	                           a.UserInDt 入职日期,
-	                           CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
-                               a.InputUser 创建人,
-		                       a.InputDt 创建日期,
-	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
-	                           a.FstatusDt 审核日期
+                _result = $@"SELECT a.UserId,a.UserPassword,a.UserName 职员名称,
+                                   CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
+		                           a.UserContact 联系方式,
+		                           a.UserContact 职员邮箱,
+	                               a.UserInDt 入职日期,
+	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+                                   a.InputUser 创建人,
+		                           a.InputDt 创建日期,
+	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
+	                               a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
                         WHERE a.UserSex='{sexid}'           --性别
                         AND a.Fstatus='{confirmstatus}'     --审核状态
@@ -992,7 +1022,7 @@ namespace RD.DB
             else if (userid !=-1 && sexid == 0)
             {
                 _result =
-                    $@"SELECT a.UserId,a.UserName 职员名称,
+                    $@"SELECT a.UserId,a.UserPassword,a.UserName 职员名称,
                                CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
 		                       a.UserContact 联系方式,
 		                       a.UserContact 职员邮箱,
@@ -1011,7 +1041,7 @@ namespace RD.DB
             else if (userid == -1 && sexid == 0)
             {
                 _result =
-                    $@"SELECT a.UserId,a.UserName 职员名称,
+                    $@"SELECT a.UserId,a.UserPassword,a.UserName 职员名称,
                                CASE a.UserSex WHEN '1' THEN '男' ELSE '女' END  职员性别,
 		                       a.UserContact 联系方式,
 		                       a.UserContact 职员邮箱,
@@ -1190,7 +1220,7 @@ namespace RD.DB
                             FROM dbo.T_AD_UserDtl a
                             INNER JOIN dbo.T_AD_Role b ON a.RoleId=b.Id
                             WHERE a.UserId='{userid}' --职员ID
-                            AND a.AddId='Y' AND b.CloseStatus='N'  --显示已添加，但角色没有关闭的记录"
+                            AND a.AddId='Y' AND b.CloseStatus='N' and b.Fstatus='Y'  --显示已添加，但角色没有关闭并已审核的记录"
                 : $@"SELECT a.EntryID,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
 	                               CASE WHEN a.AddId='Y' THEN '是' ELSE '否' END 是否添加,
 	                               a.InputUser 创建人,a.InputDt 创建日期

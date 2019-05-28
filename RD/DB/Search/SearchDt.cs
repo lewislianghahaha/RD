@@ -597,6 +597,27 @@ namespace RD.DB.Search
             return resultdt;
         }
 
+        /// <summary>
+        /// 根据用户ID获取角色明细相关记录
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public DataTable SearchUserRoleDtl(int userid)
+        {
+            var resultdt = new DataTable();
+            try
+            {
+                var sqlscript = sqlList.Get_UserRoleDtl(userid);
+                resultdt = GetData(sqlscript);
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+            }
+            return resultdt;
+        }
+
         #endregion
 
         #region 帐户信息功能设定

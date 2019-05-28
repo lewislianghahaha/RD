@@ -215,7 +215,7 @@ namespace RD.UI.Admin
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-                ChangeUserState("4.1", 9, gvdtl.SelectedRows);
+                ChangeUserState("4.1", 10, gvdtl.SelectedRows);
                 //成功后,先将GridView记录清空(因需要用户重新进行查询)
                 gvdtl.DataSource = null;
                 panel1.Visible = false;
@@ -237,7 +237,7 @@ namespace RD.UI.Admin
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
-                ChangeUserState("5.1", 6, gvdtl.SelectedRows);
+                ChangeUserState("5.1", 7, gvdtl.SelectedRows);
                 //成功后,先将GridView记录清空(因需要用户重新进行查询)
                 gvdtl.DataSource = null;
                 panel1.Visible = false;
@@ -262,11 +262,9 @@ namespace RD.UI.Admin
 
                 var account = new AccountFrm();
                 //获取所选中行中的帐号名称及帐号密码
-                var a= Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
-                var b = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
-
-                account.Username = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
-                account.Userpwd = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                account.Username = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[2].Value);
+                account.Userpwd = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
+                account.ShowDtl();
                 account.StartPosition = FormStartPosition.CenterScreen;
                 account.ShowDialog();
             }
@@ -555,6 +553,7 @@ namespace RD.UI.Admin
         {
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
         }
 
         /// <summary>
@@ -651,10 +650,10 @@ namespace RD.UI.Admin
                 //判断若以上两个临时表其中一个有值的话,就进行更新操作
                 switch (id)
                 {
-                    case 6:
+                    case 7:
                         message = $"检测到所选择的行中有 \n 已设置关闭'{ytempdt.Rows.Count}'行 \n 末设置关闭'{ntempdt.Rows.Count}'行 \n 是否继续?";
                         break;
-                    case 9:
+                    case 10:
                         message = $"检测到所选择的行中有 \n 已设置审核'{ytempdt.Rows.Count}'行 \n 末设置审核'{ntempdt.Rows.Count}'行 \n 是否继续?";
                         break;
                 }

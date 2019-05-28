@@ -286,7 +286,7 @@ namespace RD.Logic
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
-                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _dtime, _confirmid,_datarow);
+                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _dtime, _confirmid,_datarow,_userid);
                     break;
             }
         }
@@ -558,8 +558,9 @@ namespace RD.Logic
         /// <param name="confirmdt">审核日期</param>
         /// <param name="confirmid">审核ID</param>
         /// <param name="datarow">保存从GridView选择的行</param>
+        /// <param name="userid">用户ID(角色权限使用)</param>
         private void MainInfo(string functionId,string functionName,int custid,int yearid,int ordertypeId,int hTypeid,string confirmfStatus, DateTime confirmdt,
-                              int confirmid, DataGridViewSelectedRowCollection datarow)
+                              int confirmid, DataGridViewSelectedRowCollection datarow,int userid)
         {
             switch (functionId)
             {
@@ -570,6 +571,10 @@ namespace RD.Logic
                 //查询(根据所选择的下拉列表参数，查询结果并返回DT；若没有，返回空表)
                 case "1.1":
                     _resultTable = mainSearch.Searchdtldt(custid, yearid, ordertypeId, hTypeid, confirmfStatus, confirmdt);
+                    break;
+                //查询(根据用户ID获取角色权限相关记录)
+                case "1.2":
+                    _resultTable = mainSearch.SearchUserRoleDtl(userid);
                     break;
 
                 //审核(反审核)

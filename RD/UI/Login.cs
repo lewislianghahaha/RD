@@ -47,7 +47,7 @@ namespace RD.UI
                 if (txtName.Text == "" || txtpwd.Text == "") throw new Exception("请输入帐号及密码进行登录");
                 //检测所输入的值是否在T_AD_User内存在;若没有,即跳出异常
                 var rows=_userdt.Select("UserName='" + txtName.Text + "'and UserPassword = '" + txtpwd.Text + "'");
-                if(rows.Length==0) throw new Exception("所输入的帐户不存在,请联系管理员.");
+                if(rows.Length==0) throw new Exception("所输入的帐户不存在或不满足某些条件,请联系管理员.");
                 
                 //若正确将相关信息保存至结构类内
                 GlobalClasscs.User.StrUsrName = txtName.Text;

@@ -20,6 +20,18 @@ namespace RD.UI
 
         //保存查询出来的GridView记录
         private DataTable _dtl;
+        //保存查询出来的角色权限记录
+        private DataTable _userdt;
+
+        //获取管理员标记(权限使用)
+        private string _admainMark;
+        //获取能否显示标记(权限使用)
+        private string _canshowMark;
+        //获取能否反审核标记(权限使用)
+        private string _canBackConfirmMark;
+        //获取能否删除标记(权限使用)
+        private string _canDelMark;
+
         //记录当前页数(GridView页面跳转使用)
         private int _pageCurrent=1;
         //记录计算出来的总页数(GridView页面跳转使用)
@@ -32,6 +44,8 @@ namespace RD.UI
             InitializeComponent();
             OnRegisterEvents();
             OnInitialize();
+            //窗体权限控制
+            GetPrivilegeDt();
         }
 
         private void OnRegisterEvents()
@@ -49,6 +63,7 @@ namespace RD.UI
             tmRefresh.Click += TmRefresh_Click;
             tmShowdtl.Click += TmShowdtl_Click;
             tmConfirm.Click += TmConfirm_Click;
+            tmDelOrderdtl.Click += TmDelOrderdtl_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -66,79 +81,39 @@ namespace RD.UI
         {
             //初始化各下拉列表信息
             //客户名称信息
-            OnInitializeCustDropDownList();
-            //单据创建年份
-            OnInitializeYearDropDownList();
-            //单据类型
-            OnInitializeOrderTypeDropDownList();
-            //房屋类型
-            OnInitializeHouseTypeDropDownList();
-            //审核状态
-            OnInitializeConfirmTypeDropDownList();
-        }
-
-        /// <summary>
-        /// 初始化客户名称列表
-        /// </summary>
-        private void OnInitializeCustDropDownList()
-        {
             comcustomer.DataSource = GetDropdownListdt("Customer");
             comcustomer.DisplayMember = "CustName";       //设置显示值
             comcustomer.ValueMember = "Custid";          //设置默认值内码(即:列名)
-        }
-
-        /// <summary>
-        /// 初始化单据创建年份
-        /// </summary>
-        private void OnInitializeYearDropDownList()
-        {
+            //单据创建年份
             comyear.DataSource = GetDropdownListdt("OrderYear");
             comyear.DisplayMember = "YearName";     //设置显示值
             comyear.ValueMember = "Yearid";       //设置默认值内码(即:列名)
-        }
-
-        /// <summary>
-        /// 初始化单据类型
-        /// </summary>
-        private void OnInitializeOrderTypeDropDownList()
-        {
+            //单据类型
             comordertype.DataSource = GetDropdownListdt("OrderType");
             comordertype.DisplayMember = "OrderName";     //设置显示值
             comordertype.ValueMember = "OrderId";       //设置默认值内码(即:列名)
-        }
-
-        /// <summary>
-        /// 初始化房屋类型
-        /// </summary>
-        private void OnInitializeHouseTypeDropDownList()
-        {
+            //房屋类型
             comhousetype.DataSource = GetDropdownListdt("HouseType");
             comhousetype.DisplayMember = "HtypeName";     //设置显示值
             comhousetype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
-        }
-
-        /// <summary>
-        /// 初始化审核状态
-        /// </summary>
-        private void OnInitializeConfirmTypeDropDownList()
-        {
+            //审核状态
             comconfirm.DataSource = GetDropdownListdt("ConfirmType");
             comconfirm.DisplayMember = "FStatusName";     //设置显示值
             comconfirm.ValueMember = "FStatus";       //设置默认值内码(即:列名)
         }
 
         /// <summary>
-        /// 根据对应的功能名称获取对应的DataTable
+        /// 获取角色权限DT
         /// </summary>
-        /// <param name="functionName"></param>
-        private DataTable GetDropdownListdt(string functionName)
+        private void GetPrivilegeDt()
         {
             task.TaskId = 4;
-            task.FunctionId = "1";
-            task.FunctionName = functionName;
+            task.FunctionId = "1.2";
+            task.Userid= GlobalClasscs.User.Userid;
             task.StartTask();
-            var dt = task.ResultTable;
-            return dt;
+            _userdt = task.ResultTable;
+            //根据获取出来的DT进行窗体及功能权限控制
+            PrivilegeControl();
         }
 
         /// <summary>
@@ -233,6 +208,7 @@ namespace RD.UI
                 var account = new AccountFrm();
                 account.Username = GlobalClasscs.User.StrUsrName;
                 account.Userpwd = GlobalClasscs.User.StrUsrpwd;
+                account.ShowDtl();
                 account.StartPosition = FormStartPosition.CenterScreen;
                 account.ShowDialog();
             }
@@ -419,7 +395,7 @@ namespace RD.UI
                 if (fStatus == "已审核")
                 {
                     //权限控制(注:若不是可以反审核的帐号就弹出异常)
-                    if(!Getpriavepower(GlobalClasscs.User.StrUsrName)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘反审核’权限,不能继续.");
+                    if(!GetPrivilegepower(GlobalClasscs.User.StrUsrName)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘反审核’权限,不能继续.");
                     //提示信息
                     clickMessage = $"您所选择需要进行反审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续?";
                 }
@@ -441,6 +417,23 @@ namespace RD.UI
                 //成功后,先将GridView记录清空
                 gvdtl.DataSource = null;
                 panel1.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 删除指定单据记录(需权限控制)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmDelOrderdtl_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
             }
             catch (Exception ex)
             {
@@ -685,84 +678,6 @@ namespace RD.UI
         }
 
         /// <summary>
-        /// 显示用户状态信息,如:动态显示时间
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tmt_Tick(object sender, EventArgs e)
-        {
-            tsStatus.Text = "你好," + GlobalClasscs.User.StrUsrName + "," + "欢迎进入系统," + "现在的时间是:" + DateTime.Now;
-        }
-
-        /// <summary>
-        ///子线程使用(重:用于监视功能调用情况,当完成时进行关闭LoadForm)
-        /// </summary>
-        private void Start()
-        {
-            task.StartTask();
-
-            //当完成后将Form2子窗体关闭
-            this.Invoke((ThreadStart)(() =>
-            {
-                load.Close();
-            }));
-        }
-
-        /// <summary>
-        /// 控制GridView单元格显示方式
-        /// </summary>
-        private void ControlGridViewisShow()
-        {
-            //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
-            gvdtl.Columns[0].Visible = false;
-            gvdtl.Columns[1].Visible = false;
-        }
-
-        /// <summary>
-        /// 根据用户名称获取其对应的权限
-        /// </summary>
-        private bool Getpriavepower(string username)
-        {
-            var result = true;
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 根据从GridView获取所选的行。进行审核（反审核）操作
-        /// </summary>
-        /// <param name="fStatus">审核状态 Y：已审核 N:末审核 审核ID 0:审核 1:反审核</param>
-        /// <param name="ordertype">单据类型 (1:室内装修工程单 AdornOrder 2:室内主材单 MaterialOrder)</param>
-        /// <returns></returns>
-        private bool ChangeState(string fStatus,string ordertype)
-        {
-            var result = true;
-            try
-            {
-                task.TaskId = 4;
-                task.FunctionId = "2";
-                task.FunctionName = ordertype;
-                task.Confirmid = fStatus == "已审核" ? 1 : 0;
-                task.Datarow = gvdtl.SelectedRows;
-
-                task.StartTask();
-                result = task.ResultMark;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return result;
-        }
-
-        /// <summary>
         /// GridView分页功能
         /// </summary>
         private void GridViewPageChange()
@@ -783,7 +698,7 @@ namespace RD.UI
                 {
                     bnPositionItem.Text = Convert.ToString(1);                       //初始化填充跳转页为1
                     tmshowrows.Enabled = true;                                      //每页显示行数（下拉框）  
-                                                                                  
+
                     //初始化时判断;若“总页数”=1，四个按钮不可用；若>1,“下一页” “末页”按钮可用
                     if (_totalpagecount == 1)
                     {
@@ -827,6 +742,120 @@ namespace RD.UI
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// 显示用户状态信息,如:动态显示时间
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tmt_Tick(object sender, EventArgs e)
+        {
+            tsStatus.Text = "你好," + GlobalClasscs.User.StrUsrName + "," + "欢迎进入系统," + "现在的时间是:" + DateTime.Now;
+        }
+
+        /// <summary>
+        ///子线程使用(重:用于监视功能调用情况,当完成时进行关闭LoadForm)
+        /// </summary>
+        private void Start()
+        {
+            task.StartTask();
+
+            //当完成后将Form2子窗体关闭
+            this.Invoke((ThreadStart)(() =>
+            {
+                load.Close();
+            }));
+        }
+
+        /// <summary>
+        /// 控制GridView单元格显示方式
+        /// </summary>
+        private void ControlGridViewisShow()
+        {
+            //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
+        }
+
+        /// <summary>
+        /// 根据用户名称获取其对应的权限
+        /// </summary>
+        private bool GetPrivilegepower(string username)
+        {
+            var result = true;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据从GridView获取所选的行。进行审核（反审核）操作
+        /// </summary>
+        /// <param name="fStatus">审核状态 Y：已审核 N:末审核 审核ID 0:审核 1:反审核</param>
+        /// <param name="ordertype">单据类型 (1:室内装修工程单 AdornOrder 2:室内主材单 MaterialOrder)</param>
+        /// <returns></returns>
+        private bool ChangeState(string fStatus,string ordertype)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 4;
+                task.FunctionId = "2";
+                task.FunctionName = ordertype;
+                task.Confirmid = fStatus == "已审核" ? 1 : 0;
+                task.Datarow = gvdtl.SelectedRows;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据对应的功能名称获取对应的DataTable
+        /// </summary>
+        /// <param name="functionName"></param>
+        private DataTable GetDropdownListdt(string functionName)
+        {
+            task.TaskId = 4;
+            task.FunctionId = "1";
+            task.FunctionName = functionName;
+            task.StartTask();
+            var dt = task.ResultTable;
+            return dt;
+        }
+
+        /// <summary>
+        /// 根据获取过来的_userdt进行各方面的权限控制(获取管理员 及 能否显示权限)
+        /// </summary>
+        private void PrivilegeControl()
+        {
+            //检测管理员权限
+            //var adminrows = _userdt.Select("管理员权限='Y'");
+            //var adminrow1 = _userdt.Select("功能名称='客户信息管理' and 能否显示='Y'");
+            ////若有‘管理员权限’的话,就设置管理员标记
+            //if (adminrows.Length > 0)
+            //{
+            //    _admainMark = "Y";             //管理员标记
+            //    //_canshowMark = "Y";            //是否显示标记
+            //    //_canBackConfirmMark = "Y";     //是否反审核标记
+            //    //_canDelMark = "Y";             //是否删除标记
+            //}
+            //else if (_admainMark!="Y" && adminrow1.Length==0)
+            //{
+                
+            //}
         }
     }
 }

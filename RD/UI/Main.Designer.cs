@@ -58,6 +58,8 @@
             this.tmShowdtl = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.tmConfirm = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmDelOrderdtl = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dtpick = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
@@ -92,8 +94,6 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmDelOrderdtl = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.status.SuspendLayout();
             this.showDtl.SuspendLayout();
@@ -305,6 +305,17 @@
             this.tmConfirm.Size = new System.Drawing.Size(172, 22);
             this.tmConfirm.Text = "审核(反审核)";
             // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(169, 6);
+            // 
+            // tmDelOrderdtl
+            // 
+            this.tmDelOrderdtl.Name = "tmDelOrderdtl";
+            this.tmDelOrderdtl.Size = new System.Drawing.Size(172, 22);
+            this.tmDelOrderdtl.Text = "删除单据相关信息";
+            // 
             // splitContainer1
             // 
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -366,7 +377,7 @@
             this.comconfirm.FormattingEnabled = true;
             this.comconfirm.Location = new System.Drawing.Point(70, 32);
             this.comconfirm.Name = "comconfirm";
-            this.comconfirm.Size = new System.Drawing.Size(95, 20);
+            this.comconfirm.Size = new System.Drawing.Size(148, 20);
             this.comconfirm.TabIndex = 11;
             // 
             // label5
@@ -643,17 +654,6 @@
             this.tstotalrow.Name = "tstotalrow";
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(169, 6);
-            // 
-            // tmDelOrderdtl
-            // 
-            this.tmDelOrderdtl.Name = "tmDelOrderdtl";
-            this.tmDelOrderdtl.Size = new System.Drawing.Size(172, 22);
-            this.tmDelOrderdtl.Text = "删除单据相关信息";
             // 
             // Main
             // 

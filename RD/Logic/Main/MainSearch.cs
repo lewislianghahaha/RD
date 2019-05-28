@@ -53,5 +53,24 @@ namespace RD.Logic.Main
             return dt;
         }
 
+        /// <summary>
+        /// 根据用户ID获取角色权限相关记录
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public DataTable SearchUserRoleDtl(int userid)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.SearchUserRoleDtl(userid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
+
     }
 }
