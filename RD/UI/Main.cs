@@ -837,25 +837,11 @@ namespace RD.UI
         }
 
         /// <summary>
-        /// 根据获取过来的_userdt进行各方面的权限控制(获取管理员 及 能否显示权限)
+        /// 根据获取过来的_userdt进行控制是否显示功能窗体
         /// </summary>
         private void PrivilegeControl()
         {
-            //检测管理员权限
-            //var adminrows = _userdt.Select("管理员权限='Y'");
-            //var adminrow1 = _userdt.Select("功能名称='客户信息管理' and 能否显示='Y'");
-            ////若有‘管理员权限’的话,就设置管理员标记
-            //if (adminrows.Length > 0)
-            //{
-            //    _admainMark = "Y";             //管理员标记
-            //    //_canshowMark = "Y";            //是否显示标记
-            //    //_canBackConfirmMark = "Y";     //是否反审核标记
-            //    //_canDelMark = "Y";             //是否删除标记
-            //}
-            //else if (_admainMark!="Y" && adminrow1.Length==0)
-            //{
-                
-            //}
+            
         }
     }
 }

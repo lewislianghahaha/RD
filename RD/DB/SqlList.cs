@@ -846,6 +846,10 @@ namespace RD.DB
 			                                )
                                 ";
                     break;
+                //功能表
+                case "T_AD_Fun":
+                    _result = @"SELECT FunName FROM dbo.T_AD_Fun WHERE ParentId!=0";
+                    break;
             }
             return _result;
         }
