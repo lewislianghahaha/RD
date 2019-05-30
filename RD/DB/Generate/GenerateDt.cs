@@ -280,6 +280,32 @@ namespace RD.DB.Generate
             return result;
         }
 
+        /// <summary>
+        /// 删除所选的单据记录(主窗体使用)
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="datarow"></param>
+        /// <returns></returns>
+        public bool Del_OrderRecord(string functionName, DataGridViewSelectedRowCollection datarow)
+        {
+            var result = true;
+
+            try
+            {
+                //循环从GridView中所选择的行记录
+                foreach (DataGridViewRow row in datarow)
+                {
+                    var sqlscript = sqlList.Del_OrderRecord(functionName, Convert.ToInt32(row.Cells[0].Value));
+                    result = GenerDt(sqlscript);
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
         #endregion
 
         #region 角色权限 相关操作-包括审核(反审核) 关闭
@@ -463,6 +489,8 @@ namespace RD.DB.Generate
         }
 
         #endregion
+
+
 
     }
 }

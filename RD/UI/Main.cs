@@ -23,15 +23,6 @@ namespace RD.UI
         //保存查询出来的角色权限记录
         private DataTable _userdt;
 
-        //获取管理员标记(权限使用)
-        private string _admainMark;
-        //获取能否显示标记(权限使用)
-        private string _canshowMark;
-        //获取能否反审核标记(权限使用)
-        private string _canBackConfirmMark;
-        //获取能否删除标记(权限使用)
-        private string _canDelMark;
-
         //记录当前页数(GridView页面跳转使用)
         private int _pageCurrent=1;
         //记录计算出来的总页数(GridView页面跳转使用)
@@ -81,23 +72,23 @@ namespace RD.UI
         {
             //初始化各下拉列表信息
             //客户名称信息
-            comcustomer.DataSource = GetDropdownListdt("Customer");
+            comcustomer.DataSource = GetListdt(4,"1","Customer");
             comcustomer.DisplayMember = "CustName";       //设置显示值
             comcustomer.ValueMember = "Custid";          //设置默认值内码(即:列名)
             //单据创建年份
-            comyear.DataSource = GetDropdownListdt("OrderYear");
+            comyear.DataSource = GetListdt(4,"1","OrderYear");
             comyear.DisplayMember = "YearName";     //设置显示值
             comyear.ValueMember = "Yearid";       //设置默认值内码(即:列名)
             //单据类型
-            comordertype.DataSource = GetDropdownListdt("OrderType");
+            comordertype.DataSource = GetListdt(4,"1","OrderType");
             comordertype.DisplayMember = "OrderName";     //设置显示值
             comordertype.ValueMember = "OrderId";       //设置默认值内码(即:列名)
             //房屋类型
-            comhousetype.DataSource = GetDropdownListdt("HouseType");
+            comhousetype.DataSource = GetListdt(4,"1","HouseType");
             comhousetype.DisplayMember = "HtypeName";     //设置显示值
             comhousetype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
             //审核状态
-            comconfirm.DataSource = GetDropdownListdt("ConfirmType");
+            comconfirm.DataSource = GetListdt(4,"1","ConfirmType");
             comconfirm.DisplayMember = "FStatusName";     //设置显示值
             comconfirm.ValueMember = "FStatus";       //设置默认值内码(即:列名)
         }
@@ -123,10 +114,15 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmCustomerInfo_Click(object sender, EventArgs e)
         {
+            var ruleid=true;
             try
             {
                 GlobalClasscs.Basic.BasicId = 1;
+                var rows = _userdt.Select("功能名称='客户信息管理' and 管理员权限 = 'Y' or 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
                 var basic = new BasicFrm();
+                basic.CandelMarkid = ruleid;
                 basic.StartPosition = FormStartPosition.CenterScreen;
                 basic.ShowDialog();
             }
@@ -143,10 +139,15 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmSuplierInfo_Click(object sender, EventArgs e)
         {
+            var ruleid = true;
             try
             {
                 GlobalClasscs.Basic.BasicId = 2;
+                var rows = _userdt.Select("功能名称='供应商信息管理' and 管理员权限 = 'Y' or 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
                 var basic = new BasicFrm();
+                basic.CandelMarkid = ruleid;
                 basic.StartPosition = FormStartPosition.CenterScreen;
                 basic.ShowDialog();
             }
@@ -163,10 +164,15 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmMaterialInfo_Click(object sender, EventArgs e)
         {
+            var ruleid = true;
             try
             {
                 GlobalClasscs.Basic.BasicId = 3;
+                var rows = _userdt.Select("功能名称='材料信息管理' and 管理员权限 = 'Y' or 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
                 var basic = new BasicFrm();
+                basic.CandelMarkid = ruleid;
                 basic.StartPosition = FormStartPosition.CenterScreen;
                 basic.ShowDialog();
             }
@@ -183,10 +189,15 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmHouseInfo_Click(object sender, EventArgs e)
         {
+            var ruleid = true;
             try
             {
                 GlobalClasscs.Basic.BasicId = 4;
+                var rows = _userdt.Select("功能名称='房屋类型及装修工程类别信息管理' and 管理员权限 = 'Y' or 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
                 var basic = new BasicFrm();
+                basic.CandelMarkid = ruleid;
                 basic.StartPosition = FormStartPosition.CenterScreen;
                 basic.ShowDialog();
             }
@@ -225,13 +236,18 @@ namespace RD.UI
         /// <param name="e"></param>
         private void Tmadorn_Click(object sender, EventArgs e)
         {
+            var ruleid = true;
             try
             {
                 //设置单据状态为"创建"
                 custInfo.FunState = "C";
-                custInfo.FunName = "AdornOrder";  
+                custInfo.FunName = "AdornOrder";
+                var rows = _userdt.Select("功能名称='室内装修工程单' and 管理员权限 = 'Y' or 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
                 //初始化窗体信息
                 custInfo.OnInitialize();
+                custInfo.CandelMarkid = ruleid;
                 custInfo.StartPosition=FormStartPosition.CenterParent;
                 custInfo.ShowDialog();
             }
@@ -273,6 +289,9 @@ namespace RD.UI
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+
 
             }
             catch (Exception ex)
@@ -290,6 +309,9 @@ namespace RD.UI
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+
 
             }
             catch (Exception ex)
@@ -395,7 +417,7 @@ namespace RD.UI
                 if (fStatus == "已审核")
                 {
                     //权限控制(注:若不是可以反审核的帐号就弹出异常)
-                    if(!GetPrivilegepower(GlobalClasscs.User.StrUsrName)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘反审核’权限,不能继续.");
+                    if(!GetPrivilegepower(0,ordertype)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘反审核’权限,不能继续.");
                     //提示信息
                     clickMessage = $"您所选择需要进行反审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续?";
                 }
@@ -425,15 +447,38 @@ namespace RD.UI
         }
 
         /// <summary>
-        /// 删除指定单据记录(需权限控制)
+        /// 删除指定单据记录(需权限控制) 单据类型使用
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TmDelOrderdtl_Click(object sender, EventArgs e)
         {
+            string clickMessage;
+
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行进行删除");
 
+                //获取所选择的行中首行的“单据类型”记录
+                //“单据类型”
+                var ordertype = Convert.ToString(gvdtl.SelectedRows[0].Cells[1].Value);
+                //权限控制(注:若不是可以反审核的帐号就弹出异常)
+                if (!GetPrivilegepower(1,ordertype)) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘删除’权限,不能继续.");
+                //提示信息
+                clickMessage = $"您所选择需要进行审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续? \n 删除后原来的单据记录将会消失, \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //获取所选择的行记录并进行删除
+                    if (!DelChoseOrder(ordertype)) throw new Exception("出现异常,请联系管理员");
+                    else
+                    {
+                        MessageBox.Show($"已完成操作,请重新查询", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                //成功后,先将GridView记录清空
+                gvdtl.DataSource = null;
+                panel1.Visible = false;
             }
             catch (Exception ex)
             {
@@ -448,6 +493,7 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmShowdtl_Click(object sender, EventArgs e)
         {
+            var ruleid = true;
             try
             {
                 if(gvdtl.Rows.Count==0) throw new Exception("没有内容,不能选择.");
@@ -455,22 +501,29 @@ namespace RD.UI
 
                 //获取从GridView所选择的功能名称
                 var funname= Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
-
+                //检测用户是否有删除权限
+                var rows = _userdt.Select("功能名称='室内装修工程单' and 管理员权限 = 'Y' or 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
+                //室内装修工程单
                 if (funname == "AdornOrder")
                 {
                     adornOrder.FunState = "R";
                     adornOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
                     adornOrder.FunName = funname;
+                    adornOrder.CandelMarkid = ruleid;
                     //初始化窗体信息
                     adornOrder.OnInitialize();
                     adornOrder.StartPosition = FormStartPosition.CenterParent;
                     adornOrder.ShowDialog();
                 }
+                //室内主材单
                 else
                 {
                     materialOrder.FunState = "R";
                     materialOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
                     materialOrder.FunName = funname;
+
                     //初始化窗体信息
                     materialOrder.OnInitialize();
                     materialOrder.StartPosition = FormStartPosition.CenterParent;
@@ -781,16 +834,27 @@ namespace RD.UI
         /// <summary>
         /// 根据用户名称获取其对应的权限
         /// </summary>
-        private bool GetPrivilegepower(string username)
+        /// <param name="id">操作标记0:反审核 1:删除</param>
+        /// <param name="ordertype"></param>
+        private bool GetPrivilegepower(int id,string ordertype)
         {
             var result = true;
+            DataRow[] rows;
+
             try
             {
-
+                var funname = ordertype == "AdornOrder" ? "室内装修工程单" : "室内主材单";
+                //检测该功能名称是否符合显示条件
+                rows = id == 0 ? _userdt.Select("功能名称='" + funname + "' and 管理员权限 = 'Y' or 能否反审核='Y'") :
+                                 _userdt.Select("功能名称='" + funname + "' and 管理员权限 = 'Y' or 能否删除='Y'");
+                
+                if (rows.Length == 0)
+                    result = false;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                result = false;
             }
             return result;
         }
@@ -818,6 +882,32 @@ namespace RD.UI
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 删除所选的单据记录
+        /// </summary>
+        /// <returns></returns>
+        private bool DelChoseOrder(string funcationname)
+        {
+            var result = true;
+            try
+            {
+                task.TaskId = 4;
+                task.FunctionId = "3";
+                task.FunctionName = funcationname;
+                task.Datarow = gvdtl.SelectedRows;
+
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                result = false;
             }
             return result;
         }
@@ -825,11 +915,13 @@ namespace RD.UI
         /// <summary>
         /// 根据对应的功能名称获取对应的DataTable
         /// </summary>
+        /// <param name="functionid"></param>
         /// <param name="functionName"></param>
-        private DataTable GetDropdownListdt(string functionName)
+        /// <param name="taskid"></param>
+        private DataTable GetListdt(int taskid, string functionid,string functionName)
         {
-            task.TaskId = 4;
-            task.FunctionId = "1";
+            task.TaskId = taskid;
+            task.FunctionId = functionid;
             task.FunctionName = functionName;
             task.StartTask();
             var dt = task.ResultTable;
@@ -841,7 +933,46 @@ namespace RD.UI
         /// </summary>
         private void PrivilegeControl()
         {
-            
+            //获取T_AD_Fun功能表记录
+            var dt = GetListdt(3, "1", "T_AD_Fun");
+            foreach (DataRow row in dt.Rows)
+            {
+                //检测该功能名称是否符合显示条件
+                var rows = _userdt.Select("功能名称='" + row[0] + "'and 管理员权限 = 'Y' or 能否显示='Y'");
+                switch (row[0].ToString())
+                {
+                    //客户信息管理
+                    case "客户信息管理":
+                        if (rows.Length == 0)
+                            tmCustomerInfo.Visible = false;
+                        break;
+                    //供应商信息管理
+                    case "供应商信息管理":
+                        if (rows.Length == 0)
+                            tmSuplierInfo.Visible = false;
+                        break;
+                    //材料信息管理
+                    case "材料信息管理":
+                        if (rows.Length == 0)
+                            tmMaterialInfo.Visible = false;
+                        break;
+                    //房屋类型及装修工程类别信息管理
+                    case "房屋类型及装修工程类别信息管理":
+                        if (rows.Length == 0)
+                            tmHouseInfo.Visible = false;
+                        break;
+                    //室内装修工程单
+                    case "室内装修工程单":
+                        if (rows.Length == 0)
+                            tmadorn.Visible = false;
+                        break;
+                    //室内主材单
+                    case "室内主材单":
+                        if (rows.Length == 0)
+                            tmMaterialInfo.Visible = false;
+                        break;
+                }
+            }
         }
     }
 }

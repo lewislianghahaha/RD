@@ -987,7 +987,29 @@ namespace RD.DB
                         ";
             return _result;
         }
-        
+
+        /// <summary>
+        /// 删除指定的单据信息(主窗体使用)
+        /// </summary>
+        /// <param name="funname"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string Del_OrderRecord(string funname,int id)
+        {
+            _result = funname == "AdornOrder"
+                ? $@"
+                                DELETE FROM dbo.T_PRO_AdornEntry WHERE id='{id}'
+                                DELETE FROM dbo.T_PRO_AdornTree WHERE id='{id}'
+                                DELETE FROM dbo.T_PRO_Adorn WHERE id='{id}'
+                        "
+                : $@"
+                                DELETE FROM dbo.T_PRO_MaterialEntry WHERE Id='{id}'
+                                DELETE FROM dbo.T_PRO_MaterialTree WHERE id='{id}'
+                                DELETE FROM dbo.T_PRO_Material WHERE id='{id}'
+                            ";
+
+            return _result;
+        }
 
         #endregion
 

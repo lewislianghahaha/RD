@@ -26,6 +26,7 @@ namespace RD.Logic
         //主窗体使用
         MainSearch mainSearch=new MainSearch();
         MainGenerate mainGenerate=new MainGenerate();
+        MainDel mainDel=new MainDel();
 
         //帐户角色权限使用
         AdminSearch adminSearch=new AdminSearch();
@@ -581,12 +582,17 @@ namespace RD.Logic
                 case "2":
                     _resultMark = mainGenerate.Main_ConfirmOrderDtl(functionName, confirmid,datarow);
                     break;
-                //导出-EXCEL
+                //删除所选的单据记录
                 case "3":
+                    _resultMark = mainDel.Del_OrderRecord(functionName,datarow);
+                    break;
+
+                //导出-EXCEL
+                case "4":
 
                     break;
                 //打印
-                case "4":
+                case "5":
 
                     break;
             }

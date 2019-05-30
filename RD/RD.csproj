@@ -121,6 +121,7 @@
     <Compile Include="Logic\Admin\AdminGenerate.cs" />
     <Compile Include="Logic\Admin\AdminImport.cs" />
     <Compile Include="Logic\Admin\AdminSearch.cs" />
+    <Compile Include="Logic\Main\MainDel.cs" />
     <Compile Include="Logic\Main\MainGenerate.cs" />
     <Compile Include="Logic\Main\MainSearch.cs" />
     <Compile Include="Logic\Order\OrderDel.cs" />

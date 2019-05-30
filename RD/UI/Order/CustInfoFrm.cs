@@ -27,6 +27,9 @@ namespace RD.UI.Order
         //记录初始化标记(GridView页面跳转 初始化时使用)
         private bool _pageChange;
 
+        //记录能否删除ID(删除权限使用)
+        private bool _candelMarkid;
+
         #region Set
 
             /// <summary>
@@ -37,6 +40,11 @@ namespace RD.UI.Order
             /// 记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
             /// </summary>
             public string FunName { set { _funName = value; } }
+
+            /// <summary>
+            /// 获取单据状态标记ID C:创建 R:读取
+            /// </summary>
+            public bool CandelMarkid { set { _candelMarkid = value; } }
 
         #endregion
 
@@ -150,13 +158,12 @@ namespace RD.UI.Order
                             this.Visible = false;
                             //弹出对应窗体相关设置
                             adornOrder.FunState = _funState;
-                            adornOrder.Pid = id;                //单据主键id
-                            adornOrder.FunName = _funName;      //功能名称
-
-                            adornOrder.OnInitialize();          //初始化信息
+                            adornOrder.Pid = id;                         //单据主键id
+                            adornOrder.FunName = _funName;              //功能名称
+                            adornOrder.CandelMarkid = _candelMarkid;   //能否删除权限标记(删除时作权限使用)
+                            adornOrder.OnInitialize();                //初始化信息
                             adornOrder.StartPosition = FormStartPosition.CenterParent;
                             adornOrder.ShowDialog();
-
                         }
                         //室内主材单
                         else
