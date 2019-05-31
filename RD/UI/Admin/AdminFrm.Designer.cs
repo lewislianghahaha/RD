@@ -477,7 +477,7 @@
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
             this.Name = "AdminFrm";
-            this.Text = "职员帐户信息功能设定";
+            this.Text = "职员帐户信息管理";
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

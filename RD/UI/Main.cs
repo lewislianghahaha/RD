@@ -470,7 +470,7 @@ namespace RD.UI
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //获取所选择的行记录并进行删除
-                    if (!DelChoseOrder(ordertype)) throw new Exception("出现异常,请联系管理员");
+                    if (!DelChooseOrder(ordertype)) throw new Exception("出现异常,请联系管理员");
                     else
                     {
                         MessageBox.Show($"已完成操作,请重新查询", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -891,7 +891,7 @@ namespace RD.UI
         /// 删除所选的单据记录
         /// </summary>
         /// <returns></returns>
-        private bool DelChoseOrder(string funcationname)
+        private bool DelChooseOrder(string funcationname)
         {
             var result = true;
             try

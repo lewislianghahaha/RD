@@ -29,8 +29,8 @@ namespace RD
                 {
                     return;
                 }
-                //判断若进入的帐号为Admin的话就进入"帐户信息功能设定"窗体，反之进入主窗体
-                if (GlobalClasscs.User.StrUsrName == "Admin")
+                //判断若进入的帐号为Admin 或在LOGIN窗体内选择了'帐户信息管理窗体'窗体的话;就进入"帐户信息功能设定"窗体，反之进入主窗体
+                if (GlobalClasscs.User.StrUsrName == "Admin" || GlobalClasscs.User.ChoseTypeid==1)
                 {
                     var adminFrm = new AdminFrm();
                     adminFrm.ShowDialog();

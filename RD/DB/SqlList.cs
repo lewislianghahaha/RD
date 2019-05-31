@@ -835,16 +835,31 @@ namespace RD.DB
                     break;
                 //职员表(所有列获取) 注:需满足三个条件;1)末关闭 已审核的数据 2)至少设置一个角色权限 3)已添加的角色权限应符合"已审核 末关闭" 
                 case "T_AD_User":
-                    _result = @"SELECT a.* FROM dbo.T_AD_User a 
-                                where a.CloseStatus='N' and a.Fstatus='Y'
-                                AND EXISTS (
-				                                SELECT NULL 
-				                                FROM dbo.T_AD_UserDtl b
-				                                WHERE a.UserId=b.UserId
-				                                AND b.AddId='Y'
-                                                AND c.CloseStatus='N' AND c.Fstatus='Y'
-			                                )
-                                ";
+                    _result = "SELECT * FROM dbo.T_AD_User";
+                    #region
+                    //_result = @"SELECT a.* FROM dbo.T_AD_User a 
+                    //            where a.CloseStatus='N' and a.Fstatus='Y'
+                    //            AND EXISTS (
+                    //                SELECT NULL 
+                    //                FROM dbo.T_AD_UserDtl b
+                    //                            INNER JOIN dbo.T_AD_Role c ON b.RoleId=c.Id
+                    //                WHERE a.UserId=b.UserId
+                    //                AND b.AddId='Y'
+                    //                            AND c.CloseStatus='N' AND c.Fstatus='Y'
+                    //               )
+                    //            ";
+                    #endregion
+                    break;
+                //职员表明细(Login窗体-检测时使用)
+                case "T_AD_User_Privage":
+                    _result = @"SELECT a.UserId,a.UserName,a.UserPassword,
+	                                   CASE WHEN c.CanALLMark='Y' THEN '是' ELSE '否' END 管理员权限
+                                FROM dbo.T_AD_User a
+                                INNER JOIN dbo.T_AD_UserDtl b ON a.UserId=b.UserId
+                                INNER JOIN dbo.T_AD_Role c ON b.RoleId=c.Id
+                                AND a.CloseStatus='N' AND a.Fstatus='Y' --帐户为末关闭 已审核状态
+                                AND b.AddId='Y'					        --已添加角色
+                                AND c.CloseStatus='N' AND c.Fstatus='Y'  --角色为末关闭 已审核状态";
                     break;
                 //功能表
                 case "T_AD_Fun":
