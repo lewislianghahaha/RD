@@ -1255,15 +1255,19 @@ namespace RD.DB
         {
             //注:当choseid为Y时,表示只显示“已添加，但角色没有关闭的记录”
             _result = choseid == "Y"
-                ? $@"SELECT a.EntryID,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
+                ? $@"SELECT a.EntryID,b.id,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
 	                               CASE WHEN a.AddId='Y' THEN '是' ELSE '否' END 是否添加,
+                                   CASE WHEN b.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 角色关闭状态,
+                                   CASE WHEN b.Fstatus='Y' THEN '已审核' ELSE '末审核' END 角色审核状态,
 	                               a.InputUser 创建人,a.InputDt 创建日期
                             FROM dbo.T_AD_UserDtl a
                             INNER JOIN dbo.T_AD_Role b ON a.RoleId=b.Id
                             WHERE a.UserId='{userid}' --职员ID
                             AND a.AddId='Y' AND b.CloseStatus='N' and b.Fstatus='Y'  --显示已添加，但角色没有关闭并已审核的记录"
-                : $@"SELECT a.EntryID,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
+                : $@"SELECT a.EntryID,b.id,b.RoleName 角色名称,b.InputUser 角色创建人,b.InputDt 角色创建日期,
 	                               CASE WHEN a.AddId='Y' THEN '是' ELSE '否' END 是否添加,
+                                   CASE WHEN b.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 角色关闭状态,
+                                   CASE WHEN b.Fstatus='Y' THEN '已审核' ELSE '末审核' END 角色审核状态,
 	                               a.InputUser 创建人,a.InputDt 创建日期
                             FROM dbo.T_AD_UserDtl a
                             INNER JOIN dbo.T_AD_Role b ON a.RoleId=b.Id

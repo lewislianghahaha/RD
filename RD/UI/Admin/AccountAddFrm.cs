@@ -14,7 +14,7 @@ namespace RD.UI.Admin
         //状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
         private string _funState;
         //获取传递过来的帐号ID("读取"状态时使用)
-        private int _userid;
+        private int _userid=0;
         //记录职员性别Id
         private int _sexid;
 
@@ -62,6 +62,7 @@ namespace RD.UI.Admin
             tmSave.Click += TmSave_Click;
             tmConfirm.Click += TmConfirm_Click;
             tmaddclose.Click += Tmaddclose_Click;
+            tmaddRole.Click += TmaddRole_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -71,6 +72,8 @@ namespace RD.UI.Admin
             tmshowrows.DropDownClosed += Tmshowrows_DropDownClosed;
             panel1.Visible = false;
             tabControl1.Visible = false;
+            tmConfirm.Enabled = false;
+            tmaddRole.Enabled = false;
         }
 
         /// <summary>
@@ -215,6 +218,9 @@ namespace RD.UI.Admin
         {
             try
             {
+                //检测若‘职员名称’为空，不能进行保存
+                if(txtName.Text=="") throw new Exception("请至少填上'职员名称'再进行审核");
+
                 //根据"状态"，来判定是使用“插入”或“更新”功能
                 //执行插入效果
                 if (_funState == "C")
@@ -229,10 +235,13 @@ namespace RD.UI.Admin
                     InsertRecordIntoUser();
                     //执行初始化方法;重新读取
                     OnInitialize();
+                    //将审核按钮 以及 添加新增角色记录按钮设置为‘启用’
+                    tmConfirm.Enabled = true;
+                    tmaddRole.Enabled = true;
                 }
+                //执行更新
                 else
                 {
-                    //执行更新
                     task.TaskId = 3;
                     task.FunctionId = "3.1";
                     task.Userid = _userid;
@@ -251,6 +260,9 @@ namespace RD.UI.Admin
                     }
                     //重新读取
                     OnInitialize();
+                    //将审核按钮 以及 添加新增角色记录按钮设置为‘启用’
+                    tmConfirm.Enabled = true;
+                    tmaddRole.Enabled = true;
                 }
             }
             catch (Exception ex)
@@ -274,7 +286,7 @@ namespace RD.UI.Admin
                 {
                     task.TaskId = 3;
                     task.FunctionId = "4.1";
-                    task.Confirmid = 0;        //审核标记 0:审核 1:反审核
+                    task.Id = 0;        //审核标记 0:审核 1:反审核
                     task.Userid = _userid;
 
                     task.StartTask();
@@ -305,7 +317,7 @@ namespace RD.UI.Admin
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能查阅");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中的行,请选中后继续.");
                 //修改帐户对应的角色权限(包括:是否添加)
-                ChangeUserRoleAddState(4, gvdtl.SelectedRows);
+                ChangeUserRoleAddState(5, gvdtl.SelectedRows);
                 //完成后进行刷新
                 OnInitialize();
             }
@@ -313,6 +325,45 @@ namespace RD.UI.Admin
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// 新增新创建的角色权限记录T_AD_Role（注:必须为已审核 末关闭的记录）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TmaddRole_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(gvdtl.Rows.Count==0)throw new Exception("没有角色明细记录,不能执行操作");
+                task.Id = 3;
+                task.FunctionId = "2.2";
+                task.Userid = _userid;
+                task.AccountName = GlobalClasscs.User.StrUsrName;
+                task.Data = (DataTable) gvdtl.DataSource;
+
+                task.StartTask();
+                //返回结果;-1:异常 0:没有新增记录 1:操作成功
+                switch (task.Orderid)
+                {
+                    case 0:
+                        MessageBox.Show($"没有新增加的角色记录", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    case -1:
+                        MessageBox.Show($"发生异常,请联系管理员", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    default:
+                        MessageBox.Show($"操作成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            //操作完成后“刷新”
+            OnInitialize();
         }
 
         /// <summary>
@@ -580,6 +631,7 @@ namespace RD.UI.Admin
         {
             //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
             gvdtl.Columns[0].Visible = false;
+            gvdtl.Columns[1].Visible = false;
         }
 
         /// <summary>
@@ -616,8 +668,8 @@ namespace RD.UI.Admin
             if (_confirmMarkId == "Y" || _closeMarkId == "Y")
             {
                 //读取审核图片
-                //pbimg.Visible = true;
-                //pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                pbimg.Visible = true;
+                pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
                 //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
                 tmSave.Enabled = false;
                 tmConfirm.Enabled = false;
@@ -627,12 +679,13 @@ namespace RD.UI.Admin
                 dtin.Enabled = false;
                 txtAdder.Enabled = false;
                 gvdtl.Enabled = false;
+                tmaddRole.Enabled = false;
             }
             //若为“非审核”状态的,就执行以下语句
             else
             {
                 //将审核图片控件隐藏
-                //pbimg.Visible = false;
+                pbimg.Visible = false;
                 //将所有功能的状态还原(即与审核时的控件状态相反)
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
@@ -642,6 +695,7 @@ namespace RD.UI.Admin
                 dtin.Enabled = true;
                 txtAdder.Enabled = true;
                 gvdtl.Enabled = true;
+                tmaddRole.Enabled = true;
             }
         }
 
@@ -736,7 +790,7 @@ namespace RD.UI.Admin
                 //判断若以上两个临时表其中一个有值的话,就进行更新操作
                 switch (id)
                 {
-                    case 4:
+                    case 5:
                         message = $"检测到所选择的行中有 \n 已设置添加'{ytempdt.Rows.Count}'行 \n 末设置添加'{ntempdt.Rows.Count}'行 \n 是否继续?";
                         break;
                 }

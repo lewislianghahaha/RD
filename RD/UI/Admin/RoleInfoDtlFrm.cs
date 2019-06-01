@@ -676,7 +676,7 @@ namespace RD.UI.Admin
                 tmConfirm.Enabled = false;
                 cbadmin.Enabled = false;
                 txtrolename.Enabled = false;
-                comType.Enabled = false;
+                //comType.Enabled = false;
                 gvdtl.Enabled = false;
                 cbadmin.Checked = _adminMarkId == "Y";
             }
@@ -690,7 +690,7 @@ namespace RD.UI.Admin
                 tmConfirm.Enabled = true;
                 cbadmin.Enabled = true;
                 txtrolename.Enabled = true;
-                comType.Enabled = true;
+                //comType.Enabled = true;
                 gvdtl.Enabled = true;
                 cbadmin.Checked = _adminMarkId == "Y";
             }

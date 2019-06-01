@@ -507,6 +507,11 @@ namespace RD.Logic
                 case "2.1":
                     _orderid = adminImport.InsertRecordIntoUser(functionName,sexid,usercontact,useremail,dtTime,accountName);
                     break;
+                //添加新增的角色记录(AccountAddFrm.cs使用)
+                case "2.2":
+                    _orderid = adminImport.InsertNewRole(userid,accountName,dt);
+                    break;
+                
 
                 //更新功能(更新:角色名称 管理员权限T_AD_Role)
                 case "3":
@@ -527,7 +532,7 @@ namespace RD.Logic
                     break;
                 //审核(反审核) 针对T_AD_User进行操作
                 case "4.1":
-                    _resultMark = adminGenerate.ConfirmUser(confirmid,userid,dt);
+                    _resultMark = adminGenerate.ConfirmUser(id,userid,dt);
                     break;
 
                 //关闭(反关闭) 针对T_AD_Role进行操作

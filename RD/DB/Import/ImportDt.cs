@@ -868,6 +868,58 @@ namespace RD.DB.Import
             return result;
         }
 
+        /// <summary>
+        /// 添加新增的角色记录
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="accountName"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public int InsertNewRole(int userid ,string accountName,DataTable dt)
+        {
+            var result = 0;
+            try
+            {
+                //获取T_AD_UserDtl临时表
+                var userdtldt = dtList.Get_T_AD_UserDtlTemp();
+                //获取T_AD_Role所有记录
+                var roledt = serDt.GetData(sqlList.Get_RoleHead(0));
+                //循环检测新增的记录,发现后添加至临时表内
+                foreach (DataRow rolerow in roledt.Rows)
+                {
+                    var rows = dt.Select("Id='" + Convert.ToInt32(rolerow[0]) + "'");
+                    if (rows.Length == 0)
+                    {
+                        var newrow = userdtldt.NewRow();
+                        newrow[0] = userid;
+                        newrow[1] = Convert.ToInt32(rolerow[0]);   //角色表外键
+                        newrow[3] = Convert.ToString(rolerow[1]);  //角色表名称
+                        newrow[4] = "N";
+                        newrow[5] = accountName;
+                        newrow[6] = DateTime.Now.Date;
+                        userdtldt.Rows.Add(newrow);
+                    }
+                }
+
+                //若没有记录,就将返回0;表示没有新增的角色记录
+                if (userdtldt.Rows.Count==0)
+                {
+                    result = 0;
+                }
+                else
+                {
+                    //再将T_AD_UserDtl表体信息插入
+                    Importdt("T_AD_UserDtl", userdtldt);
+                    result = 1;
+                }
+            }
+            catch (Exception)
+            {
+                result = -1;
+            }
+            return result;
+        }
+
         #endregion
 
     }

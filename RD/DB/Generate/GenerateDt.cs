@@ -409,7 +409,7 @@ namespace RD.DB.Generate
         /// 审核(反审核) 针对T_AD_User进行操作
         /// </summary>
         /// <param name="confirmid">审核标记;0:审核 1:反审核</param>
-        /// <param name="userid">职员ID</param>
+        /// <param name="userid">职员ID;当需多选行操作时,这里为-1</param>
         /// <param name="dt">所选择的表</param>
         /// <returns></returns>
         public bool ConfirmUser(int confirmid, int userid, DataTable dt)

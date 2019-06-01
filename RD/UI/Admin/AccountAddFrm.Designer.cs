@@ -34,6 +34,7 @@
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.dtin = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.txtAdder = new System.Windows.Forms.TextBox();
@@ -47,6 +48,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmaddclose = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbshow = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -67,21 +70,21 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
-            this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tmaddclose = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmaddRole = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.CMenu.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
-            this.CMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -89,7 +92,8 @@
             this.Menu.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmSave,
-            this.tmConfirm});
+            this.tmConfirm,
+            this.tmaddRole});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(995, 25);
@@ -120,6 +124,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel1.Controls.Add(this.pbimg);
             this.splitContainer1.Panel1.Controls.Add(this.dtin);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.txtAdder);
@@ -138,6 +143,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(995, 601);
             this.splitContainer1.SplitterDistance = 95;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // pbimg
+            // 
+            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbimg.Location = new System.Drawing.Point(917, 10);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(65, 61);
+            this.pbimg.TabIndex = 10;
+            this.pbimg.TabStop = false;
+            this.pbimg.Visible = false;
             // 
             // dtin
             // 
@@ -259,6 +275,19 @@
             this.gvdtl.Size = new System.Drawing.Size(979, 415);
             this.gvdtl.TabIndex = 2;
             // 
+            // CMenu
+            // 
+            this.CMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmaddclose});
+            this.CMenu.Name = "CMenu";
+            this.CMenu.Size = new System.Drawing.Size(133, 26);
+            // 
+            // tmaddclose
+            // 
+            this.tmaddclose.Name = "tmaddclose";
+            this.tmaddclose.Size = new System.Drawing.Size(132, 22);
+            this.tmaddclose.Text = "添加(取消)";
+            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -274,9 +303,9 @@
             this.cbshow.AutoSize = true;
             this.cbshow.Location = new System.Drawing.Point(5, 5);
             this.cbshow.Name = "cbshow";
-            this.cbshow.Size = new System.Drawing.Size(192, 16);
+            this.cbshow.Size = new System.Drawing.Size(216, 16);
             this.cbshow.TabIndex = 2;
-            this.cbshow.Text = "显示已添加并末关闭的权限记录";
+            this.cbshow.Text = "显示已添加并末关闭的角色权限记录";
             this.cbshow.UseVisualStyleBackColor = true;
             // 
             // panel1
@@ -439,18 +468,11 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
-            // CMenu
+            // tmaddRole
             // 
-            this.CMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmaddclose});
-            this.CMenu.Name = "CMenu";
-            this.CMenu.Size = new System.Drawing.Size(133, 26);
-            // 
-            // tmaddclose
-            // 
-            this.tmaddclose.Name = "tmaddclose";
-            this.tmaddclose.Size = new System.Drawing.Size(132, 22);
-            this.tmaddclose.Text = "添加(取消)";
+            this.tmaddRole.Name = "tmaddRole";
+            this.tmaddRole.Size = new System.Drawing.Size(116, 21);
+            this.tmaddRole.Text = "添加新增角色记录";
             // 
             // AccountAddFrm
             // 
@@ -469,9 +491,11 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.CMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -479,7 +503,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
-            this.CMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -526,5 +549,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox cbshow;
         private System.Windows.Forms.DataGridView gvdtl;
+        private System.Windows.Forms.PictureBox pbimg;
+        private System.Windows.Forms.ToolStripMenuItem tmaddRole;
     }
 }

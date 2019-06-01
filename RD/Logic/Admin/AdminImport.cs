@@ -98,5 +98,26 @@ namespace RD.Logic.Admin
             return result;
         }
 
+        /// <summary>
+        /// 添加新增的角色记录
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="accountName"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public int InsertNewRole(int userid,string accountName,DataTable dt)
+        {
+            var result = 0;
+            try
+            {
+                result = importDt.InsertNewRole(userid,accountName,dt);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
+        }
+
     }
 }

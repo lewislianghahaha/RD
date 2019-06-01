@@ -560,7 +560,7 @@ namespace RD.UI.Admin
         /// 更改明细功能内各状态信息(如:可添加权限)
         /// </summary>
         /// <param name="typeid">功能ID 4.1:审核(反审核)功能 5.1:关闭(反关闭)功能</param>
-        /// <param name="id">功能分类名称</param>
+        /// <param name="id">功能分类名称0:需要审核(关闭) 1:需要反审核(反关闭)</param>
         /// <param name="dt">要执行操作的DT</param>
         /// <returns></returns>
         private bool ChangeState(string typeid,int id, DataTable dt)

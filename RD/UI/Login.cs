@@ -48,20 +48,22 @@ namespace RD.UI
         {
             try
             {
-                if (txtName.Text == "" || txtpwd.Text == "") throw new Exception("请输入帐号及密码进行登录");
                 //检测若没有选‘进入窗体模式’下拉列表，就会提示异常
                 if ((int)comchosetype.SelectedIndex == -1) throw new Exception("请选择下拉列表.");
 
-                //判断_userdt是否有值,若没有即表示为初始化记录,此时使用帐号"Admin" 密码为空进入'AdminFrm.cs'帐户信息管理界面
+                //判断_userdt是否有值,若没有即表示为‘初始化记录’,此时使用帐号"Admin" 密码为空进入'AdminFrm.cs'帐户信息管理界面
                 if (_userdt.Rows.Count == 0)
                 {
                     //判断这种情况若没有选‘进入窗体模式’为‘帐户信息管理窗体’,即跳出异常 （0:主窗体 1:帐户信息管理窗体）
-                    if ((int)comchosetype.SelectedIndex==0) throw new Exception("请选择‘帐户信息管理窗体’下拉列表");
+                    if ((int)comchosetype.SelectedIndex==0) throw new Exception($"因'帐户信息管理窗体'没有任何记录,故不能进入'主窗体'模式,\n请选择‘帐户信息管理窗体’下拉列表");
                     //若正确将相关信息保存至结构类内
-                    GlobalClasscs.User.StrUsrName = "Admin";
+                    GlobalClasscs.User.StrUsrName = "AdministratorInitialize";  //初始化'帐户信息管理窗体'时InputUser字段使用
+                    GlobalClasscs.User.ChoseTypeid = (int)comchosetype.SelectedIndex;  //获取‘进入窗体模式’ID （0:主窗体 1:帐户信息管理窗体）
                 }
+                //当检测到T_AD_User表有值的时候,就需要输入帐号及密码
                 else
                 {
+                    if (txtName.Text == "" || txtpwd.Text == "") throw new Exception("请输入帐号及密码进行登录");
                     //检测所输入的值是否在T_AD_User内存在(包括是否有管理员权限);若没有,即跳出异常
                     var rows = _userdtldt.Select("UserName='" + txtName.Text + "'and UserPassword = '" + txtpwd.Text + "'");
                     if (rows.Length == 0) throw new Exception("所输入的帐户不存在或不满足某些条件,请联系管理员.");
@@ -89,6 +91,7 @@ namespace RD.UI
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtName.Text = "";
                 txtpwd.Text = "";
+                comchosetype.SelectedIndex = -1;
             }
         }
 
