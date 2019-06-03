@@ -172,10 +172,10 @@ namespace RD.UI.Order
                             this.Visible = false;
                             //弹出对应窗体相关设置
                             materialOrder.FunState = _funState;
-                            materialOrder.Pid = id;              //单据主键id
-                            materialOrder.FunName = _funName;    //功能名称
-
-                            materialOrder.OnInitialize();        //初始化信息
+                            materialOrder.Pid = id;                       //单据主键id
+                            materialOrder.FunName = _funName;            //功能名称
+                            materialOrder.CandelMarkid = _candelMarkid; //能否删除权限标记(删除时作权限使用)
+                            materialOrder.OnInitialize();               //初始化信息
                             materialOrder.StartPosition=FormStartPosition.CenterParent;
                             materialOrder.ShowDialog();
                         }

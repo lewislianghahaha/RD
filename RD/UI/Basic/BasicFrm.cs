@@ -3,6 +3,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using RD.DB;
 using RD.Logic;
 
 namespace RD.UI.Basic
@@ -14,11 +15,14 @@ namespace RD.UI.Basic
         AddEditor add=new AddEditor();
         ShowDtlListFrm showDtl=new ShowDtlListFrm();
         HtypeProjectFrm htype=new HtypeProjectFrm();
+        DtList dtList=new DtList();
 
         //保存初始化的表头内容
         public DataTable _dt=new DataTable();
         //保存初始化的表体内容
         public DataTable _dtldt =new DataTable();
+        //保存GridView内需要进行删除的临时表
+        private DataTable _deldt = new DataTable();
 
         //保存查询出来的GridView记录（GridView页面跳转时使用）
         private DataTable _dtl;
@@ -60,6 +64,7 @@ namespace RD.UI.Basic
             comList.Click += ComList_Click;
             gvdtl.CellDoubleClick += Gvdtl_CellDoubleClick;
             tmShowdtl.Click += TmShowdtl_Click;
+            tmdelrow.Click += Tmdelrow_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -95,11 +100,9 @@ namespace RD.UI.Basic
 
             //设置GridView是否显示某些列
             ControlGridViewisShow();
-            //预留(权限部份)
-            PrivilegeControl();
             //展开根节点
             tview.ExpandAll();
-            //设置，若功能不是 房屋类型及装修工程类别信息管理明细,那就将右键菜单功能隐藏
+            //设置，若功能不是 "房屋类型及装修工程类别信息管理明细",那就将右键菜单功能隐藏
             tmShowdtl.Visible = GlobalClasscs.Basic.BasicId == 4;
         }
 
@@ -322,6 +325,7 @@ namespace RD.UI.Basic
             {
                 if(tview.SelectedNode==null) throw new Exception("请选择某一名称再继续");
                 if ((int)tview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
+                if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
 
                 //节点ID
                 var treeid = Convert.ToInt32(tview.SelectedNode.Tag);
@@ -422,6 +426,7 @@ namespace RD.UI.Basic
                     //获取点选中的节点ID(用于最后的表体外键值插入)
                     task.Pid = Convert.ToInt32(tview.SelectedNode.Tag);
                     task.AccountName = GlobalClasscs.User.StrUsrName;
+                    task.Deldata = _deldt;                           //要进行删除的记录
 
                     new Thread(Start).Start();
                     load.StartPosition = FormStartPosition.CenterScreen;
@@ -685,11 +690,77 @@ namespace RD.UI.Basic
         }
 
         /// <summary>
-        /// 权限控制
+        /// 删除GridView中所选择的行
         /// </summary>
-        private void PrivilegeControl()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmdelrow_Click(object sender, EventArgs e)
         {
-            
+            var tempdt=new DataTable();
+
+            try
+            {
+                if (tview.SelectedNode == null) throw new Exception("请选择某一名称再继续");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选取某一行,再继续");
+                if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
+                //检测若所选择行中的值已给其它地方使用,(如:客户已让某一张单据使用,就不能进行删除)
+
+
+                var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //注:执行方式 判断若所选择的行内的 row[1](即各功能的表体主键)项 有值，就执行下面第一步,若没有;只需将在GridView内的行删除就行
+                    //1)将所选择的行保存到_deldt内(在按“保存”时执行对该行的数据库删除)
+                    //根据各功能ID创建对应临时表
+                    switch (GlobalClasscs.Basic.BasicId)
+                    {
+                        //客户信息管理
+                        case 1:
+                            tempdt = dtList.Get_CustEmptydt();
+                            break;
+                        //供应商信息管理
+                        case 2:
+                            tempdt = dtList.Get_SupplierEmptydt();
+                            break;
+                        //材料信息管理
+                        case 3:
+                            tempdt = dtList.Get_MaterialEmptydt();
+                            break;
+                        //房屋类型及装修工程类别信息管理
+                        case 4:
+                            tempdt = dtList.Get_HouseEmptydt();
+                            break;
+                    }
+                    //将所选择的记录赋值至tempdt临时表内
+                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                    {
+                        //若各功能表体的主键不为空时,才进行记录(如:客户信息管理 Custid不为空时,就执行插入临时表操作)
+                        if (row.Cells[1].Value.ToString() != "")
+                        {
+                            var row1 = tempdt.NewRow();
+                            for (var i = 0; i < tempdt.Columns.Count; i++)
+                            {
+                                row1[i] = row.Cells[i].Value;
+                            }
+                            tempdt.Rows.Add(row1);
+                        }
+                    }
+                    //若tempdt有值才赋值至_dtldt内,(供保存使用)
+                    if (tempdt.Rows.Count > 0)
+                    {
+                        _deldt = tempdt;
+                    }
+                    //最后使用循环将所选择的行在GridView内删除
+                    for (var i = gvdtl.SelectedRows.Count; i > 0; i--)
+                    {
+                        gvdtl.Rows.RemoveAt(gvdtl.SelectedRows[i - 1].Index);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -960,6 +1031,8 @@ namespace RD.UI.Basic
                 panel6.Visible = false;
             }
         }
+
+
 
     }
 }

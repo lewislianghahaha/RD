@@ -36,6 +36,9 @@ namespace RD.UI.Order
         //记录初始化标记(GridView页面跳转 初始化时使用)
         private bool _pageChange;
 
+        //记录能否删除ID(删除权限使用)
+        private bool _candelMarkid;
+
         #region Set
 
         /// <summary>
@@ -50,6 +53,11 @@ namespace RD.UI.Order
         /// 记录功能名称 Adorn:室内装修工程 Material:室内主材单
         /// </summary>
         public string FunName { set { _funName = value; } }
+
+        /// <summary>
+        /// 获取单据状态标记ID C:创建 R:读取
+        /// </summary>
+        public bool CandelMarkid { set { _candelMarkid = value; } }
 
         #endregion
 
@@ -543,6 +551,7 @@ namespace RD.UI.Order
             try
             {
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选择某一行进行删除");
+                if(!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
 
                 var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)

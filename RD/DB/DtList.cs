@@ -185,7 +185,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"房屋类型及装修工程类别信息管理"表体临时表
+        /// 获取"房屋类型及装修工程类别信息管理"表体临时表 T_BD_HTypeEntry
         /// </summary>
         /// <returns></returns>
         public DataTable Get_HouseEmptydt()
@@ -224,7 +224,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 获取"房屋类型及装修工程类别信息管理"-项目名称表体临时表
+        /// 获取"房屋类型及装修工程类别信息管理"-项目名称表体临时表 T_BD_HTypeProjectDtl
         /// </summary>
         /// <returns></returns>
         public DataTable Get_HouseProjectEmptydt()

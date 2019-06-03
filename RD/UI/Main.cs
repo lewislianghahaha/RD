@@ -269,13 +269,19 @@ namespace RD.UI
         /// <param name="e"></param>
         private void TmMaterial_Click(object sender, EventArgs e)
         {
+            var ruleid = true;
             try
             {
                  //创建状态
                 custInfo.FunState = "C";
                 custInfo.FunName = "MaterialOrder";
+                var rows = _userdt.Select(@"功能名称='室内装修工程单' and 管理员权限 = 'Y'" +
+                                            "or 功能名称='室内装修工程单' and 能否删除='Y'");
+                if (rows.Length == 0)
+                    ruleid = false;
                 //初始化窗体信息
                 custInfo.OnInitialize();
+                custInfo.CandelMarkid = ruleid;
                 custInfo.StartPosition=FormStartPosition.CenterParent;
                 custInfo.ShowDialog();
             }
@@ -507,10 +513,11 @@ namespace RD.UI
                 //获取从GridView所选择的功能名称
                 var funname= Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
                 //检测用户是否有删除权限
-                var rows = _userdt.Select(@"功能名称='室内装修工程单' and 管理员权限 = 'Y'" +
-                            "or 功能名称='室内装修工程单' and 能否删除='Y'");
+                var rows = _userdt.Select(@"功能名称='" + funname + "' and 管理员权限 = 'Y'" +
+                               "or 功能名称='" + funname + "' and 能否删除='Y'");
                 if (rows.Length == 0)
                     ruleid = false;
+
                 //室内装修工程单
                 if (funname == "AdornOrder")
                 {
@@ -529,7 +536,7 @@ namespace RD.UI
                     materialOrder.FunState = "R";
                     materialOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
                     materialOrder.FunName = funname;
-
+                    materialOrder.CandelMarkid = ruleid;
                     //初始化窗体信息
                     materialOrder.OnInitialize();
                     materialOrder.StartPosition = FormStartPosition.CenterParent;
@@ -955,19 +962,16 @@ namespace RD.UI
                     case "客户信息管理":
                         if (rows.Length == 0)
                             tmCustomerInfo.Visible = false;
-                            toolStripSeparator4.Visible = false;
                         break;
                     //供应商信息管理
                     case "供应商信息管理":
                         if (rows.Length == 0)
                             tmSuplierInfo.Visible = false;
-                            toolStripSeparator5.Visible = false;
                         break;
                     //材料信息管理
                     case "材料信息管理":
                         if (rows.Length == 0)
                             tmMaterialInfo.Visible = false;
-                            toolStripSeparator6.Visible = false;
                         break;
                     //房屋类型及装修工程类别信息管理
                     case "房屋类型及装修工程类别信息管理":
@@ -978,12 +982,11 @@ namespace RD.UI
                     case "室内装修工程单":
                         if (rows.Length == 0)
                             tmadorn.Visible = false;
-                            toolStripSeparator2.Visible = false;
                         break;
                     //室内主材单
                     case "室内主材单":
                         if (rows.Length == 0)
-                            tmMaterialInfo.Visible = false;
+                            tmMaterialInfo.Enabled = false;
                         break;
                 }
             }

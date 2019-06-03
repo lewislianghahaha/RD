@@ -328,6 +328,36 @@ namespace RD.DB
         }
 
         /// <summary>
+        /// 删除记录 表体信息(基础信息库=>"删除指定表体行时使用")
+        /// </summary>
+        /// <param name="factionName"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string BD_DelEntry(string factionName, int id)
+        {
+            switch (factionName)
+            {
+                case "Customer":
+                    _result =
+                        $@"delete from dbo.T_BD_CustEntry where Custid='{id}'";
+                    break;
+                case "Supplier":
+                    _result =
+                        $@"delete from dbo.T_BD_SupplierEntry where Supid='{id}'";
+                    break;
+                case "Material":
+                    _result =
+                        $@"delete from dbo.T_BD_MaterialEntry where MaterialId='{id}'";
+                    break;
+                case "House":
+                    _result =
+                        $@"delete from dbo.T_BD_HTypeEntry where HTypeid='{id}'";
+                    break;
+            }
+            return _result;
+        }
+
+        /// <summary>
         /// 基础信库更新语句(更新表体时使用)
         /// </summary>
         /// <param name="tableName"></param>

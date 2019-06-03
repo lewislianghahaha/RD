@@ -34,17 +34,13 @@
             this.tmSet = new System.Windows.Forms.ToolStripMenuItem();
             this.tmInfor = new System.Windows.Forms.ToolStripMenuItem();
             this.tmCustomerInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tmSuplierInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tmMaterialInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tmHouseInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmChange = new System.Windows.Forms.ToolStripMenuItem();
             this.tmCreate = new System.Windows.Forms.ToolStripMenuItem();
             this.tmadorn = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tmMaterial = new System.Windows.Forms.ToolStripMenuItem();
             this.tmImport = new System.Windows.Forms.ToolStripMenuItem();
             this.tmEXCEL = new System.Windows.Forms.ToolStripMenuItem();
@@ -136,14 +132,11 @@
             // 
             this.tmInfor.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmCustomerInfo,
-            this.toolStripSeparator4,
             this.tmSuplierInfo,
-            this.toolStripSeparator5,
             this.tmMaterialInfo,
-            this.toolStripSeparator6,
             this.tmHouseInfo});
             this.tmInfor.Name = "tmInfor";
-            this.tmInfor.Size = new System.Drawing.Size(148, 22);
+            this.tmInfor.Size = new System.Drawing.Size(152, 22);
             this.tmInfor.Text = "基础信息库";
             // 
             // tmCustomerInfo
@@ -152,32 +145,17 @@
             this.tmCustomerInfo.Size = new System.Drawing.Size(256, 22);
             this.tmCustomerInfo.Text = "客户信息管理";
             // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(253, 6);
-            // 
             // tmSuplierInfo
             // 
             this.tmSuplierInfo.Name = "tmSuplierInfo";
             this.tmSuplierInfo.Size = new System.Drawing.Size(256, 22);
             this.tmSuplierInfo.Text = "供应商信息管理";
             // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(253, 6);
-            // 
             // tmMaterialInfo
             // 
             this.tmMaterialInfo.Name = "tmMaterialInfo";
             this.tmMaterialInfo.Size = new System.Drawing.Size(256, 22);
             this.tmMaterialInfo.Text = "材料信息管理";
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(253, 6);
             // 
             // tmHouseInfo
             // 
@@ -188,19 +166,18 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // tmChange
             // 
             this.tmChange.Name = "tmChange";
-            this.tmChange.Size = new System.Drawing.Size(148, 22);
+            this.tmChange.Size = new System.Drawing.Size(152, 22);
             this.tmChange.Text = "帐号密码修改";
             // 
             // tmCreate
             // 
             this.tmCreate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmadorn,
-            this.toolStripSeparator2,
             this.tmMaterial});
             this.tmCreate.Name = "tmCreate";
             this.tmCreate.Size = new System.Drawing.Size(44, 21);
@@ -211,11 +188,6 @@
             this.tmadorn.Name = "tmadorn";
             this.tmadorn.Size = new System.Drawing.Size(160, 22);
             this.tmadorn.Text = "室内装修工程单";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(157, 6);
             // 
             // tmMaterial
             // 
@@ -696,7 +668,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tmCreate;
         private System.Windows.Forms.ToolStripMenuItem tmadorn;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem tmMaterial;
         private System.Windows.Forms.ToolStripMenuItem tmImport;
         private System.Windows.Forms.ToolStripMenuItem tmEXCEL;
@@ -707,11 +678,8 @@
         private System.Windows.Forms.ToolStripStatusLabel tsStatus;
         private System.Windows.Forms.Timer tmt;
         private System.Windows.Forms.ToolStripMenuItem tmCustomerInfo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem tmSuplierInfo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem tmMaterialInfo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem tmHouseInfo;
         private System.Windows.Forms.ContextMenuStrip showDtl;
         private System.Windows.Forms.ToolStripMenuItem tmShowdtl;

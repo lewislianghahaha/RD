@@ -189,6 +189,23 @@ namespace RD.DB.Generate
             return sqlscript;
         }
 
+        /// <summary>
+        /// 删除指定的明细行(基础信息库)
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public bool Del_BDChooseEntry(string functionName,DataTable dt)
+        {
+            var result = true;
+            foreach (DataRow row in dt.Rows)
+            {
+                var sqlscript = sqlList.BD_DelEntry(functionName, Convert.ToInt32(row[1]));
+                result = GenerDt(sqlscript);
+            }
+            return result;
+        }
+
         #endregion
 
         #region 审核（反审核）单据记录

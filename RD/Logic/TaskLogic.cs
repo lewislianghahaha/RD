@@ -274,7 +274,7 @@ namespace RD.Logic
                     break;
                 //基础信息库
                 case 1:
-                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data,_pid,_treeName,_accountName);
+                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data,_pid,_treeName,_accountName,_deldata);
                     break;
                 //单据信息(包括：室内装修工程单 及 室内主材单)
                 case 2:
@@ -315,8 +315,9 @@ namespace RD.Logic
         /// <param name="pid">获取父级节点ID(新增或更新树形节点时使用)</param>
         /// <param name="treeName">获取同级节点时使用(新增或更新树形节点时使用)</param>
         /// <param name="accountName">获取帐号名称</param>
+        /// <param name="deldt">获取需要删除的表体记录信息</param>
         private void BasicInfo(string functionId,string functionName,string functionType,string parentId,
-                               string searchName, string searchValue,DataTable dt,int pid,string treeName,string accountName)
+                               string searchName, string searchValue,DataTable dt,int pid,string treeName,string accountName, DataTable deldt)
         {
             switch (functionId)
             {
@@ -347,7 +348,7 @@ namespace RD.Logic
 
                 //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
                 case "2":
-                    _resultMark = import.Save_BaseEntry(functionName,dt,pid,accountName);
+                    _resultMark = import.Save_BaseEntry(functionName,dt,pid,accountName,_deldata);
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2.1":

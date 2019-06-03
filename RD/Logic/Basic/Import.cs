@@ -59,13 +59,14 @@ namespace RD.Logic.Basic
         /// <param name="dt"></param>
         /// <param name="pid">上级主键ID</param>
         /// <param name="accountName"></param>
+        /// <param name="deldt">要进行删除的记录</param>
         /// <returns></returns>
-        public bool Save_BaseEntry(string functionName, DataTable dt,int pid,string accountName)
+        public bool Save_BaseEntry(string functionName, DataTable dt,int pid,string accountName,DataTable deldt)
         {
             var result = true;
             try
             {
-                result = importDt.SavebaseEntryrd(functionName, dt,pid, accountName);
+                result = importDt.SavebaseEntryrd(functionName, dt,pid, accountName,deldt);
             }
             catch (Exception ex)
             {

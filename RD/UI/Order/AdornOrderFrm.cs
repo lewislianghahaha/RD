@@ -83,7 +83,7 @@ namespace RD.UI.Order
             btnDel.Click += BtnDel_Click;
             tvview.AfterSelect += Tvview_AfterSelect;
             btnGetdtl.Click += BtnGetdtl_Click;
-            tmdel.Click += Tmdel_Click;
+            tmrowdel.Click += Tmrowdel_Click;
             gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
@@ -341,6 +341,7 @@ namespace RD.UI.Order
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择父节点,请选择");
                 if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("'ALL'节点不能删除,请选择其它节点进行删除");
+                if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
 
                 //节点ID
                 var treeid = Convert.ToInt32(tvview.SelectedNode.Tag);
@@ -598,12 +599,13 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Tmdel_Click(object sender, EventArgs e)
+        private void Tmrowdel_Click(object sender, EventArgs e)
         {
             try
             {
                 if(gvdtl.SelectedRows.Count==0) throw new Exception("请选择某一行进行删除");
-                
+                if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
+
                 var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
@@ -615,6 +617,7 @@ namespace RD.UI.Order
                     //将所选择的记录赋值至tempdt临时表内
                     foreach (DataGridViewRow row in gvdtl.SelectedRows)
                     {
+                        var a = row.Cells[2].Value.ToString();
                         //若列adornid不为空时,才进行记录
                         if (row.Cells[2].Value.ToString() != "")
                         {

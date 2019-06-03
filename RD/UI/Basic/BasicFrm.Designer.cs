@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BasicFrm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtValue = new System.Windows.Forms.TextBox();
             this.comList = new System.Windows.Forms.ComboBox();
@@ -66,11 +66,10 @@
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.ShowPrjoectDtl = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmShowdtl = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmdelrow = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmReset = new System.Windows.Forms.ToolStripMenuItem();
-            this.Deldtl = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tmdelrow = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -86,7 +85,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ShowPrjoectDtl.SuspendLayout();
             this.Menu.SuspendLayout();
-            this.Deldtl.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -397,18 +395,18 @@
             // 
             this.gvdtl.AllowUserToDeleteRows = false;
             this.gvdtl.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gvdtl.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gvdtl.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.ContextMenuStrip = this.ShowPrjoectDtl;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gvdtl.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gvdtl.DefaultCellStyle = dataGridViewCellStyle2;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";
@@ -419,15 +417,23 @@
             // ShowPrjoectDtl
             // 
             this.ShowPrjoectDtl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmShowdtl});
+            this.tmShowdtl,
+            this.tmdelrow});
             this.ShowPrjoectDtl.Name = "ShowPrjoectDtl";
-            this.ShowPrjoectDtl.Size = new System.Drawing.Size(149, 26);
+            this.ShowPrjoectDtl.Size = new System.Drawing.Size(149, 48);
             // 
             // tmShowdtl
             // 
             this.tmShowdtl.Name = "tmShowdtl";
             this.tmShowdtl.Size = new System.Drawing.Size(148, 22);
             this.tmShowdtl.Text = "项目名称明细";
+            // 
+            // tmdelrow
+            // 
+            this.tmdelrow.Name = "tmdelrow";
+            this.tmdelrow.Size = new System.Drawing.Size(148, 22);
+            this.tmdelrow.Text = "删除指定行";
+            this.tmdelrow.Visible = false;
             // 
             // Menu
             // 
@@ -453,19 +459,6 @@
             this.tmReset.Name = "tmReset";
             this.tmReset.Size = new System.Drawing.Size(44, 21);
             this.tmReset.Text = "刷新";
-            // 
-            // Deldtl
-            // 
-            this.Deldtl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmdelrow});
-            this.Deldtl.Name = "Deldtl";
-            this.Deldtl.Size = new System.Drawing.Size(137, 26);
-            // 
-            // tmdelrow
-            // 
-            this.tmdelrow.Name = "tmdelrow";
-            this.tmdelrow.Size = new System.Drawing.Size(136, 22);
-            this.tmdelrow.Text = "删除指定行";
             // 
             // BasicFrm
             // 
@@ -498,7 +491,6 @@
             this.ShowPrjoectDtl.ResumeLayout(false);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
-            this.Deldtl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -543,7 +535,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
-        private System.Windows.Forms.ContextMenuStrip Deldtl;
         private System.Windows.Forms.ToolStripMenuItem tmdelrow;
     }
 }

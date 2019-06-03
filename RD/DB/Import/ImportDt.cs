@@ -168,8 +168,9 @@ namespace RD.DB.Import
         /// <param name="dt">从GridView控件内获取的DT</param>
         /// <param name="pid">对应的表头ID</param>
         /// <param name="accountName"></param>
+        /// <param name="deldt">要进行删除的记录</param>
         /// <returns></returns>
-        public bool SavebaseEntryrd(string functionName,DataTable dt,int pid,string accountName)
+        public bool SavebaseEntryrd(string functionName,DataTable dt,int pid,string accountName,DataTable deldt)
         {
             var result = true;
             //根据功能名称获取对应在的临时表信息
@@ -201,6 +202,9 @@ namespace RD.DB.Import
                     Importdt(tableName,tempInsertdt);
                 if(tempUpdt.Rows.Count>0)
                     UpEntrydt(tableName,tempUpdt);
+                //判断若deldt的行数>0的话,就循环将对应的记录删除
+                if (deldt.Rows.Count > 0)
+                    generateDt.Del_BDChooseEntry(functionName, deldt);
             }
             catch (Exception)
             {
