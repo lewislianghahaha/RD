@@ -326,6 +326,8 @@ namespace RD.UI.Basic
                 if(tview.SelectedNode==null) throw new Exception("请选择某一名称再继续");
                 if ((int)tview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
                 if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
+                //检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
+
 
                 //节点ID
                 var treeid = Convert.ToInt32(tview.SelectedNode.Tag);
@@ -703,7 +705,7 @@ namespace RD.UI.Basic
                 if (tview.SelectedNode == null) throw new Exception("请选择某一名称再继续");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选取某一行,再继续");
                 if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
-                //检测若所选择行中的值已给其它地方使用,(如:客户已让某一张单据使用,就不能进行删除)
+                //检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
 
 
                 var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";

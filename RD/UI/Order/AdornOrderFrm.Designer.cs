@@ -38,8 +38,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtOrderNo = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.txtCustomer = new System.Windows.Forms.TextBox();
             this.txtAdd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -48,7 +46,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pbimg = new System.Windows.Forms.PictureBox();
             this.tvview = new System.Windows.Forms.TreeView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -82,6 +79,9 @@
             this.btnGetdtl = new System.Windows.Forms.Button();
             this.comHtype = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtOrderNo = new System.Windows.Forms.TextBox();
+            this.panel9 = new System.Windows.Forms.Panel();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -89,7 +89,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.panel3.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -160,6 +159,7 @@
             // 
             this.panel1.Controls.Add(this.txtOrderNo);
             this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.panel9);
             this.panel1.Controls.Add(this.txtCustomer);
             this.panel1.Controls.Add(this.txtAdd);
             this.panel1.Controls.Add(this.label3);
@@ -170,25 +170,8 @@
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(995, 27);
+            this.panel1.Size = new System.Drawing.Size(995, 50);
             this.panel1.TabIndex = 1;
-            // 
-            // txtOrderNo
-            // 
-            this.txtOrderNo.Enabled = false;
-            this.txtOrderNo.Location = new System.Drawing.Point(64, 3);
-            this.txtOrderNo.Name = "txtOrderNo";
-            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
-            this.txtOrderNo.TabIndex = 8;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "单据名称:";
             // 
             // txtCustomer
             // 
@@ -201,15 +184,15 @@
             // txtAdd
             // 
             this.txtAdd.Enabled = false;
-            this.txtAdd.Location = new System.Drawing.Point(678, 3);
+            this.txtAdd.Location = new System.Drawing.Point(274, 26);
             this.txtAdd.Name = "txtAdd";
-            this.txtAdd.Size = new System.Drawing.Size(314, 21);
+            this.txtAdd.Size = new System.Drawing.Size(718, 21);
             this.txtAdd.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(620, 8);
+            this.label3.Location = new System.Drawing.Point(216, 31);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 4;
@@ -246,10 +229,10 @@
             // 
             this.panel2.Controls.Add(this.splitContainer1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 51);
+            this.panel2.Location = new System.Drawing.Point(0, 74);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(995, 575);
+            this.panel2.Size = new System.Drawing.Size(995, 552);
             this.panel2.TabIndex = 2;
             // 
             // splitContainer1
@@ -264,7 +247,6 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.AutoScroll = true;
-            this.splitContainer1.Panel1.Controls.Add(this.pbimg);
             this.splitContainer1.Panel1.Controls.Add(this.tvview);
             this.splitContainer1.Panel1.Controls.Add(this.panel3);
             // 
@@ -273,27 +255,16 @@
             this.splitContainer1.Panel2.Controls.Add(this.panel8);
             this.splitContainer1.Panel2.Controls.Add(this.gvdtl);
             this.splitContainer1.Panel2.Controls.Add(this.panel7);
-            this.splitContainer1.Size = new System.Drawing.Size(995, 575);
+            this.splitContainer1.Size = new System.Drawing.Size(995, 552);
             this.splitContainer1.SplitterDistance = 214;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // pbimg
-            // 
-            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbimg.Location = new System.Drawing.Point(142, 28);
-            this.pbimg.Name = "pbimg";
-            this.pbimg.Size = new System.Drawing.Size(65, 61);
-            this.pbimg.TabIndex = 2;
-            this.pbimg.TabStop = false;
-            this.pbimg.Visible = false;
             // 
             // tvview
             // 
             this.tvview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvview.Location = new System.Drawing.Point(0, 26);
             this.tvview.Name = "tvview";
-            this.tvview.Size = new System.Drawing.Size(210, 545);
+            this.tvview.Size = new System.Drawing.Size(210, 522);
             this.tvview.TabIndex = 1;
             // 
             // panel3
@@ -372,7 +343,7 @@
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel8.Controls.Add(this.bngat);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel8.Location = new System.Drawing.Point(0, 545);
+            this.panel8.Location = new System.Drawing.Point(0, 522);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(773, 26);
             this.panel8.TabIndex = 2;
@@ -536,7 +507,7 @@
             this.gvdtl.Location = new System.Drawing.Point(0, 26);
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(773, 545);
+            this.gvdtl.Size = new System.Drawing.Size(773, 522);
             this.gvdtl.TabIndex = 1;
             // 
             // ConMenu
@@ -592,6 +563,30 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "装修工程类别:";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(5, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "单据名称:";
+            // 
+            // txtOrderNo
+            // 
+            this.txtOrderNo.Enabled = false;
+            this.txtOrderNo.Location = new System.Drawing.Point(63, 3);
+            this.txtOrderNo.Name = "txtOrderNo";
+            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
+            this.txtOrderNo.TabIndex = 8;
+            // 
+            // panel9
+            // 
+            this.panel9.Location = new System.Drawing.Point(7, 0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(65, 61);
+            this.panel9.TabIndex = 9;
+            // 
             // AdornOrderFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -612,7 +607,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
@@ -661,12 +655,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.TextBox txtCustomer;
-        private System.Windows.Forms.TextBox txtOrderNo;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnGetdtl;
         private System.Windows.Forms.ContextMenuStrip ConMenu;
         private System.Windows.Forms.ToolStripMenuItem tmrowdel;
-        private System.Windows.Forms.PictureBox pbimg;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.BindingNavigator bngat;
         private System.Windows.Forms.ToolStripLabel bnCountItem;
@@ -685,5 +676,8 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
+        private System.Windows.Forms.TextBox txtOrderNo;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel9;
     }
 }

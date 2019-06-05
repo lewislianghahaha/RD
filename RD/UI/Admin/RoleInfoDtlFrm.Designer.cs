@@ -56,6 +56,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmSetshow = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbadmin = new System.Windows.Forms.CheckBox();
-            this.pbimg = new System.Windows.Forms.PictureBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
@@ -79,11 +79,11 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.CMenu.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.SuspendLayout();
             // 
             // Menu
@@ -332,6 +332,17 @@
             this.tabPage1.Text = "功能权限";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // pbimg
+            // 
+            this.pbimg.BackColor = System.Drawing.Color.DarkGray;
+            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbimg.Location = new System.Drawing.Point(913, 61);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(65, 61);
+            this.pbimg.TabIndex = 3;
+            this.pbimg.TabStop = false;
+            this.pbimg.Visible = false;
+            // 
             // gvdtl
             // 
             this.gvdtl.AllowUserToAddRows = false;
@@ -434,17 +445,6 @@
             this.cbadmin.Text = "管理员权限";
             this.cbadmin.UseVisualStyleBackColor = true;
             // 
-            // pbimg
-            // 
-            this.pbimg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbimg.Location = new System.Drawing.Point(913, 58);
-            this.pbimg.Name = "pbimg";
-            this.pbimg.Size = new System.Drawing.Size(65, 61);
-            this.pbimg.TabIndex = 3;
-            this.pbimg.TabStop = false;
-            this.pbimg.Visible = false;
-            // 
             // RoleInfoDtlFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -470,13 +470,13 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.CMenu.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

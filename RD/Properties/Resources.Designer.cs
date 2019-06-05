@@ -61,6 +61,16 @@ namespace RD.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap _1 {
+            get {
+                object obj = ResourceManager.GetObject("1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 保存成功,请点击后继续 的本地化字符串。
         /// </summary>
         internal static string BasicFrm_TmSave_Click_保存成功_请点击后继续 {

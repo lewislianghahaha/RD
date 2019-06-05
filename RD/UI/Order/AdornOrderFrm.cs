@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Media;
 using RD.DB;
 using RD.Logic;
 
@@ -92,6 +93,7 @@ namespace RD.UI.Order
             bnMoveLastItem.Click += BnMoveLastItem_Click;
             bnPositionItem.TextChanged += BnPositionItem_TextChanged;
             tmshowrows.DropDownClosed += Tmshowrows_DropDownClosed;
+            //panel1.Paint += Panel1_Paint;
             panel8.Visible = false;
         }
 
@@ -492,6 +494,9 @@ namespace RD.UI.Order
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+
 
             }
             catch (Exception ex)
@@ -509,6 +514,9 @@ namespace RD.UI.Order
         {
             try
             {
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+
 
             }
             catch (Exception ex)
@@ -850,27 +858,32 @@ namespace RD.UI.Order
             //若为“审核”状态的话，就执行以下语句
             if (_confirmMarkId == "Y")
             {
-                //读取审核图片
-                pbimg.Visible = true;
-                pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                panel9.BackgroundImage= Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+
                 //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
                 tmSave.Enabled = false;
                 tmConfirm.Enabled = false;
                 gvdtl.Enabled = false;
                 btnGetdtl.Enabled = false;
                 comHtype.Enabled = false;
+                btnCreate.Enabled = false;
+                btnChange.Enabled = false;
+                btnDel.Enabled = false;
             }
             //若为“非审核”状态的,就执行以下语句
             else
             {
                 //将审核图片控件隐藏
-                pbimg.Visible = false;
+                //pbimg.Visible = false;
                 //将所有功能的状态还原(即与审核时的控件状态相反)
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
                 gvdtl.Enabled = true;
                 btnGetdtl.Enabled = true;
                 comHtype.Enabled = true;
+                btnCreate.Enabled = true;
+                btnChange.Enabled = true;
+                btnDel.Enabled = true;
             }
         }
 
@@ -1142,6 +1155,21 @@ namespace RD.UI.Order
                 panel8.Visible = false;
             }
         }
+
+        //private void Panel1_Paint(object sender, PaintEventArgs e)
+        //{
+        //    //读取审核图片
+        //    // pbimg.Visible = true;
+        //    //pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+
+        //    //若为“审核”状态的话，就执行以下语句
+        //    if (_confirmMarkId == "Y")
+        //    {
+        //        var g = e.Graphics;
+        //        var image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+        //        g.DrawImage(image, new Point(10, 0));
+        //    }
+        //}
 
     }
 }

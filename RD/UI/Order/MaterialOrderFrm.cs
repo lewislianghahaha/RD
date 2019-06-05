@@ -735,9 +735,7 @@ namespace RD.UI.Order
             //若为“审核”状态的话，就执行以下语句
             if (_confirmMarkId == "Y")
             {
-                //读取审核图片
-                pbimg.Visible = true;
-                pbimg.Image = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                panel9.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
 
                 #region
 
@@ -759,8 +757,6 @@ namespace RD.UI.Order
             //若为“非审核”状态的,就执行以下语句
             else
             {
-                //将审核图片控件隐藏
-                pbimg.Visible = false;
                 //将所有功能的状态还原(即与审核时的控件状态相反)
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
