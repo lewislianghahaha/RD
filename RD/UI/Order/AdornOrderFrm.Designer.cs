@@ -38,6 +38,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtOrderNo = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.txtCustomer = new System.Windows.Forms.TextBox();
             this.txtAdd = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -79,9 +81,7 @@
             this.btnGetdtl = new System.Windows.Forms.Button();
             this.comHtype = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtOrderNo = new System.Windows.Forms.TextBox();
-            this.panel9 = new System.Windows.Forms.Panel();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -99,6 +99,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ConMenu.SuspendLayout();
             this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -157,9 +158,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.pbimg);
             this.panel1.Controls.Add(this.txtOrderNo);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.panel9);
             this.panel1.Controls.Add(this.txtCustomer);
             this.panel1.Controls.Add(this.txtAdd);
             this.panel1.Controls.Add(this.label3);
@@ -172,6 +173,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(995, 50);
             this.panel1.TabIndex = 1;
+            // 
+            // txtOrderNo
+            // 
+            this.txtOrderNo.Enabled = false;
+            this.txtOrderNo.Location = new System.Drawing.Point(63, 3);
+            this.txtOrderNo.Name = "txtOrderNo";
+            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
+            this.txtOrderNo.TabIndex = 8;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(5, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "单据名称:";
             // 
             // txtCustomer
             // 
@@ -186,7 +204,7 @@
             this.txtAdd.Enabled = false;
             this.txtAdd.Location = new System.Drawing.Point(274, 26);
             this.txtAdd.Name = "txtAdd";
-            this.txtAdd.Size = new System.Drawing.Size(718, 21);
+            this.txtAdd.Size = new System.Drawing.Size(639, 21);
             this.txtAdd.TabIndex = 5;
             // 
             // label3
@@ -201,7 +219,7 @@
             // txtHoseName
             // 
             this.txtHoseName.Enabled = false;
-            this.txtHoseName.Location = new System.Drawing.Point(491, 3);
+            this.txtHoseName.Location = new System.Drawing.Point(85, 26);
             this.txtHoseName.Name = "txtHoseName";
             this.txtHoseName.Size = new System.Drawing.Size(127, 21);
             this.txtHoseName.TabIndex = 3;
@@ -209,7 +227,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(409, 8);
+            this.label2.Location = new System.Drawing.Point(3, 31);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 12);
             this.label2.TabIndex = 2;
@@ -563,29 +581,15 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "装修工程类别:";
             // 
-            // label5
+            // pbimg
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "单据名称:";
-            // 
-            // txtOrderNo
-            // 
-            this.txtOrderNo.Enabled = false;
-            this.txtOrderNo.Location = new System.Drawing.Point(63, 3);
-            this.txtOrderNo.Name = "txtOrderNo";
-            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
-            this.txtOrderNo.TabIndex = 8;
-            // 
-            // panel9
-            // 
-            this.panel9.Location = new System.Drawing.Point(7, 0);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(65, 61);
-            this.panel9.TabIndex = 9;
+            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbimg.Location = new System.Drawing.Point(916, -12);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(74, 60);
+            this.pbimg.TabIndex = 12;
+            this.pbimg.TabStop = false;
             // 
             // AdornOrderFrm
             // 
@@ -620,6 +624,7 @@
             this.ConMenu.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -678,6 +683,6 @@
         private System.Windows.Forms.ToolStripLabel tstotalrow;
         private System.Windows.Forms.TextBox txtOrderNo;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.PictureBox pbimg;
     }
 }

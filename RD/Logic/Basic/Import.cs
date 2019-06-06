@@ -24,9 +24,9 @@ namespace RD.Logic.Basic
             {
                 result=importDt.InsertTreeRecord(functionName, id,pid, treeName);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                result = false;
             }
             return result;
         }
@@ -45,9 +45,9 @@ namespace RD.Logic.Basic
             {
                 result = importDt.UpdateTreeRecord(functionName, pid, treeName);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                result = false;
             }
             return result;
         }
@@ -68,9 +68,9 @@ namespace RD.Logic.Basic
             {
                 result = importDt.SavebaseEntryrd(functionName, dt,pid, accountName,deldt);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                result = false;
             }
             return result;
         }

@@ -93,7 +93,6 @@ namespace RD.UI.Order
             bnMoveLastItem.Click += BnMoveLastItem_Click;
             bnPositionItem.TextChanged += BnPositionItem_TextChanged;
             tmshowrows.DropDownClosed += Tmshowrows_DropDownClosed;
-            //panel1.Paint += Panel1_Paint;
             panel8.Visible = false;
         }
 
@@ -858,7 +857,7 @@ namespace RD.UI.Order
             //若为“审核”状态的话，就执行以下语句
             if (_confirmMarkId == "Y")
             {
-                panel9.BackgroundImage= Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                pbimg.BackgroundImage= Image.FromFile(Application.StartupPath + @"\PIC\1.png");
 
                 //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
                 tmSave.Enabled = false;
@@ -873,8 +872,6 @@ namespace RD.UI.Order
             //若为“非审核”状态的,就执行以下语句
             else
             {
-                //将审核图片控件隐藏
-                //pbimg.Visible = false;
                 //将所有功能的状态还原(即与审核时的控件状态相反)
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;

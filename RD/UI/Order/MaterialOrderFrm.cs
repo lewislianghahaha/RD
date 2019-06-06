@@ -735,7 +735,7 @@ namespace RD.UI.Order
             //若为“审核”状态的话，就执行以下语句
             if (_confirmMarkId == "Y")
             {
-                panel9.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                pbimg.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
 
                 #region
 

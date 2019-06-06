@@ -274,7 +274,7 @@ namespace RD.Logic
                     break;
                 //基础信息库
                 case 1:
-                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data,_pid,_treeName,_accountName,_deldata);
+                    BasicInfo(_functionId,_functinName,_functionType,_parentId,_searchName,_searchValue,_data,_pid,_treeName,_accountName,_deldata,_datarow);
                     break;
                 //单据信息(包括：室内装修工程单 及 室内主材单)
                 case 2:
@@ -316,8 +316,10 @@ namespace RD.Logic
         /// <param name="treeName">获取同级节点时使用(新增或更新树形节点时使用)</param>
         /// <param name="accountName">获取帐号名称</param>
         /// <param name="deldt">获取需要删除的表体记录信息</param>
+        /// <param name="datarow">保存从GridView选择的行</param>
         private void BasicInfo(string functionId,string functionName,string functionType,string parentId,
-                               string searchName, string searchValue,DataTable dt,int pid,string treeName,string accountName, DataTable deldt)
+                               string searchName, string searchValue,DataTable dt,int pid,string treeName,string accountName, DataTable deldt,
+                               DataGridViewSelectedRowCollection datarow)
         {
             switch (functionId)
             {
@@ -345,10 +347,14 @@ namespace RD.Logic
                 case "1.5":
                     _resultTable = search.GetCustList();
                     break;
+                //查询 作用:检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
+                case "1.6":
+                    _resultMark = search.CheckCanDel(functionName,pid,dt,datarow);
+                    break;
 
                 //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
                 case "2":
-                    _resultMark = import.Save_BaseEntry(functionName,dt,pid,accountName,_deldata);
+                    _resultMark = import.Save_BaseEntry(functionName,dt,pid,accountName,deldt);
                     break;
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2.1":

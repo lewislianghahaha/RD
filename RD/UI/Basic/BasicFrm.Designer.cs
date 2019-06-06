@@ -433,7 +433,6 @@
             this.tmdelrow.Name = "tmdelrow";
             this.tmdelrow.Size = new System.Drawing.Size(148, 22);
             this.tmdelrow.Text = "删除指定行";
-            this.tmdelrow.Visible = false;
             // 
             // Menu
             // 

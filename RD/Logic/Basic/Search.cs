@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Windows.Forms;
 using RD.DB.Search;
 
 namespace RD.Logic.Basic
@@ -132,6 +133,28 @@ namespace RD.Logic.Basic
                 throw new Exception(ex.Message);
             }
             return dt;
+        }
+
+        /// <summary>
+        /// 检测若所选择行中的值已给其它地方使用,就不能进行删除
+        /// </summary>
+        /// <param name="functionName">0:删除分组功能使用 1:删除所选行功能使用</param>
+        /// <param name="id">0:客户信息管理 1:供应商信息管理 2:材料信息管理 4:房屋类型及装修工程类别信息管理</param>
+        /// <param name="dt"></param>
+        /// <param name="datarow"></param>
+        /// <returns></returns>
+        public bool CheckCanDel(string functionName ,int id,DataTable dt , DataGridViewSelectedRowCollection datarow)
+        {
+            var result = true;
+            try
+            {
+                result = serDt.CheckCanDel(functionName, id, dt, datarow);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
         }
     }
 }

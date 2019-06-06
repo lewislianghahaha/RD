@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace RD.DB.Search
 {
@@ -374,6 +375,47 @@ namespace RD.DB.Search
             var sqlscript = sqlList.CustInfoList();
             var dt = GetData(sqlscript);
             return dt;
+        }
+
+        /// <summary>
+        /// 检测若所选择行中的值已给其它地方使用
+        /// </summary>
+        /// <param name="functionName">0:删除分组功能使用 1:删除所选行功能使用</param>
+        /// <param name="id">0:客户信息管理 1:供应商信息管理 2:材料信息管理 4:房屋类型及装修工程类别信息管理</param>
+        /// <param name="dt"></param>
+        /// <param name="datarow"></param>
+        /// <returns></returns>
+        public bool CheckCanDel(string functionName, int id, DataTable dt, DataGridViewSelectedRowCollection datarow)
+        {
+            //循环ID
+            var loopid = 0;
+            var loopdt = new DataTable();
+            var result = true;
+            var sqlscript = string.Empty;
+
+            //中心:若根据条件查询返回的行数为0的话,就为false;反之为true
+            if (functionName == "0")
+            {
+                foreach (DataRow rows in dt.Rows)
+                {
+                    sqlscript = sqlList.SearchCount(id, Convert.ToInt32(rows[0]),Convert.ToInt32(rows[1]));
+                    loopdt = GetData(sqlscript);
+                    if (loopdt.Rows.Count > 0)
+                        loopid++;
+                }
+            }
+            else
+            {
+                foreach (DataGridViewRow row in datarow)
+                {
+                    sqlscript = sqlList.SearchCount(id, Convert.ToInt32(row.Cells[0].Value),Convert.ToInt32(row.Cells[1].Value));
+                    loopdt = GetData(sqlscript);
+                    if (loopdt.Rows.Count > 0)
+                        loopid++;
+                }
+            }
+            result = loopid <= 0;
+            return result;
         }
 
         #endregion

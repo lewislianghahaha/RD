@@ -72,7 +72,7 @@
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnGetdtl = new System.Windows.Forms.Button();
-            this.panel9 = new System.Windows.Forms.Panel();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -86,6 +86,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ConMenu.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -145,15 +146,15 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.txtOrderNo);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.panel9);
             this.panel1.Controls.Add(this.txtAdd);
-            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.txtHoseName);
             this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.txtOrderNo);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.txtCustomer);
             this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.pbimg);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
@@ -163,7 +164,7 @@
             // 
             // txtOrderNo
             // 
-            this.txtOrderNo.Location = new System.Drawing.Point(63, 4);
+            this.txtOrderNo.Location = new System.Drawing.Point(63, 3);
             this.txtOrderNo.Name = "txtOrderNo";
             this.txtOrderNo.ReadOnly = true;
             this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
@@ -172,7 +173,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 9);
+            this.label5.Location = new System.Drawing.Point(5, 8);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(59, 12);
             this.label5.TabIndex = 9;
@@ -180,16 +181,16 @@
             // 
             // txtAdd
             // 
-            this.txtAdd.Location = new System.Drawing.Point(273, 28);
+            this.txtAdd.Location = new System.Drawing.Point(273, 27);
             this.txtAdd.Name = "txtAdd";
             this.txtAdd.ReadOnly = true;
-            this.txtAdd.Size = new System.Drawing.Size(719, 21);
+            this.txtAdd.Size = new System.Drawing.Size(639, 21);
             this.txtAdd.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(218, 33);
+            this.label3.Location = new System.Drawing.Point(218, 32);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 4;
@@ -197,7 +198,7 @@
             // 
             // txtHoseName
             // 
-            this.txtHoseName.Location = new System.Drawing.Point(491, 3);
+            this.txtHoseName.Location = new System.Drawing.Point(85, 27);
             this.txtHoseName.Name = "txtHoseName";
             this.txtHoseName.ReadOnly = true;
             this.txtHoseName.Size = new System.Drawing.Size(127, 21);
@@ -206,7 +207,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(410, 8);
+            this.label2.Location = new System.Drawing.Point(4, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 12);
             this.label2.TabIndex = 2;
@@ -473,12 +474,15 @@
             this.btnGetdtl.Text = "获取材料类别明细信息";
             this.btnGetdtl.UseVisualStyleBackColor = true;
             // 
-            // panel9
+            // pbimg
             // 
-            this.panel9.Location = new System.Drawing.Point(9, 0);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(65, 61);
-            this.panel9.TabIndex = 11;
+            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbimg.Location = new System.Drawing.Point(915, -12);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(74, 60);
+            this.pbimg.TabIndex = 11;
+            this.pbimg.TabStop = false;
             // 
             // MaterialOrderFrm
             // 
@@ -508,6 +512,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ConMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -557,6 +562,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
-        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.PictureBox pbimg;
     }
 }

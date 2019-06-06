@@ -325,9 +325,10 @@ namespace RD.UI.Basic
             {
                 if(tview.SelectedNode==null) throw new Exception("请选择某一名称再继续");
                 if ((int)tview.SelectedNode.Tag == 1) throw new Exception("ALL节点不能删除,请选择其它节点进行删除");
+                //检测当前用户是否有‘删除’权限
                 if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
                 //检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
-
+                if(!CheckCanDel(0)) throw new Exception($"检测到需要删除的分组中有明细记录已在其它地方使用的情况, \n 故不能删除.");
 
                 //节点ID
                 var treeid = Convert.ToInt32(tview.SelectedNode.Tag);
@@ -335,9 +336,6 @@ namespace RD.UI.Basic
                 var treeName = tview.SelectedNode.Text;
 
                 var clickMessage = $"您所选择的信息为:\n 节点名称:{treeName} \n 是否继续? \n 注:若点选的节点下有内容的话(包括明细内容),就会将与它对应的记录都删除, \n 请谨慎处理.";
-
-                //检测若用户没有删除权限就出跳出异常
-                if(!_candelMarkid) throw new Exception($"用户{GlobalClasscs.User.StrUsrName}没有‘删除’权限,不能继续.");
 
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
@@ -704,9 +702,10 @@ namespace RD.UI.Basic
             {
                 if (tview.SelectedNode == null) throw new Exception("请选择某一名称再继续");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选取某一行,再继续");
+                //检测当前用户是否有‘删除’权限
                 if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
                 //检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
-
+                if (!CheckCanDel(1)) throw new Exception($"检测到所选中的行中有已在其它地方使用的情况, \n 故不能删除.");
 
                 var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
@@ -1034,7 +1033,40 @@ namespace RD.UI.Basic
             }
         }
 
-
+        /// <summary>
+        /// 检测到所选中的行中是否有已在其它地方使用的情况
+        /// </summary>
+        /// <param name="typeid">0:删除分组功能使用 1:删除所选行功能使用</param>
+        /// <returns></returns>
+        private bool CheckCanDel(int typeid)
+        {
+            var result = true;
+            try
+            {
+                switch (typeid)
+                {
+                    //'删除分组'按钮使用
+                    case 0:
+                        task.Data = (DataTable) gvdtl.DataSource;
+                        break;
+                    //'删除所选行'按钮使用
+                    case 1:
+                        task.Datarow = gvdtl.SelectedRows;
+                        break;
+                }
+                task.TaskId = 1;
+                task.FunctionId = "1.6";
+                task.FunctionName = Convert.ToString(typeid);
+                task.Pid = GlobalClasscs.Basic.BasicId; //1:客户信息管理 2:供应商信息管理 3:材料信息管理 4:房屋类型及装修工程类别信息管理
+                task.StartTask();
+                result = task.ResultMark;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
+        }
 
     }
 }

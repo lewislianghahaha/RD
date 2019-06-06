@@ -433,6 +433,43 @@ namespace RD.DB
             return _result;
         }
 
+        /// <summary>
+        /// 根据指定的条件检测指定表是否有行存在
+        /// </summary>
+        /// <param name="funid">功能名称:1:客户信息管理 2:供应商信息管理 3:材料信息管理 4:房屋类型及装修工程类别信息管理</param>
+        /// <param name="typeid">分类ID 房屋类型及装修工程类别信息管理才使用 2:房屋类型 3:工程类别</param>
+        /// <param name="id">各表主键ID</param>
+        /// <returns></returns>
+        public string SearchCount(int funid,int typeid,int id)
+        {
+            if (funid == 1)
+            {
+                _result = $@"SELECT * FROM dbo.T_PRO_Adorn WHERE Custid='{id}'
+                             SELECT * FROM dbo.T_PRO_Material WHERE Custid='{id}'";
+            }
+            else if (funid == 2)
+            {
+                _result = $"SELECT * FROM dbo.T_BD_MaterialEntry WHERE Supid='{id}'";
+            }
+            else if (funid == 3)
+            {
+                _result = $"SELECT * FROM dbo.T_PRO_MaterialEntry WHERE MaterialId='{id}'";
+            }
+            else if (funid == 4)
+            {
+                if (typeid == 2)
+                {
+                    _result = $"SELECT * FROM dbo.T_BD_CustEntry WHERE HTypeid='{id}'";
+                }
+                else if (typeid == 3)
+                {
+                    _result=$@"SELECT * FROM dbo.T_PRO_AdornEntry WHERE HTypeid='{id}'
+                               SELECT* FROM dbo.T_BD_HTypeProjectDtl WHERE HTypeid = '{id}'";
+                }
+            }
+            return _result;
+        }
+
         #endregion
 
         #region 单据相关
