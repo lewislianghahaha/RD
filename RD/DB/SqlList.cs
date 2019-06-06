@@ -437,8 +437,8 @@ namespace RD.DB
         /// 根据指定的条件检测指定表是否有行存在
         /// </summary>
         /// <param name="funid">功能名称:1:客户信息管理 2:供应商信息管理 3:材料信息管理 4:房屋类型及装修工程类别信息管理</param>
-        /// <param name="typeid">分类ID 房屋类型及装修工程类别信息管理才使用 2:房屋类型 3:工程类别</param>
-        /// <param name="id">各表主键ID</param>
+        /// <param name="typeid">分类ID 房屋类型及装修工程类别信息管理才使用 2:房屋类型 3:工程类别 表头主键</param>
+        /// <param name="id">各表体主键ID</param>
         /// <returns></returns>
         public string SearchCount(int funid,int typeid,int id)
         {
