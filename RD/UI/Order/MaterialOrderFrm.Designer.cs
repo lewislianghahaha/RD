@@ -38,14 +38,15 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtOrderNo = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.txtAdd = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.txtHoseName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtOrderNo = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtCustomer = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvView = new System.Windows.Forms.TreeView();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -72,9 +73,9 @@
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnGetdtl = new System.Windows.Forms.Button();
-            this.pbimg = new System.Windows.Forms.PictureBox();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -86,7 +87,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ConMenu.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -162,45 +162,19 @@
             this.panel1.Size = new System.Drawing.Size(995, 50);
             this.panel1.TabIndex = 1;
             // 
-            // txtOrderNo
-            // 
-            this.txtOrderNo.Location = new System.Drawing.Point(63, 3);
-            this.txtOrderNo.Name = "txtOrderNo";
-            this.txtOrderNo.ReadOnly = true;
-            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
-            this.txtOrderNo.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 12);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "单据名称:";
-            // 
             // txtAdd
             // 
+            this.txtAdd.Enabled = false;
             this.txtAdd.Location = new System.Drawing.Point(273, 27);
             this.txtAdd.Name = "txtAdd";
-            this.txtAdd.ReadOnly = true;
             this.txtAdd.Size = new System.Drawing.Size(639, 21);
             this.txtAdd.TabIndex = 5;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(218, 32);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 12);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "装修地址:";
-            // 
             // txtHoseName
             // 
+            this.txtHoseName.Enabled = false;
             this.txtHoseName.Location = new System.Drawing.Point(85, 27);
             this.txtHoseName.Name = "txtHoseName";
-            this.txtHoseName.ReadOnly = true;
             this.txtHoseName.Size = new System.Drawing.Size(127, 21);
             this.txtHoseName.TabIndex = 3;
             // 
@@ -213,11 +187,37 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "房屋类型名称:";
             // 
+            // txtOrderNo
+            // 
+            this.txtOrderNo.Enabled = false;
+            this.txtOrderNo.Location = new System.Drawing.Point(63, 3);
+            this.txtOrderNo.Name = "txtOrderNo";
+            this.txtOrderNo.Size = new System.Drawing.Size(149, 21);
+            this.txtOrderNo.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(5, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 12);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "单据名称:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(218, 32);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "装修地址:";
+            // 
             // txtCustomer
             // 
+            this.txtCustomer.Enabled = false;
             this.txtCustomer.Location = new System.Drawing.Point(273, 3);
             this.txtCustomer.Name = "txtCustomer";
-            this.txtCustomer.ReadOnly = true;
             this.txtCustomer.Size = new System.Drawing.Size(132, 21);
             this.txtCustomer.TabIndex = 1;
             // 
@@ -230,6 +230,16 @@
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "客户名称:";
+            // 
+            // pbimg
+            // 
+            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbimg.Location = new System.Drawing.Point(915, -12);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(74, 60);
+            this.pbimg.TabIndex = 11;
+            this.pbimg.TabStop = false;
             // 
             // splitContainer1
             // 
@@ -474,16 +484,6 @@
             this.btnGetdtl.Text = "获取材料类别明细信息";
             this.btnGetdtl.UseVisualStyleBackColor = true;
             // 
-            // pbimg
-            // 
-            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbimg.Location = new System.Drawing.Point(915, -12);
-            this.pbimg.Name = "pbimg";
-            this.pbimg.Size = new System.Drawing.Size(74, 60);
-            this.pbimg.TabIndex = 11;
-            this.pbimg.TabStop = false;
-            // 
             // MaterialOrderFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -499,6 +499,7 @@
             this.MainMenu.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -512,7 +513,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ConMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

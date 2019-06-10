@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Media;
 using RD.DB;
 using RD.Logic;
 
@@ -74,7 +73,7 @@ namespace RD.UI.Order
 
         private void OnRegisterEvents()
         {
-            comHtype.SelectionChangeCommitted += ComHtype_SelectionChangeCommitted;
+            //comHtype.SelectionChangeCommitted += ComHtype_SelectionChangeCommitted;
             tmSave.Click += TmSave_Click;
             tmConfirm.Click += TmConfirm_Click;
             tmExcel.Click += TmExcel_Click;
@@ -86,6 +85,7 @@ namespace RD.UI.Order
             btnGetdtl.Click += BtnGetdtl_Click;
             tmrowdel.Click += Tmrowdel_Click;
             gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
+            btnhideshow.Click += Btnhideshow_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -132,7 +132,7 @@ namespace RD.UI.Order
                 LinkGridViewPageChange(OnInitializeDtl());
             }
             //初始化装修工程类别下拉列表
-            OnInitializeDropDownList();
+            //OnInitializeDropDownList();
             //设置GridView是否显示某些列
             ControlGridViewisShow();
             //展开根节点
@@ -171,15 +171,15 @@ namespace RD.UI.Order
         /// <summary>
         /// 初始化下拉列表
         /// </summary>
-        private void OnInitializeDropDownList()
-        {
-            task.TaskId = 2;
-            task.FunctionId = "1";
-            task.StartTask();
-            comHtype.DataSource = task.ResultTable;
-            comHtype.DisplayMember = "HtypeName";     //设置显示值 HTypeid
-            comHtype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
-        }
+        //private void OnInitializeDropDownList()
+        //{
+        //    task.TaskId = 2;
+        //    task.FunctionId = "1";
+        //    task.StartTask();
+        //    comHtype.DataSource = task.ResultTable;
+        //    comHtype.DisplayMember = "HtypeName";     //设置显示值 HTypeid
+        //    comHtype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
+        //}
 
         /// <summary>
         /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
@@ -254,23 +254,38 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 当从下拉列表中选择项而下拉列表"关闭"时发生
+        /// 控制显示/隐藏GridView内容
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ComHtype_SelectionChangeCommitted(object sender, EventArgs e)
+        private void Btnhideshow_Click(object sender, EventArgs e)
         {
             try
             {
-                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
-                var result = JumpNextGridViewdtl();
-                if (!result) throw new Exception("发生异常,请联系管理员");
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// 当从下拉列表中选择项而下拉列表"关闭"时发生
+        /// </summary>
+        //private void ComHtype_SelectionChangeCommitted(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+        //        var result = JumpNextGridViewdtl();
+        //        if (!result) throw new Exception("发生异常,请联系管理员");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         /// <summary>
         /// 新建类别(注:不能在除ALL节点下创建新节点)
@@ -413,16 +428,16 @@ namespace RD.UI.Order
             {
                 if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
                 if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
-                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+               // if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
 
                 //获取下拉列表值
-                var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
                 //获取所选中的树菜单节点ID
                 var treeid = (int) tvview.SelectedNode.Tag;
 
                 typeInfoFrm.Funname = "HouseProject";
-                typeInfoFrm.Id = hTypeid;
+                //typeInfoFrm.Id = hTypeid;
                 //初始化记录
                 typeInfoFrm.OnInitialize(); 
                 typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
@@ -431,8 +446,8 @@ namespace RD.UI.Order
                 //判断若返回的DT为空的话,就不需要任何效果
                 if (typeInfoFrm.ResultTable == null || typeInfoFrm.ResultTable.Rows.Count == 0) return;
                 //将返回的结果赋值至GridView内(注:判断若返回的DT不为空或行数大于0才执行插入效果)
-                if (typeInfoFrm.ResultTable != null || typeInfoFrm.ResultTable.Rows.Count > 0)
-                    InsertdtToGridView(_pid,treeid,hTypeid, typeInfoFrm.ResultTable);
+                //if (typeInfoFrm.ResultTable != null || typeInfoFrm.ResultTable.Rows.Count > 0)
+                //    InsertdtToGridView(_pid,treeid,hTypeid, typeInfoFrm.ResultTable);
             }
             catch (Exception ex)
             {
@@ -533,7 +548,7 @@ namespace RD.UI.Order
         {
             try
             {
-                if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
+               // if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
                 var result=JumpNextGridViewdtl();
                 if(!result)throw new Exception("发生异常,请联系管理员");
             }
@@ -802,8 +817,8 @@ namespace RD.UI.Order
                     if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择");
 
                     //获取下拉列表信息
-                    var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                    var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
+                    //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
+                    //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
 
                     var gridViewdt = (DataTable)gvdtl.DataSource;
                     if (gridViewdt.Rows.Count > 0)
@@ -830,7 +845,7 @@ namespace RD.UI.Order
                     task.FunctionName = _funName;                                                                               //功能名称
                     task.Pid = _pid;                                                                                           //表头ID
                     task.Treeid = (string)tvview.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);  //树节点ID
-                    task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
+                   // task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
 
                     new Thread(Start).Start();
                     load.StartPosition = FormStartPosition.CenterScreen;
@@ -864,7 +879,7 @@ namespace RD.UI.Order
                 tmConfirm.Enabled = false;
                 gvdtl.Enabled = false;
                 btnGetdtl.Enabled = false;
-                comHtype.Enabled = false;
+               // comHtype.Enabled = false;
                 btnCreate.Enabled = false;
                 btnChange.Enabled = false;
                 btnDel.Enabled = false;
@@ -877,7 +892,7 @@ namespace RD.UI.Order
                 tmConfirm.Enabled = true;
                 gvdtl.Enabled = true;
                 btnGetdtl.Enabled = true;
-                comHtype.Enabled = true;
+              //  comHtype.Enabled = true;
                 btnCreate.Enabled = true;
                 btnChange.Enabled = true;
                 btnDel.Enabled = true;

@@ -393,7 +393,7 @@ namespace RD.DB.Search
             var result = true;
             var sqlscript = string.Empty;
 
-            //中心:若根据条件查询返回的行数为0的话,就为false;反之为true
+            //中心:若根据条件查询返回的行数为0的话,就为true;反之为false
             if (functionName == "0")
             {
                 foreach (DataRow rows in dt.Rows)

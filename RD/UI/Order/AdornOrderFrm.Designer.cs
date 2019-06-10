@@ -38,6 +38,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.txtOrderNo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCustomer = new System.Windows.Forms.TextBox();
@@ -79,11 +80,18 @@
             this.tmrowdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnGetdtl = new System.Windows.Forms.Button();
-            this.comHtype = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pbimg = new System.Windows.Forms.PictureBox();
+            this.Conshowdtl = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmshow1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmshow2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmshow3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmshow4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnhideshow = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -99,7 +107,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.ConMenu.SuspendLayout();
             this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
+            this.Conshowdtl.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -173,6 +181,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(995, 50);
             this.panel1.TabIndex = 1;
+            // 
+            // pbimg
+            // 
+            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbimg.Location = new System.Drawing.Point(916, -12);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(74, 60);
+            this.pbimg.TabIndex = 12;
+            this.pbimg.TabStop = false;
             // 
             // txtOrderNo
             // 
@@ -545,9 +563,8 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel7.Controls.Add(this.btnhideshow);
             this.panel7.Controls.Add(this.btnGetdtl);
-            this.panel7.Controls.Add(this.comHtype);
-            this.panel7.Controls.Add(this.label4);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Name = "panel7";
@@ -556,40 +573,74 @@
             // 
             // btnGetdtl
             // 
-            this.btnGetdtl.Location = new System.Drawing.Point(241, 1);
+            this.btnGetdtl.ContextMenuStrip = this.Conshowdtl;
+            this.btnGetdtl.Location = new System.Drawing.Point(114, 1);
             this.btnGetdtl.Name = "btnGetdtl";
             this.btnGetdtl.Size = new System.Drawing.Size(145, 23);
             this.btnGetdtl.TabIndex = 2;
             this.btnGetdtl.Text = "获取工程类别明细信息";
             this.btnGetdtl.UseVisualStyleBackColor = true;
             // 
-            // comHtype
+            // Conshowdtl
             // 
-            this.comHtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comHtype.FormattingEnabled = true;
-            this.comHtype.Location = new System.Drawing.Point(97, 3);
-            this.comHtype.Name = "comHtype";
-            this.comHtype.Size = new System.Drawing.Size(121, 20);
-            this.comHtype.TabIndex = 1;
+            this.Conshowdtl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmshow1,
+            this.toolStripSeparator2,
+            this.tmshow2,
+            this.toolStripSeparator3,
+            this.tmshow3,
+            this.toolStripSeparator4,
+            this.tmshow4});
+            this.Conshowdtl.Name = "Conshowdtl";
+            this.Conshowdtl.Size = new System.Drawing.Size(125, 110);
             // 
-            // label4
+            // tmshow1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 12);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "装修工程类别:";
+            this.tmshow1.Name = "tmshow1";
+            this.tmshow1.Size = new System.Drawing.Size(124, 22);
+            this.tmshow1.Text = "土建工程";
             // 
-            // pbimg
+            // toolStripSeparator2
             // 
-            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbimg.Location = new System.Drawing.Point(916, -12);
-            this.pbimg.Name = "pbimg";
-            this.pbimg.Size = new System.Drawing.Size(74, 60);
-            this.pbimg.TabIndex = 12;
-            this.pbimg.TabStop = false;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(121, 6);
+            // 
+            // tmshow2
+            // 
+            this.tmshow2.Name = "tmshow2";
+            this.tmshow2.Size = new System.Drawing.Size(124, 22);
+            this.tmshow2.Text = "天花工程";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(121, 6);
+            // 
+            // tmshow3
+            // 
+            this.tmshow3.Name = "tmshow3";
+            this.tmshow3.Size = new System.Drawing.Size(124, 22);
+            this.tmshow3.Text = "地面工程";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(121, 6);
+            // 
+            // tmshow4
+            // 
+            this.tmshow4.Name = "tmshow4";
+            this.tmshow4.Size = new System.Drawing.Size(124, 22);
+            this.tmshow4.Text = "墙身工程";
+            // 
+            // btnhideshow
+            // 
+            this.btnhideshow.Location = new System.Drawing.Point(8, 1);
+            this.btnhideshow.Name = "btnhideshow";
+            this.btnhideshow.Size = new System.Drawing.Size(92, 23);
+            this.btnhideshow.TabIndex = 3;
+            this.btnhideshow.Text = "显示/隐藏";
+            this.btnhideshow.UseVisualStyleBackColor = true;
             // 
             // AdornOrderFrm
             // 
@@ -606,6 +657,7 @@
             this.MainMenu.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.panel2.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -623,8 +675,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ConMenu.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
+            this.Conshowdtl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -656,8 +707,6 @@
         private System.Windows.Forms.Button btnDel;
         private System.Windows.Forms.TreeView tvview;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.ComboBox comHtype;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.TextBox txtCustomer;
         private System.Windows.Forms.Button btnGetdtl;
@@ -684,5 +733,14 @@
         private System.Windows.Forms.TextBox txtOrderNo;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pbimg;
+        private System.Windows.Forms.ContextMenuStrip Conshowdtl;
+        private System.Windows.Forms.ToolStripMenuItem tmshow1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem tmshow2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem tmshow3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem tmshow4;
+        private System.Windows.Forms.Button btnhideshow;
     }
 }

@@ -328,7 +328,7 @@ namespace RD.UI.Basic
                 //检测当前用户是否有‘删除’权限
                 if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
                 //检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
-                if(!CheckCanDel(0)) throw new Exception($"检测到需要删除的分组中有明细记录已在其它地方使用的情况, \n 故不能删除.");
+                if(!CheckCanDel(0)) throw new Exception($"检测到需要删除的分组中有明细记录已在其它地方使用的情况, \n故不能删除.");
 
                 //节点ID
                 var treeid = Convert.ToInt32(tview.SelectedNode.Tag);
@@ -705,7 +705,7 @@ namespace RD.UI.Basic
                 //检测当前用户是否有‘删除’权限
                 if (!_candelMarkid) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
                 //检测若所选择行中的值已给其它地方使用,就不能进行删除(如:客户已让某一张单据使用,就不能进行删除)
-                if (!CheckCanDel(1)) throw new Exception($"检测到所选中的行中有已在其它地方使用的情况, \n 故不能删除.");
+                if (!CheckCanDel(1)) throw new Exception($"检测到所选中的行中有已在其它地方使用的情况, \n故不能删除.");
 
                 var clickMessage = $"您所选择需删除的行数为:{gvdtl.SelectedRows.Count}行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
