@@ -42,6 +42,8 @@ namespace RD.UI.Order
         //记录能否删除ID(删除权限使用)
         private bool _candelMarkid;
 
+        //记录房屋装修工程类别DT
+        private DataTable _housetypeDt;
 
         #region Set
 
@@ -69,6 +71,7 @@ namespace RD.UI.Order
         {
             InitializeComponent();
             OnRegisterEvents();
+            GetHouseTypeDt();
         }
 
         private void OnRegisterEvents()
@@ -82,10 +85,15 @@ namespace RD.UI.Order
             btnChange.Click += BtnChange_Click;
             btnDel.Click += BtnDel_Click;
             tvview.AfterSelect += Tvview_AfterSelect;
-            btnGetdtl.Click += BtnGetdtl_Click;
+            //btnGetdtl.Click += BtnGetdtl_Click;
             tmrowdel.Click += Tmrowdel_Click;
             gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
             btnhideshow.Click += Btnhideshow_Click;
+
+            tmshow1.Click += Tmshow1_Click;
+            tmshow2.Click += Tmshow2_Click;
+            tmshow3.Click += Tmshow3_Click;
+            tmshow4.Click += Tmshow4_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -169,17 +177,15 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 初始化下拉列表
+        /// 初始化获取房屋装修类型DT
         /// </summary>
-        //private void OnInitializeDropDownList()
-        //{
-        //    task.TaskId = 2;
-        //    task.FunctionId = "1";
-        //    task.StartTask();
-        //    comHtype.DataSource = task.ResultTable;
-        //    comHtype.DisplayMember = "HtypeName";     //设置显示值 HTypeid
-        //    comHtype.ValueMember = "HTypeid";       //设置默认值内码(即:列名)
-        //}
+        void GetHouseTypeDt()
+        {
+            task.TaskId = 2;
+            task.FunctionId = "1";
+            task.StartTask();
+            _housetypeDt = task.ResultTable;
+        }
 
         /// <summary>
         /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
@@ -250,6 +256,102 @@ namespace RD.UI.Order
                 tn.Text = Convert.ToString(r[3]);     //节点内容
                 //将二级节点添加至根节点下
                 tnode.Nodes.Add(tn);
+            }
+        }
+
+        /// <summary>
+        /// 获取土建工程 明细记录(包括“基础信息库”明细记录 及 历史单据相关记录)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmshow1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
+
+                if(_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型'相关记录,请到基础信息库添加");
+                //根据指定条件获取房屋装修工程ID
+                var row = _housetypeDt.Select("HtypeName='土建工程'");
+
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 获取天花工程 明细记录(包括“基础信息库”明细记录 及 历史单据相关记录)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmshow2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
+
+                if (_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型相关记录',请到基础信息库添加");
+                //根据指定条件获取房屋装修工程ID
+                var row = _housetypeDt.Select("HtypeName='天花工程'");
+
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 获取地面工程 明细记录(包括“基础信息库”明细记录 及 历史单据相关记录)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmshow3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
+
+                if (_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型相关记录',请到基础信息库添加");
+                //根据指定条件获取房屋装修工程ID
+                var row = _housetypeDt.Select("HtypeName='地面工程'");
+
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 获取墙身工程 明细记录(包括“基础信息库”明细记录 及 历史单据相关记录)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmshow4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
+                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
+
+                if (_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型相关记录',请到基础信息库添加");
+                //根据指定条件获取房屋装修工程ID
+                var row = _housetypeDt.Select("HtypeName='墙身工程'");
+
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -405,49 +507,11 @@ namespace RD.UI.Order
         {
             try
             {
-                if(gvdtl.Rows.Count==0) throw new Exception("没有任何记录,不能保存");
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有任何记录,不能保存");
                 //执行保存功能
                 Savedtl();
                 //保存成功后,再次进行初始化
                 OnInitialize();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// 获取工程类别明细信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnGetdtl_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (tvview.SelectedNode == null) throw new Exception("没有选择任何节点,请选择再继续");
-                if ((string)tvview.SelectedNode.Text == "ALL") throw new Exception("不能选择ALL节点,请另选其它再继续");
-               // if ((int)comHtype.SelectedIndex == -1) throw new Exception("请选择装修工程类别");
-
-                //获取下拉列表值
-                //var dvColIdlist = (DataRowView)comHtype.Items[comHtype.SelectedIndex];
-                //var hTypeid = Convert.ToInt32(dvColIdlist["HTypeid"]);
-                //获取所选中的树菜单节点ID
-                var treeid = (int) tvview.SelectedNode.Tag;
-
-                typeInfoFrm.Funname = "HouseProject";
-                //typeInfoFrm.Id = hTypeid;
-                //初始化记录
-                typeInfoFrm.OnInitialize(); 
-                typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
-                typeInfoFrm.ShowDialog();
-
-                //判断若返回的DT为空的话,就不需要任何效果
-                if (typeInfoFrm.ResultTable == null || typeInfoFrm.ResultTable.Rows.Count == 0) return;
-                //将返回的结果赋值至GridView内(注:判断若返回的DT不为空或行数大于0才执行插入效果)
-                //if (typeInfoFrm.ResultTable != null || typeInfoFrm.ResultTable.Rows.Count > 0)
-                //    InsertdtToGridView(_pid,treeid,hTypeid, typeInfoFrm.ResultTable);
             }
             catch (Exception ex)
             {
@@ -842,9 +906,9 @@ namespace RD.UI.Order
                     //获取下拉列表ID信息并跳转至对应下拉列表的GridView页(注:无论是否需要保存都会执行)
                     task.TaskId = 2;
                     task.FunctionId = "1.4";
-                    task.FunctionName = _funName;                                                                               //功能名称
-                    task.Pid = _pid;                                                                                           //表头ID
-                    task.Treeid = (string)tvview.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);  //树节点ID
+                    task.FunctionName = _funName;                                                                                 //功能名称
+                    task.Pid = _pid;                                                                                             //表头ID
+                    task.Treeid = (string)tvview.SelectedNode.Text == "ALL" ? -1 : Convert.ToInt32(tvview.SelectedNode.Tag);    //树节点ID
                    // task.Dropdownlistid = hTypeid;                                                                           //下拉列表ID
 
                     new Thread(Start).Start();
@@ -1166,6 +1230,30 @@ namespace RD.UI.Order
                 gvdtl.DataSource = dt;
                 panel8.Visible = false;
             }
+        }
+
+        /// <summary>
+        /// 显示房屋装修工程类别相关明细记录
+        /// </summary>
+        /// <param name="htypeid">指定房屋装修工程类别ID</param>
+        private void OnShowChooseHouseTypedtl(int htypeid)
+        {
+            //获取所选中的树菜单节点ID
+            var treeid = (int)tvview.SelectedNode.Tag;
+
+            typeInfoFrm.Funname = "HouseProject";
+            typeInfoFrm.Id = htypeid;
+
+            //初始化记录
+            typeInfoFrm.OnInitialize();
+            typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;
+            typeInfoFrm.ShowDialog();
+
+            //判断若返回的DT为空的话,就不需要任何效果
+            if (typeInfoFrm.ResultTable == null || typeInfoFrm.ResultTable.Rows.Count == 0) return;
+            //将返回的结果赋值至GridView内(注:判断若返回的DT不为空或行数大于0才执行插入效果)
+            if (typeInfoFrm.ResultTable != null || typeInfoFrm.ResultTable.Rows.Count > 0)
+                InsertdtToGridView(_pid, treeid, htypeid, typeInfoFrm.ResultTable);
         }
 
         //private void Panel1_Paint(object sender, PaintEventArgs e)

@@ -278,7 +278,7 @@ namespace RD.Logic
                     break;
                 //单据信息(包括：室内装修工程单 及 室内主材单)
                 case 2:
-                    OrderInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata,_treeid,_dropdownlistid);
+                    OrderInfo(_functionId,_functinName,_funState,_pid,_treeName,_id,_custid,_accountName,_data,_confirmid,_deldata,_treeid/*,_dropdownlistid*/);
                     break;
                 //帐户信息功能设定(帐号为:Admin时使用)
                 case 3:
@@ -394,11 +394,11 @@ namespace RD.Logic
         /// <param name="treeid">树菜单ID</param>
         /// <param name="dropdownlistid">下拉列表ID</param>
         private void OrderInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
-                                  int custid,string accountName,DataTable dt,int confirmid,DataTable deldt,int treeid,int dropdownlistid)
+                                  int custid,string accountName,DataTable dt,int confirmid,DataTable deldt,int treeid/*,int dropdownlistid*/)
         {
             switch (functionId)
             {
-                //查询(作用:下拉列表使用)
+                //查询(作用:获取房屋装修工程类别DT)
                 case "1":
                     _resultTable = orderSearch.GetHouseTypeDtl();
                     break;
@@ -416,7 +416,7 @@ namespace RD.Logic
                     break;
                 //查询(作用:树菜单节点击刷新 及 下拉列表刷新使用)
                 case "1.4":
-                    _resultTable = orderSearch.Get_Orderdtl(functionName, pid,treeid, dropdownlistid);
+                    _resultTable = orderSearch.Get_Orderdtl(functionName, pid,treeid/*, dropdownlistid*/);
                     break;
 
                 //保存(作用:对树形菜单进行导入 新增分组时使用)

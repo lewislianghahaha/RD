@@ -36,7 +36,7 @@ namespace RD.UI.Order
         #region Set
 
         /// <summary>
-        /// 获取ID信息
+        /// 获取ID信息(来源:房屋装修类型ID 或 材料信息管理ID)
         /// </summary>
         public int Id { set { _id = value; } }
         /// <summary>
@@ -68,6 +68,9 @@ namespace RD.UI.Order
             comlist.Click += Comlist_Click;
             btnSearch.Click += BtnSearch_Click;
 
+            rdchooseBd.Click += RdchooseBd_Click;
+            rdchooseOrderHistory.Click += RdchooseOrderHistory_Click;
+
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
             bnMoveNextItem.Click += BnMoveNextItem_Click;
@@ -82,29 +85,65 @@ namespace RD.UI.Order
         /// </summary>
         public void OnInitialize()
         {
-            //初始化对应的类别明细记录(包括装修工程 及 材料)
-            task.TaskId = 1;
-            task.FunctionId = "1";
-            task.FunctionName = _funname;
-            task.FunctionType = "G";
-            task.ParentId = Convert.ToString(_id);
-
-            task.StartTask();
-            _dt = task.ResultTable;
+            //获取对应的类别明细记录(包括装修工程 及 材料)
+            Getdtl(0);
             //连接GridView页面跳转功能
             LinkGridViewPageChange(_dt);
 
+            //控制若_funname为"装修工程类别明细"的话,panel4才显示
             switch (_funname)
             {
                 case "HouseProject":
-                    this.Text = "装修工程类别";
+                    this.Text = "装修工程类别明细";
+                    panel4.Visible = true;
                     break;
                 case "Material":
                     this.Text = "材料明细";
+                    panel4.Visible = false;
                     break;
             }
             //控制GridView指定列
             ControlGridViewisShow();
+        }
+
+        /// <summary>
+        /// 从基础信息库获取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RdchooseBd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Getdtl(0);
+                //连接GridView页面跳转功能
+                LinkGridViewPageChange(_dt);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 从历史单据获取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RdchooseOrderHistory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //将panel1隐藏,因为查找(to be continue)
+
+                Getdtl(1);
+                //连接GridView页面跳转功能
+                LinkGridViewPageChange(_dt);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -528,6 +567,41 @@ namespace RD.UI.Order
             {
                 load.Close();
             }));
+        }
+
+        /// <summary>
+        /// 根据条件获取对应的记录
+        /// </summary>
+        /// <param name="genid">运行ID 0:从基础信息库获取 1:从单据历史记录获取</param>
+        /// <returns></returns>
+        private DataTable Getdtl(int genid)
+        {
+            //从基础信息库获取
+            if (genid == 0)
+            {
+                task.TaskId = 1;
+                task.FunctionId = "1";
+                task.FunctionName = _funname;
+                task.FunctionType = "G";
+                task.ParentId = Convert.ToString(_id);
+
+                task.StartTask();
+                _dt = task.ResultTable;
+            }
+            //从单据历史记录获取
+            else
+            {
+                task.TaskId = 1;
+                task.FunctionId = "1";
+                task.FunctionName = _funname;
+                task.FunctionType = "G";
+                task.ParentId = Convert.ToString(_id);
+
+                task.StartTask();
+                _dt = task.ResultTable;
+            }
+
+            return _dt;
         }
     }
 }

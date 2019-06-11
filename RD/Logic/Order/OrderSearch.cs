@@ -96,12 +96,12 @@ namespace RD.Logic.Order
         /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
         /// <param name="dropdownlistid">下拉列表ID</param>
         /// <returns></returns>
-        public DataTable Get_Orderdtl(string factionname,int pid,int treeid,int dropdownlistid)
+        public DataTable Get_Orderdtl(string factionname,int pid,int treeid/*,int dropdownlistid*/)
         {
             DataTable dt;
             try
             {
-                dt = serDt.Get_Orderdtl(factionname,pid,treeid,dropdownlistid);
+                dt = serDt.Get_Orderdtl(factionname,pid,treeid/*,dropdownlistid*/);
             }
             catch (Exception ex)
             {

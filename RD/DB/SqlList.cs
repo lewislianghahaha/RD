@@ -697,7 +697,7 @@ namespace RD.DB
         /// <param name="treeid">树菜单ID treeid 当为-1时,表体读取全部记录</param>
         /// <param name="dropdownlistid">室内装修工程下拉框使用</param>
         /// <returns></returns>
-        public string OrderInfo_dtl(string factionName, int id, int treeid,int dropdownlistid)
+        public string OrderInfo_dtl(string factionName, int id, int treeid/*,int dropdownlistid*/)
         {
             switch (factionName)
             {
@@ -709,7 +709,7 @@ namespace RD.DB
                                             a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                             a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_AdornEntry a
-                                    WHERE a.Id='{id}' AND a.HTypeid='{dropdownlistid}'";
+                                    WHERE a.Id='{id}'"; //AND a.HTypeid='{dropdownlistid}'
                     }
                     else
                     {
@@ -718,8 +718,7 @@ namespace RD.DB
                                                a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                         FROM dbo.T_PRO_AdornEntry a
-                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}' AND a.HTypeid='{dropdownlistid}'
-                                    ";
+                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}'"; //AND a.HTypeid = '{dropdownlistid}
                     }
                     break;
                 case "MaterialOrder":

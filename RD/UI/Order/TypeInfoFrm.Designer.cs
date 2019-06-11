@@ -56,13 +56,17 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.rdchooseBd = new System.Windows.Forms.RadioButton();
+            this.rdchooseOrderHistory = new System.Windows.Forms.RadioButton();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
+            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,8 +133,9 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.gvdtl);
+            this.panel2.Controls.Add(this.panel4);
+            this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 56);
             this.panel2.Name = "panel2";
@@ -297,16 +302,50 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.rdchooseOrderHistory);
+            this.panel4.Controls.Add(this.rdchooseBd);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(795, 29);
+            this.panel4.TabIndex = 2;
+            // 
             // gvdtl
             // 
+            this.gvdtl.AllowUserToAddRows = false;
             this.gvdtl.AllowUserToDeleteRows = false;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvdtl.Location = new System.Drawing.Point(0, 0);
+            this.gvdtl.Location = new System.Drawing.Point(0, 29);
             this.gvdtl.Name = "gvdtl";
+            this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(795, 411);
-            this.gvdtl.TabIndex = 0;
+            this.gvdtl.Size = new System.Drawing.Size(795, 356);
+            this.gvdtl.TabIndex = 3;
+            // 
+            // rdchooseBd
+            // 
+            this.rdchooseBd.AutoSize = true;
+            this.rdchooseBd.Checked = true;
+            this.rdchooseBd.Location = new System.Drawing.Point(14, 7);
+            this.rdchooseBd.Name = "rdchooseBd";
+            this.rdchooseBd.Size = new System.Drawing.Size(119, 16);
+            this.rdchooseBd.TabIndex = 0;
+            this.rdchooseBd.TabStop = true;
+            this.rdchooseBd.Text = "从基础信息库获取";
+            this.rdchooseBd.UseVisualStyleBackColor = true;
+            // 
+            // rdchooseOrderHistory
+            // 
+            this.rdchooseOrderHistory.AutoSize = true;
+            this.rdchooseOrderHistory.Location = new System.Drawing.Point(142, 7);
+            this.rdchooseOrderHistory.Name = "rdchooseOrderHistory";
+            this.rdchooseOrderHistory.Size = new System.Drawing.Size(107, 16);
+            this.rdchooseOrderHistory.TabIndex = 1;
+            this.rdchooseOrderHistory.Text = "从历史单据获取";
+            this.rdchooseOrderHistory.UseVisualStyleBackColor = true;
             // 
             // TypeInfoFrm
             // 
@@ -331,6 +370,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -347,7 +388,6 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtValue;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.BindingNavigator bngat;
         private System.Windows.Forms.ToolStripLabel bnCountItem;
@@ -366,5 +406,9 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
+        private System.Windows.Forms.DataGridView gvdtl;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.RadioButton rdchooseOrderHistory;
+        private System.Windows.Forms.RadioButton rdchooseBd;
     }
 }
