@@ -472,7 +472,7 @@ namespace RD.DB.Search
                 //若返回的DataTable行数为0,或单据状态为C(创建)时,就返回空白表
                 if (dt.Rows.Count == 0 || funState == "C")
                 {
-                    reslut = dlDtList.Get_AdornEmptydt();
+                    reslut = functionname== "AdornOrder" ? dlDtList.Get_AdornEmptydt() : dlDtList.Get_ProMaterialEmtrydt();
                 }
                 //否则返回有值的结果集
                 else

@@ -373,12 +373,14 @@ namespace RD.UI.Order
                     gvdtl.Visible = true;
                     if (_confirmMarkId != "Y")
                         btnGetdtl.Enabled = true;
+                    panel8.Visible = true;
                 }
                 else
                 {
                     gvdtl.Visible = false;
                     if(_confirmMarkId!="Y")
                         btnGetdtl.Enabled = false;
+                    panel8.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -842,7 +844,7 @@ namespace RD.UI.Order
             //将所选择的记录赋值至tempdt临时表内
             foreach (DataRow row in dt.Rows)
             {
-                //若列adornid不为空时,才进行记录
+                //若列adornid为空时,才进行记录
                 if (Convert.ToString(row[2]) == "")
                 {
                     var rowdtl = tempdt.NewRow();
@@ -868,7 +870,7 @@ namespace RD.UI.Order
             //将所选择的记录赋值至tempdt临时表内
             foreach (DataRow row in dt.Rows)
             {
-                //若列adornid不为空时,才进行记录
+                //若行的状态为Modified(更新)时,才进行记录
                 if (row.RowState.ToString() == "Modified")
                 {
                     var rowdtl = tempdt.NewRow();

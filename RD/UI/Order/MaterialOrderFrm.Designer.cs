@@ -73,6 +73,7 @@
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnGetdtl = new System.Windows.Forms.Button();
+            this.btnhideshow = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
@@ -468,6 +469,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel2.Controls.Add(this.btnhideshow);
             this.panel2.Controls.Add(this.btnGetdtl);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -477,12 +479,21 @@
             // 
             // btnGetdtl
             // 
-            this.btnGetdtl.Location = new System.Drawing.Point(4, 1);
+            this.btnGetdtl.Location = new System.Drawing.Point(120, 1);
             this.btnGetdtl.Name = "btnGetdtl";
             this.btnGetdtl.Size = new System.Drawing.Size(139, 23);
             this.btnGetdtl.TabIndex = 0;
             this.btnGetdtl.Text = "获取材料类别明细信息";
             this.btnGetdtl.UseVisualStyleBackColor = true;
+            // 
+            // btnhideshow
+            // 
+            this.btnhideshow.Location = new System.Drawing.Point(9, 1);
+            this.btnhideshow.Name = "btnhideshow";
+            this.btnhideshow.Size = new System.Drawing.Size(92, 23);
+            this.btnhideshow.TabIndex = 4;
+            this.btnhideshow.Text = "显示/隐藏";
+            this.btnhideshow.UseVisualStyleBackColor = true;
             // 
             // MaterialOrderFrm
             // 
@@ -563,5 +574,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
         private System.Windows.Forms.PictureBox pbimg;
+        private System.Windows.Forms.Button btnhideshow;
     }
 }

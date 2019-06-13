@@ -79,6 +79,7 @@
             this.ConMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmrowdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.btnhideshow = new System.Windows.Forms.Button();
             this.btnGetdtl = new System.Windows.Forms.Button();
             this.Conshowdtl = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmshow1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +89,6 @@
             this.tmshow3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tmshow4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnhideshow = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
@@ -536,6 +536,7 @@
             // 
             // gvdtl
             // 
+            this.gvdtl.AllowUserToDeleteRows = false;
             this.gvdtl.AllowUserToOrderColumns = true;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvdtl.ContextMenuStrip = this.ConMenu;
@@ -570,6 +571,15 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(773, 26);
             this.panel7.TabIndex = 0;
+            // 
+            // btnhideshow
+            // 
+            this.btnhideshow.Location = new System.Drawing.Point(8, 1);
+            this.btnhideshow.Name = "btnhideshow";
+            this.btnhideshow.Size = new System.Drawing.Size(92, 23);
+            this.btnhideshow.TabIndex = 3;
+            this.btnhideshow.Text = "显示/隐藏";
+            this.btnhideshow.UseVisualStyleBackColor = true;
             // 
             // btnGetdtl
             // 
@@ -632,15 +642,6 @@
             this.tmshow4.Name = "tmshow4";
             this.tmshow4.Size = new System.Drawing.Size(124, 22);
             this.tmshow4.Text = "墙身工程";
-            // 
-            // btnhideshow
-            // 
-            this.btnhideshow.Location = new System.Drawing.Point(8, 1);
-            this.btnhideshow.Name = "btnhideshow";
-            this.btnhideshow.Size = new System.Drawing.Size(92, 23);
-            this.btnhideshow.TabIndex = 3;
-            this.btnhideshow.Text = "显示/隐藏";
-            this.btnhideshow.UseVisualStyleBackColor = true;
             // 
             // AdornOrderFrm
             // 

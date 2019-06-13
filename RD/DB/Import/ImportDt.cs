@@ -581,8 +581,10 @@ namespace RD.DB.Import
                 }
                 //当功能名称为"AdornOrder",即将临时表的‘装修工程类别’列排除
                 if(functionName == "AdornOrder")
+                {
                     tempInsertdt.Columns.Remove("装修工程类别");
                     tempUpdt.Columns.Remove("装修工程类别");
+                }
 
                 //循环结束后分别将累积的临时表信息,进行插入或更新操作
                 if (tempInsertdt.Rows.Count > 0)

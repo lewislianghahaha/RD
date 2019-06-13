@@ -338,71 +338,7 @@ namespace RD.UI
         /// <param name="e"></param>
         private void BtnSearch_Click(object sender, EventArgs e)
         {
-            var confirmdt=new DateTime();
-
-            try
-            {
-                //获取"客户名称"下拉列表信息
-                var dvCustidlist = (DataRowView)comcustomer.Items[comcustomer.SelectedIndex];
-                var custid = Convert.ToInt32(dvCustidlist["Custid"]);
-
-                //获取"单据创建年份"下拉列表信息
-                var dvyearidlist = (DataRowView)comyear.Items[comyear.SelectedIndex];
-                var yearid = Convert.ToInt32(dvyearidlist["Yearid"]);
-
-                //获取"单据类型"下拉列表信息
-                var dvordertypelist = (DataRowView)comordertype.Items[comordertype.SelectedIndex];
-                var ordertypeId = Convert.ToInt32(dvordertypelist["OrderId"]);
-
-                //获取"房屋类型"下拉列表信息
-                var dvHTypeidlist = (DataRowView)comhousetype.Items[comhousetype.SelectedIndex];
-                var hTypeid = Convert.ToInt32(dvHTypeidlist["HTypeid"]);
-
-                //获取"审核状态"下拉列表信息
-                var dvConfirmIdlist = (DataRowView)comconfirm.Items[comconfirm.SelectedIndex];
-                var fStatus = Convert.ToString(dvConfirmIdlist["FStatus"]);
-
-                //获取“审核日期”(若“审核状态”选择了“已审核”才获取)
-                if (fStatus == "Y")
-                    confirmdt = dtpick.Value.Date;
-
-                task.TaskId = 4;
-                task.FunctionId = "1.1";
-                task.Custid = custid;
-                task.Yearid = yearid;
-                task.OrdertypeId = ordertypeId;
-                task.HTypeid = hTypeid;
-                task.ConfirmfStatus = fStatus;
-                task.Dtime = confirmdt;
-
-                new Thread(Start).Start();
-                load.StartPosition = FormStartPosition.CenterScreen;
-                load.ShowDialog();
-
-                if (task.ResultTable.Rows.Count > 0)
-                {
-                    _dtl = task.ResultTable;
-                    panel1.Visible = true;
-                    //初始化下拉框所选择的默认值
-                    tmshowrows.SelectedItem = "10";
-                    //定义初始化标记
-                    _pageChange = true;
-                    //GridView分页
-                    GridViewPageChange();
-                }
-                //注:当为空记录时,不显示跳转页;只需将临时表赋值至GridView内
-                else
-                {
-                    gvdtl.DataSource = task.ResultTable;
-                    panel1.Visible = false;
-                }
-                //控制GridView单元格显示方式
-                ControlGridViewisShow();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            OnSearchRd();
         }
 
         /// <summary>
@@ -476,6 +412,7 @@ namespace RD.UI
                 var ordertype = Convert.ToString(gvdtl.SelectedRows[0].Cells[1].Value);
                 //权限控制(注:若不是可以反审核的帐号就弹出异常)
                 if (!GetPrivilegepower(1,ordertype)) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
+
                 //提示信息
                 clickMessage = $"您所选择需要进行审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续? \n 删除后原来的单据记录将会消失, \n 请谨慎处理.";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
@@ -514,7 +451,7 @@ namespace RD.UI
                 var funname= Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
                 //检测用户是否有删除权限
                 var rows = _userdt.Select(@"功能名称='" + funname + "' and 管理员权限 = 'Y'" +
-                               "or 功能名称='" + funname + "' and 能否删除='Y'");
+                                           "or 功能名称='" + funname + "' and 能否删除='Y'");
                 if (rows.Length == 0)
                     ruleid = false;
 
@@ -542,6 +479,8 @@ namespace RD.UI
                     materialOrder.StartPosition = FormStartPosition.CenterParent;
                     materialOrder.ShowDialog();
                 }
+                //子窗体退出后再次执行查询
+                OnSearchRd();
             }
             catch (Exception ex)
             {
@@ -991,5 +930,78 @@ namespace RD.UI
                 }
             }
         }
+
+        /// <summary>
+        /// 查询功能
+        /// </summary>
+        private void OnSearchRd()
+        {
+            var confirmdt = new DateTime();
+
+            try
+            {
+                //获取"客户名称"下拉列表信息
+                var dvCustidlist = (DataRowView)comcustomer.Items[comcustomer.SelectedIndex];
+                var custid = Convert.ToInt32(dvCustidlist["Custid"]);
+
+                //获取"单据创建年份"下拉列表信息
+                var dvyearidlist = (DataRowView)comyear.Items[comyear.SelectedIndex];
+                var yearid = Convert.ToInt32(dvyearidlist["Yearid"]);
+
+                //获取"单据类型"下拉列表信息
+                var dvordertypelist = (DataRowView)comordertype.Items[comordertype.SelectedIndex];
+                var ordertypeId = Convert.ToInt32(dvordertypelist["OrderId"]);
+
+                //获取"房屋类型"下拉列表信息
+                var dvHTypeidlist = (DataRowView)comhousetype.Items[comhousetype.SelectedIndex];
+                var hTypeid = Convert.ToInt32(dvHTypeidlist["HTypeid"]);
+
+                //获取"审核状态"下拉列表信息
+                var dvConfirmIdlist = (DataRowView)comconfirm.Items[comconfirm.SelectedIndex];
+                var fStatus = Convert.ToString(dvConfirmIdlist["FStatus"]);
+
+                //获取“审核日期”(若“审核状态”选择了“已审核”才获取)
+                if (fStatus == "Y")
+                    confirmdt = dtpick.Value.Date;
+
+                task.TaskId = 4;
+                task.FunctionId = "1.1";
+                task.Custid = custid;
+                task.Yearid = yearid;
+                task.OrdertypeId = ordertypeId;
+                task.HTypeid = hTypeid;
+                task.ConfirmfStatus = fStatus;
+                task.Dtime = confirmdt;
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if (task.ResultTable.Rows.Count > 0)
+                {
+                    _dtl = task.ResultTable;
+                    panel1.Visible = true;
+                    //初始化下拉框所选择的默认值
+                    tmshowrows.SelectedItem = "10";
+                    //定义初始化标记
+                    _pageChange = true;
+                    //GridView分页
+                    GridViewPageChange();
+                }
+                //注:当为空记录时,不显示跳转页;只需将临时表赋值至GridView内
+                else
+                {
+                    gvdtl.DataSource = task.ResultTable;
+                    panel1.Visible = false;
+                }
+                //控制GridView单元格显示方式
+                ControlGridViewisShow();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

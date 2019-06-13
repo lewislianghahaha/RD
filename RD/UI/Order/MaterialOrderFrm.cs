@@ -77,6 +77,7 @@ namespace RD.UI.Order
             tmPrint.Click += TmPrint_Click;
             tmdel.Click += Tmdel_Click;
             gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
+            btnhideshow.Click += Btnhideshow_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -186,7 +187,7 @@ namespace RD.UI.Order
         /// <param name="pid"></param>
         private void ShowHead(string funname, int pid)
         {
-            //根据ID值读取T_Pro_Adorn表记录;并将结果赋给对应的文本框内
+            //根据ID值读取T_PRO_Material表记录;并将结果赋给对应的文本框内
             task.TaskId = 2;
             task.FunctionId = "1.3";
             task.FunctionName = funname;
@@ -281,6 +282,36 @@ namespace RD.UI.Order
         }
 
         /// <summary>
+        /// 控制显示/隐藏GridView内容
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btnhideshow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!gvdtl.Visible)
+                {
+                    gvdtl.Visible = true;
+                    if (_confirmMarkId != "Y")
+                        btnGetdtl.Enabled = true;
+                    panel4.Visible = true;
+                }
+                else
+                {
+                    gvdtl.Visible = false;
+                    if (_confirmMarkId != "Y")
+                        btnGetdtl.Enabled = false;
+                    panel4.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 树菜单节点跳转时使用
         /// </summary>
         /// <param name="sender"></param>
@@ -357,7 +388,6 @@ namespace RD.UI.Order
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能审核.");
                 //注:需在“审核”前将还没有进行“保存”的记录进行“保存”才能继续审核
-
                 //获取在GridView存在的新记录
                 var newRecorddt = SearchNewRecordIntoDt();
                 //获取在GridView存在的更新记录
@@ -400,7 +430,9 @@ namespace RD.UI.Order
         {
             try
             {
-                if(gvdtl.SelectedRows.Count==0)throw new Exception("请选择一行进行导出.");
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+
 
             }
             catch (Exception ex)
@@ -418,7 +450,9 @@ namespace RD.UI.Order
         {
             try
             {
-                if(gvdtl.SelectedRows.Count==0)throw new Exception("请选择一行进行打印.");
+                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+
 
             }
             catch (Exception ex)
@@ -622,12 +656,12 @@ namespace RD.UI.Order
         private DataTable SearchNewRecordIntoDt()
         {
             //创建对应临时表
-            var tempdt = dtList.Get_AdornEmptydt();
+            var tempdt = dtList.Get_ProMaterialEmtrydt();
             var dt = (DataTable)gvdtl.DataSource;
             //将所选择的记录赋值至tempdt临时表内
             foreach (DataRow row in dt.Rows)
             {
-                //若列adornid不为空时,才进行记录
+                //若列adornid为空时,才进行记录
                 if (Convert.ToString(row[2]) == "")
                 {
                     var rowdtl = tempdt.NewRow();
@@ -648,12 +682,12 @@ namespace RD.UI.Order
         private DataTable SearchUpdateRecordIntoDt()
         {
             //创建对应临时表
-            var tempdt = dtList.Get_AdornEmptydt();
+            var tempdt = dtList.Get_ProMaterialEmtrydt();
             var dt = (DataTable)gvdtl.DataSource;
             //将所选择的记录赋值至tempdt临时表内
             foreach (DataRow row in dt.Rows)
             {
-                //若列adornid不为空时,才进行记录
+                //若行的状态为Modified(更新)时,才进行记录
                 if (row.RowState.ToString() == "Modified")
                 {
                     var rowdtl = tempdt.NewRow();
