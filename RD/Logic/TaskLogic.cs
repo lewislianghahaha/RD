@@ -418,6 +418,10 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = orderSearch.Get_Orderdtl(functionName, pid,treeid/*, dropdownlistid*/);
                     break;
+                //查询(作用:获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用)
+                case "1.5":
+                    _resultTable = orderSearch.Get_HistoryOrderRecord(pid);
+                    break;
 
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":

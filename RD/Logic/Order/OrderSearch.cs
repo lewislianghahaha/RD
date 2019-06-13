@@ -110,5 +110,24 @@ namespace RD.Logic.Order
             return dt;
         }
 
+        /// <summary>
+        /// 获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public DataTable Get_HistoryOrderRecord(int pid)
+        {
+            DataTable dt;
+            try
+            {
+                dt = serDt.Get_HistoryOrderRecord(pid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return dt;
+        }
+
     }
 }

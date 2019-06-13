@@ -579,6 +579,11 @@ namespace RD.DB.Import
                             break;
                     }
                 }
+                //当功能名称为"AdornOrder",即将临时表的‘装修工程类别’列排除
+                if(functionName == "AdornOrder")
+                    tempInsertdt.Columns.Remove("装修工程类别");
+                    tempUpdt.Columns.Remove("装修工程类别");
+
                 //循环结束后分别将累积的临时表信息,进行插入或更新操作
                 if (tempInsertdt.Rows.Count > 0)
                     Importdt(tableName, tempInsertdt);
@@ -599,7 +604,7 @@ namespace RD.DB.Import
         /// 将记录插入至对应的临时表内(单据信息使用)
         /// </summary>
         /// <param name="row"></param>
-        /// <param name="tempdt"></param>
+        /// <param name="tempdt"></param> 
         /// <returns></returns>
         private DataTable GetOrderTempRd(DataRow row, DataTable tempdt)
         {

@@ -21,7 +21,6 @@ namespace RD.UI.Order
         //获取功能名称:Material 材料 HouseProject:装修工程类别
         private string _funname;
 
-
         private DataTable _resultTable;  //返回DT类型
 
         //保存查询出来的GridView记录（GridView页面跳转时使用）
@@ -102,8 +101,35 @@ namespace RD.UI.Order
                     panel4.Visible = false;
                     break;
             }
+            //初始化下拉列表
+            OnInitializeDropdownlist();
             //控制GridView指定列
             ControlGridViewisShow();
+        }
+
+        /// <summary>
+        /// 初始化下拉菜单
+        /// </summary>
+        private void OnInitializeDropdownlist()
+        {
+            try
+            {
+                //若文本框不为空,先将文本框清空
+                txtValue.Text = "";
+
+                //判断若"从历史单据获取"单选按钮是否选中(T_PRO_AdornEntry)
+                task.FunctionName = rdchooseOrderHistory.Checked ? "HistoryAdornEmpty" : _funname;
+                task.TaskId = 1;
+                task.FunctionId = "1.2";
+                task.StartTask();
+                comlist.DataSource = task.ResultTable;
+                comlist.DisplayMember = "ColName";     //设置显示值
+                comlist.ValueMember = "ColId";        //设置默认值内码(即:列名)
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -118,6 +144,10 @@ namespace RD.UI.Order
                 Getdtl(0);
                 //连接GridView页面跳转功能
                 LinkGridViewPageChange(_dt);
+                //初始化下拉列表
+                OnInitializeDropdownlist();
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
             }
             catch (Exception ex)
             {
@@ -134,11 +164,14 @@ namespace RD.UI.Order
         {
             try
             {
-                //将panel1隐藏,因为查找(to be continue)
-
+                //初始化获取历史单据记录
                 Getdtl(1);
                 //连接GridView页面跳转功能
                 LinkGridViewPageChange(_dt);
+                //初始化下拉列表
+                OnInitializeDropdownlist();
+                //设置GridView是否显示某些列
+                ControlGridViewisShow();
             }
             catch (Exception ex)
             {
@@ -157,24 +190,49 @@ namespace RD.UI.Order
 
             try
             {
-                if(gvdtl.SelectedRows.Count==0) throw new Exception("请最少选中一行");
-                //根据Funname获取对应的临时表
-                _resultTable = _funname == "HouseProject" ? dtList.Get_HouseProjectEmptydt() : dtList.Get_MaterialEmptydt();
-                //获取所选择的行记录
-                foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请最少选中一行");
+                //判断若"从历史单据获取"单选按钮是否选中
+                if (rdchooseOrderHistory.Checked)
                 {
-                    //根据MaterialID 或 Prjoectid获取所选中的GridView记录
-                    rowdtl = _funname == "HouseProject" ? _dt.Select("ProjectId='" + Convert.ToInt32(row.Cells[1].Value) + "'") 
-                                         : _dt.Select("MaterialId='" + Convert.ToInt32(row.Cells[1].Value) + "'");
-                    //循环将相关值赋给到输出表内
-                    foreach (var row1 in rowdtl)
+                    //获取临时表
+                    _resultTable = dtList.Get_HistoryAdornEmptydt();
+                    //根据所选择的行记录循环获取记录并插入至临时表
+                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
                     {
-                        var row2 = _resultTable.NewRow();
-                        for (var i = 0; i < _dt.Columns.Count; i++)
+                        rowdtl = _dt.Select("adornid='" + Convert.ToInt32(row.Cells[1].Value) + "'");
+                        //循环将相关值赋给到输出表内
+                        foreach (var row1 in rowdtl)
                         {
-                            row2[i] = row1[i];
+                            var row2 = _resultTable.NewRow();
+                            for (var i = 0; i < _dt.Columns.Count; i++)
+                            {
+                                row2[i] = row1[i];
+                            }
+                            _resultTable.Rows.Add(row2);
                         }
-                        _resultTable.Rows.Add(row2);
+                    }
+                }
+                //当选择了"从基础信息库获取"单据按钮 或 "材料信息管理"使用
+                else
+                {
+                    //根据Funname获取对应的临时表
+                    _resultTable = _funname == "HouseProject" ? dtList.Get_HouseProjectEmptydt() : dtList.Get_MaterialEmptydt();
+                    //根据所选择的行记录循环获取记录并插入至临时表
+                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                    {
+                        //根据MaterialID 或 Prjoectid获取所选中的GridView记录
+                        rowdtl = _funname == "HouseProject" ? _dt.Select("ProjectId='" + Convert.ToInt32(row.Cells[1].Value) + "'")
+                                             : _dt.Select("MaterialId='" + Convert.ToInt32(row.Cells[1].Value) + "'");
+                        //循环将相关值赋给到输出表内
+                        foreach (var row1 in rowdtl)
+                        {
+                            var row2 = _resultTable.NewRow();
+                            for (var i = 0; i < _dt.Columns.Count; i++)
+                            {
+                                row2[i] = row1[i];
+                            }
+                            _resultTable.Rows.Add(row2);
+                        }
                     }
                 }
                 //完成后关闭该窗体
@@ -209,21 +267,8 @@ namespace RD.UI.Order
         /// <param name="e"></param>
         private void Comlist_Click(object sender, EventArgs e)
         {
-            try
-            {
-                task.TaskId = 1;
-                task.FunctionId = "1.2";
-                task.FunctionName = _funname;
-
-                task.StartTask();
-                comlist.DataSource = task.ResultTable;
-                comlist.DisplayMember = "ColName";     //设置显示值
-                comlist.ValueMember = "ColId";       //设置默认值内码(即:列名)
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            //若文本框不为空,先将文本框清空
+            txtValue.Text = "";
         }
 
         /// <summary>
@@ -239,10 +284,11 @@ namespace RD.UI.Order
                 //获取下拉列表值
                 var dvColIdlist = (DataRowView)comlist.Items[comlist.SelectedIndex];
                 var colName = Convert.ToString(dvColIdlist["ColName"]);
-                //TaskLogic各参数赋值
+
+                //判断若"从历史单据获取"单选按钮是否选中(T_PRO_AdornEntry)
+                task.FunctionName = rdchooseOrderHistory.Checked ? "HistoryAdornEmpty" : _funname;
                 task.TaskId = 1;
                 task.FunctionId = "1.1";
-                task.FunctionName = _funname;
                 task.SearchName = colName;
                 task.SearchValue = txtValue.Text;
                 task.Data = _dt;
@@ -584,23 +630,16 @@ namespace RD.UI.Order
                 task.FunctionName = _funname;
                 task.FunctionType = "G";
                 task.ParentId = Convert.ToString(_id);
-
-                task.StartTask();
-                _dt = task.ResultTable;
             }
-            //从单据历史记录获取
+            //从单据历史记录获取(T_Pro_AdornEntry)
             else
             {
-                task.TaskId = 1;
-                task.FunctionId = "1";
-                task.FunctionName = _funname;
-                task.FunctionType = "G";
-                task.ParentId = Convert.ToString(_id);
-
-                task.StartTask();
-                _dt = task.ResultTable;
+                task.TaskId = 2;
+                task.FunctionId = "1.5";
+                task.Pid = _id;
             }
-
+            task.StartTask();
+            _dt = task.ResultTable;
             return _dt;
         }
     }

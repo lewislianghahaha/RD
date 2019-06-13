@@ -274,8 +274,9 @@ namespace RD.UI.Order
                 if(_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型'相关记录,请到基础信息库添加");
                 //根据指定条件获取房屋装修工程ID
                 var row = _housetypeDt.Select("HtypeName='土建工程'");
+                if (row.Length == 0) throw new Exception("没有'土建工程'相关记录,请到基础信息库添加");
 
-                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0][0]),Convert.ToString(row[0][1]));
             }
             catch (Exception ex)
             {
@@ -298,8 +299,9 @@ namespace RD.UI.Order
                 if (_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型相关记录',请到基础信息库添加");
                 //根据指定条件获取房屋装修工程ID
                 var row = _housetypeDt.Select("HtypeName='天花工程'");
+                if (row.Length == 0) throw new Exception("没有'天花工程'相关记录,请到基础信息库添加");
 
-                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0][0]), Convert.ToString(row[0][1]));
             }
             catch (Exception ex)
             {
@@ -322,8 +324,9 @@ namespace RD.UI.Order
                 if (_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型相关记录',请到基础信息库添加");
                 //根据指定条件获取房屋装修工程ID
                 var row = _housetypeDt.Select("HtypeName='地面工程'");
+                if (row.Length == 0) throw new Exception("没有'地面工程'相关记录,请到基础信息库添加");
 
-                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0][0]), Convert.ToString(row[0][1]));
             }
             catch (Exception ex)
             {
@@ -346,8 +349,9 @@ namespace RD.UI.Order
                 if (_housetypeDt.Rows.Count == 0) throw new Exception("没有'房屋装修类型相关记录',请到基础信息库添加");
                 //根据指定条件获取房屋装修工程ID
                 var row = _housetypeDt.Select("HtypeName='墙身工程'");
+                if(row.Length==0) throw new Exception("没有'墙身工程'相关记录,请到基础信息库添加");
 
-                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0]));
+                OnShowChooseHouseTypedtl(Convert.ToInt32(row[0][0]), Convert.ToString(row[0][1]));
             }
             catch (Exception ex)
             {
@@ -364,7 +368,18 @@ namespace RD.UI.Order
         {
             try
             {
-
+                if (!gvdtl.Visible)
+                {
+                    gvdtl.Visible = true;
+                    if (_confirmMarkId != "Y")
+                        btnGetdtl.Enabled = true;
+                }
+                else
+                {
+                    gvdtl.Visible = false;
+                    if(_confirmMarkId!="Y")
+                        btnGetdtl.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -643,11 +658,11 @@ namespace RD.UI.Order
             gvdtl.Columns[2].Visible = false;
             gvdtl.Columns[3].Visible = false;
             //设置指定列不能编辑
-            gvdtl.Columns[4].ReadOnly = true;   //工程类别-项目名称
-            gvdtl.Columns[5].ReadOnly = true;   //单位名称
-            gvdtl.Columns[7].ReadOnly = true;   //综合单价
-            gvdtl.Columns[10].ReadOnly = true;  //单价
-            gvdtl.Columns[12].ReadOnly = true;  //合计
+            gvdtl.Columns[4].ReadOnly = true;   //装修工程类别
+            gvdtl.Columns[6].ReadOnly = true;   //单位名称
+            gvdtl.Columns[8].ReadOnly = true;   //综合单价
+            gvdtl.Columns[11].ReadOnly = true;  //单价
+            gvdtl.Columns[13].ReadOnly = true;  //合计
             gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true; //录入人
             gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true; //录入日期
         }
@@ -658,23 +673,26 @@ namespace RD.UI.Order
         /// <param name="id">主键ID</param>
         /// <param name="treeid">树菜单ID</param>
         /// <param name="hTypeid">工程类别ID</param>
+        /// <param name="housetypename">装修工程类别名称</param>
         /// <param name="sourcedt">明细窗体获取的DT</param>
-        private void InsertdtToGridView(int id,int treeid,int hTypeid, DataTable sourcedt)
+        private void InsertdtToGridView(int id,int treeid,int hTypeid, string housetypename, DataTable sourcedt)
         {
+            var a = sourcedt;
             //将GridView内的内容赋值到DT
             var dt = (DataTable) gvdtl.DataSource;
             //循环sourcedt内的内容,目的:将刚从明细窗体内获取的值插入到GridView内
             foreach (DataRow sourcerow in sourcedt.Rows)
             {
                 var row = dt.NewRow();
-                row[0] = id;                                        //表头ID
-                row[1] = treeid;                                   //树菜单ID
-                row[3] = hTypeid;                                 //工程类别ID
-                row[4] = Convert.ToString(sourcerow[2]);         //工程类别-项目名称
-                row[5] = Convert.ToString(sourcerow[3]);        //单位名称
-                row[10] = Convert.ToDecimal(sourcerow[4]);     //单价
-                row[14] = GlobalClasscs.User.StrUsrName;      //录入人
-                row[15] = DateTime.Now.Date;                 //录入日期
+                row[0] = id;                                         //表头ID
+                row[1] = treeid;                                    //树菜单ID
+                row[3] = hTypeid;                                  //工程类别ID
+                row[4] = housetypename;                           //装修工程类别名称
+                row[5] = Convert.ToString(sourcerow[2]);         //工程类别-项目名称
+                row[6] = Convert.ToString(sourcerow[3]);        //单位名称
+                row[11] = Convert.ToDecimal(sourcerow[4]);     //单价
+                row[15] = GlobalClasscs.User.StrUsrName;      //录入人
+                row[16] = DateTime.Now.Date;                 //录入日期
                 dt.Rows.Add(row);
             }
             gvdtl.DataSource = dt;
@@ -742,46 +760,46 @@ namespace RD.UI.Order
         {
             try
             {
-                if (e.ColumnIndex == 8 || e.ColumnIndex == 9 || e.ColumnIndex == 10 || e.ColumnIndex == 11)
+                if (e.ColumnIndex == 9 || e.ColumnIndex == 10 || e.ColumnIndex == 11 || e.ColumnIndex == 12)
                 {
                     decimal renCost = 0;  //人工费用
                     decimal fuCost = 0;  //辅材费用
                     decimal price = 0;  //单价
                     
-                    //计算“综合单价”=人工费用(8)+辅材费用(9)+(单价(10) 或 临时价(11))
+                    //计算“综合单价”(8)=人工费用(9)+辅材费用(10)+(单价(11) 或 临时价(12))
 
                     //人工费用
-                    renCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[8].Value);
+                    renCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[9].Value);
                     //辅材费用
-                    fuCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[9].Value);
+                    fuCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[10].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[10].Value);
                     //单价(注:若临时价有值。就取临时价。反之用单价;若两者都没有的话,就为0)
-                    if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[11].Value) != "")
+                    if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[12].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[12].Value);
+                    }
+                    else if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[11].Value) != "")
                     {
                         price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[11].Value);
-                    }
-                    else if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[10].Value) != "")
-                    {
-                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[10].Value);
                     }
                     else
                     {
                         price = 0;
                     }
-                    gvdtl.Rows[e.RowIndex].Cells[7].Value = renCost + fuCost + price;
+                    gvdtl.Rows[e.RowIndex].Cells[8].Value = renCost + fuCost + price;
                 }
-                else if (e.ColumnIndex == 6 || e.ColumnIndex == 7)
+                else if (e.ColumnIndex == 7 || e.ColumnIndex == 8)
                 {
                     decimal quantities = 0;  //工程量
                     decimal finalPrice = 0; //综合单价
                     
-                    //计算“合计”=工程量(6) * 综合单价(7)
+                    //计算“合计”(13)=工程量(7) * 综合单价(8)
 
                     //工程量
-                    quantities = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[6].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[6].Value);
+                    quantities = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[7].Value);
                     //综合单价
-                    finalPrice = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[7].Value);
+                    finalPrice = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[8].Value);
 
-                    gvdtl.Rows[e.RowIndex].Cells[12].Value = quantities * finalPrice;
+                    gvdtl.Rows[e.RowIndex].Cells[13].Value = quantities * finalPrice;
                 }
             }
             catch (Exception ex)
@@ -797,9 +815,9 @@ namespace RD.UI.Order
         {
             task.TaskId = 2;
             task.FunctionId = "2.2";
-            task.FunctionName = _funName;                      //功能名称 (AdornOrder:室内装修工程 MaterialOrder:室内主材单)
-            task.Data = (DataTable) gvdtl.DataSource;         //获取GridView内的DataTable
-            task.Deldata = _deldt;                           //要进行删除的记录
+            task.FunctionName = _funName;               //功能名称 (AdornOrder:室内装修工程 MaterialOrder:室内主材单)
+            task.Data = (DataTable) gvdtl.DataSource;  //获取GridView内的DataTable(注:当funName="AdornOrder",将第四列“装修工程类别”排除)
+            task.Deldata = _deldt;                    //要进行删除的记录
 
             new Thread(Start).Start();
             load.StartPosition = FormStartPosition.CenterScreen;
@@ -936,7 +954,8 @@ namespace RD.UI.Order
             //若为“审核”状态的话，就执行以下语句
             if (_confirmMarkId == "Y")
             {
-                pbimg.BackgroundImage= Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                pbimg.Visible = true;
+                pbimg.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
 
                 //注:审核后只能查阅，打印;不能保存 审核 修改，除非反审核
                 tmSave.Enabled = false;
@@ -952,6 +971,7 @@ namespace RD.UI.Order
             else
             {
                 //将所有功能的状态还原(即与审核时的控件状态相反)
+                pbimg.Visible = false;
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
                 gvdtl.Enabled = true;
@@ -1236,7 +1256,8 @@ namespace RD.UI.Order
         /// 显示房屋装修工程类别相关明细记录
         /// </summary>
         /// <param name="htypeid">指定房屋装修工程类别ID</param>
-        private void OnShowChooseHouseTypedtl(int htypeid)
+        /// <param name="housetypename">装修工程类别名称</param>
+        private void OnShowChooseHouseTypedtl(int htypeid,string housetypename)
         {
             //获取所选中的树菜单节点ID
             var treeid = (int)tvview.SelectedNode.Tag;
@@ -1253,7 +1274,7 @@ namespace RD.UI.Order
             if (typeInfoFrm.ResultTable == null || typeInfoFrm.ResultTable.Rows.Count == 0) return;
             //将返回的结果赋值至GridView内(注:判断若返回的DT不为空或行数大于0才执行插入效果)
             if (typeInfoFrm.ResultTable != null || typeInfoFrm.ResultTable.Rows.Count > 0)
-                InsertdtToGridView(_pid, treeid, htypeid, typeInfoFrm.ResultTable);
+                InsertdtToGridView(_pid, treeid, htypeid, housetypename, typeInfoFrm.ResultTable);
         }
 
         //private void Panel1_Paint(object sender, PaintEventArgs e)

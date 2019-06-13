@@ -735,6 +735,7 @@ namespace RD.UI.Order
             //若为“审核”状态的话，就执行以下语句
             if (_confirmMarkId == "Y")
             {
+                pbimg.Visible = true;
                 pbimg.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
 
                 #region
@@ -758,6 +759,7 @@ namespace RD.UI.Order
             else
             {
                 //将所有功能的状态还原(即与审核时的控件状态相反)
+                pbimg.Visible = false;
                 tmSave.Enabled = true;
                 tmConfirm.Enabled = true;
                 gvdtl.Enabled = true;

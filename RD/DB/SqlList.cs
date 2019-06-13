@@ -194,6 +194,10 @@ namespace RD.DB
                 case "HouseProject":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=5";
                     break;
+                //查询历史室内装修工程单记录 TypeInfoFrm.cs使用
+                case "HistoryAdornEmpty":
+                    _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=6";
+                    break;
             }
             return _result;
         }
@@ -500,11 +504,13 @@ namespace RD.DB
             {
                 case "AdornOrder":
                     _result = $@"
-                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
+                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
                                     a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
 	                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                              FROM dbo.T_PRO_AdornEntry a
+                             INNER JOIN dbo.T_BD_HTypeEntry b ON a.HTypeid=b.HTypeid
                              WHERE a.Id='{pid}'
+                             order by a.HTypeid
                           ";
                     break;
                 case "MaterialOrder":
@@ -705,20 +711,26 @@ namespace RD.DB
                     //为-1表示读取ALL
                     if (treeid == -1)
                     {
-                        _result = $@"SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
+                        _result = $@"SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
                                             a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                             a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_AdornEntry a
-                                    WHERE a.Id='{id}'"; //AND a.HTypeid='{dropdownlistid}'
+                                    INNER JOIN dbo.T_BD_HTypeEntry b ON a.HTypeid=b.HTypeid
+                                    WHERE a.Id='{id}'
+                                    order by a.HTypeid
+                                    "; //AND a.HTypeid='{dropdownlistid}'
                     }
                     else
                     {
                         _result = $@"
-                                        SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,a.HTypeProjectName 项目名称,
+                                        SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
                                                a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                         FROM dbo.T_PRO_AdornEntry a
-                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}'"; //AND a.HTypeid = '{dropdownlistid}
+                                        INNER JOIN dbo.T_BD_HTypeEntry b ON a.HTypeid=b.HTypeid
+                                        WHERE a.Id='{id}' AND a.Treeid='{treeid}'
+                                        order by a.HTypeid
+                                        "; //AND a.HTypeid = '{dropdownlistid}
                     }
                     break;
                 case "MaterialOrder":
@@ -741,6 +753,22 @@ namespace RD.DB
                     }
                     break;
             }
+            return _result;
+        }
+
+        /// <summary>
+        /// 获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string OrderHistory(int id)
+        {
+            _result =$@"SELECT a.HTypeid,a.adornid,a.HTypeProjectName AS '项目名称',a.Unit AS '单位',a.Price '单价',a.InputUser '单据录入人',
+                               a.InputDt '单据录入日期',b.OrderNo '单据名称'
+                        FROM dbo.T_PRO_AdornEntry a
+                        INNER JOIN dbo.T_PRO_Adorn b ON a.Id=b.Id
+                        WHERE a.HTypeid='{id}'
+                        AND b.Fstatus='Y'";
             return _result;
         }
 

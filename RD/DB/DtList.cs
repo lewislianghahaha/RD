@@ -299,7 +299,7 @@ namespace RD.DB
         public DataTable Get_AdornEmptydt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 16; i++)
+            for (var i = 0; i < 17; i++)
             {
                 var dc = new DataColumn();
 
@@ -322,66 +322,71 @@ namespace RD.DB
                         break;
                     //HTypeid
                     case 3:
-                        dc.ColumnName = "工程类别HTypeID";
+                        dc.ColumnName = "工程类别ID";
                         dc.DataType=Type.GetType("System.Int32");
                         break;
-                    //HTypeProjectName
+                    //HtypeName
                     case 4:
+                        dc.ColumnName = "装修工程类别";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //HTypeProjectName
+                    case 5:
                         dc.ColumnName = "项目名称";
                         dc.DataType = Type.GetType("System.String"); 
                         break;
                     //Unit
-                    case 5:
+                    case 6:
                         dc.ColumnName = "单位名称";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //quantities
-                    case 6:
+                    case 7:
                         dc.ColumnName = "工程量";
                         dc.DataType = Type.GetType("System.Decimal"); 
                         break;
                     //FinalPrice
-                    case 7:
+                    case 8:
                         dc.ColumnName = "综合单价";
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
                     //Ren_Cost
-                    case 8:
+                    case 9:
                         dc.ColumnName = "人工费用";
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
                     //Fu_Cost
-                    case 9:
+                    case 10:
                         dc.ColumnName = "辅材费用";
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
                     //Price
-                    case 10:
+                    case 11:
                         dc.ColumnName = "单价";
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
                     //Temp_Price
-                    case 11:
+                    case 12:
                         dc.ColumnName = "临时材料单价";
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
                     //Amount
-                    case 12:
+                    case 13:
                         dc.ColumnName = "合计";
                         dc.DataType = Type.GetType("System.Decimal");
                         break;
                     //FRemark
-                    case 13:
+                    case 14:
                         dc.ColumnName = "备注";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //InputUser
-                    case 14:
+                    case 15:
                         dc.ColumnName = "录入人";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //InputDt
-                    case 15:
+                    case 16:
                         dc.ColumnName = "录入日期";
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
@@ -630,6 +635,64 @@ namespace RD.DB
                     case 3:
                         dc.ColumnName = "材料大类名称";
                         dc.DataType = Type.GetType("System.String"); 
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_HistoryAdornEmptydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 8; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //HTypeid
+                    case 0:
+                        dc.ColumnName = "HTypeid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //adornid
+                    case 1:
+                        dc.ColumnName = "adornid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //HTypeProjectName
+                    case 2:
+                        dc.ColumnName = "项目名称";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //Unit
+                    case 3:
+                        dc.ColumnName = "单位";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Price
+                    case 4:
+                        dc.ColumnName = "单价";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //InputUser
+                    case 5:
+                        dc.ColumnName = "单据录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 6:
+                        dc.ColumnName = "单据录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    //OrderNo
+                    case 7:
+                        dc.ColumnName = "单据名称";
+                        dc.DataType = Type.GetType("System.String");
                         break;
                 }
                 dt.Columns.Add(dc);
