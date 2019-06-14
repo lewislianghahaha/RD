@@ -236,6 +236,9 @@ namespace RD.UI.Basic
         {
             try
             {
+                //将文本框清空
+                txtValue.Text = "";
+
                 task.TaskId = 1;
                 task.FunctionId = "1.2";
                 ShowBasicFunctionName(GlobalClasscs.Basic.BasicId);

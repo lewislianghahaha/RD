@@ -16,6 +16,8 @@ namespace RD.UI.Admin
         private DataTable _roledt;
         //保存所选择的roleid
         private int _roleid;
+        //记录复选框点击值
+        private string _cbshowMarkid;
 
         //保存查询出来的GridView记录
         private DataTable _dtl;
@@ -52,6 +54,7 @@ namespace RD.UI.Admin
             panel1.Visible = false;
 
             comrole.SelectionChangeCommitted += Comrole_SelectionChangeCommitted;
+            cbshow.Click += Cbshow_Click;
         }
 
         /// <summary>
@@ -64,6 +67,7 @@ namespace RD.UI.Admin
             comrole.DataSource = _roledt;
             comrole.DisplayMember = "RoleName";
             comrole.ValueMember = "id";
+            _cbshowMarkid = "O";  //表示将“已关闭” 及 “末关闭”的记录显示
             //初始化表体
             OnInitializedtl();
         }
@@ -80,13 +84,33 @@ namespace RD.UI.Admin
             //初始化角色明细信息
             task.TaskId = 3;
             task.FunctionId = "1.2";
-            task.Roleid = _roleid;
+            task.Roleid = _roleid;               //角色名称ID
+            task.ConfirmfStatus = _cbshowMarkid; //获取“显示末关闭的记录”复选框标记
 
             task.StartTask();
             //连接GridView页面跳转功能
             LinkGridViewPageChange(task.ResultTable);
             //控制GridView单元格显示方式
             ControlGridViewisShow();
+        }
+
+        /// <summary>
+        /// 显示末关闭的记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Cbshow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _cbshowMarkid = cbshow.Checked ? "N" : "Y";
+                //刷新数据
+                OnInitializedtl();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -98,6 +122,7 @@ namespace RD.UI.Admin
         {
             try
             {
+                _cbshowMarkid = cbshow.Checked ? "N" : "Y";
                 OnInitializedtl();
             }
             catch (Exception ex)
@@ -141,6 +166,7 @@ namespace RD.UI.Admin
         {
             try
             {
+                _cbshowMarkid = cbshow.Checked ? "N" : "Y";
                 OnInitializeDropDownList();
             }
             catch (Exception ex)

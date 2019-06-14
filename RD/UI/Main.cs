@@ -55,6 +55,7 @@ namespace RD.UI
             tmShowdtl.Click += TmShowdtl_Click;
             tmConfirm.Click += TmConfirm_Click;
             tmDelOrderdtl.Click += TmDelOrderdtl_Click;
+            this.FormClosing += Main_FormClosing;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -1003,5 +1004,15 @@ namespace RD.UI
             }
         }
 
+        /// <summary>
+        /// 关闭窗体后发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var clickMessage = $"是否退出?";
+            e.Cancel = MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
+        }
     }
 }

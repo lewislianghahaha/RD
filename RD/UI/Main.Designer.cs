@@ -136,7 +136,7 @@
             this.tmMaterialInfo,
             this.tmHouseInfo});
             this.tmInfor.Name = "tmInfor";
-            this.tmInfor.Size = new System.Drawing.Size(152, 22);
+            this.tmInfor.Size = new System.Drawing.Size(148, 22);
             this.tmInfor.Text = "基础信息库";
             // 
             // tmCustomerInfo
@@ -166,12 +166,12 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
             // 
             // tmChange
             // 
             this.tmChange.Name = "tmChange";
-            this.tmChange.Size = new System.Drawing.Size(152, 22);
+            this.tmChange.Size = new System.Drawing.Size(148, 22);
             this.tmChange.Text = "帐号密码修改";
             // 
             // tmCreate
@@ -332,7 +332,7 @@
             this.dtpick.Name = "dtpick";
             this.dtpick.Size = new System.Drawing.Size(163, 21);
             this.dtpick.TabIndex = 13;
-            this.dtpick.Value = new System.DateTime(2019, 5, 6, 0, 0, 0, 0);
+            this.dtpick.Value = new System.DateTime(2019, 6, 14, 0, 0, 0, 0);
             // 
             // label6
             // 

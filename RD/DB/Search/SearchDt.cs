@@ -745,9 +745,10 @@ namespace RD.DB.Search
         /// <summary>
         /// 角色信息管理查询
         /// </summary>
-        /// <param name="roleid"></param>
+        /// <param name="roleid">角色名称ID</param>
+        /// <param name="confirmstatus">获取“显示末关闭的记录”复选框标记</param>
         /// <returns></returns>
-        public DataTable Admin_Searchroledt(int roleid)
+        public DataTable Admin_Searchroledt(int roleid, string confirmstatus)
         {
             var resultdt = new DataTable();
             DataTable tempdt;
@@ -758,7 +759,7 @@ namespace RD.DB.Search
                 //创建临时表(当没有查询到值时使用)
                 tempdt = dlDtList.Get_Admin_roledtl();
                 //获取SQL语句
-                sqlscript = sqlList.Admin_roledtl(roleid);
+                sqlscript = sqlList.Admin_roledtl(roleid,confirmstatus);
                 //执行SQL语句,并返回DT
                 var dt = GetData(sqlscript);
                 resultdt = dt.Rows.Count == 0 ? tempdt : dt;

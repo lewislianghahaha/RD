@@ -54,9 +54,9 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.txtrolename = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pbimg = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.pbimg = new System.Windows.Forms.PictureBox();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.CMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmSetshow = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,9 +77,9 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.CMenu.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -281,15 +281,16 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel1.Controls.Add(this.txtrolename);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.pbimg);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Size = new System.Drawing.Size(995, 575);
-            this.splitContainer1.SplitterDistance = 33;
+            this.splitContainer1.SplitterDistance = 58;
             this.splitContainer1.TabIndex = 2;
             // 
             // txtrolename
@@ -308,6 +309,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "角色名称:";
             // 
+            // pbimg
+            // 
+            this.pbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.pbimg.Location = new System.Drawing.Point(7, -5);
+            this.pbimg.Name = "pbimg";
+            this.pbimg.Size = new System.Drawing.Size(74, 60);
+            this.pbimg.TabIndex = 13;
+            this.pbimg.TabStop = false;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -315,33 +326,21 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(993, 536);
+            this.tabControl1.Size = new System.Drawing.Size(993, 511);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.pbimg);
             this.tabPage1.Controls.Add(this.gvdtl);
             this.tabPage1.Controls.Add(this.panel3);
             this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(985, 510);
+            this.tabPage1.Size = new System.Drawing.Size(985, 485);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "功能权限";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // pbimg
-            // 
-            this.pbimg.BackColor = System.Drawing.Color.DarkGray;
-            this.pbimg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbimg.Location = new System.Drawing.Point(913, 61);
-            this.pbimg.Name = "pbimg";
-            this.pbimg.Size = new System.Drawing.Size(65, 61);
-            this.pbimg.TabIndex = 3;
-            this.pbimg.TabStop = false;
-            this.pbimg.Visible = false;
             // 
             // gvdtl
             // 
@@ -354,7 +353,7 @@
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(979, 452);
+            this.gvdtl.Size = new System.Drawing.Size(979, 427);
             this.gvdtl.TabIndex = 2;
             // 
             // CMenu
@@ -468,9 +467,9 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.CMenu.ResumeLayout(false);
             this.panel3.ResumeLayout(false);

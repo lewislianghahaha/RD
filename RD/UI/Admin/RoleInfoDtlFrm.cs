@@ -220,7 +220,7 @@ namespace RD.UI.Admin
                     if(!task.ResultMark) throw new Exception("更新异常,请联系管理员");
                     else
                     {
-                        MessageBox.Show("保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"保存成功,请点击后继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                     //执行初始化;重新读取
                     OnInitialize();

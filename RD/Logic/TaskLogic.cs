@@ -491,7 +491,7 @@ namespace RD.Logic
                     break;
                 //查询功能(角色信息管理查询) (RoleInfoFrm.cs使用)
                 case "1.2":
-                    _resultTable = adminSearch.SearchRoledt(roleid);
+                    _resultTable = adminSearch.SearchRoledt(roleid,confirmstatus);
                     break;
                 //查询功能(角色信息管理-功能权限明细查询) (RoleInfoDtlFrm.cs使用)
                 case "1.3":

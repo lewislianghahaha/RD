@@ -63,6 +63,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.comrole = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.cbshow = new System.Windows.Forms.CheckBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
@@ -333,6 +334,7 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.cbshow);
             this.panel3.Controls.Add(this.comrole);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
@@ -358,6 +360,16 @@
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "角色名称:";
+            // 
+            // cbshow
+            // 
+            this.cbshow.AutoSize = true;
+            this.cbshow.Location = new System.Drawing.Point(226, 7);
+            this.cbshow.Name = "cbshow";
+            this.cbshow.Size = new System.Drawing.Size(120, 16);
+            this.cbshow.TabIndex = 2;
+            this.cbshow.Text = "显示末关闭的记录";
+            this.cbshow.UseVisualStyleBackColor = true;
             // 
             // RoleInfoFrm
             // 
@@ -423,5 +435,6 @@
         private System.Windows.Forms.ComboBox comrole;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView gvdtl;
+        private System.Windows.Forms.CheckBox cbshow;
     }
 }

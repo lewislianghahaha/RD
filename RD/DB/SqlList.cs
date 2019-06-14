@@ -1135,7 +1135,7 @@ namespace RD.DB
         /// <returns></returns>
         public string Admindtl(int userid, int sexid, string closeid, string confirmstatus, DateTime dtTime)
         {
-
+            //当职员名称选择“全部” 并且 “性别”没有选择“全部”时
             if (userid == -1 && sexid !=0)
             {
                 _result = $@"SELECT a.UserId,a.UserPassword,a.UserName 职员名称,
@@ -1149,11 +1149,12 @@ namespace RD.DB
 	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                               a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
-                        WHERE a.UserSex='{sexid}'           --性别
+                        WHERE a.UserSex='{sexid}'           --职员性别
                         AND a.Fstatus='{confirmstatus}'     --审核状态
                         AND a.CloseStatus='{closeid}'       --关闭状态
                         AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期";
             }
+            //当职员名称没有选择“全部” 并且 “性别”选择了“全部”时
             else if (userid !=-1 && sexid == 0)
             {
                 _result =
@@ -1168,11 +1169,12 @@ namespace RD.DB
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
-                        WHERE a.Userid='{userid}'           --性别
+                        WHERE a.Userid='{userid}'           --职员名称
                         AND a.Fstatus='{confirmstatus}'     --审核状态
                         AND a.CloseStatus='{closeid}'       --关闭状态
                         AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期";
             }
+            //当“职员名称”以及“性别”都选择“全部”时
             else if (userid == -1 && sexid == 0)
             {
                 _result =
@@ -1187,8 +1189,8 @@ namespace RD.DB
 	                           CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                           a.FstatusDt 审核日期
                         FROM dbo.T_AD_User a
-                        WHERE a.Fstatus='{confirmstatus}'     --审核状态
-                        AND a.CloseStatus='{closeid}'       --关闭状态
+                        WHERE a.Fstatus='{confirmstatus}'                     --审核状态
+                        AND a.CloseStatus='{closeid}'                         --关闭状态
                         AND CONVERT(DATE,a.UserInDt)=CONVERT(DATE,'{dtTime}') --入职日期";
             }
 
@@ -1198,24 +1200,43 @@ namespace RD.DB
         /// <summary>
         /// 角色信息管理查询
         /// </summary>
-        /// <param name="roleid"></param>
+        /// <param name="roleid">角色名称ID</param>
+        /// <param name="confirmstatus">获取“显示末关闭的记录”复选框标记</param>
         /// <returns></returns>
-        public string Admin_roledtl(int roleid)
+        public string Admin_roledtl(int roleid,string confirmstatus)
         {
-            _result = roleid == 0
-                ? $@"SELECT A.Id,A.RoleName 角色名称,
+            //表示显示全部信息(初始化时使用)
+            if (roleid == 0 && confirmstatus == "O")
+            {
+                _result =$@"SELECT A.Id,A.RoleName 角色名称,
                                    A.InputUser 创建人,A.InputDt 创建日期,
 	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
 	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                               a.FstatusDt 审核日期
-                            FROM dbo.T_AD_Role A"
-                : $@"SELECT A.Id,A.RoleName 角色名称,
+                            FROM dbo.T_AD_Role A";
+            }
+            //当角色名称选择“全部”时使用
+            else if (roleid == 0)
+            {
+                _result = $@"SELECT A.Id,A.RoleName 角色名称,
                                    A.InputUser 创建人,A.InputDt 创建日期,
 	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
 	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
 	                               a.FstatusDt 审核日期
                             FROM dbo.T_AD_Role A
-                            WHERE a.Id='{roleid}'";
+                            where a.CloseStatus='{confirmstatus}'";
+            }
+            else
+            {
+                _result = $@"SELECT A.Id,A.RoleName 角色名称,
+                                   A.InputUser 创建人,A.InputDt 创建日期,
+	                               CASE WHEN a.CloseStatus='Y' THEN '已关闭' ELSE '末关闭' END 关闭状态,
+	                               CASE WHEN a.Fstatus='Y' THEN '已审核' ELSE '末审核' END 审核状态,
+	                               a.FstatusDt 审核日期
+                            FROM dbo.T_AD_Role A
+                            WHERE a.Id='{roleid}'
+                            and a.CloseStatus='{confirmstatus}'";
+            }
             return _result;
         }
 

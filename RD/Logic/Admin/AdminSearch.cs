@@ -54,15 +54,16 @@ namespace RD.Logic.Admin
         /// <summary>
         /// 角色信息管理查询(RoleInfoFrm.cs使用)
         /// </summary>
-        /// <param name="roleid"></param>
+        /// <param name="roleid">角色名称ID</param>
+        /// <param name="confirmstatus">获取“显示末关闭的记录”复选框标记</param>
         /// <returns></returns>
-        public DataTable SearchRoledt(int roleid)
+        public DataTable SearchRoledt(int roleid,string confirmstatus)
         {
             DataTable dt;
 
             try
             {
-                dt = serDt.Admin_Searchroledt(roleid);
+                dt = serDt.Admin_Searchroledt(roleid, confirmstatus);
             }
             catch (Exception ex)
             {

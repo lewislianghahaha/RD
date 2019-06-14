@@ -42,6 +42,7 @@ namespace RD.UI.Admin
             tmConfirm.Click += TmConfirm_Click;
             tmCloseAccount.Click += TmCloseAccount_Click;
             tmChangeAccountPwd.Click += TmChangeAccountPwd_Click;
+            this.FormClosing += AdminFrm_FormClosing;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -674,5 +675,15 @@ namespace RD.UI.Admin
             }
         }
 
+        /// <summary>
+        /// 关闭窗体后发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AdminFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var clickMessage = $"是否退出?";
+            e.Cancel = MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
+        }
     }
 }
