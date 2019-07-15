@@ -1447,5 +1447,50 @@ namespace RD.DB
         }
 
         #endregion
+
+        #region 导出
+
+        /// <summary>
+        /// 根据所选择的单据ID获取相应记录(室内装修工程单使用)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string Get_AdornOrderdtl(int id)
+        {
+            _result= $@"SELECT a.Id,a.OrderNo 单据号,d.CustName 客户名称,
+                                 b.TypeName 大类名称,
+                                 e.HtypeName 工程类别,
+                                 c.HTypeProjectName 项目名称,c.Unit 单位,c.quantities 工程量,c.FinalPrice 综合单价,c.Ren_Cost 人工费用,c.Fu_Cost 辅材费用,c.Price 单价,c.Amount 合计,c.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
+
+                            FROM dbo.T_PRO_Adorn a
+                            INNER JOIN dbo.T_PRO_AdornTree b ON a.Id=b.Id
+                            INNER JOIN dbo.T_PRO_AdornEntry c ON b.Id=c.Id AND b.Treeid=c.Treeid
+
+                            INNER JOIN dbo.T_BD_CustEntry d ON a.Custid=d.Custid
+                            INNER JOIN dbo.T_BD_HTypeEntry e ON c.HTypeid=e.HTypeid
+                            WHERE a.id='{id}'";
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据所选择的单据ID获取相应记录(室内主材单使用)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string Get_MaterialOrderdtl(int id)
+        {
+            _result = $@" SELECT a.Id,a.OrderNo 单据号,d.CustName 客户名称,
+		                        b.MaterialType 材料大类名称,
+		                        c.MaterialName 材料名称,c.Unit 单位,c.quantities 工程量,c.FinalPrice 综合单价,c.Ren_Cost 人工费用,c.Fu_Cost 辅材费用,c.Price 单价,c.Amount 合计,c.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
+
+	                     FROM dbo.T_PRO_Material a
+	                     INNER JOIN dbo.T_PRO_MaterialTree b ON a.Id=b.Id
+	                     INNER JOIN dbo.T_PRO_MaterialEntry c ON b.Id=c.Id AND b.Treeid=c.TreeId
+                         INNER JOIN dbo.T_BD_CustEntry d ON a.Custid=d.Custid
+	                     WHERE a.Id='{id}'";
+            return _result;
+        }
+
+        #endregion
     }
 }

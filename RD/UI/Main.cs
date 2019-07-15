@@ -7,6 +7,7 @@ using RD.Logic;
 using RD.UI.Account;
 using RD.UI.Basic;
 using RD.UI.Order;
+using Stimulsoft.Report;
 
 namespace RD.UI
 {
@@ -45,7 +46,6 @@ namespace RD.UI
             tmChange.Click += TmChange_Click;
             tmadorn.Click += Tmadorn_Click;
             tmMaterial.Click += TmMaterial_Click;
-            tmEXCEL.Click += TmEXCEL_Click;
             tmPrint.Click += TmPrint_Click;
             tmCustomerInfo.Click += TmCustomerInfo_Click;
             tmSuplierInfo.Click += TmSuplierInfo_Click;
@@ -293,38 +293,39 @@ namespace RD.UI
         }
 
         /// <summary>
-        /// 导出-EXCEL
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TmEXCEL_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
-                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// 导出-打印
+        /// 导出-打印(根据所选中的行ID获取DATATABLE,用于报表输出)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TmPrint_Click(object sender, EventArgs e)
         {
+            var filename = string.Empty;
+
             try
             {
                 if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
 
+                task.TaskId =4;
+                task.FunctionId = "4";
+                task.Id = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);  //获取所选行的ID主键值
+                task.FunctionName = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);  //单据类型:AdornOrder MaterialOrder
 
+                Start();
+                var resultdt = task.ResultTable;
+                if(resultdt.Rows.Count==0)throw new Exception("导出异常,请联系管理员");
+                //调用STI模板并执行导出代码
+                //加载STI模板 MaterialOrderReport
+                filename = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value)=="AdornOrder" ? "AdornOrderReport" : "MaterialOrderReport";
+
+                var filepath = Application.StartupPath + $"/Report/{filename}.mrt";
+                var stireport = new StiReport();
+                stireport.Load(filepath);
+                //加载DATASET 或 DATATABLE
+                stireport.RegData("Order", resultdt);
+                stireport.Compile();
+                stireport.Show();   //调用预览功能
+                //stireport.Design(true);  //调用设计功能
             }
             catch (Exception ex)
             {
@@ -445,7 +446,7 @@ namespace RD.UI
             var ruleid = true;
             try
             {
-                if(gvdtl.Rows.Count==0) throw new Exception("没有内容,不能选择.");
+                if (gvdtl.Rows.Count==0) throw new Exception("没有内容,不能选择.");
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选择一行查看明细");
 
                 //获取从GridView所选择的功能名称

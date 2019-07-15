@@ -121,6 +121,7 @@
     <Compile Include="Logic\Admin\AdminGenerate.cs" />
     <Compile Include="Logic\Admin\AdminImport.cs" />
     <Compile Include="Logic\Admin\AdminSearch.cs" />
+    <Compile Include="Logic\Export\ExportReportdt.cs" />
     <Compile Include="Logic\Main\MainDel.cs" />
     <Compile Include="Logic\Main\MainGenerate.cs" />
     <Compile Include="Logic\Main\MainSearch.cs" />
@@ -309,6 +310,8 @@
     <EmbeddedResource Include="UI\Order\MaterialOrderFrm.resx">
       <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="bin\Debug\Report\AdornOrderReport.mrt" />
+    <None Include="bin\Debug\Report\MaterialOrderReport.mrt" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="Properties\Settings.settings">
@@ -348,7 +351,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EXCEL\" />
-    <Folder Include="Logic\Export\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="STI\" />
   </ItemGroup>

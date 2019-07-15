@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using RD.Logic.Admin;
 using RD.Logic.Basic;
 using RD.Logic.ChangePwd;
+using RD.Logic.Export;
 using RD.Logic.Main;
 using RD.Logic.Order;
 
@@ -32,6 +33,9 @@ namespace RD.Logic
         AdminSearch adminSearch=new AdminSearch();
         AdminImport adminImport=new AdminImport();
         AdminGenerate adminGenerate=new AdminGenerate();
+
+        //导出功能使用
+        ExportReportdt export=new ExportReportdt();
 
         #region 变量定义
 
@@ -287,7 +291,7 @@ namespace RD.Logic
                     break;
                 //Main窗体使用(注:包括查询，审核，反审核，导出功能)
                 case 4:
-                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _dtime, _confirmid,_datarow,_userid);
+                    MainInfo(_functionId,_functinName, _custid, _yearid, _ordertypeId, _hTypeid, _confirmfStatus, _dtime, _confirmid,_datarow,_userid,_id);
                     break;
             }
         }
@@ -576,8 +580,9 @@ namespace RD.Logic
         /// <param name="confirmid">审核ID</param>
         /// <param name="datarow">保存从GridView选择的行</param>
         /// <param name="userid">用户ID(角色权限使用)</param>
+        /// <param name="id">获取相关单据的主键ID信息(导出时使用)</param>
         private void MainInfo(string functionId,string functionName,int custid,int yearid,int ordertypeId,int hTypeid,string confirmfStatus, DateTime confirmdt,
-                              int confirmid, DataGridViewSelectedRowCollection datarow,int userid)
+                              int confirmid, DataGridViewSelectedRowCollection datarow,int userid,int id)
         {
             switch (functionId)
             {
@@ -602,14 +607,9 @@ namespace RD.Logic
                 case "3":
                     _resultMark = mainDel.Del_OrderRecord(functionName,datarow);
                     break;
-
-                //导出-EXCEL
-                case "4":
-
-                    break;
                 //打印
-                case "5":
-
+                case "4":
+                    _resultTable = export.Get_exportdt(functionName,id);
                     break;
             }
         }

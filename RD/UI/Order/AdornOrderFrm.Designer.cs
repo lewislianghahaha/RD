@@ -34,8 +34,6 @@
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.tmExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmExcel = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pbimg = new System.Windows.Forms.PictureBox();
@@ -140,28 +138,15 @@
             // tmExport
             // 
             this.tmExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmExcel,
-            this.toolStripSeparator1,
             this.tmPrint});
             this.tmExport.Name = "tmExport";
             this.tmExport.Size = new System.Drawing.Size(44, 22);
             this.tmExport.Text = "导出";
             // 
-            // tmExcel
-            // 
-            this.tmExcel.Name = "tmExcel";
-            this.tmExcel.Size = new System.Drawing.Size(105, 22);
-            this.tmExcel.Text = "Excel";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(102, 6);
-            // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(105, 22);
+            this.tmPrint.Size = new System.Drawing.Size(152, 22);
             this.tmPrint.Text = "打印";
             // 
             // panel1
@@ -688,8 +673,6 @@
         private System.Windows.Forms.ToolStripMenuItem tmSave;
         private System.Windows.Forms.ToolStripMenuItem tmConfirm;
         private System.Windows.Forms.ToolStripMenuItem tmExport;
-        private System.Windows.Forms.ToolStripMenuItem tmExcel;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tmPrint;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;

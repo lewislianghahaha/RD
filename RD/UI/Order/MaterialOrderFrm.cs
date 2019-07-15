@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using RD.DB;
 using RD.Logic;
+using Stimulsoft.Report;
 
 namespace RD.UI.Order
 {
@@ -73,7 +74,6 @@ namespace RD.UI.Order
             btnGetdtl.Click += BtnGetdtl_Click;
             tmSave.Click += TmSave_Click;
             tmConfirm.Click += TmConfirm_Click;
-            tmExcel.Click += TmExcel_Click;
             tmPrint.Click += TmPrint_Click;
             tmdel.Click += Tmdel_Click;
             gvdtl.CellValueChanged += Gvdtl_CellValueChanged;
@@ -422,26 +422,6 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 导出-EXCEL
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TmExcel_Click(object sender, System.EventArgs e)
-        {
-            try
-            {
-                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
-                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
         /// 导出-打印
         /// </summary>
         /// <param name="sender"></param>
@@ -450,10 +430,23 @@ namespace RD.UI.Order
         {
             try
             {
-                if (gvdtl.Rows.Count == 0) throw new Exception("没有内容,不能选择.");
-                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请至少选择一行");
+                task.TaskId = 4;
+                task.FunctionId = "4";
+                task.Id = _pid;
+                task.FunctionName = _funName;
+                Start();
 
-
+                var resultdt = task.ResultTable;
+                if (resultdt.Rows.Count == 0) throw new Exception("导出异常,请联系管理员");
+                //调用STI模板并执行导出代码
+                //加载STI模板 MaterialOrderReport
+                var filepath = Application.StartupPath + "/Report/MaterialOrderReport.mrt";
+                var stireport = new StiReport();
+                stireport.Load(filepath);
+                //加载DATASET 或 DATATABLE
+                stireport.RegData("Order", resultdt);
+                stireport.Compile();
+                stireport.Show();   //调用预览功能
             }
             catch (Exception ex)
             {

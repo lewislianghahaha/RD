@@ -43,8 +43,6 @@
             this.tmadorn = new System.Windows.Forms.ToolStripMenuItem();
             this.tmMaterial = new System.Windows.Forms.ToolStripMenuItem();
             this.tmImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmEXCEL = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.tmRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.status = new System.Windows.Forms.StatusStrip();
@@ -198,28 +196,15 @@
             // tmImport
             // 
             this.tmImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmEXCEL,
-            this.toolStripSeparator3,
             this.tmPrint});
             this.tmImport.Name = "tmImport";
             this.tmImport.Size = new System.Drawing.Size(44, 21);
             this.tmImport.Text = "导出";
             // 
-            // tmEXCEL
-            // 
-            this.tmEXCEL.Name = "tmEXCEL";
-            this.tmEXCEL.Size = new System.Drawing.Size(112, 22);
-            this.tmEXCEL.Text = "EXCEL";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(109, 6);
-            // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(112, 22);
+            this.tmPrint.Size = new System.Drawing.Size(152, 22);
             this.tmPrint.Text = "打印";
             // 
             // tmRefresh
@@ -670,8 +655,6 @@
         private System.Windows.Forms.ToolStripMenuItem tmadorn;
         private System.Windows.Forms.ToolStripMenuItem tmMaterial;
         private System.Windows.Forms.ToolStripMenuItem tmImport;
-        private System.Windows.Forms.ToolStripMenuItem tmEXCEL;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem tmPrint;
         private System.Windows.Forms.ToolStripMenuItem tmChange;
         private System.Windows.Forms.StatusStrip status;

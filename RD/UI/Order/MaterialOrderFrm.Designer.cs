@@ -34,8 +34,6 @@
             this.tmSave = new System.Windows.Forms.ToolStripMenuItem();
             this.tmConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.tmExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmExcel = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtAdd = new System.Windows.Forms.TextBox();
@@ -72,8 +70,8 @@
             this.ConMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btnGetdtl = new System.Windows.Forms.Button();
             this.btnhideshow = new System.Windows.Forms.Button();
+            this.btnGetdtl = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
@@ -121,28 +119,15 @@
             // tmExport
             // 
             this.tmExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmExcel,
-            this.toolStripSeparator1,
             this.tmPrint});
             this.tmExport.Name = "tmExport";
             this.tmExport.Size = new System.Drawing.Size(44, 22);
             this.tmExport.Text = "导出";
             // 
-            // tmExcel
-            // 
-            this.tmExcel.Name = "tmExcel";
-            this.tmExcel.Size = new System.Drawing.Size(105, 22);
-            this.tmExcel.Text = "Excel";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(102, 6);
-            // 
             // tmPrint
             // 
             this.tmPrint.Name = "tmPrint";
-            this.tmPrint.Size = new System.Drawing.Size(105, 22);
+            this.tmPrint.Size = new System.Drawing.Size(152, 22);
             this.tmPrint.Text = "打印";
             // 
             // panel1
@@ -477,15 +462,6 @@
             this.panel2.Size = new System.Drawing.Size(797, 26);
             this.panel2.TabIndex = 0;
             // 
-            // btnGetdtl
-            // 
-            this.btnGetdtl.Location = new System.Drawing.Point(120, 1);
-            this.btnGetdtl.Name = "btnGetdtl";
-            this.btnGetdtl.Size = new System.Drawing.Size(139, 23);
-            this.btnGetdtl.TabIndex = 0;
-            this.btnGetdtl.Text = "获取材料类别明细信息";
-            this.btnGetdtl.UseVisualStyleBackColor = true;
-            // 
             // btnhideshow
             // 
             this.btnhideshow.Location = new System.Drawing.Point(9, 1);
@@ -494,6 +470,15 @@
             this.btnhideshow.TabIndex = 4;
             this.btnhideshow.Text = "显示/隐藏";
             this.btnhideshow.UseVisualStyleBackColor = true;
+            // 
+            // btnGetdtl
+            // 
+            this.btnGetdtl.Location = new System.Drawing.Point(120, 1);
+            this.btnGetdtl.Name = "btnGetdtl";
+            this.btnGetdtl.Size = new System.Drawing.Size(139, 23);
+            this.btnGetdtl.TabIndex = 0;
+            this.btnGetdtl.Text = "获取材料类别明细信息";
+            this.btnGetdtl.UseVisualStyleBackColor = true;
             // 
             // MaterialOrderFrm
             // 
@@ -535,8 +520,6 @@
         private System.Windows.Forms.ToolStripMenuItem tmSave;
         private System.Windows.Forms.ToolStripMenuItem tmConfirm;
         private System.Windows.Forms.ToolStripMenuItem tmExport;
-        private System.Windows.Forms.ToolStripMenuItem tmExcel;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tmPrint;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
