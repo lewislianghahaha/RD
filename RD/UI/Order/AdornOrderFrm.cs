@@ -672,7 +672,6 @@ namespace RD.UI.Order
         /// <param name="sourcedt">明细窗体获取的DT</param>
         private void InsertdtToGridView(int id,int treeid,int hTypeid, string housetypename, DataTable sourcedt)
         {
-            var a = sourcedt;
             //将GridView内的内容赋值到DT
             var dt = (DataTable) gvdtl.DataSource;
             //循环sourcedt内的内容,目的:将刚从明细窗体内获取的值插入到GridView内

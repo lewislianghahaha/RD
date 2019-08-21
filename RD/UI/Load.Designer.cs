@@ -45,6 +45,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 30);
+            this.ControlBox = false;
             this.Controls.Add(this.progressBar1);
             this.Name = "Load";
             this.Text = "数据装载中,请稍候...";
