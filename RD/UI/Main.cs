@@ -416,7 +416,7 @@ namespace RD.UI
                 if (!GetPrivilegepower(1,ordertype)) throw new Exception($"用户'{GlobalClasscs.User.StrUsrName}'没有‘删除’权限,不能继续.");
 
                 //提示信息
-                clickMessage = $"您所选择需要进行审核的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续? \n 删除后原来的单据记录将会消失, \n 请谨慎处理.";
+                clickMessage = $"您所选择需要进行删除的信息有'{gvdtl.SelectedRows.Count}'行 \n 是否继续? \n 删除后原来的单据记录将会消失, \n 请谨慎处理.";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //获取所选择的行记录并进行删除
