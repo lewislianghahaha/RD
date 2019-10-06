@@ -323,6 +323,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="STI\AdornOrderReport.mrt" />
+    <None Include="STI\MaterialOrderReport.mrt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -352,7 +354,6 @@
   <ItemGroup>
     <Folder Include="EXCEL\" />
     <Folder Include="obj\Debug\TempPE\" />
-    <Folder Include="STI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
