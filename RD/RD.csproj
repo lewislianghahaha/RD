@@ -225,11 +225,23 @@
     <Compile Include="UI\Order\AdornOrderFrm.Designer.cs">
       <DependentUpon>AdornOrderFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Order\AdornOrderFrm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Order\AdornOrderFrm1.Designer.cs">
+      <DependentUpon>AdornOrderFrm1.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Order\AdornTypeFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Order\AdornTypeFrm.Designer.cs">
       <DependentUpon>AdornTypeFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Order\MaterialOrderFrm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Order\MaterialOrderFrm1.Designer.cs">
+      <DependentUpon>MaterialOrderFrm1.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Order\TypeInfoFrm.cs">
       <SubType>Form</SubType>
@@ -298,8 +310,14 @@
     <EmbeddedResource Include="UI\Order\AdornOrderFrm.resx">
       <DependentUpon>AdornOrderFrm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Order\AdornOrderFrm1.resx">
+      <DependentUpon>AdornOrderFrm1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\AdornTypeFrm.resx">
       <DependentUpon>AdornTypeFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Order\MaterialOrderFrm1.resx">
+      <DependentUpon>MaterialOrderFrm1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\TypeInfoFrm.resx">
       <DependentUpon>TypeInfoFrm.cs</DependentUpon>

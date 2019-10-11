@@ -426,7 +426,7 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TmPrint_Click(object sender, System.EventArgs e)
+        private void TmPrint_Click(object sender, EventArgs e)
         {
             try
             {
