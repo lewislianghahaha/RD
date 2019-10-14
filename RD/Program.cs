@@ -16,7 +16,7 @@ namespace RD
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AdornOrderFrm1());
+            Application.Run(new MaterialOrderFrm1());
 
             //var mutex = new System.Threading.Mutex(false, "ThisOnlyRunOnce");
 
