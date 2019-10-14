@@ -46,20 +46,14 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.txtHoseName = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.gvshow = new System.Windows.Forms.DataGridView();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.btnsave = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.gvcreate = new System.Windows.Forms.TabPage();
             this.panel13 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
             this.panel10 = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
+            this.lbproduct = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lbtotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
             this.bngat = new System.Windows.Forms.BindingNavigator(this.components);
@@ -79,21 +73,22 @@
             this.toolStripLabel10 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel11 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel12 = new System.Windows.Forms.ToolStripLabel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.gvshow = new System.Windows.Forms.DataGridView();
             this.RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmadd = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tmreplace = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnsave = new System.Windows.Forms.Button();
             this.Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).BeginInit();
-            this.panel3.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.gvcreate.SuspendLayout();
             this.panel13.SuspendLayout();
@@ -102,7 +97,12 @@
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).BeginInit();
             this.RightMenu.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -251,70 +251,6 @@
             this.panel2.Size = new System.Drawing.Size(1198, 593);
             this.panel2.TabIndex = 3;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(2, 1);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(541, 591);
-            this.tabControl1.TabIndex = 4;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.panel6);
-            this.tabPage1.Controls.Add(this.panel3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(533, 565);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "录入";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.gvshow);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(3, 30);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(527, 532);
-            this.panel6.TabIndex = 7;
-            // 
-            // gvshow
-            // 
-            this.gvshow.AllowUserToDeleteRows = false;
-            this.gvshow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvshow.ContextMenuStrip = this.RightMenu;
-            this.gvshow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvshow.Location = new System.Drawing.Point(0, 0);
-            this.gvshow.Name = "gvshow";
-            this.gvshow.RowTemplate.Height = 23;
-            this.gvshow.Size = new System.Drawing.Size(527, 532);
-            this.gvshow.TabIndex = 0;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.Transparent;
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.btnsave);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(527, 27);
-            this.panel3.TabIndex = 5;
-            // 
-            // btnsave
-            // 
-            this.btnsave.Location = new System.Drawing.Point(1, 1);
-            this.btnsave.Name = "btnsave";
-            this.btnsave.Size = new System.Drawing.Size(75, 23);
-            this.btnsave.TabIndex = 0;
-            this.btnsave.Text = "保存及刷新";
-            this.btnsave.UseVisualStyleBackColor = true;
-            // 
             // tabControl2
             // 
             this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -366,9 +302,9 @@
             // panel10
             // 
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel10.Controls.Add(this.label9);
+            this.panel10.Controls.Add(this.lbproduct);
             this.panel10.Controls.Add(this.label8);
-            this.panel10.Controls.Add(this.label7);
+            this.panel10.Controls.Add(this.lbtotal);
             this.panel10.Controls.Add(this.label6);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel10.Location = new System.Drawing.Point(3, 512);
@@ -376,14 +312,14 @@
             this.panel10.Size = new System.Drawing.Size(639, 20);
             this.panel10.TabIndex = 2;
             // 
-            // label9
+            // lbproduct
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(379, 3);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 12);
-            this.label9.TabIndex = 3;
-            this.label9.Text = "aa";
+            this.lbproduct.AutoSize = true;
+            this.lbproduct.Location = new System.Drawing.Point(378, 2);
+            this.lbproduct.Name = "lbproduct";
+            this.lbproduct.Size = new System.Drawing.Size(17, 12);
+            this.lbproduct.TabIndex = 3;
+            this.lbproduct.Text = "aa";
             // 
             // label8
             // 
@@ -394,14 +330,14 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "管理费5%:";
             // 
-            // label7
+            // lbtotal
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(38, 3);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(17, 12);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "bb";
+            this.lbtotal.AutoSize = true;
+            this.lbtotal.Location = new System.Drawing.Point(38, 3);
+            this.lbtotal.Name = "lbtotal";
+            this.lbtotal.Size = new System.Drawing.Size(17, 12);
+            this.lbtotal.TabIndex = 1;
+            this.lbtotal.Text = "bb";
             // 
             // label6
             // 
@@ -572,6 +508,50 @@
             this.toolStripLabel12.Size = new System.Drawing.Size(55, 21);
             this.toolStripLabel12.Text = "共 {0} 行";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Location = new System.Drawing.Point(2, 1);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(541, 591);
+            this.tabControl1.TabIndex = 4;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.panel6);
+            this.tabPage1.Controls.Add(this.panel3);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(533, 565);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "录入";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.gvshow);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(3, 30);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(527, 532);
+            this.panel6.TabIndex = 7;
+            // 
+            // gvshow
+            // 
+            this.gvshow.AllowUserToDeleteRows = false;
+            this.gvshow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvshow.ContextMenuStrip = this.RightMenu;
+            this.gvshow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvshow.Location = new System.Drawing.Point(0, 0);
+            this.gvshow.Name = "gvshow";
+            this.gvshow.RowTemplate.Height = 23;
+            this.gvshow.Size = new System.Drawing.Size(527, 532);
+            this.gvshow.TabIndex = 0;
+            // 
             // RightMenu
             // 
             this.RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -611,6 +591,26 @@
             this.tmdel.Size = new System.Drawing.Size(124, 22);
             this.tmdel.Text = "删除记录";
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.btnsave);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(527, 27);
+            this.panel3.TabIndex = 5;
+            // 
+            // btnsave
+            // 
+            this.btnsave.Location = new System.Drawing.Point(1, 1);
+            this.btnsave.Name = "btnsave";
+            this.btnsave.Size = new System.Drawing.Size(75, 23);
+            this.btnsave.TabIndex = 0;
+            this.btnsave.Text = "保存及刷新";
+            this.btnsave.UseVisualStyleBackColor = true;
+            // 
             // MaterialOrderFrm1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -628,11 +628,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).EndInit();
-            this.panel3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.gvcreate.ResumeLayout(false);
             this.panel13.ResumeLayout(false);
@@ -644,7 +639,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).EndInit();
             this.RightMenu.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -679,9 +679,9 @@
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.Panel panel10;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lbproduct;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbtotal;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.BindingNavigator bngat;
