@@ -299,7 +299,7 @@ namespace RD.DB
         public DataTable Get_AdornEmptydt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 16; i++)
+            for (var i = 0; i < 17; i++)
             {
                 var dc = new DataColumn();
 
@@ -325,14 +325,123 @@ namespace RD.DB
                         dc.ColumnName = "工程类别ID";
                         dc.DataType=Type.GetType("System.Int32");
                         break;
-                    //HtypeName
+                    //TypeName
                     case 3:
+                        dc.ColumnName = "大类名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //HtypeName
+                    case 4:
                         dc.ColumnName = "装修工程类别";
                         dc.DataType = Type.GetType("System.String"); 
                         break;
                     //HTypeProjectName
-                    case 4:
+                    case 5:
                         dc.ColumnName = "项目名称";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //Unit
+                    case 6:
+                        dc.ColumnName = "单位名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //quantities
+                    case 7:
+                        dc.ColumnName = "工程量";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //FinalPrice
+                    case 8:
+                        dc.ColumnName = "综合单价";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Ren_Cost
+                    case 9:
+                        dc.ColumnName = "人工费用";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Fu_Cost
+                    case 10:
+                        dc.ColumnName = "辅材费用";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Price
+                    case 11:
+                        dc.ColumnName = "单价";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Temp_Price
+                    case 12:
+                        dc.ColumnName = "临时材料单价";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //Amount
+                    case 13:
+                        dc.ColumnName = "合计";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //FRemark
+                    case 14:
+                        dc.ColumnName = "备注";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputUser
+                    case 15:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 16:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取"室内主材"表体临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_ProMaterialEmtrydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 16; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //树菜单ID
+                    //case 1:
+                    //    dc.ColumnName = "TreeId";
+                    //    dc.DataType = Type.GetType("System.Int32");
+                    //    break;
+                    //小类ID
+                    case 1:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //MaterialId
+                    case 2:
+                        dc.ColumnName = "材料ID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //MaterialType
+                    case 3:
+                        dc.ColumnName = "材料大类名称";
+                        dc.DataType=Type.GetType("System.String");
+                        break;
+                    //MaterialName
+                    case 4:
+                        dc.ColumnName = "材料名称";
                         dc.DataType = Type.GetType("System.String"); 
                         break;
                     //Unit
@@ -387,105 +496,6 @@ namespace RD.DB
                         break;
                     //InputDt
                     case 15:
-                        dc.ColumnName = "录入日期";
-                        dc.DataType = Type.GetType("System.DateTime");
-                        break;
-                }
-                dt.Columns.Add(dc);
-            }
-            return dt;
-        }
-
-        /// <summary>
-        /// 获取"室内主材"表体临时表
-        /// </summary>
-        /// <returns></returns>
-        public DataTable Get_ProMaterialEmtrydt()
-        {
-            var dt = new DataTable();
-            for (var i = 0; i < 15; i++)
-            {
-                var dc = new DataColumn();
-
-                switch (i)
-                {
-                    //表头主键ID
-                    case 0:
-                        dc.ColumnName = "Id";
-                        dc.DataType = Type.GetType("System.Int32");
-                        break;
-                    //树菜单ID
-                    //case 1:
-                    //    dc.ColumnName = "TreeId";
-                    //    dc.DataType = Type.GetType("System.Int32");
-                    //    break;
-                    //小类ID
-                    case 1:
-                        dc.ColumnName = "EntryID";
-                        dc.DataType = Type.GetType("System.Int32");
-                        break;
-                    //MaterialId
-                    case 2:
-                        dc.ColumnName = "材料ID";
-                        dc.DataType = Type.GetType("System.Int32");
-                        break;
-                    //MaterialName
-                    case 3:
-                        dc.ColumnName = "材料名称";
-                        dc.DataType = Type.GetType("System.String"); 
-                        break;
-                    //Unit
-                    case 4:
-                        dc.ColumnName = "单位名称";
-                        dc.DataType = Type.GetType("System.String");
-                        break;
-                    //quantities
-                    case 5:
-                        dc.ColumnName = "工程量";
-                        dc.DataType = Type.GetType("System.Decimal"); 
-                        break;
-                    //FinalPrice
-                    case 6:
-                        dc.ColumnName = "综合单价";
-                        dc.DataType = Type.GetType("System.Decimal");
-                        break;
-                    //Ren_Cost
-                    case 7:
-                        dc.ColumnName = "人工费用";
-                        dc.DataType = Type.GetType("System.Decimal");
-                        break;
-                    //Fu_Cost
-                    case 8:
-                        dc.ColumnName = "辅材费用";
-                        dc.DataType = Type.GetType("System.Decimal");
-                        break;
-                    //Price
-                    case 9:
-                        dc.ColumnName = "单价";
-                        dc.DataType = Type.GetType("System.Decimal");
-                        break;
-                    //Temp_Price
-                    case 10:
-                        dc.ColumnName = "临时材料单价";
-                        dc.DataType = Type.GetType("System.Decimal");
-                        break;
-                    //Amount
-                    case 11:
-                        dc.ColumnName = "合计";
-                        dc.DataType = Type.GetType("System.Decimal");
-                        break;
-                    //FRemark
-                    case 12:
-                        dc.ColumnName = "备注";
-                        dc.DataType = Type.GetType("System.String");
-                        break;
-                    //InputUser
-                    case 13:
-                        dc.ColumnName = "录入人";
-                        dc.DataType = Type.GetType("System.String");
-                        break;
-                    //InputDt
-                    case 14:
                         dc.ColumnName = "录入日期";
                         dc.DataType = Type.GetType("System.DateTime"); 
                         break;

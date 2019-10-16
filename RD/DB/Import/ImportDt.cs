@@ -461,14 +461,14 @@ namespace RD.DB.Import
                     //室内装修工程单
                     case "AdornOrderHead":
                         //获取T_PRO_Adorn表MAX(ID)值
-                        reslutid = Maxid(tablename);
+                        reslutid = Maxid(tablename,null);
                         //插入相关记录至T_PRO_Adorn临时表内
                         dt = Get_OrderTemp(name, custid, reslutid, accountname);
                         break;
                     //室内主材单
                     case "MaterialOrderHead":
                         //获取T_PRO_Material表MAX(ID)值
-                        reslutid = Maxid(tablename);
+                        reslutid = Maxid(tablename,null);
                         //插入相关记录至T_PRO_Material临时表内
                         dt = Get_OrderTemp(name, custid, reslutid, accountname);
                         break;
@@ -487,12 +487,13 @@ namespace RD.DB.Import
         /// 获取主键ID值
         /// </summary>
         /// <param name="tableName"></param>
+        /// <param name="colname"></param>
         /// <returns></returns>
-        private int Maxid(string tableName)
+        private int Maxid(string tableName,string colname)
         {
             var dt = new DataTable();
             //获取对应的SQL语句
-            var sqlscript = sqlList.Get_OrderMaxid(tableName);
+            var sqlscript = sqlList.Get_OrderMaxid(tableName,colname);
             //执行SQL
             var sqlDataAdapter = new SqlDataAdapter(sqlscript, serDt.GetConn());
             sqlDataAdapter.Fill(dt);
@@ -684,7 +685,7 @@ namespace RD.DB.Import
             try
             {
                 //获取T_AD_Role表MAX(ID)值
-               // roleid = Maxid("T_AD_Role","id");
+                roleid = Maxid("T_AD_Role","id");
                 //将相关记录分别插入至T_AD_Role 及 T_AD_RoleDtl内
                 var tempdt = Get_RoleTemp(roleid,rolename,accountName);
                 var tempdtdtl = Get_RoleDtlTemp(roleid,dt, accountName);
@@ -792,7 +793,7 @@ namespace RD.DB.Import
             try
             {
                 //获取T_AD_Role表MAX(ID)值
-                //userid = Maxid("T_AD_User","userid");
+                userid = Maxid("T_AD_User","userid");
                 //将相关记录分别插入至T_AD_User 及 T_AD_UserDtl内
                 var tempdt = Get_UserTemp(userid,functionName, sexid,usercontact,useremail,dtTime,accountName);
                 var tempdtdtl = Get_UserDtlTemp(userid,accountName);

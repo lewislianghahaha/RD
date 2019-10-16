@@ -71,6 +71,7 @@ namespace RD.UI.Order
             tmadd.Click += Tmadd_Click;
             tmreplace.Click += Tmreplace_Click;
             tmdel.Click += Tmdel_Click;
+            gvshow.CellValueChanged += Gvshow_CellValueChanged;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -110,6 +111,62 @@ namespace RD.UI.Order
         }
 
         /// <summary>
+        /// 当GridView内的单元格的值更改时发生（注:每当有其中一个单元格的值发生变化时,都会循环 行中所有单元格并执行此事件）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Gvshow_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.ColumnIndex == 9 || e.ColumnIndex == 10 || e.ColumnIndex == 1 || e.ColumnIndex == 12)
+                {
+                    decimal renCost = 0;  //人工费用
+                    decimal fuCost = 0;  //辅材费用
+                    decimal price = 0;  //单价
+
+                    //计算“综合单价”(8)=人工费用(9)+辅材费用(10)+(单价(11) 或 临时价(12))
+                    //人工费用
+                    renCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[9].Value);
+                    //辅材费用
+                    fuCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[10].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[10].Value);
+                    //单价(注:若临时价有值。就取临时价。反之用单价;若两者都没有的话,就为0)
+                    if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[12].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[12].Value);
+                    }
+                    else if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[11].Value) != "")
+                    {
+                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[11].Value);
+                    }
+                    else
+                    {
+                        price = 0;
+                    }
+                    gvdtl.Rows[e.RowIndex].Cells[8].Value = renCost + fuCost + price;
+                }
+                else if (e.ColumnIndex == 7 || e.ColumnIndex == 8)
+                {
+                    decimal quantities = 0;  //工程量
+                    decimal finalPrice = 0; //综合单价
+
+                    //计算“合计”(13)=工程量(7) * 综合单价(8)
+
+                    //工程量
+                    quantities = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[7].Value);
+                    //综合单价
+                    finalPrice = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[8].Value);
+
+                    gvdtl.Rows[e.RowIndex].Cells[13].Value = quantities * finalPrice;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 保存及刷新
         /// </summary>
         /// <param name="sender"></param>
@@ -144,7 +201,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 
+        /// 保存及刷新
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -578,16 +635,17 @@ namespace RD.UI.Order
             gvshow.Columns[0].Visible = false;
             gvshow.Columns[1].Visible = false;
             gvshow.Columns[2].Visible = false;
+            gvshow.Columns[3].Visible = false;   //大类名称
 
             //设置指定列不能编辑
-            gvshow.Columns[3].ReadOnly = true;   //装修工程类别
-            gvshow.Columns[4].ReadOnly = true;   //项目名称
-            gvshow.Columns[5].ReadOnly = true;   //单位名称
-            gvshow.Columns[7].ReadOnly = true;   //综合单价
-            gvshow.Columns[10].ReadOnly = true;  //单价
-            gvshow.Columns[12].ReadOnly = true;  //合计
-            gvshow.Columns[gvdtl.Columns.Count - 1].ReadOnly = true; //录入人
-            gvshow.Columns[gvdtl.Columns.Count - 2].ReadOnly = true; //录入日期
+            gvshow.Columns[4].ReadOnly = true;   //装修工程类别
+            gvshow.Columns[5].ReadOnly = true;   //项目名称
+            gvshow.Columns[6].ReadOnly = true;   //单位名称
+            gvshow.Columns[8].ReadOnly = true;   //综合单价
+            gvshow.Columns[11].ReadOnly = true;  //单价
+            gvshow.Columns[13].ReadOnly = true;  //合计
+            gvshow.Columns[gvdtl.Columns.Count - 1].Visible = false; //录入人
+            gvshow.Columns[gvdtl.Columns.Count - 2].Visible = false; //录入日期
 
             //“预览页”设置
             gvdtl.Columns[0].Visible = false;
