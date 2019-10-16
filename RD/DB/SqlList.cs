@@ -504,7 +504,7 @@ namespace RD.DB
             {
                 case "AdornOrder":
                     _result = $@"
-                             SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
+                             SELECT a.id,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
                                     a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
 	                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                              FROM dbo.T_PRO_AdornEntry a
@@ -515,7 +515,7 @@ namespace RD.DB
                     break;
                 case "MaterialOrder":
                     _result = $@"
-                               SELECT a.Id,a.TreeId,a.EntryID,a.MaterialId 材料ID,MaterialName 材料名称,
+                               SELECT a.Id,a.EntryID,a.MaterialId 材料ID,MaterialName 材料名称,
 	                                a.Unit 单位名称,a.quantities 工程量,a.FinalPrice  综合单价,a.Ren_Cost 人工费用,
 	                                a.Fu_Cost 辅材费用,a.Price 单价,a.Temp_Price 临时材料单价,
 	                                a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期                       
@@ -627,11 +627,46 @@ namespace RD.DB
         /// 获取最大的单据ID (室内装修工程 及 室内主材单使用)
         /// </summary>
         /// <returns></returns>
-        public string Get_OrderMaxid(string tablename,string columnname)
+        public string Get_OrderMaxid(string tablename)
         {
-            _result = $@"
-                         SELECT ISNULL(MAX({columnname}),0)+1
-                         FROM dbo.{tablename}";
+            if (tablename == "T_PRO_Adorn")
+            {
+                _result = $@"
+                            DECLARE
+	                            @id INT;
+                            BEGIN
+	                            INSERT INTO dbo.T_PRO_adorn_KEY( Column1 )
+	                            VALUES  (1)
+
+	                            SELECT @id=Id FROM dbo.T_PRO_adorn_KEY
+
+	                            DELETE FROM dbo.T_PRO_adorn_KEY
+
+	                            SELECT @id
+                            END
+                            ";
+            }
+            else if(tablename == "T_PRO_Material")
+            {
+                _result = $@"
+                            DECLARE
+	                            @id INT;
+                            BEGIN
+	                            INSERT INTO dbo.T_PRO_Material_KEY( Column1 )
+	                            VALUES  (1)
+
+	                            SELECT @id=Id FROM dbo.T_PRO_Material_KEY
+
+	                            DELETE FROM dbo.T_PRO_Material_KEY
+
+	                            SELECT @id
+                            END
+                            ";
+            }
+
+            //_result = $@"
+            //             SELECT ISNULL(MAX({columnname}),0)+1
+            //             FROM dbo.{tablename}";
             return _result;
         }
 
@@ -711,7 +746,7 @@ namespace RD.DB
                     //为-1表示读取ALL
                     if (treeid == -1)
                     {
-                        _result = $@"SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
+                        _result = $@"SELECT a.id,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
                                             a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                             a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                     FROM dbo.T_PRO_AdornEntry a
@@ -723,7 +758,7 @@ namespace RD.DB
                     else
                     {
                         _result = $@"
-                                        SELECT a.id,a.Treeid,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
+                                        SELECT a.id,a.adornid,a.HTypeid 工程类别ID,b.HtypeName 装修工程类别,a.HTypeProjectName 项目名称,
                                                a.Unit 单位名称,a.quantities 工程量,a.FinalPrice 综合单价,a.Ren_Cost 人工费用,a.Fu_Cost 辅材费用,
                                                a.Price 单价,a.Temp_Price 临时材料单价,a.Amount 合计,a.FRemark 备注,a.InputUser 录入人,a.InputDt 录入日期
                                         FROM dbo.T_PRO_AdornEntry a

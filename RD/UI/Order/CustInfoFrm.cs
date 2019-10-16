@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
 
@@ -52,6 +51,7 @@ namespace RD.UI.Order
         {
             InitializeComponent();
             OnRegisterEvents();
+            OnInitialize();
         }
 
         private void OnRegisterEvents()
@@ -125,7 +125,7 @@ namespace RD.UI.Order
                 string frmName;
 
                 if (gvdtl.SelectedRows.Count==0) throw new Exception("请选取某一行,然后再按此按钮");
-
+                _funName = "AdornOrder";
                 frmName = _funName == "AdornOrder" ? "室内装修工程" : "室内主材";
                 //获取当前行的客户名称 及 客户ID信息
                 var customerid= Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
@@ -157,10 +157,10 @@ namespace RD.UI.Order
                             //将当前窗体隐藏
                             this.Visible = false;
                             //弹出对应窗体相关设置
-                            adornOrder.FunState = _funState;
+                            adornOrder.FunState ="C"; //_funState;             //单据状态
                             adornOrder.Pid = id;                         //单据主键id
                             adornOrder.FunName = _funName;              //功能名称
-                            adornOrder.CandelMarkid = _candelMarkid;   //能否删除权限标记(删除时作权限使用)
+                           // adornOrder.CandelMarkid = _candelMarkid;   //能否删除权限标记(删除时作权限使用)
                             adornOrder.OnInitialize();                //初始化信息
                             adornOrder.StartPosition = FormStartPosition.CenterParent;
                             adornOrder.ShowDialog();
@@ -208,17 +208,6 @@ namespace RD.UI.Order
             gvdtl.Columns[1].Visible = false;
             gvdtl.Columns[3].Visible = false;
         }
-
-        //private void Start()
-        //{
-        //    task.StartTask();
-
-        //    //当完成后将Form2子窗体关闭
-        //    this.Invoke((ThreadStart)(() =>
-        //    {
-        //        load.Close();
-        //    }));
-        //}
 
         /// <summary>
         /// 首页按钮(GridView页面跳转时使用)

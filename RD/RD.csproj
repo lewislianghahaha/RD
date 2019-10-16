@@ -219,17 +219,17 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Bak\AdornOrderFrmBak.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Bak\AdornOrderFrmBak.Designer.cs">
+      <DependentUpon>AdornOrderFrmBak.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Order\AdornOrderFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Order\AdornOrderFrm.Designer.cs">
       <DependentUpon>AdornOrderFrm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Order\AdornOrderFrm1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Order\AdornOrderFrm1.Designer.cs">
-      <DependentUpon>AdornOrderFrm1.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Order\AdornTypeFrm.cs">
       <SubType>Form</SubType>
@@ -255,11 +255,11 @@
     <Compile Include="UI\Order\CustInfoFrm.Designer.cs">
       <DependentUpon>CustInfoFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Order\MaterialOrderFrm.cs">
+    <Compile Include="UI\Bak\MaterialOrderFrmBak.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Order\MaterialOrderFrm.Designer.cs">
-      <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
+    <Compile Include="UI\Bak\MaterialOrderFrmBak.Designer.cs">
+      <DependentUpon>MaterialOrderFrmBak.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="UI\Admin\AccountAddFrm.resx">
       <DependentUpon>AccountAddFrm.cs</DependentUpon>
@@ -307,11 +307,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Bak\AdornOrderFrmBak.resx">
+      <DependentUpon>AdornOrderFrmBak.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\AdornOrderFrm.resx">
       <DependentUpon>AdornOrderFrm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Order\AdornOrderFrm1.resx">
-      <DependentUpon>AdornOrderFrm1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Order\AdornTypeFrm.resx">
       <DependentUpon>AdornTypeFrm.cs</DependentUpon>
@@ -325,8 +325,8 @@
     <EmbeddedResource Include="UI\Order\CustInfoFrm.resx">
       <DependentUpon>CustInfoFrm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Order\MaterialOrderFrm.resx">
-      <DependentUpon>MaterialOrderFrm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Bak\MaterialOrderFrmBak.resx">
+      <DependentUpon>MaterialOrderFrmBak.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="bin\Debug\Report\AdornOrderReport.mrt" />
     <None Include="bin\Debug\Report\MaterialOrderReport.mrt" />

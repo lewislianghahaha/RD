@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using RD.Logic;
 using RD.UI.Account;
+using RD.UI.Bak;
 using RD.UI.Basic;
 using RD.UI.Order;
 using Stimulsoft.Report;
@@ -463,7 +464,7 @@ namespace RD.UI
                     adornOrder.FunState = "R";
                     adornOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
                     adornOrder.FunName = funname;
-                    adornOrder.CandelMarkid = ruleid;
+                    //adornOrder.CandelMarkid = ruleid;
                     //初始化窗体信息
                     adornOrder.OnInitialize();
                     adornOrder.StartPosition = FormStartPosition.CenterParent;
