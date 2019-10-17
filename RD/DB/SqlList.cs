@@ -194,7 +194,7 @@ namespace RD.DB
                 case "HouseProject":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=5";
                     break;
-                //查询历史室内装修工程单记录 TypeInfoFrm.cs使用
+                //查询历史室内装修工程单记录(以及室内主材单历史记录) TypeInfoFrm.cs使用
                 case "HistoryAdornEmpty":
                     _result = "select a.ColId,a.ColName from T_BD_FunList a where a.FunId=6";
                     break;

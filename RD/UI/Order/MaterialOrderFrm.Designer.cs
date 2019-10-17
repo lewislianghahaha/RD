@@ -1,6 +1,6 @@
 ﻿namespace RD.UI.Order
 {
-    partial class MaterialOrderFrm1
+    partial class MaterialOrderFrm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MaterialOrderFrm1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MaterialOrderFrm));
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmconfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.tmsave = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +45,19 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.txtHoseName = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmadd = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmreplace = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.gvshow = new System.Windows.Forms.DataGridView();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnsave = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.gvcreate = new System.Windows.Forms.TabPage();
             this.panel13 = new System.Windows.Forms.Panel();
@@ -73,22 +85,19 @@
             this.toolStripLabel10 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel11 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel12 = new System.Windows.Forms.ToolStripLabel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.gvshow = new System.Windows.Forms.DataGridView();
-            this.RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tmadd = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmreplace = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.btnsave = new System.Windows.Forms.Button();
             this.Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.RightMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).BeginInit();
+            this.panel3.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.gvcreate.SuspendLayout();
             this.panel13.SuspendLayout();
@@ -97,12 +106,6 @@
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).BeginInit();
-            this.RightMenu.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Menu
@@ -241,27 +244,134 @@
             this.txtHoseName.Size = new System.Drawing.Size(127, 21);
             this.txtHoseName.TabIndex = 11;
             // 
-            // panel2
+            // RightMenu
             // 
-            this.panel2.Controls.Add(this.tabControl2);
-            this.panel2.Controls.Add(this.tabControl1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 77);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1198, 593);
-            this.panel2.TabIndex = 3;
+            this.RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmadd,
+            this.toolStripSeparator4,
+            this.tmreplace,
+            this.toolStripSeparator5,
+            this.tmdel});
+            this.RightMenu.Name = "RightMenu";
+            this.RightMenu.Size = new System.Drawing.Size(125, 82);
+            // 
+            // tmadd
+            // 
+            this.tmadd.Name = "tmadd";
+            this.tmadd.Size = new System.Drawing.Size(124, 22);
+            this.tmadd.Text = "新增记录";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(121, 6);
+            // 
+            // tmreplace
+            // 
+            this.tmreplace.Name = "tmreplace";
+            this.tmreplace.Size = new System.Drawing.Size(124, 22);
+            this.tmreplace.Text = "替换记录";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
+            // 
+            // tmdel
+            // 
+            this.tmdel.Name = "tmdel";
+            this.tmdel.Size = new System.Drawing.Size(124, 22);
+            this.tmdel.Text = "删除记录";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 77);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl2);
+            this.splitContainer1.Size = new System.Drawing.Size(1198, 593);
+            this.splitContainer1.SplitterDistance = 554;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(552, 591);
+            this.tabControl1.TabIndex = 6;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.panel6);
+            this.tabPage1.Controls.Add(this.panel3);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(544, 565);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "录入";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.gvshow);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(3, 30);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(538, 532);
+            this.panel6.TabIndex = 7;
+            // 
+            // gvshow
+            // 
+            this.gvshow.AllowUserToDeleteRows = false;
+            this.gvshow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvshow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvshow.Location = new System.Drawing.Point(0, 0);
+            this.gvshow.Name = "gvshow";
+            this.gvshow.RowTemplate.Height = 23;
+            this.gvshow.Size = new System.Drawing.Size(538, 532);
+            this.gvshow.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.btnsave);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(538, 27);
+            this.panel3.TabIndex = 5;
+            // 
+            // btnsave
+            // 
+            this.btnsave.Location = new System.Drawing.Point(1, 1);
+            this.btnsave.Name = "btnsave";
+            this.btnsave.Size = new System.Drawing.Size(75, 23);
+            this.btnsave.TabIndex = 0;
+            this.btnsave.Text = "保存及刷新";
+            this.btnsave.UseVisualStyleBackColor = true;
             // 
             // tabControl2
             // 
-            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.gvcreate);
-            this.tabControl2.Location = new System.Drawing.Point(544, 3);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(653, 587);
-            this.tabControl2.TabIndex = 5;
+            this.tabControl2.Size = new System.Drawing.Size(638, 591);
+            this.tabControl2.TabIndex = 7;
             // 
             // gvcreate
             // 
@@ -271,7 +381,7 @@
             this.gvcreate.Location = new System.Drawing.Point(4, 22);
             this.gvcreate.Name = "gvcreate";
             this.gvcreate.Padding = new System.Windows.Forms.Padding(3);
-            this.gvcreate.Size = new System.Drawing.Size(645, 561);
+            this.gvcreate.Size = new System.Drawing.Size(630, 565);
             this.gvcreate.TabIndex = 0;
             this.gvcreate.Text = "预览";
             this.gvcreate.UseVisualStyleBackColor = true;
@@ -283,7 +393,7 @@
             this.panel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel13.Location = new System.Drawing.Point(3, 3);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(639, 509);
+            this.panel13.Size = new System.Drawing.Size(624, 513);
             this.panel13.TabIndex = 3;
             // 
             // gvdtl
@@ -296,7 +406,7 @@
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(637, 507);
+            this.gvdtl.Size = new System.Drawing.Size(622, 511);
             this.gvdtl.TabIndex = 0;
             // 
             // panel10
@@ -307,9 +417,9 @@
             this.panel10.Controls.Add(this.lbtotal);
             this.panel10.Controls.Add(this.label6);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel10.Location = new System.Drawing.Point(3, 512);
+            this.panel10.Location = new System.Drawing.Point(3, 516);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(639, 20);
+            this.panel10.Size = new System.Drawing.Size(624, 20);
             this.panel10.TabIndex = 2;
             // 
             // lbproduct
@@ -353,9 +463,9 @@
             this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel9.Controls.Add(this.bngat);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel9.Location = new System.Drawing.Point(3, 532);
+            this.panel9.Location = new System.Drawing.Point(3, 536);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(639, 26);
+            this.panel9.Size = new System.Drawing.Size(624, 26);
             this.panel9.TabIndex = 1;
             // 
             // bngat
@@ -383,7 +493,7 @@
             this.toolStripLabel11,
             this.toolStripLabel12});
             this.bngat.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.bngat.Location = new System.Drawing.Point(151, 0);
+            this.bngat.Location = new System.Drawing.Point(136, 0);
             this.bngat.MoveFirstItem = this.toolStripButton1;
             this.bngat.MoveLastItem = this.toolStripButton4;
             this.bngat.MoveNextItem = this.toolStripButton3;
@@ -508,115 +618,12 @@
             this.toolStripLabel12.Size = new System.Drawing.Size(55, 21);
             this.toolStripLabel12.Text = "共 {0} 行";
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(2, 1);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(541, 591);
-            this.tabControl1.TabIndex = 4;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.panel6);
-            this.tabPage1.Controls.Add(this.panel3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(533, 565);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "录入";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.gvshow);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(3, 30);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(527, 532);
-            this.panel6.TabIndex = 7;
-            // 
-            // gvshow
-            // 
-            this.gvshow.AllowUserToDeleteRows = false;
-            this.gvshow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvshow.ContextMenuStrip = this.RightMenu;
-            this.gvshow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvshow.Location = new System.Drawing.Point(0, 0);
-            this.gvshow.Name = "gvshow";
-            this.gvshow.RowTemplate.Height = 23;
-            this.gvshow.Size = new System.Drawing.Size(527, 532);
-            this.gvshow.TabIndex = 0;
-            // 
-            // RightMenu
-            // 
-            this.RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tmadd,
-            this.toolStripSeparator4,
-            this.tmreplace,
-            this.toolStripSeparator5,
-            this.tmdel});
-            this.RightMenu.Name = "RightMenu";
-            this.RightMenu.Size = new System.Drawing.Size(125, 82);
-            // 
-            // tmadd
-            // 
-            this.tmadd.Name = "tmadd";
-            this.tmadd.Size = new System.Drawing.Size(124, 22);
-            this.tmadd.Text = "新增记录";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(121, 6);
-            // 
-            // tmreplace
-            // 
-            this.tmreplace.Name = "tmreplace";
-            this.tmreplace.Size = new System.Drawing.Size(124, 22);
-            this.tmreplace.Text = "替换记录";
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
-            // 
-            // tmdel
-            // 
-            this.tmdel.Name = "tmdel";
-            this.tmdel.Size = new System.Drawing.Size(124, 22);
-            this.tmdel.Text = "删除记录";
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.Transparent;
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.btnsave);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(3, 3);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(527, 27);
-            this.panel3.TabIndex = 5;
-            // 
-            // btnsave
-            // 
-            this.btnsave.Location = new System.Drawing.Point(1, 1);
-            this.btnsave.Name = "btnsave";
-            this.btnsave.Size = new System.Drawing.Size(75, 23);
-            this.btnsave.TabIndex = 0;
-            this.btnsave.Text = "保存及刷新";
-            this.btnsave.UseVisualStyleBackColor = true;
-            // 
             // MaterialOrderFrm1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1198, 670);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
@@ -627,7 +634,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.RightMenu.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).EndInit();
+            this.panel3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.gvcreate.ResumeLayout(false);
             this.panel13.ResumeLayout(false);
@@ -639,12 +655,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvshow)).EndInit();
-            this.RightMenu.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -667,7 +677,13 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.TextBox txtHoseName;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ContextMenuStrip RightMenu;
+        private System.Windows.Forms.ToolStripMenuItem tmadd;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem tmreplace;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem tmdel;
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel panel6;
@@ -701,11 +717,5 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel10;
         private System.Windows.Forms.ToolStripLabel toolStripLabel11;
         private System.Windows.Forms.ToolStripLabel toolStripLabel12;
-        private System.Windows.Forms.ContextMenuStrip RightMenu;
-        private System.Windows.Forms.ToolStripMenuItem tmadd;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem tmreplace;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem tmdel;
     }
 }

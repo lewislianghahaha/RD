@@ -10,7 +10,7 @@ using Stimulsoft.Report;
 
 namespace RD.UI.Order
 {
-    public partial class MaterialOrderFrm : Form
+    public partial class MaterialOrderFrmBack : Form
     {
         TaskLogic task = new TaskLogic();
         Load load = new Load();
@@ -62,7 +62,7 @@ namespace RD.UI.Order
 
         #endregion
 
-        public MaterialOrderFrm()
+        public MaterialOrderFrmBack()
         {
             InitializeComponent();
             OnRegisterEvents();

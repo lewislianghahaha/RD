@@ -1,4 +1,4 @@
-﻿namespace RD.UI.Order
+﻿namespace RD.UI.Bak
 {
     partial class AdornTypeFrm
     {

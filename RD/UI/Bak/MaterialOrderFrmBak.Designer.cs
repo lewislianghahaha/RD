@@ -1,6 +1,6 @@
 ﻿namespace RD.UI.Order
 {
-    partial class MaterialOrderFrm
+    partial class MaterialOrderFrmBack
     {
         /// <summary>
         /// Required designer variable.

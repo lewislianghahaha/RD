@@ -10,6 +10,7 @@ namespace RD.UI.Order
 {
     public partial class AdornOrderFrm : Form
     {
+        TypeInfoFrm typeInfo=new TypeInfoFrm();
         TaskLogic task=new TaskLogic();
         DtList dtList=new DtList();
 
@@ -20,6 +21,9 @@ namespace RD.UI.Order
         private string _funName;
         //记录审核状态(True:已审核;False:没审核)
         private bool _confirmMarkId;
+        //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
+        private string _funState;
+
 
         //提交时使用
         private DataTable _sourcedt;
@@ -27,8 +31,7 @@ namespace RD.UI.Order
         private DataTable _showdt;
         //保存删除的明细行(当读取状态时使用)
         private DataTable _deldt;
-        //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
-        private string _funState;
+        
 
         //保存查询出来的GridView记录（GridView页面跳转时使用）
         private DataTable _dtl;
@@ -67,11 +70,14 @@ namespace RD.UI.Order
             tmsave.Click += Tmsave_Click;
             tmprint.Click += Tmprint_Click;
             btnsave.Click += Btnsave_Click;
+            btnremove.Click += Btnremove_Click;
+            cbshow.Click += Cbshow_Click;
 
             tmadd.Click += Tmadd_Click;
             tmreplace.Click += Tmreplace_Click;
             tmdel.Click += Tmdel_Click;
             gvshow.CellValueChanged += Gvshow_CellValueChanged;
+            gvdtl.RowEnter += Gvdtl_RowEnter;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -127,23 +133,23 @@ namespace RD.UI.Order
 
                     //计算“综合单价”(8)=人工费用(9)+辅材费用(10)+(单价(11) 或 临时价(12))
                     //人工费用
-                    renCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[9].Value);
+                    renCost = Convert.ToString(gvshow.Rows[e.RowIndex].Cells[9].Value) == "" ? 0 : Convert.ToDecimal(gvshow.Rows[e.RowIndex].Cells[9].Value);
                     //辅材费用
-                    fuCost = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[10].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[10].Value);
+                    fuCost = Convert.ToString(gvshow.Rows[e.RowIndex].Cells[10].Value) == "" ? 0 : Convert.ToDecimal(gvshow.Rows[e.RowIndex].Cells[10].Value);
                     //单价(注:若临时价有值。就取临时价。反之用单价;若两者都没有的话,就为0)
-                    if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[12].Value) != "")
+                    if (Convert.ToString(gvshow.Rows[e.RowIndex].Cells[12].Value) != "")
                     {
-                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[12].Value);
+                        price = Convert.ToDecimal(gvshow.Rows[e.RowIndex].Cells[12].Value);
                     }
-                    else if (Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[11].Value) != "")
+                    else if (Convert.ToString(gvshow.Rows[e.RowIndex].Cells[11].Value) != "")
                     {
-                        price = Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[11].Value);
+                        price = Convert.ToDecimal(gvshow.Rows[e.RowIndex].Cells[11].Value);
                     }
                     else
                     {
                         price = 0;
                     }
-                    gvdtl.Rows[e.RowIndex].Cells[8].Value = renCost + fuCost + price;
+                    gvshow.Rows[e.RowIndex].Cells[8].Value = renCost + fuCost + price;
                 }
                 else if (e.ColumnIndex == 7 || e.ColumnIndex == 8)
                 {
@@ -153,12 +159,107 @@ namespace RD.UI.Order
                     //计算“合计”(13)=工程量(7) * 综合单价(8)
 
                     //工程量
-                    quantities = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[7].Value);
+                    quantities = Convert.ToString(gvshow.Rows[e.RowIndex].Cells[7].Value) == "" ? 0 : Convert.ToDecimal(gvshow.Rows[e.RowIndex].Cells[7].Value);
                     //综合单价
-                    finalPrice = Convert.ToString(gvdtl.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvdtl.Rows[e.RowIndex].Cells[8].Value);
+                    finalPrice = Convert.ToString(gvshow.Rows[e.RowIndex].Cells[8].Value) == "" ? 0 : Convert.ToDecimal(gvshow.Rows[e.RowIndex].Cells[8].Value);
 
-                    gvdtl.Rows[e.RowIndex].Cells[13].Value = quantities * finalPrice;
+                    gvshow.Rows[e.RowIndex].Cells[13].Value = quantities * finalPrice;
                 }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 是否显示‘预览页’
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Cbshow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 当点击‘预览页’某行时执行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Gvdtl_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmadd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //初始化记录
+                typeInfo.Funname = "HouseProject";
+                typeInfo.Remark = "A";
+                typeInfo.OnInitialize();
+                typeInfo.StartPosition = FormStartPosition.CenterScreen;
+                typeInfo.ShowDialog();
+
+                //
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 替换
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmreplace_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gvshow.SelectedRows.Count == 0) throw new Exception("请选择一行记录进行替换.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 删除明细行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tmdel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
             }
             catch (Exception ex)
             {
@@ -184,6 +285,26 @@ namespace RD.UI.Order
         }
 
         /// <summary>
+        /// 清空记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btnremove_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                txttypename.Text = "";
+                var dt = (DataTable)gvshow.DataSource;
+                dt.Rows.Clear();
+                gvshow.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// 审核
         /// </summary>
         /// <param name="sender"></param>
@@ -201,7 +322,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 保存及刷新
+        /// 提交
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -234,56 +355,7 @@ namespace RD.UI.Order
             }
         }
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tmadd_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// 替换
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tmreplace_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// 删除明细行
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Tmdel_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        
 
         /// <summary>
         /// 权限控制
@@ -301,7 +373,8 @@ namespace RD.UI.Order
             //若为“非审核”状态的,就执行以下语句
             else
             {
-                
+                pbimg.Visible = false;
+
             }
         }
 
@@ -652,6 +725,8 @@ namespace RD.UI.Order
             gvdtl.Columns[1].Visible = false;
             gvdtl.Columns[2].Visible = false;
         }
+
+
 
     }
 }

@@ -33,11 +33,16 @@
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.tmGet = new System.Windows.Forms.ToolStripMenuItem();
             this.tmClose = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.comtype = new System.Windows.Forms.ComboBox();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtValue = new System.Windows.Forms.TextBox();
             this.comlist = new System.Windows.Forms.ComboBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.rdchooseOrderHistory = new System.Windows.Forms.RadioButton();
+            this.rdchooseBd = new System.Windows.Forms.RadioButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.bngat = new System.Windows.Forms.BindingNavigator(this.components);
             this.bnCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -56,17 +61,15 @@
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
-            this.rdchooseBd = new System.Windows.Forms.RadioButton();
-            this.rdchooseOrderHistory = new System.Windows.Forms.RadioButton();
             this.Menu.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
             this.bngat.SuspendLayout();
-            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,7 +83,6 @@
             this.Menu.Name = "Menu";
             this.Menu.Size = new System.Drawing.Size(795, 25);
             this.Menu.TabIndex = 0;
-            this.Menu.Text = "menuStrip1";
             // 
             // tmGet
             // 
@@ -94,63 +96,116 @@
             this.tmClose.Size = new System.Drawing.Size(44, 21);
             this.tmClose.Text = "关闭";
             // 
-            // panel1
+            // panel5
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.btnSearch);
-            this.panel1.Controls.Add(this.txtValue);
-            this.panel1.Controls.Add(this.comlist);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 25);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(795, 31);
-            this.panel1.TabIndex = 1;
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.comtype);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel5.Location = new System.Drawing.Point(0, 25);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(795, 27);
+            this.panel5.TabIndex = 3;
+            // 
+            // comtype
+            // 
+            this.comtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comtype.FormattingEnabled = true;
+            this.comtype.Location = new System.Drawing.Point(8, 2);
+            this.comtype.Name = "comtype";
+            this.comtype.Size = new System.Drawing.Size(121, 20);
+            this.comtype.TabIndex = 1;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.btnSearch);
+            this.panel6.Controls.Add(this.txtValue);
+            this.panel6.Controls.Add(this.comlist);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel6.Location = new System.Drawing.Point(0, 52);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(795, 27);
+            this.panel6.TabIndex = 4;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(299, 4);
+            this.btnSearch.Location = new System.Drawing.Point(292, 1);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 2;
+            this.btnSearch.TabIndex = 5;
             this.btnSearch.Text = "查询";
             this.btnSearch.UseVisualStyleBackColor = true;
             // 
             // txtValue
             // 
-            this.txtValue.Location = new System.Drawing.Point(141, 5);
+            this.txtValue.Location = new System.Drawing.Point(134, 2);
             this.txtValue.Name = "txtValue";
             this.txtValue.Size = new System.Drawing.Size(152, 21);
-            this.txtValue.TabIndex = 1;
+            this.txtValue.TabIndex = 4;
             // 
             // comlist
             // 
             this.comlist.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comlist.FormattingEnabled = true;
-            this.comlist.Location = new System.Drawing.Point(13, 6);
+            this.comlist.Location = new System.Drawing.Point(6, 3);
             this.comlist.Name = "comlist";
-            this.comlist.Size = new System.Drawing.Size(121, 20);
-            this.comlist.TabIndex = 0;
+            this.comlist.Size = new System.Drawing.Size(123, 20);
+            this.comlist.TabIndex = 3;
             // 
-            // panel2
+            // panel1
             // 
-            this.panel2.Controls.Add(this.gvdtl);
-            this.panel2.Controls.Add(this.panel4);
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 56);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(795, 411);
-            this.panel2.TabIndex = 2;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.gvdtl);
+            this.panel1.Controls.Add(this.panel3);
+            this.panel1.Controls.Add(this.panel4);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 79);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(795, 388);
+            this.panel1.TabIndex = 5;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.rdchooseOrderHistory);
+            this.panel4.Controls.Add(this.rdchooseBd);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(793, 29);
+            this.panel4.TabIndex = 4;
+            // 
+            // rdchooseOrderHistory
+            // 
+            this.rdchooseOrderHistory.AutoSize = true;
+            this.rdchooseOrderHistory.Location = new System.Drawing.Point(142, 7);
+            this.rdchooseOrderHistory.Name = "rdchooseOrderHistory";
+            this.rdchooseOrderHistory.Size = new System.Drawing.Size(107, 16);
+            this.rdchooseOrderHistory.TabIndex = 1;
+            this.rdchooseOrderHistory.Text = "从历史单据获取";
+            this.rdchooseOrderHistory.UseVisualStyleBackColor = true;
+            // 
+            // rdchooseBd
+            // 
+            this.rdchooseBd.AutoSize = true;
+            this.rdchooseBd.Checked = true;
+            this.rdchooseBd.Location = new System.Drawing.Point(14, 7);
+            this.rdchooseBd.Name = "rdchooseBd";
+            this.rdchooseBd.Size = new System.Drawing.Size(119, 16);
+            this.rdchooseBd.TabIndex = 0;
+            this.rdchooseBd.TabStop = true;
+            this.rdchooseBd.Text = "从基础信息库获取";
+            this.rdchooseBd.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.bngat);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 385);
+            this.panel3.Location = new System.Drawing.Point(0, 360);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(795, 26);
-            this.panel3.TabIndex = 1;
+            this.panel3.Size = new System.Drawing.Size(793, 26);
+            this.panel3.TabIndex = 5;
             // 
             // bngat
             // 
@@ -177,7 +232,7 @@
             this.toolStripLabel5,
             this.tstotalrow});
             this.bngat.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.bngat.Location = new System.Drawing.Point(307, 0);
+            this.bngat.Location = new System.Drawing.Point(305, 0);
             this.bngat.MoveFirstItem = this.bnMoveFirstItem;
             this.bngat.MoveLastItem = this.bnMoveLastItem;
             this.bngat.MoveNextItem = this.bnMoveNextItem;
@@ -302,16 +357,6 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.rdchooseOrderHistory);
-            this.panel4.Controls.Add(this.rdchooseBd);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(795, 29);
-            this.panel4.TabIndex = 2;
-            // 
             // gvdtl
             // 
             this.gvdtl.AllowUserToAddRows = false;
@@ -322,30 +367,8 @@
             this.gvdtl.Name = "gvdtl";
             this.gvdtl.ReadOnly = true;
             this.gvdtl.RowTemplate.Height = 23;
-            this.gvdtl.Size = new System.Drawing.Size(795, 356);
-            this.gvdtl.TabIndex = 3;
-            // 
-            // rdchooseBd
-            // 
-            this.rdchooseBd.AutoSize = true;
-            this.rdchooseBd.Checked = true;
-            this.rdchooseBd.Location = new System.Drawing.Point(14, 7);
-            this.rdchooseBd.Name = "rdchooseBd";
-            this.rdchooseBd.Size = new System.Drawing.Size(119, 16);
-            this.rdchooseBd.TabIndex = 0;
-            this.rdchooseBd.TabStop = true;
-            this.rdchooseBd.Text = "从基础信息库获取";
-            this.rdchooseBd.UseVisualStyleBackColor = true;
-            // 
-            // rdchooseOrderHistory
-            // 
-            this.rdchooseOrderHistory.AutoSize = true;
-            this.rdchooseOrderHistory.Location = new System.Drawing.Point(142, 7);
-            this.rdchooseOrderHistory.Name = "rdchooseOrderHistory";
-            this.rdchooseOrderHistory.Size = new System.Drawing.Size(107, 16);
-            this.rdchooseOrderHistory.TabIndex = 1;
-            this.rdchooseOrderHistory.Text = "从历史单据获取";
-            this.rdchooseOrderHistory.UseVisualStyleBackColor = true;
+            this.gvdtl.Size = new System.Drawing.Size(793, 331);
+            this.gvdtl.TabIndex = 6;
             // 
             // TypeInfoFrm
             // 
@@ -354,24 +377,26 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(795, 467);
             this.ControlBox = false;
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel6);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.Menu);
             this.MainMenuStrip = this.Menu;
             this.Name = "TypeInfoFrm";
-            this.Text = "ContextMenuFrm";
+            this.Text = "明细信息选择";
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).EndInit();
             this.bngat.ResumeLayout(false);
             this.bngat.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -383,32 +408,34 @@
         private new System.Windows.Forms.MenuStrip Menu;
         private System.Windows.Forms.ToolStripMenuItem tmGet;
         private System.Windows.Forms.ToolStripMenuItem tmClose;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox comlist;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.ComboBox comtype;
+        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtValue;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ComboBox comlist;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.RadioButton rdchooseOrderHistory;
+        private System.Windows.Forms.RadioButton rdchooseBd;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.BindingNavigator bngat;
         private System.Windows.Forms.ToolStripLabel bnCountItem;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox bnPositionItem;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
         private System.Windows.Forms.ToolStripButton bnMoveFirstItem;
         private System.Windows.Forms.ToolStripButton bnMovePreviousItem;
-        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
-        private System.Windows.Forms.ToolStripTextBox bnPositionItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator1;
         private System.Windows.Forms.ToolStripButton bnMoveNextItem;
         private System.Windows.Forms.ToolStripButton bnMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripComboBox tmshowrows;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripLabel tstotalrow;
         private System.Windows.Forms.DataGridView gvdtl;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.RadioButton rdchooseOrderHistory;
-        private System.Windows.Forms.RadioButton rdchooseBd;
     }
 }
