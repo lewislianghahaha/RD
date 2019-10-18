@@ -224,7 +224,7 @@ namespace RD.UI.Order
                 typeInfo.ShowDialog();
 
                 //
-
+                var dt = typeInfo.ResultTable;
             }
             catch (Exception ex)
             {

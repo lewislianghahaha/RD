@@ -355,6 +355,8 @@ namespace RD.Logic
                 case "1.6":
                     _resultMark = search.CheckCanDel(functionName,pid,dt,datarow);
                     break;
+                //
+
 
                 //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
                 case "2":
@@ -396,7 +398,6 @@ namespace RD.Logic
         /// <param name="confirmid">审核ID</param>
         /// <param name="deldt">获取需要删除的表体记录信息</param>
         /// <param name="treeid">树菜单ID</param>
-        /// <param name="dropdownlistid">下拉列表ID</param>
         private void OrderInfo(string functionId,string functionName,string funState,int pid,string treeName,int id,
                                   int custid,string accountName,DataTable dt,int confirmid,DataTable deldt,int treeid/*,int dropdownlistid*/)
         {
@@ -426,6 +427,7 @@ namespace RD.Logic
                 case "1.5":
                     _resultTable = orderSearch.Get_HistoryOrderRecord(pid);
                     break;
+                
 
                 //保存(作用:对树形菜单进行导入 新增分组时使用)
                 case "2":

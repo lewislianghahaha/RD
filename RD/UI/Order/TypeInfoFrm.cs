@@ -107,12 +107,11 @@ namespace RD.UI.Order
                     break;
             }
             //获取对应的类别明细记录(包括装修工程 及 材料)
-            //Getdtl(0);
+            Getdtl(0);
             //连接GridView页面跳转功能
-            //LinkGridViewPageChange(_dt);
-
+            LinkGridViewPageChange(_dt);
             //控制GridView指定列
-            //ControlGridViewisShow();
+            ControlGridViewisShow();
         }
 
         /// <summary>
@@ -590,31 +589,71 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 根据条件获取对应的记录
+        /// 根据条件获取对应的DT记录(获取数据源)
         /// </summary>
         /// <param name="genid">运行ID 0:从基础信息库获取 1:从单据历史记录获取</param>
         /// <returns></returns>
-        private DataTable Getdtl(int genid)
+        private void Getdtl(int genid)
         {
-            //从基础信息库获取
+            //从基础信息库获取(注:主要区分来源)
             if (genid == 0)
             {
                 task.TaskId = 1;
-                task.FunctionId = "1";
+                task.FunctionId = "1.7";
                 task.FunctionName = _funname;
-                task.FunctionType = "G";
-                task.ParentId = Convert.ToString(_id);
+
+                if (_funname == "HouseProject")
+                {
+                    //获取下拉列表所选值
+                    var dvordertylelist = (DataRowView)comtype.Items[comtype.SelectedIndex];
+                    var typeId = Convert.ToInt32(dvordertylelist["Id"]);
+
+                    switch (typeId)
+                    {
+                        //土建工程
+                        case 1:
+                            task.ParentId = "5";
+                            break;
+                        //天花工程
+                        case 2:
+                            task.ParentId = "6";
+                            break;
+                        //地面工程
+                        case 3:
+                            task.ParentId = "7";
+                            break;
+                        //墙身工程
+                        case 4:
+                            task.ParentId = "8";
+                            break;
+                    }
+                }
+                //当_funname=Material时执行
+                else
+                {
+                    task.ParentId = null;
+                }
             }
-            //从单据历史记录获取(T_Pro_AdornEntry)
+            //从单据历史记录获取(包括‘室内装修工程’以及‘室内主材单’)
             else
             {
                 task.TaskId = 2;
                 task.FunctionId = "1.5";
-                task.Pid = _id;
+
+                //功能名称:Material 材料 HouseProject:装修工程类别
+                if (_funname== "HouseProject")
+                {
+                    task.Pid = _id;
+                }
+                //_funname='Material'
+                else
+                {
+                    
+                }
+                
             }
             task.StartTask();
             _dt = task.ResultTable;
-            return _dt;
         }
 
         /// <summary>

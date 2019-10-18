@@ -294,7 +294,7 @@ namespace RD.DB.Search
                 case "MaterialOrderTree":
                     resultDt = dlDtList.Get_ProMaterialTreedt();
                     break;
-                // 获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用
+                // 获取历史单据记录 TypeInfoFrm.cs使用
                 case "HistoryAdornEmpty":
                     resultDt = dlDtList.Get_HistoryAdornEmptydt();
                     break;
@@ -616,6 +616,10 @@ namespace RD.DB.Search
             }
             return resultdt;
         }
+
+
+
+
 
         #endregion
 

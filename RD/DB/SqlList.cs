@@ -733,7 +733,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 根据获取树菜单节点刷新表体内容
+        /// 根据获取树菜单节点刷新表体内容(NO NEED)
         /// </summary>
         /// <param name="factionName"></param>
         /// <param name="id">主键ID</param>
@@ -808,6 +808,8 @@ namespace RD.DB
                         AND b.Fstatus='Y'";
             return _result;
         }
+
+
 
         /// <summary>
         /// 更新单据状态(审核与反审核时使用)
