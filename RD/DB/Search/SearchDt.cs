@@ -294,9 +294,22 @@ namespace RD.DB.Search
                 case "MaterialOrderTree":
                     resultDt = dlDtList.Get_ProMaterialTreedt();
                     break;
-                // 获取历史单据记录 TypeInfoFrm.cs使用
+
+                // 获取历史单据记录 T_PRO_ADORN TypeInfoFrm.cs使用
                 case "HistoryAdornEmpty":
                     resultDt = dlDtList.Get_HistoryAdornEmptydt();
+                    break;
+                //获取历史单据记录 T_PRO_MATERIAL TypeInfoFrm.cs使用
+                case "HistoryMaterial":
+                    resultDt = dlDtList.Get_HistoryMaterialEmptydt();
+                    break;
+                //获取基础信息库-装修工程明细记录临时表(TypeInform窗体使用)
+                case "BDAdorn":
+                    resultDt = dlDtList.Get_BDHtypeEmptydt();
+                    break;
+                //获取基础信息库-材料明细记录临时表(TypeInform窗体使用)
+                case "BDMaterial":
+                    resultDt = dlDtList.Get_BDMaterialEmptydt();
                     break;
             }
             return resultDt;
@@ -604,10 +617,9 @@ namespace RD.DB.Search
             {
                 //获取对应的SQL语句
                 var sqlscript = sqlList.Get_BdRecord(type, id);
-
                 tempdt = type == "HouseProject" ? dlDtList.Get_BDHtypeEmptydt() : dlDtList.Get_BDMaterialEmptydt();
                 var dt = GetData(sqlscript);
-                resultdt = tempdt.Rows.Count == 0 ? tempdt : dt;
+                resultdt = dt.Rows.Count == 0 ? tempdt : dt;
             }
             catch (Exception)
             {

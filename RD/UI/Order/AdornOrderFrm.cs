@@ -217,7 +217,7 @@ namespace RD.UI.Order
             try
             {
                 //初始化记录
-                typeInfo.Funname = "HouseProject";
+                typeInfo.Funname = "HouseProject"; //"Material"
                 typeInfo.Remark = "A";
                 typeInfo.OnInitialize();
                 typeInfo.StartPosition = FormStartPosition.CenterScreen;

@@ -17,8 +17,6 @@ namespace RD.UI.Order
         #region 参数
         //获取表体DT
         private DataTable _dt;
-        //获取ID信息(通过下拉列表 或 树型菜单获取)
-        //private int _id;
         //获取功能名称:Material 材料 HouseProject:装修工程类别
         private string _funname;
         //获取remark值(替换时使用 A:新增;U:替换)
@@ -38,10 +36,6 @@ namespace RD.UI.Order
         #endregion
 
         #region Set
-        /// <summary>
-        ///// 获取ID信息(来源:房屋装修类型ID 或 材料信息管理ID)
-        ///// </summary>
-        //public int Id { set { _id = value; } }
         /// <summary>
         /// 获取功能名称
         /// </summary>
@@ -73,6 +67,7 @@ namespace RD.UI.Order
             tmClose.Click += TmClose_Click;
             comlist.Click += Comlist_Click;
             btnSearch.Click += BtnSearch_Click;
+            comtype.SelectedIndexChanged += Comtype_SelectedIndexChanged;
             
             rdchooseBd.Click += RdchooseBd_Click;
             rdchooseOrderHistory.Click += RdchooseOrderHistory_Click;
@@ -123,9 +118,18 @@ namespace RD.UI.Order
             {
                 //若文本框不为空,先将文本框清空
                 txtValue.Text = "";
-
                 //判断若"从历史单据获取"单选按钮是否选中
-                task.FunctionName = rdchooseOrderHistory.Checked ? "HistoryAdornEmpty" : _funname;
+                if (rdchooseOrderHistory.Checked)
+                {
+                    //根据不同的单据类型获取不同的‘历史记录标记’
+                    task.FunctionName = _funname == "HouseProject" ? "AdornHistoryRecord" : "MaterialHistoryRecord";
+                }
+                else if (rdchooseBd.Checked)
+                {
+                    task.FunctionName = _funname;
+                }
+
+                //task.FunctionName = rdchooseOrderHistory.Checked ? "AdornHistoryRecord" : _funname;
                 task.TaskId = 1;
                 task.FunctionId = "1.2";
                 task.StartTask();
@@ -133,6 +137,31 @@ namespace RD.UI.Order
                 comlist.DataSource = task.ResultTable;
                 comlist.DisplayMember = "ColName";     //设置显示值
                 comlist.ValueMember = "ColId";        //设置默认值内码(即:列名)
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// ‘工程类别’下拉列表，修改值时执行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Comtype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdchooseBd.Checked)
+                {
+                    Getdtl(0);
+                }
+                else if(rdchooseOrderHistory.Checked)
+                {
+                    Getdtl(1);
+                }
+                txtValue.Text = "";
             }
             catch (Exception ex)
             {
@@ -196,17 +225,54 @@ namespace RD.UI.Order
         {
             try
             {
-
+                //区分:当_remark="A"时,表示‘新增’记录,可多行选择; 反之,为‘替换’使用,只能选择一行
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中行,请选择后再继续");
+                //根据不同情况获取不同的临时表
+                if (_funname == "HouseProject")
+                {
+                    //基础信自息库获取
+                    if (rdchooseBd.Checked)
+                    {
+                        _resultTable = dtList.Get_BDHtypeEmptydt();
+                    }
+                    //获取历史记录
+                    else if (rdchooseOrderHistory.Checked)
+                    {
+                        _resultTable = dtList.Get_HistoryAdornEmptydt();
+                    }
+                }
+                else
+                {
+                    if (rdchooseBd.Checked)
+                    {
+                        _resultTable = dtList.Get_BDMaterialEmptydt();
+                    }
+                    else if (rdchooseOrderHistory.Checked)
+                    {
+                        _resultTable = dtList.Get_HistoryMaterialEmptydt();
+                    }
+                }
 
                 //当为‘新增’操作时执行
                 if (_remark == "A")
                 {
-
+                    //循环所选行数
+                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                    {
+                        var newrow = _resultTable.NewRow();
+                        //newrow[1] = row.Cells[0].Value;
+                        //
+                        _resultTable.Rows.Add(newrow);
+                    }
                 }
                 //当为‘替换’操作时
                 else
                 {
+                    if (gvdtl.SelectedRows.Count > 1) throw new Exception("只能选择一行记录进行替换,请重新选择");
+                    var newrow = _resultTable.NewRow();
+                    //newrow[1] = gvdtl.SelectedRows[0].Cells[0].Value;
 
+                    _resultTable.Rows.Add(newrow);
                 }
                 //完成后关闭该窗体
                 this.Close();
@@ -259,7 +325,30 @@ namespace RD.UI.Order
                 var colName = Convert.ToString(dvColIdlist["ColName"]);
 
                 //判断若"从历史单据获取"单选按钮是否选中
-                task.FunctionName = rdchooseOrderHistory.Checked ? "HistoryAdornEmpty" : _funname;
+                switch (_funname)
+                {
+                    case "HouseProject":
+                        if (rdchooseOrderHistory.Checked)
+                        {
+                            task.FunctionName = "HistoryAdornEmpty";
+                        }  
+                        else if (rdchooseBd.Checked)
+                        {
+                            task.FunctionName = "BDAdorn";
+                        }
+                        break;
+                    case "Material":
+                        if (rdchooseOrderHistory.Checked)
+                        {
+                            task.FunctionName = "HistoryMaterial";
+                        }
+                        else if (rdchooseBd.Checked)
+                        {
+                            task.FunctionName = "BDMaterial";
+                        }
+                        break;
+                }
+                //task.FunctionName = rdchooseOrderHistory.Checked ? "HistoryAdornEmpty" : _funname;
                 task.TaskId = 1;
                 task.FunctionId = "1.1";
                 task.SearchName = colName;
@@ -287,19 +376,8 @@ namespace RD.UI.Order
         /// </summary>
         private void ControlGridViewisShow()
         {
-            if (_funname == "HouseProject")
-            {
-                //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
-                gvdtl.Columns[0].Visible = false;
-                gvdtl.Columns[1].Visible = false;
-            }
-            else if(_funname== "Material")
-            {
-                //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
-                gvdtl.Columns[0].Visible = false;
-                gvdtl.Columns[1].Visible = false;
-                gvdtl.Columns[4].Visible = false;
-            }
+            //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+            gvdtl.Columns[0].Visible = false;
             //设置指定列不能编辑
             gvdtl.Columns[gvdtl.Columns.Count - 1].ReadOnly = true;
             gvdtl.Columns[gvdtl.Columns.Count - 2].ReadOnly = true;
@@ -589,90 +667,58 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 根据条件获取对应的DT记录(获取数据源)
+        /// 根据条件获取对应的DT记录(获取数据源) 重
         /// </summary>
         /// <param name="genid">运行ID 0:从基础信息库获取 1:从单据历史记录获取</param>
         /// <returns></returns>
         private void Getdtl(int genid)
         {
+            var pid = 0;
+
+            if (_funname == "HouseProject")
+            {
+                //获取下拉列表所选值
+                var dvordertylelist = (DataRowView)comtype.Items[comtype.SelectedIndex];
+                var typeId = Convert.ToInt32(dvordertylelist["Id"]);
+
+                switch (typeId)
+                {
+                    //土建工程
+                    case 1:
+                        pid = 5;
+                        break;
+                    //天花工程
+                    case 2:
+                        pid = 6;
+                        break;
+                    //地面工程
+                    case 3:
+                        pid = 7;
+                        break;
+                    //墙身工程
+                    case 4:
+                        pid = 8;
+                        break;
+                }
+            }
+
             //从基础信息库获取(注:主要区分来源)
             if (genid == 0)
             {
                 task.TaskId = 1;
                 task.FunctionId = "1.7";
                 task.FunctionName = _funname;
-
-                if (_funname == "HouseProject")
-                {
-                    //获取下拉列表所选值
-                    var dvordertylelist = (DataRowView)comtype.Items[comtype.SelectedIndex];
-                    var typeId = Convert.ToInt32(dvordertylelist["Id"]);
-
-                    switch (typeId)
-                    {
-                        //土建工程
-                        case 1:
-                            task.Pid = 5;
-                            break;
-                        //天花工程
-                        case 2:
-                            task.Pid = 6;
-                            break;
-                        //地面工程
-                        case 3:
-                            task.Pid = 7;
-                            break;
-                        //墙身工程
-                        case 4:
-                            task.Pid = 8;
-                            break;
-                    }
-                }
-                //当_funname=Material时执行
-                else
-                {
-                    task.Pid = 0;
-                }
             }
             //从单据历史记录获取(包括‘室内装修工程’以及‘室内主材单’)
             else
             {
                 task.TaskId = 2;
                 task.FunctionId = "1.5";
-
-                //功能名称:Material 材料 HouseProject:装修工程类别
-                if (_funname== "HouseProject")
-                {
-                    //获取下拉列表所选值
-                    var dvordertylelist = (DataRowView)comtype.Items[comtype.SelectedIndex];
-                    var typeId = Convert.ToInt32(dvordertylelist["Id"]);
-
-                    switch (typeId)
-                    {
-                        //土建工程
-                        case 1:
-                            task.Pid = 5;
-                            break;
-                        //天花工程
-                        case 2:
-                            task.Pid = 6;
-                            break;
-                        //地面工程
-                        case 3:
-                            task.Pid = 7;
-                            break;
-                        //墙身工程
-                        case 4:
-                            task.Pid = 8;
-                            break;
-                    }
-                }
-                //_funname='Material'
-                else
-                {
-                    task.Pid = 0;
-                }
+                task.FunctionName = _funname;
             }
+
+            //功能名称:Material 材料 HouseProject:装修工程类别
+            task.Pid = _funname == "HouseProject" ? pid : 0;
             task.StartTask();
             _dt = task.ResultTable;
         }
