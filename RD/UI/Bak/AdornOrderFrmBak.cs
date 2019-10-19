@@ -1258,7 +1258,7 @@ namespace RD.UI.Bak
             var treeid = (int)tvview.SelectedNode.Tag;
 
             typeInfoFrm.Funname = "HouseProject";
-            typeInfoFrm.Id = htypeid;
+           // typeInfoFrm.Id = htypeid;
 
             //初始化记录
             typeInfoFrm.OnInitialize();

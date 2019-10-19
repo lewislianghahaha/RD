@@ -591,19 +591,47 @@ namespace RD.DB.Search
         }
 
         /// <summary>
+        /// 根据类型及ID从基础信息库内查询‘装修工程’ ‘材料信息’相关明细记录 typeinfofrm使用
+        /// </summary>
+        /// <param name="type">HouseProject:装修工程  Material:材料</param>
+        /// <param name="id">HouseProject使用</param>
+        /// <returns></returns>
+        public DataTable Get_BDRecord(string type,int id)
+        {
+            var resultdt = new DataTable();
+            var tempdt=new DataTable();
+            try
+            {
+                //获取对应的SQL语句
+                var sqlscript = sqlList.Get_BdRecord(type, id);
+
+                tempdt = type == "HouseProject" ? dlDtList.Get_BDHtypeEmptydt() : dlDtList.Get_BDMaterialEmptydt();
+                var dt = GetData(sqlscript);
+                resultdt = tempdt.Rows.Count == 0 ? tempdt : dt;
+            }
+            catch (Exception)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+            }
+            return resultdt;
+        }
+
+        /// <summary>
         /// 获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用
         /// </summary>
-        /// <param name="pid"></param>
+        /// <param name="type">HouseProject:装修工程  Material:材料</param>
+        /// <param name="pid">HouseProject使用</param>
         /// <returns></returns>
-        public DataTable Get_HistoryOrderRecord(int pid)
+        public DataTable Get_HistoryOrderRecord(string type, int pid)
         {
             var resultdt = new DataTable();
             try
             {
                 //获取对应SQL语句
-                var sqlscript = sqlList.OrderHistory(pid);
+                var sqlscript = sqlList.OrderHistory(type,pid);
                 //获取对应临时表信息(当没有查询结果时使用)
-                var tempdt = dlDtList.Get_HistoryAdornEmptydt();
+                var tempdt = type == "HouseProject" ? dlDtList.Get_HistoryAdornEmptydt():dlDtList.Get_HistoryMaterialEmptydt();
                 //若返回行数为0，即需用对应空表(临时表)填充
                 var dt = GetData(sqlscript);
                 resultdt = dt.Rows.Count == 0 ? tempdt : dt;

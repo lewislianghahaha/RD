@@ -669,10 +669,10 @@ namespace RD.DB
                         dc.ColumnName = "HTypeid";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    //adornid
+                    //HtypeName
                     case 1:
-                        dc.ColumnName = "adornid";
-                        dc.DataType = Type.GetType("System.Int32");
+                        dc.ColumnName = "装修工程类别";
+                        dc.DataType = Type.GetType("System.String");
                         break;
                     //HTypeProjectName
                     case 2:
@@ -691,18 +691,192 @@ namespace RD.DB
                         break;
                     //InputUser
                     case 5:
-                        dc.ColumnName = "单据录入人";
+                        dc.ColumnName = "录入人";
                         dc.DataType = Type.GetType("System.String");
                         break;
                     //InputDt
                     case 6:
-                        dc.ColumnName = "单据录入日期";
+                        dc.ColumnName = "录入日期";
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
                     //OrderNo
                     case 7:
                         dc.ColumnName = "单据名称";
                         dc.DataType = Type.GetType("System.String");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取历史单据记录T_PRO_MaterialEntry TypeInfoFrm.cs使用
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_HistoryMaterialEmptydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 9; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //MaterialId
+                    case 0:
+                        dc.ColumnName = "MaterialId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //MaterialType
+                    case 1:
+                        dc.ColumnName = "材料大类";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //MaterialName
+                    case 2:
+                        dc.ColumnName = "材料名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //MaterialSize
+                    case 3:
+                        dc.ColumnName = "材料规格";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Unit
+                    case 4:
+                        dc.ColumnName = "单位";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Price
+                    case 5:
+                        dc.ColumnName = "单价";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //InputUser
+                    case 6:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 7:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    //OrderNo
+                    case 8:
+                        dc.ColumnName = "单据名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取基础信息库-装修工程明细记录临时表(TypeInform窗体使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_BDHtypeEmptydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 7; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //HTypeid
+                    case 0:
+                        dc.ColumnName = "HTypeid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //HtypeName
+                    case 1:
+                        dc.ColumnName = "装修工程类别";
+                        dc.DataType = Type.GetType("System.String"); 
+                        break;
+                    //ProjectName
+                    case 2:
+                        dc.ColumnName = "项目名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Unit
+                    case 3:
+                        dc.ColumnName = "单位";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //price
+                    case 4:
+                        dc.ColumnName = "单价";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //InputUser
+                    case 5:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 6:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取基础信息库-材料明细记录临时表(TypeInform窗体使用)
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_BDMaterialEmptydt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 8; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    //MaterialId
+                    case 0:
+                        dc.ColumnName = "MaterialId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //MaterialType
+                    case 1:
+                        dc.ColumnName = "材料大类";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //MaterialName
+                    case 2:
+                        dc.ColumnName = "材料名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //MaterialSize
+                    case 3:
+                        dc.ColumnName = "材料规格";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Unit
+                    case 4:
+                        dc.ColumnName = "单位";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //Price
+                    case 5:
+                        dc.ColumnName = "单价";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    //InputUser
+                    case 6:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //InputDt
+                    case 7:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
                         break;
                 }
                 dt.Columns.Add(dc);

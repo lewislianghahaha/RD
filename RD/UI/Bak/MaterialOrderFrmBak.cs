@@ -345,7 +345,7 @@ namespace RD.UI.Order
                 var treeid = (int)tvView.SelectedNode.Tag;
 
                 typeInfoFrm.Funname = "Material";
-                typeInfoFrm.Id = treeid;
+                //typeInfoFrm.Id = treeid;
                 //初始化记录
                 typeInfoFrm.OnInitialize();
                 typeInfoFrm.StartPosition = FormStartPosition.CenterScreen;

@@ -355,7 +355,10 @@ namespace RD.Logic
                 case "1.6":
                     _resultMark = search.CheckCanDel(functionName,pid,dt,datarow);
                     break;
-                //
+                //查询 TypeInfoFrm.cs窗体使用(目的:获取‘装修工程’ 或 ‘材料’基础信库的数据源)
+                case "1.7":
+                    _resultTable = search.SearchBdSource(functionName, pid);
+                    break;
 
 
                 //保存(作用:对表体GridView进行导入) (注:包括插入及更新操作)
@@ -423,9 +426,9 @@ namespace RD.Logic
                 case "1.4":
                     _resultTable = orderSearch.Get_Orderdtl(functionName, pid,treeid/*, dropdownlistid*/);
                     break;
-                //查询(作用:获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用)
+                //查询(作用:获取历史单据记录T_PRO_AdornEntry 及 T_PRO_MaterialEntry TypeInfoFrm.cs使用)
                 case "1.5":
-                    _resultTable = orderSearch.Get_HistoryOrderRecord(pid);
+                    _resultTable = orderSearch.Get_HistoryOrderRecord(functionName,pid);
                     break;
                 
 

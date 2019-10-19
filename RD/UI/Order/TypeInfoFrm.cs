@@ -18,7 +18,7 @@ namespace RD.UI.Order
         //获取表体DT
         private DataTable _dt;
         //获取ID信息(通过下拉列表 或 树型菜单获取)
-        private int _id;
+        //private int _id;
         //获取功能名称:Material 材料 HouseProject:装修工程类别
         private string _funname;
         //获取remark值(替换时使用 A:新增;U:替换)
@@ -39,9 +39,9 @@ namespace RD.UI.Order
 
         #region Set
         /// <summary>
-        /// 获取ID信息(来源:房屋装修类型ID 或 材料信息管理ID)
-        /// </summary>
-        public int Id { set { _id = value; } }
+        ///// 获取ID信息(来源:房屋装修类型ID 或 材料信息管理ID)
+        ///// </summary>
+        //public int Id { set { _id = value; } }
         /// <summary>
         /// 获取功能名称
         /// </summary>
@@ -612,26 +612,26 @@ namespace RD.UI.Order
                     {
                         //土建工程
                         case 1:
-                            task.ParentId = "5";
+                            task.Pid = 5;
                             break;
                         //天花工程
                         case 2:
-                            task.ParentId = "6";
+                            task.Pid = 6;
                             break;
                         //地面工程
                         case 3:
-                            task.ParentId = "7";
+                            task.Pid = 7;
                             break;
                         //墙身工程
                         case 4:
-                            task.ParentId = "8";
+                            task.Pid = 8;
                             break;
                     }
                 }
                 //当_funname=Material时执行
                 else
                 {
-                    task.ParentId = null;
+                    task.Pid = 0;
                 }
             }
             //从单据历史记录获取(包括‘室内装修工程’以及‘室内主材单’)
@@ -643,14 +643,35 @@ namespace RD.UI.Order
                 //功能名称:Material 材料 HouseProject:装修工程类别
                 if (_funname== "HouseProject")
                 {
-                    task.Pid = _id;
+                    //获取下拉列表所选值
+                    var dvordertylelist = (DataRowView)comtype.Items[comtype.SelectedIndex];
+                    var typeId = Convert.ToInt32(dvordertylelist["Id"]);
+
+                    switch (typeId)
+                    {
+                        //土建工程
+                        case 1:
+                            task.Pid = 5;
+                            break;
+                        //天花工程
+                        case 2:
+                            task.Pid = 6;
+                            break;
+                        //地面工程
+                        case 3:
+                            task.Pid = 7;
+                            break;
+                        //墙身工程
+                        case 4:
+                            task.Pid = 8;
+                            break;
+                    }
                 }
                 //_funname='Material'
                 else
                 {
-                    
+                    task.Pid = 0;
                 }
-                
             }
             task.StartTask();
             _dt = task.ResultTable;

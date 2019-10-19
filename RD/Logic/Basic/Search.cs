@@ -156,5 +156,18 @@ namespace RD.Logic.Basic
             }
             return result;
         }
+
+        /// <summary>
+        /// 根据类型及ID从基础信息库内查询‘装修工程’ ‘材料信息’相关明细记录 typeinfofrm使用
+        /// </summary>
+        /// <param name="type">HouseProject:装修工程  Material:材料</param>
+        /// <param name="id">HouseProject使用</param>
+        /// <returns></returns>
+        public DataTable SearchBdSource(string type,int id)
+        {
+            var result = serDt.Get_BDRecord(type,id);
+            return result;
+        }
+
     }
 }

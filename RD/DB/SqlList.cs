@@ -796,16 +796,34 @@ namespace RD.DB
         /// <summary>
         /// 获取历史单据记录T_PRO_AdornEntry TypeInfoFrm.cs使用
         /// </summary>
+        /// <param name="type">HouseProject:装修工程  Material:材料</param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string OrderHistory(int id)
+        public string OrderHistory(string type,int id)
         {
-            _result =$@"SELECT a.HTypeid,a.adornid,a.HTypeProjectName AS '项目名称',a.Unit AS '单位',a.Price '单价',a.InputUser '单据录入人',
-                               a.InputDt '单据录入日期',b.OrderNo '单据名称'
-                        FROM dbo.T_PRO_AdornEntry a
-                        INNER JOIN dbo.T_PRO_Adorn b ON a.Id=b.Id
-                        WHERE a.HTypeid='{id}'
-                        AND b.Fstatus='Y'";
+            if (type == "HouseProject")
+            {
+                _result = $@"
+                                SELECT a.HTypeid,c.HtypeName '装修工程类别',a.HTypeProjectName AS '项目名称',a.Unit AS '单位',a.Price '单价',a.InputUser '录入人',
+                                   a.InputDt '录入日期',b.OrderNo '单据名称'
+                                FROM dbo.T_PRO_AdornEntry a
+                                INNER JOIN dbo.T_PRO_Adorn b ON a.Id=b.Id
+						        INNER JOIN dbo.T_BD_HTypeEntry c ON a.HTypeid=c.HTypeid
+                                WHERE a.HTypeid='{id}'  --装修工程类别ID
+                                AND b.Fstatus='Y'";
+            }
+            else
+            {
+                _result = $@"
+                                SELECT a.MaterialId,a.MaterialType '材料大类',a.MaterialName '材料名称',C.MaterialSize '材料规格',
+	                                a.Unit '单位',a.Price '单价',a.InputUser '录入人',a.InputDt '录入日期',b.OrderNo '单据名称'                       
+                               FROM dbo.T_PRO_MaterialEntry a
+							   INNER JOIN dbo.T_PRO_Material b ON a.Id=b.Id
+							   INNER JOIN dbo.T_BD_MaterialEntry C ON A.MaterialId=C.MaterialId
+							   WHERE b.Fstatus='Y'
+                            ";
+            }
+            
             return _result;
         }
 
@@ -860,6 +878,36 @@ namespace RD.DB
                                 ";
                     break;
 
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// 根据类型及ID从基础信息库内查询‘装修工程’ ‘材料信息’相关明细记录 typeinfofrm使用
+        /// </summary>
+        /// <param name="type">HouseProject:装修工程  Material:材料</param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string Get_BdRecord(string type,int id)
+        {
+            if (type == "HouseProject")
+            {
+                _result = $@"
+                                SELECT a.Htypeid,b.HtypeName '装修工程类别',a.ProjectName AS '项目名称',a.Unit AS '单位',a.price '单价',a.InputUser '录入人',a.InputDt '录入日期'
+                                    FROM dbo.T_BD_HTypeProjectdtl a
+									INNER JOIN dbo.T_BD_HTypeEntry b ON a.HTypeid=b.HTypeid
+                                    WHERE a.Htypeid='{id}'
+                            ";
+            }
+            //材料信息使用
+            else
+            {
+                _result = @"
+                                SELECT a.MaterialId,B.MaterialType '材料大类',a.MaterialName as '材料名称',a.MaterialSize as '材料规格',
+                                  a.Unit as '单位',a.Price as '单价',a.InputUser as '录入人',a.InputDt as '录入日期'
+                                  FROM dbo.T_BD_MaterialEntry a
+								  INNER JOIN dbo.T_BD_Material B ON A.id=B.Id
+                            ";
             }
             return _result;
         }

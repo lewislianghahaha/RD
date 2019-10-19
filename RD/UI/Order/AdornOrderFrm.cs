@@ -225,6 +225,7 @@ namespace RD.UI.Order
 
                 //
                 var dt = typeInfo.ResultTable;
+
             }
             catch (Exception ex)
             {

@@ -115,12 +115,12 @@ namespace RD.Logic.Order
         /// </summary>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public DataTable Get_HistoryOrderRecord(int pid)
+        public DataTable Get_HistoryOrderRecord(string type,int pid)
         {
             DataTable dt;
             try
             {
-                dt = serDt.Get_HistoryOrderRecord(pid);
+                dt = serDt.Get_HistoryOrderRecord(type,pid);
             }
             catch (Exception ex)
             {
