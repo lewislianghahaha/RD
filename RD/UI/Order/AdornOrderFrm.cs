@@ -2,14 +2,17 @@
 using System.Data;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using RD.DB;
 using RD.Logic;
+using Stimulsoft.Report;
 
 namespace RD.UI.Order
 {
     public partial class AdornOrderFrm : Form
     {
+        Load load=new Load();
         TypeInfoFrm typeInfo=new TypeInfoFrm();
         TaskLogic task=new TaskLogic();
         DtList dtList=new DtList();
@@ -24,11 +27,12 @@ namespace RD.UI.Order
         //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
         private string _funState;
 
-
-        //提交时使用
+        //记录行ID（后面的‘替换’功能使用）
+        private int rowid;
+        //审核 提交时使用
         private DataTable _sourcedt;
-        //显示页使用
-        private DataTable _showdt;
+        //两页间数据转换时使用（中转DT）
+        private DataTable _tempdt;
         //保存删除的明细行(当读取状态时使用)
         private DataTable _deldt;
         
@@ -99,10 +103,11 @@ namespace RD.UI.Order
             //单据状态:创建 C
             if (_funState == "C")
             {
+                var sourcedt = OnInitializeDtl();
                 //初始化GridView(录入页)
-                gvshow.DataSource = OnInitializeDtl();
+                gvshow.DataSource = sourcedt;
                 //初始化GridView(预览页)
-                gvdtl.DataSource = OnInitializeDtl();
+                gvdtl.DataSource = sourcedt;
             }
             //单据状态:读取 R
             else
@@ -216,16 +221,47 @@ namespace RD.UI.Order
         {
             try
             {
-                //初始化记录
+                //初始化typeinform.cs
                 typeInfo.Funname = "HouseProject"; //"Material"
                 typeInfo.Remark = "A";
                 typeInfo.OnInitialize();
                 typeInfo.StartPosition = FormStartPosition.CenterScreen;
                 typeInfo.ShowDialog();
 
-                //
-                var dt = typeInfo.ResultTable;
+                //判断若返回的DT为空的话,就不需要任何效果
+                if (typeInfo.ResultTable == null || typeInfo.ResultTable.Rows.Count == 0) return;
+                //将返回的结果赋值至GridView内(注:判断若返回的DT不为空或行数大于0才执行插入效果)
+                if (typeInfo.ResultTable != null || typeInfo.ResultTable.Rows.Count > 0)
+                    InsertDtToGridView(typeInfo.ResultTable);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
+        /// <summary>
+        /// 将获取的数据插入至GridView内(注:可多行使用)
+        /// </summary>
+        private void InsertDtToGridView(DataTable sourcedt)
+        {
+            try
+            {
+                //将gvshow的内容赋值到DT
+                var gridViewdt = (DataTable) gvshow.DataSource;
+                //循环将获取过来的值插入至GridView内
+                foreach (DataRow rows in sourcedt.Rows)
+                {
+                    var newrow = gridViewdt.NewRow();
+                    newrow[0] = _pid;       //id(表头主键ID)
+                    newrow[2] = rows[0];    //工程类别ID
+                    newrow[4] = rows[1];    //装修工程类别
+                    newrow[5] = rows[2];    //项目名称
+                    newrow[6] = rows[3];    //单位名称
+                    newrow[11] = rows[4];   //单价
+                    newrow[17] = rowid++;   // RowId(单据状态为C时使用)
+                    gridViewdt.Rows.Add(newrow);
+                }
             }
             catch (Exception ex)
             {
@@ -241,9 +277,72 @@ namespace RD.UI.Order
         private void Tmreplace_Click(object sender, EventArgs e)
         {
             try
-            {
+            {   
                 if (gvshow.SelectedRows.Count == 0) throw new Exception("请选择一行记录进行替换.");
+                if (gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value == DBNull.Value) throw new Exception("空行不能进行替换,请再次选择");
+                //获取GridView内的RowID(AdornId) 注:那个不为空就取那个
+                var orderid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value != DBNull.Value ? 
+                                            gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value : gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[17].Value);
+                //获取orderid对应的行ID
+                var markid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value != DBNull.Value ? 1 : 17);
 
+                //初始化typeinform.cs
+                typeInfo.Funname = "HouseProject"; //"Material"
+                typeInfo.Remark = "U";
+                typeInfo.OnInitialize();
+                typeInfo.StartPosition = FormStartPosition.CenterScreen;
+                typeInfo.ShowDialog();
+
+                //判断若返回的DT为空的话,就不需要任何效果
+                if (typeInfo.ResultTable == null || typeInfo.ResultTable.Rows.Count == 0) return;
+                //将返回的结果赋值至GridView内(注:判断若返回的DT不为空或行数大于0才执行插入效果)
+                if (typeInfo.ResultTable != null || typeInfo.ResultTable.Rows.Count > 0)
+                    UpdateDtToGridView(orderid,markid,task.ResultTable);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 将获取的值更新至指定的GridView行内(注:只能一行使用)
+        /// </summary>
+        /// <param name="orderid">主键值</param>
+        /// <param name="markid">标记ID</param>
+        /// <param name="sourcedt">从typeinfofrm窗体获取的DT</param>
+        private void UpdateDtToGridView(int orderid,int markid,DataTable sourcedt)
+        {
+            try
+            {
+                //循环GridView内的值,当发现ID与条件ID相同,即进入行更新
+                var gridViewdt = (DataTable)gvshow.DataSource;
+
+                foreach (DataRow rows in gridViewdt.Rows)
+                {
+                    //判断若Adornid或RowId与变量orderid相同,即执行替换操作
+                    if (Convert.ToInt32(rows[markid]) !=orderid) continue;
+
+                    gridViewdt.BeginInit();
+                    rows[2] = sourcedt.Rows[0][0];      //工程类别ID
+                    rows[4] =sourcedt.Rows[0][1];       //装修工程类别
+                    rows[5] = sourcedt.Rows[0][2];      //项目名称
+                    rows[6] = sourcedt.Rows[0][3];      //单位
+
+                    rows[7] = DBNull.Value;             //工程量(清空)
+                    rows[8] = DBNull.Value;             //综合单价(清空)
+                    rows[9] = DBNull.Value;             //人工费用(清空)
+                    rows[10] = DBNull.Value;            //辅材费用(清空)
+                    rows[11] = sourcedt.Rows[0][4];     //单价
+                    rows[12] = DBNull.Value;            //临时材料单价(清空)
+                    rows[13] = DBNull.Value;            //合计(清空)
+                    rows[14] = DBNull.Value;            //备注(清空)
+                    rows[15] = GlobalClasscs.User.StrUsrName;   //录入人(更新至当前用户)
+                    rows[16] = DateTime.Now;                    //录入日期(更新至当天)
+                    gridViewdt.EndInit();
+                }
+                //操作完成后进行刷新
+                //LinkGridViewPageChange(gridViewdt);
             }
             catch (Exception ex)
             {
@@ -260,7 +359,37 @@ namespace RD.UI.Order
         {
             try
             {
+                if (gvshow.SelectedRows.Count == 0) throw new Exception("没有选择行,不能继续");
+                if (gvshow.RowCount==0) throw new Exception("没有明细记录,不能进行删除");
 
+                var clickMessage = $"您所选择需删除的行数为:{gvshow.SelectedRows.Count}行 \n 是否继续?";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //注:执行方式:当判断到_funState变量为R时,将要进行删除的行保存至_deldt内,(供保存时使用),完成后再删除GridView指定行;反之,只需将GridView进行指定行删除即可
+                    //注:在R状态下,需判断Adornid是否为空,若不为空,才进行插入至_deldt内
+
+                    if(_funState=="R")
+                    {
+                        foreach (DataGridViewRow rows in gvshow.SelectedRows)
+                        {
+                            //判断若Entryid不为空,才执行插入
+                            if (rows.Cells[1].Value == DBNull.Value) continue;
+
+                            var newrow = _deldt.NewRow();
+                            for (var i = 0; i < _deldt.Columns.Count; i++)
+                            {
+                                newrow[i] = rows.Cells[i].Value;
+                            }
+                            _deldt.Rows.Add(newrow);
+                        }
+                    }
+
+                    //将GridView内的指定行进行删除
+                    for (var i = gvshow.SelectedRows.Count; i > 0; i--)
+                    {
+                        gvshow.Rows.RemoveAt(gvshow.SelectedRows[i - 1].Index);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -269,7 +398,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 保存及刷新
+        /// 保存及刷新(注:将gvshow的记录通过添加至_dtl再通过转换将记录添加至gvdtl内)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -277,6 +406,14 @@ namespace RD.UI.Order
         {
             try
             {
+                if(gvshow.RowCount == 0) throw new Exception("没有明细行,不能执行操作");
+                if(txttypename.Text=="") throw new Exception("请输入大类名称信息再继续.");
+
+
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
 
             }
             catch (Exception ex)
@@ -284,6 +421,8 @@ namespace RD.UI.Order
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         /// <summary>
         /// 清空记录
@@ -348,7 +487,30 @@ namespace RD.UI.Order
         {
             try
             {
+                try
+                {
+                    task.TaskId = 4;
+                    task.FunctionId = "4";
+                    task.Id = _pid;
+                    task.FunctionName = _funName;
+                    Start();
 
+                    var resultdt = task.ResultTable;
+                    if (resultdt.Rows.Count == 0) throw new Exception("导出异常,请联系管理员");
+                    //调用STI模板并执行导出代码
+                    //加载STI模板 MaterialOrderReport
+                    var filepath = Application.StartupPath + "/Report/AdornOrderReport.mrt";
+                    var stireport = new StiReport();
+                    stireport.Load(filepath);
+                    //加载DATASET 或 DATATABLE
+                    stireport.RegData("Order", resultdt);
+                    stireport.Compile();
+                    stireport.Show();   //调用预览功能
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -356,7 +518,15 @@ namespace RD.UI.Order
             }
         }
 
-        
+        private void Start()
+        {
+            task.StartTask();
+
+            this.Invoke((ThreadStart)(() =>
+            {
+                load.Close();
+            }));
+        }
 
         /// <summary>
         /// 权限控制
@@ -718,13 +888,16 @@ namespace RD.UI.Order
             gvshow.Columns[8].ReadOnly = true;   //综合单价
             gvshow.Columns[11].ReadOnly = true;  //单价
             gvshow.Columns[13].ReadOnly = true;  //合计
-            gvshow.Columns[gvdtl.Columns.Count - 1].Visible = false; //录入人
-            gvshow.Columns[gvdtl.Columns.Count - 2].Visible = false; //录入日期
+
+            gvshow.Columns[gvdtl.Columns.Count - 1].Visible = false; //RowId(单据状态为C时使用)
+            gvshow.Columns[gvdtl.Columns.Count - 2].Visible = false; //录入人
+            gvshow.Columns[gvdtl.Columns.Count - 3].Visible = false; //录入日期
 
             //“预览页”设置
             gvdtl.Columns[0].Visible = false;
             gvdtl.Columns[1].Visible = false;
             gvdtl.Columns[2].Visible = false;
+            gvshow.Columns[gvdtl.Columns.Count - 1].Visible = false; // RowId(单据状态为C时使用)
         }
 
 

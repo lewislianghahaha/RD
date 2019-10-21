@@ -260,8 +260,11 @@ namespace RD.UI.Order
                     foreach (DataGridViewRow row in gvdtl.SelectedRows)
                     {
                         var newrow = _resultTable.NewRow();
-                        //newrow[1] = row.Cells[0].Value;
-                        //
+                        newrow[0] = row.Cells[0].Value; //Htypeid(MaterialId)   
+                        newrow[1] = row.Cells[1].Value; //装修工程类别(材料大类)
+                        newrow[2] = row.Cells[2].Value; //项目名称(材料名称)
+                        newrow[3] = row.Cells[3].Value; //单位
+                        newrow[4] = row.Cells[4].Value; //单价
                         _resultTable.Rows.Add(newrow);
                     }
                 }
@@ -270,8 +273,11 @@ namespace RD.UI.Order
                 {
                     if (gvdtl.SelectedRows.Count > 1) throw new Exception("只能选择一行记录进行替换,请重新选择");
                     var newrow = _resultTable.NewRow();
-                    //newrow[1] = gvdtl.SelectedRows[0].Cells[0].Value;
-
+                    newrow[0] = gvdtl.SelectedRows[0].Cells[0].Value; //Htypeid(MaterialId)   
+                    newrow[1] = gvdtl.SelectedRows[0].Cells[1].Value; //装修工程类别(材料大类)
+                    newrow[2] = gvdtl.SelectedRows[0].Cells[2].Value; //项目名称(材料名称)
+                    newrow[3] = gvdtl.SelectedRows[0].Cells[3].Value; //单位
+                    newrow[4] = gvdtl.SelectedRows[0].Cells[4].Value; //单价
                     _resultTable.Rows.Add(newrow);
                 }
                 //完成后关闭该窗体
