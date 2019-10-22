@@ -33,9 +33,12 @@ namespace RD.UI.Order
         private DataTable _sourcedt;
         //两页间数据转换时使用（中转DT）
         private DataTable _tempdt;
-        //保存删除的明细行(当读取状态时使用)
+        //保存删除的明细行(当读取状态时使用;注:作提交之用)
         private DataTable _deldt;
-        
+        //保存删除的明细行(记录从‘录入页’至‘预览页’需要删除的行记录,注:不作提交之用)
+        private DataTable _deltempdt;
+        //保存‘预览页’的所有记录(在‘初始化’及使用‘保存’按钮的最后,将要存放至gvdtl的记录也存放到这里)
+        private DataTable _gvdtldt;
 
         //保存查询出来的GridView记录（GridView页面跳转时使用）
         private DataTable _dtl;
@@ -99,21 +102,24 @@ namespace RD.UI.Order
         {
             //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
             ShowHead(_funName, _pid);
+            //初始化定义_deldt(及_deltempdt)临时表
+            _tempdt = _deltempdt = _deldt = dtList.Get_AdornEmptydt();
 
             //单据状态:创建 C
             if (_funState == "C")
             {
                 var sourcedt = OnInitializeDtl();
-                //初始化GridView(录入页)
-                gvshow.DataSource = sourcedt;
-                //初始化GridView(预览页)
-                gvdtl.DataSource = sourcedt;
+                //初始化GridView(录入页) (预览页)
+                gvdtl.DataSource = gvshow.DataSource = sourcedt;
             }
             //单据状态:读取 R
             else
             {
-                //连接GridView页面跳转功能
-                LinkGridViewPageChange(OnInitializeDtl());
+                //获取读取过来的记录信息
+                var dt = OnInitializeDtl();
+                //通过格式转换再赋值至gvdtl内
+                LinkGridViewPageChange(ChangeDisplayStyle(0, dt));
+                _gvdtldt = dt;
             }
             //控制GridView单元格显示方式
             ControlGridViewisShow();
@@ -187,7 +193,8 @@ namespace RD.UI.Order
         {
             try
             {
-
+                if (cbshow.Checked)
+                    tabControl2.Visible = false;
             }
             catch (Exception ex)
             {
@@ -259,7 +266,7 @@ namespace RD.UI.Order
                     newrow[5] = rows[2];    //项目名称
                     newrow[6] = rows[3];    //单位名称
                     newrow[11] = rows[4];   //单价
-                    newrow[17] = rowid++;   // RowId(单据状态为C时使用)
+                    newrow[17] = rowid++;   //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
             }
@@ -362,7 +369,7 @@ namespace RD.UI.Order
                 if (gvshow.SelectedRows.Count == 0) throw new Exception("没有选择行,不能继续");
                 if (gvshow.RowCount==0) throw new Exception("没有明细记录,不能进行删除");
 
-                var clickMessage = $"您所选择需删除的行数为:{gvshow.SelectedRows.Count}行 \n 是否继续?";
+                var clickMessage = $"您所选择需删除的行数为:'{gvshow.SelectedRows.Count}' 行 \n 是否继续?";
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //注:执行方式:当判断到_funState变量为R时,将要进行删除的行保存至_deldt内,(供保存时使用),完成后再删除GridView指定行;反之,只需将GridView进行指定行删除即可
@@ -372,7 +379,7 @@ namespace RD.UI.Order
                     {
                         foreach (DataGridViewRow rows in gvshow.SelectedRows)
                         {
-                            //判断若Entryid不为空,才执行插入
+                            //判断若Adornid不为空,才执行插入
                             if (rows.Cells[1].Value == DBNull.Value) continue;
 
                             var newrow = _deldt.NewRow();
@@ -382,6 +389,17 @@ namespace RD.UI.Order
                             }
                             _deldt.Rows.Add(newrow);
                         }
+                    }
+
+                    //记录‘录入页’要删除的行记录;注:无论是那个单据状态,并且此临时表不作提交之用;
+                    foreach (DataGridViewRow rows in gvshow.SelectedRows)
+                    {
+                        var newrow = _deltempdt.NewRow();
+                        for (var i = 0; i < _deltempdt.Columns.Count; i++)
+                        {
+                            newrow[i] = rows.Cells[i].Value;
+                        }
+                        _deltempdt.Rows.Add(newrow);
                     }
 
                     //将GridView内的指定行进行删除
@@ -409,11 +427,14 @@ namespace RD.UI.Order
                 if(gvshow.RowCount == 0) throw new Exception("没有明细行,不能执行操作");
                 if(txttypename.Text=="") throw new Exception("请输入大类名称信息再继续.");
 
+                //
+                
 
+                //new Thread(Start).Start();
+                //load.StartPosition = FormStartPosition.CenterScreen;
+                //load.ShowDialog();
 
-                new Thread(Start).Start();
-                load.StartPosition = FormStartPosition.CenterScreen;
-                load.ShowDialog();
+                //todo 最后将整理好的结果也存放到_gvdtldt内
 
             }
             catch (Exception ex)
@@ -422,7 +443,60 @@ namespace RD.UI.Order
             }
         }
 
+        /// <summary>
+        /// GridView显示格式转换
+        /// </summary>
+        /// <param name="type">转换类型;0:从gvshow数据转换至gvdtl 以及 转换初始化读取的记录至‘预览’窗体内 1:从gvdtl数据转换至gvshow </param>
+        /// <param name="sourcedt"></param>
+        /// <returns></returns>
+        private DataTable ChangeDisplayStyle(int type,DataTable sourcedt)
+        {
+            //定义转换临时表
+            var changetempdt = dtList.Get_AdornEmptydt();
+            //定义‘大类名称’变量
+            var typename = string.Empty;
+            //定义‘装修工程类别’变量
+            var htypename = string.Empty;
 
+            //从gvshow数据转换至gvdtl (或转换初始化读取的记录为‘预览’显示模式)
+            if (type == 0)
+            {
+                //循环sourcedt,并将‘大类名称’ 以及 ‘装修工程类别’ 设为相同的记录只显一行
+                foreach (DataRow rows in sourcedt.Rows)
+                {
+                    var newrow = changetempdt.NewRow();
+                    newrow[0] = rows[0];//ID
+                    newrow[1] = rows[1];//Adornid
+                    newrow[2] = rows[2];//工程类别ID
+                    newrow[3] = typename == Convert.ToString(rows[3]) ? DBNull.Value : rows[3];  //大类名称
+                    newrow[4] = htypename == Convert.ToString(rows[4]) ? DBNull.Value : rows[4]; //装修工程类别
+                    newrow[5] = rows[5];     //项目名称
+                    newrow[6] = rows[6];     //单位名称
+                    newrow[7] = rows[7];     //工程量
+                    newrow[8] = rows[8];     //综合单价
+                    newrow[9] = rows[9];     //人工费用
+                    newrow[10] = rows[10];   //辅材费用
+                    newrow[11] = rows[11];   //单价
+                    newrow[12] = rows[12];   //临时材料单价
+                    newrow[13] = rows[13];   //合计
+                    newrow[14] = rows[14];   //备注
+                    newrow[15] = rows[15];   //录入人
+                    newrow[16] = rows[16];   //录入日期
+                    newrow[17] = rows[17];   //Rowid
+                    changetempdt.Rows.Add(newrow);
+                }
+            }
+            //从gvdtl数据转换至gvshow
+            else
+            {
+                //循环sourcedt,将‘大类名称’ 以及 ‘装修工程类别’列为空的值进行填充 
+                foreach (DataRow rows in sourcedt.Rows)
+                {
+
+                }
+            }
+            return sourcedt;
+        }
 
         /// <summary>
         /// 清空记录
@@ -453,6 +527,9 @@ namespace RD.UI.Order
         {
             try
             {
+                //_sourcedt赋值并删除最后一列'RowId'
+                _sourcedt.Columns.Remove("RowId");
+                //
 
             }
             catch (Exception ex)
@@ -799,7 +876,7 @@ namespace RD.UI.Order
         /// <returns></returns>
         private DataTable OnInitializeDtl()
         {
-            var dt = new DataTable();
+            var resultdt = new DataTable();
 
             try
             {
@@ -809,16 +886,28 @@ namespace RD.UI.Order
                 task.Pid = _pid;
 
                 task.StartTask();
-                dt = task.ResultTable;
+                var dt = task.ResultTable;
+                
+                if (_funState == "C")
+                {
+                    resultdt = dt;
+                }
+                else
+                {
+                    //todo 当单据状态为R时需通过转换才到gvdtl内
+                    
+                }
             }
             catch (Exception ex)
             {
-                dt.Rows.Clear();
-                dt.Columns.Clear();
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return dt;
+            return resultdt;
         }
+
+
 
         /// <summary>
         /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)

@@ -299,7 +299,7 @@ namespace RD.DB
         public DataTable Get_AdornEmptydt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 17; i++)
+            for (var i = 0; i < 18; i++)
             {
                 var dc = new DataColumn();
 
@@ -395,6 +395,11 @@ namespace RD.DB
                         dc.ColumnName = "录入日期";
                         dc.DataType = Type.GetType("System.DateTime");
                         break;
+                    //行标记,单据状态为C时使用(不用于上传数据库)
+                    case 17:
+                        dc.ColumnName = "RowId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
                 }
                 dt.Columns.Add(dc);
             }
@@ -408,7 +413,7 @@ namespace RD.DB
         public DataTable Get_ProMaterialEmtrydt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 16; i++)
+            for (var i = 0; i < 17; i++)
             {
                 var dc = new DataColumn();
 
@@ -498,6 +503,11 @@ namespace RD.DB
                     case 15:
                         dc.ColumnName = "录入日期";
                         dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    //行标记,单据状态为C时使用(不用于上传数据库)
+                    case 16:
+                        dc.ColumnName = "RowId";
+                        dc.DataType = Type.GetType("System.Int32");
                         break;
                 }
                 dt.Columns.Add(dc);

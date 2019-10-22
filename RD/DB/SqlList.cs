@@ -497,7 +497,7 @@ namespace RD.DB
         }
 
         /// <summary>
-        /// 室内装修工程单-根据表头ID读取表体信息(单据状态为R时使用) (作用:初始化GridView内容)
+        /// 室内装修工程单(室内主材单)-根据表头ID读取表体信息(单据状态为R时使用) (作用:初始化GridView内容)
         /// </summary>
         /// <param name="functionname"></param>
         /// <param name="pid"></param>
