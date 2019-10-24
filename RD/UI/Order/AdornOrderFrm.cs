@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -84,7 +86,7 @@ namespace RD.UI.Order
             tmreplace.Click += Tmreplace_Click;
             tmdel.Click += Tmdel_Click;
             gvshow.CellValueChanged += Gvshow_CellValueChanged;
-            gvdtl.RowEnter += Gvdtl_RowEnter;
+            tmshowdetail.Click += Tmshowdetail_Click;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -102,15 +104,13 @@ namespace RD.UI.Order
         {
             //根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
             ShowHead(_funName, _pid);
-            //初始化定义各临时表
-            _gvdtldt = _tempdt = _deltempdt = _deldt = dtList.Get_AdornEmptydt();
+            //初始化定义_tempdt临时表
+            _tempdt = dtList.Get_AdornEmptydt();
 
             //单据状态:创建 C
             if (_funState == "C")
             {
-                var sourcedt = OnInitializeDtl();
-                //初始化GridView(录入页) (预览页) 插入空白页
-                gvdtl.DataSource = gvshow.DataSource = sourcedt;
+                gvshow.DataSource = OnInitializeDtl();
             }
             //单据状态:读取 R
             else
@@ -206,18 +206,51 @@ namespace RD.UI.Order
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Gvdtl_RowEnter(object sender, DataGridViewCellEventArgs e)
+        private void Tmshowdetail_Click(object sender, EventArgs e)
         {
             try
             {
-                if (txttypename.Text!="" || gvshow.RowCount>0)throw new Exception("检测到‘录入页’有记录,请将记录保存或清空,再执行查阅");
-                if(gvdtl.RowCount==0)throw new Exception("‘预览页’没有内容,不能执行查阅");
+                if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选中一行后再继续.");
+                if (gvdtl.RowCount == 0) throw new Exception("‘预览页’没有内容,不能执行查阅");
+                if (txttypename.Text != "" || gvshow.RowCount > 0) throw new Exception("检测到‘录入页’有记录,请将记录保存或清空,再执行查阅");
 
-                //将所选中的行获取并添加至_tempdt内
-                //gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value
+                //根据所选中的行获取其对应的‘大类名称’及‘装修工程类别’,并根据此值在_gvdtdtl查询所有关于这个Adornid(Rowid)的结果集, 最后将结果集添加至_tempdt内
+                //获取所选中行的‘大类名称’值,从而获取关于‘大类名称’相关的记录集记录
+                var typename = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[3].Value);
+                var htypename = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[4].Value);
 
-                //转换
-                ChangeDisplayStyle(1, null);
+                foreach (DataRow rows in _gvdtldt.Rows)
+                {
+                    if (Convert.ToString(rows[3]) != typename && Convert.ToString(rows[4])!=htypename) continue;
+                    var newrow = _tempdt.NewRow();
+                    newrow[0] = rows[0];              //ID
+                    newrow[1] = rows[1];              //Adornid
+                    newrow[2] = rows[2];              //工程类别ID
+                    newrow[3] = txttypename.Text;     //大类名称
+                    newrow[4] = rows[4];              //装修工程类别
+                    newrow[5] = rows[5];              //项目名称
+                    newrow[6] = rows[6];              //单位名称
+                    newrow[7] = rows[7];              //工程量
+                    newrow[8] = rows[8];              //综合单价
+                    newrow[9] = rows[9];              //人工费用
+                    newrow[10] = rows[10];            //辅材费用
+                    newrow[11] = rows[11];            //单价
+                    newrow[12] = rows[12];            //临时材料单价
+                    newrow[13] = rows[13];            //合计
+                    newrow[14] = rows[14];            //备注
+                    newrow[15] = rows[15];            //录入人
+                    newrow[16] = rows[16];            //录入日期
+                    newrow[17] = rows[17];            //Rowid
+                    _tempdt.Rows.Add(newrow);
+                }
+
+                var a = _tempdt;
+                //根据_tempdt获取其内容
+                txttypename.Text = _tempdt.Rows[0][3].ToString(); //大类名称
+                //将_tempdt的内容赋值至gvshow内
+                gvshow.DataSource = _tempdt;
+                //最后将_tempdt清空
+                _tempdt.Rows.Clear();
             }
             catch (Exception ex)
             {
@@ -275,6 +308,8 @@ namespace RD.UI.Order
                     newrow[17] = rowid++;   //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
+                //将记录写回gvshow内
+                gvshow.DataSource = gridViewdt;
             }
             catch (Exception ex)
             {
@@ -292,10 +327,10 @@ namespace RD.UI.Order
             try
             {   
                 if (gvshow.SelectedRows.Count == 0) throw new Exception("请选择一行记录进行替换.");
-                if (gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value == DBNull.Value) throw new Exception("空行不能进行替换,请再次选择");
+                if (gvshow.Rows[gvshow.CurrentCell.RowIndex].Cells[0].Value == DBNull.Value) throw new Exception("空行不能进行替换,请再次选择");
                 //获取GridView内的RowID(AdornId) 注:那个不为空就取那个
-                var orderid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value != DBNull.Value ? 
-                                            gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value : gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[17].Value);
+                var orderid = Convert.ToInt32(gvshow.Rows[gvshow.CurrentCell.RowIndex].Cells[1].Value != DBNull.Value ?
+                                            gvshow.Rows[gvshow.CurrentCell.RowIndex].Cells[1].Value : gvshow.Rows[gvshow.CurrentCell.RowIndex].Cells[17].Value);
                 //获取orderid对应的列ID
                 var markid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value != DBNull.Value ? 1 : 17);
 
@@ -376,13 +411,16 @@ namespace RD.UI.Order
                 if (gvshow.RowCount==0) throw new Exception("没有明细记录,不能进行删除");
 
                 var clickMessage = $"您所选择需删除的行数为:'{gvshow.SelectedRows.Count}' 行 \n 是否继续?";
-                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                if (MessageBox.Show(clickMessage, $"提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //注:执行方式:当判断到_funState变量为R时,将要进行删除的行保存至_deldt内,(供保存时使用),完成后再删除GridView指定行;反之,只需将GridView进行指定行删除即可
                     //注:在R状态下,需判断Adornid是否为空,若不为空,才进行插入至_deldt内
 
                     if(_funState=="R")
                     {
+                        //定义_deldt临时表
+                        _deldt = dtList.Get_AdornEmptydt();
+
                         foreach (DataGridViewRow rows in gvshow.SelectedRows)
                         {
                             //判断若Adornid不为空,才执行插入
@@ -397,6 +435,8 @@ namespace RD.UI.Order
                         }
                     }
 
+                    //定义_deltempdt临时表
+                    _deltempdt = dtList.Get_AdornEmptydt();
                     //记录‘录入页’要删除的行记录;注:无论是那个单据状态,并且此临时表不作提交之用;
                     foreach (DataGridViewRow rows in gvshow.SelectedRows)
                     {
@@ -430,11 +470,19 @@ namespace RD.UI.Order
         {
             try
             {
-                if(gvshow.RowCount == 0) throw new Exception("没有明细行,不能执行操作");
+                //定义‘合计’值
+                decimal totalamount = 0;
+                //定义_gvdtldt临时表
+                _gvdtldt = dtList.Get_AdornEmptydt();
+
+                var a0 = _deltempdt;
+
+                if (gvshow.RowCount == 0) throw new Exception("没有明细行,不能执行操作");
                 if(txttypename.Text == "") throw new Exception("请输入大类名称信息再继续.");
 
-                //循环将gvshow的记录插入至_tempdt内
-                foreach (DataRow rows in gvshow.Rows)
+                //将gvshow的记录插入至_tempdt内
+                var sourceddt = (DataTable)gvshow.DataSource;
+                foreach (DataRow rows in sourceddt.Rows)
                 {
                     var newrow = _tempdt.NewRow();
                     newrow[0] = rows[0];              //ID
@@ -458,18 +506,22 @@ namespace RD.UI.Order
                     _tempdt.Rows.Add(newrow);
                 }
 
+                var a2 = _tempdt;
+                
                 //循环_tempdt 执行将其中Adornid为空的记录进行插入至_gvdtldt操作
                 for (var i = 0; i < _tempdt.Rows.Count; i++)
                 {
-                    if(_tempdt.Rows[i][1] != DBNull.Value) continue;
+                    if(Convert.ToString(_tempdt.Rows[i][1]) !="") continue;
                     //循环将记录插入至_gvdtldt内
                     var newrow = _gvdtldt.NewRow();
                     for (var j = 0; j < _tempdt.Columns.Count; j++)
                     {
-                        newrow[j] = _tempdt.Rows[j];
+                        newrow[j] = _tempdt.Rows[i][j];
                     }
                     _gvdtldt.Rows.Add(newrow);
                 }
+
+                var a3 = _gvdtldt;
 
                 //循环_tempdt,并以_tempdt为条件,若Adornid(Rowid)不为空并且在_gvdtldt内存在,即进行更新操作(前提条件:_gvdtldt行数不为0)
                 if (_gvdtldt.Rows.Count > 0)
@@ -478,37 +530,39 @@ namespace RD.UI.Order
                     {
                         //以_tempdt.Adornid为条件,若在_gvdtldt内存在,即执行更新(注:若Adornid为空,即取Rowid)
                         var orderid = Convert.ToInt32(_tempdt.Rows[i][1] != DBNull.Value ? _tempdt.Rows[i][1] : _tempdt.Rows[i][17]);
-                        //获取orderid对应的列名称
-                        var colname = Convert.ToString(_tempdt.Rows[i][1] != DBNull.Value ? "Adornid" : "Rowid");
 
                         foreach (DataRow rows in _gvdtldt.Rows)
                         {
-                            var rowdtl = _gvdtldt.Select($"{colname}='" + orderid + "'");
-                            if (rowdtl.Length == 0) continue;
+                            var gvorderid = Convert.ToInt32(rows[1] !=DBNull.Value ? rows[1]:rows[17]);
+
+                            //若_tempdt.orderid与_gvdtldt.gvorderid相同,即进行更新
+                            if (orderid != gvorderid) continue;
 
                             _gvdtldt.BeginInit();
-                            rows[2] = rowdtl[0][2];   //工程类别ID
-                            rows[3] = rowdtl[0][3];   //大类名称
-                            rows[4] = rowdtl[0][4];   //装修工程类别
-                            rows[5] = rowdtl[0][5];   //项目名称
-                            rows[6] = rowdtl[0][6];   //单位名称
-                            rows[7] = rowdtl[0][7];   //工程量
-                            rows[8] = rowdtl[0][8];   //综合单价
-                            rows[9] = rowdtl[0][9];   //人工费用
-                            rows[10] = rowdtl[0][10]; //辅材费用
-                            rows[11] = rowdtl[0][11]; //单价
-                            rows[12] = rowdtl[0][12]; //临时材料单价
-                            rows[13] = rowdtl[0][13]; //合计
-                            rows[14] = rowdtl[0][14]; //备注
-                            rows[15] = rowdtl[0][15]; //录入人
-                            rows[16] = rowdtl[0][16]; //录入日期
+                            rows[2] = _tempdt.Rows[i][2];   //工程类别ID
+                            rows[3] = _tempdt.Rows[i][3];   //大类名称
+                            rows[4] = _tempdt.Rows[i][4];   //装修工程类别
+                            rows[5] = _tempdt.Rows[i][5];   //项目名称
+                            rows[6] = _tempdt.Rows[i][6];   //单位名称
+                            rows[7] = _tempdt.Rows[i][7];   //工程量
+                            rows[8] = _tempdt.Rows[i][8];   //综合单价
+                            rows[9] = _tempdt.Rows[i][9];   //人工费用
+                            rows[10] = _tempdt.Rows[i][10]; //辅材费用
+                            rows[11] = _tempdt.Rows[i][11]; //单价
+                            rows[12] = _tempdt.Rows[i][12]; //临时材料单价
+                            rows[13] = _tempdt.Rows[i][13]; //合计
+                            rows[14] = _tempdt.Rows[i][14]; //备注
+                            rows[15] = _tempdt.Rows[i][15]; //录入人
+                            rows[16] = _tempdt.Rows[i][16]; //录入日期
                             _gvdtldt.EndInit();
                         }  
                     }
                 }
 
-                //使用_deltempdt,对_gvdtldt进行删除操作
-                if (_deltempdt.Rows.Count > 0)
+                var a4 = _gvdtldt;
+                var a5 = _deltempdt;
+                
+                if (_deltempdt?.Rows.Count > 0)
                 {
                     //删除在_gvdtldt对应的记录
                     for (var i = _gvdtldt.Rows.Count; i > 0; i--)
@@ -525,6 +579,19 @@ namespace RD.UI.Order
                         }
                     }
                 }
+
+                //通过累加_gvdtldt中的‘合计’并进行显示(累加‘合计’项)
+                foreach (DataRow rows in _gvdtldt.Rows)
+                {
+                    totalamount += Convert.ToDecimal(rows[13]);
+                }
+
+                //计算管理费5%
+                var totalper5 = totalamount * Convert.ToDecimal(0.05);
+
+                //最后赋值到对应的项内
+                lbtotal.Text = Convert.ToString(totalamount, CultureInfo.InvariantCulture);
+                lbproduct.Text = Convert.ToString(totalper5, CultureInfo.InvariantCulture);
 
                 var a = _gvdtldt;
 
@@ -561,106 +628,135 @@ namespace RD.UI.Order
             var typename = string.Empty;
             //定义‘装修工程类别’变量
             var htypename = string.Empty;
+            //
+            var rowdtl = new DataRow[] {};
 
             //从gvshow数据转换至gvdtl (或转换初始化读取的记录为‘预览’显示模式)
             if (type == 0)
             {
                 //循环sourcedt,并将‘大类名称’ 以及 ‘装修工程类别’ 设置相同的记录只显一行
-                foreach (DataRow rows in sourcedt.Rows)
+
+                for (var i = 0; i < 4; i++)
                 {
-                    var newrow = changetempdt.NewRow();
-                    newrow[0] = rows[0];      //ID
-                    newrow[1] = rows[1];      //Adornid
-                    newrow[2] = rows[2];      //工程类别ID
-
-                    //大类名称
-                    if (typename == Convert.ToString(rows[3]))
+                    switch (i)
                     {
-                        newrow[3] = DBNull.Value;
-                    }
-                    else
-                    {
-                        newrow[3] = rows[3];
-                        typename = Convert.ToString(rows[3]);
-                    }
-
-                    //装修工程类别
-                    if (htypename == Convert.ToString(rows[4]))
-                    {
-                        newrow[4] = DBNull.Value;
-                    }
-                    else
-                    {
-                        newrow[4] = rows[4];
-                        htypename = Convert.ToString(rows[4]);
+                        //土建工程
+                        case 0:
+                            rowdtl = sourcedt.Select("装修工程类别='土建工程'");
+                            break;
+                        //天花工程
+                        case 1:
+                            rowdtl = sourcedt.Select("装修工程类别='天花工程'");
+                            break;
+                        //地面工程
+                        case 2:
+                            rowdtl = sourcedt.Select("装修工程类别='地面工程'");
+                            break;
+                        //墙身工程
+                        case 3:
+                            rowdtl = sourcedt.Select("装修工程类别='墙身工程'");
+                            break;
                     }
 
-                    newrow[5] = rows[5];     //项目名称
-                    newrow[6] = rows[6];     //单位名称
-                    newrow[7] = rows[7];     //工程量
-                    newrow[8] = rows[8];     //综合单价
-                    newrow[9] = rows[9];     //人工费用
-                    newrow[10] = rows[10];   //辅材费用
-                    newrow[11] = rows[11];   //单价
-                    newrow[12] = rows[12];   //临时材料单价
-                    newrow[13] = rows[13];   //合计
-                    newrow[14] = rows[14];   //备注
-                    newrow[15] = rows[15];   //录入人
-                    newrow[16] = rows[16];   //录入日期
-                    newrow[17] = rows[17];   //Rowid
-                    changetempdt.Rows.Add(newrow);
+                    for (var rowid = 0; rowid < rowdtl.Length; rowid++)
+                    {
+                        var newrow = changetempdt.NewRow();
+                        newrow[0] = rowdtl[rowid][0];      //ID
+                        newrow[1] = rowdtl[rowid][0];      //Adornid
+                        newrow[2] = rowdtl[rowid][0];      //工程类别ID
+
+                        //大类名称
+                        if (typename == "")
+                        {
+                            newrow[3] = rowdtl[rowid][3];
+                            typename = Convert.ToString(rowdtl[rowid][3]);
+                        }
+                        else
+                        {
+                            newrow[3] = DBNull.Value;
+                        }
+
+                        //装修工程类别
+                        if (htypename == Convert.ToString(rowdtl[rowid][4]))
+                        {
+                            newrow[4] = DBNull.Value;
+                        }
+                        else
+                        {
+                            newrow[4] = rowdtl[rowid][4];
+                            htypename = Convert.ToString(rowdtl[rowid][4]);
+                        }
+
+                        newrow[5] = rowdtl[rowid][5];     //项目名称
+                        newrow[6] = rowdtl[rowid][6];     //单位名称
+                        newrow[7] = rowdtl[rowid][7];     //工程量
+                        newrow[8] = rowdtl[rowid][8];     //综合单价
+                        newrow[9] = rowdtl[rowid][9];     //人工费用
+                        newrow[10] = rowdtl[rowid][10];   //辅材费用
+                        newrow[11] = rowdtl[rowid][11];   //单价
+                        newrow[12] = rowdtl[rowid][12];   //临时材料单价
+                        newrow[13] = rowdtl[rowid][13];   //合计
+                        newrow[14] = rowdtl[rowid][14];   //备注
+                        newrow[15] = rowdtl[rowid][15];   //录入人
+                        newrow[16] = rowdtl[rowid][16];   //录入日期
+                        newrow[17] = rowdtl[rowid][17];   //Rowid
+                        changetempdt.Rows.Add(newrow);
+                    }
                 }
             }
-            //从gvdtl数据转换至gvshow
-            else
-            {
-                //循环sourcedt,将‘大类名称’ 以及 ‘装修工程类别’列为空的值进行填充 
-                foreach (DataRow rows in sourcedt.Rows)
-                {
-                    var newrow = changetempdt.NewRow();
-                    newrow[0] = rows[0];      //ID
-                    newrow[1] = rows[1];      //Adornid
-                    newrow[2] = rows[2];      //工程类别ID
+            #region 从gvdtl数据转换至gvshow(no need)
+            //从gvdtl数据转换至gvshow(no need)
+            //else
+            //{
+            //    //循环sourcedt,将‘大类名称’ 以及 ‘装修工程类别’列为空的值进行填充 
+            //    foreach (DataRow rows in sourcedt.Rows)
+            //    {
+            //        var newrow = changetempdt.NewRow();
+            //        newrow[0] = rows[0];      //ID
+            //        newrow[1] = rows[1];      //Adornid
+            //        newrow[2] = rows[2];      //工程类别ID
 
-                    //大类名称
-                    if (rows[3] == DBNull.Value)
-                    {
-                        newrow[3] = typename;
-                    }
-                    else
-                    {
-                        newrow[3] = rows[3];
-                        typename = Convert.ToString(rows[3]);
-                    }
+            //        //大类名称
+            //        if (rows[3] == DBNull.Value)
+            //        {
+            //            newrow[3] = typename;
+            //        }
+            //        else
+            //        {
+            //            newrow[3] = rows[3];
+            //            typename = Convert.ToString(rows[3]);
+            //        }
 
-                    //装修工程类别
-                    if (rows[4] == DBNull.Value)
-                    {
-                        newrow[4] = htypename;
-                    }
-                    else
-                    {
-                        newrow[4] = rows[4];
-                        htypename = Convert.ToString(rows[4]);
-                    }
+            //        //装修工程类别
+            //        if (rows[4] == DBNull.Value)
+            //        {
+            //            newrow[4] = htypename;
+            //        }
+            //        else
+            //        {
+            //            newrow[4] = rows[4];
+            //            htypename = Convert.ToString(rows[4]);
+            //        }
 
-                    newrow[5] = rows[5];     //项目名称
-                    newrow[6] = rows[6];     //单位名称
-                    newrow[7] = rows[7];     //工程量
-                    newrow[8] = rows[8];     //综合单价
-                    newrow[9] = rows[9];     //人工费用
-                    newrow[10] = rows[10];   //辅材费用
-                    newrow[11] = rows[11];   //单价
-                    newrow[12] = rows[12];   //临时材料单价
-                    newrow[13] = rows[13];   //合计
-                    newrow[14] = rows[14];   //备注
-                    newrow[15] = rows[15];   //录入人
-                    newrow[16] = rows[16];   //录入日期
-                    newrow[17] = rows[17];   //Rowid
-                    changetempdt.Rows.Add(newrow);
-                }
-            }
-            return sourcedt;
+            //        newrow[5] = rows[5];     //项目名称
+            //        newrow[6] = rows[6];     //单位名称
+            //        newrow[7] = rows[7];     //工程量
+            //        newrow[8] = rows[8];     //综合单价
+            //        newrow[9] = rows[9];     //人工费用
+            //        newrow[10] = rows[10];   //辅材费用
+            //        newrow[11] = rows[11];   //单价
+            //        newrow[12] = rows[12];   //临时材料单价
+            //        newrow[13] = rows[13];   //合计
+            //        newrow[14] = rows[14];   //备注
+            //        newrow[15] = rows[15];   //录入人
+            //        newrow[16] = rows[16];   //录入日期
+            //        newrow[17] = rows[17];   //Rowid
+            //        changetempdt.Rows.Add(newrow);
+            //    }
+            //}
+            #endregion
+
+            return changetempdt;
         }
 
         /// <summary>
@@ -685,6 +781,7 @@ namespace RD.UI.Order
 
         /// <summary>
         /// 审核
+        /// 审核条件:
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -783,6 +880,7 @@ namespace RD.UI.Order
                 pbimg.Visible = true;
                 pbimg.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
 
+                
             }
             //若为“非审核”状态的,就执行以下语句
             else
@@ -1052,17 +1150,7 @@ namespace RD.UI.Order
                 task.Pid = _pid;
 
                 task.StartTask();
-                var dt = task.ResultTable;
-                
-                if (_funState == "C")
-                {
-                    resultdt = dt;
-                }
-                else
-                {
-                    //todo 当单据状态为R时需通过转换才到gvdtl内
-                    
-                }
+                resultdt = task.ResultTable;
             }
             catch (Exception ex)
             {
@@ -1072,8 +1160,6 @@ namespace RD.UI.Order
             }
             return resultdt;
         }
-
-
 
         /// <summary>
         /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
@@ -1134,28 +1220,26 @@ namespace RD.UI.Order
             gvshow.Columns[0].Visible = false;
             gvshow.Columns[1].Visible = false;
             gvshow.Columns[2].Visible = false;
-            gvshow.Columns[3].Visible = false;   //大类名称
+            gvshow.Columns[3].Visible = false; //大类名称
 
             //设置指定列不能编辑
-            gvshow.Columns[4].ReadOnly = true;   //装修工程类别
-            gvshow.Columns[5].ReadOnly = true;   //项目名称
-            gvshow.Columns[6].ReadOnly = true;   //单位名称
-            gvshow.Columns[8].ReadOnly = true;   //综合单价
-            gvshow.Columns[11].ReadOnly = true;  //单价
-            gvshow.Columns[13].ReadOnly = true;  //合计
+            gvshow.Columns[4].ReadOnly = true; //装修工程类别
+            gvshow.Columns[5].ReadOnly = true; //项目名称
+            gvshow.Columns[6].ReadOnly = true; //单位名称
+            gvshow.Columns[8].ReadOnly = true; //综合单价
+            gvshow.Columns[11].ReadOnly = true; //单价
+            gvshow.Columns[13].ReadOnly = true; //合计
 
-            gvshow.Columns[gvdtl.Columns.Count - 1].Visible = false; //RowId(单据状态为C时使用)
-            gvshow.Columns[gvdtl.Columns.Count - 2].Visible = false; //录入人
-            gvshow.Columns[gvdtl.Columns.Count - 3].Visible = false; //录入日期
+            gvshow.Columns[gvshow.Columns.Count - 1].Visible = false; //RowId(单据状态为C时使用)
+            gvshow.Columns[gvshow.Columns.Count - 2].Visible = false; //录入人
+            gvshow.Columns[gvshow.Columns.Count - 3].Visible = false; //录入日期
 
-            //“预览页”设置
+            //“预览页”设置(注:当gvdtl.datasource有值时才会执行)
+            if (gvdtl.DataSource == null) return;
             gvdtl.Columns[0].Visible = false;
             gvdtl.Columns[1].Visible = false;
             gvdtl.Columns[2].Visible = false;
-            gvshow.Columns[gvdtl.Columns.Count - 1].Visible = false; // RowId(单据状态为C时使用)
+            gvdtl.Columns[gvdtl.Columns.Count - 1].Visible = false; // RowId(单据状态为C时使用)
         }
-
-
-
     }
 }

@@ -60,12 +60,15 @@
             this.txttypename = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.cbshow = new System.Windows.Forms.CheckBox();
             this.btnremove = new System.Windows.Forms.Button();
             this.btnsave = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.gvcreate = new System.Windows.Forms.TabPage();
             this.panel13 = new System.Windows.Forms.Panel();
             this.gvdtl = new System.Windows.Forms.DataGridView();
+            this.MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tmshowdetail = new System.Windows.Forms.ToolStripMenuItem();
             this.panel10 = new System.Windows.Forms.Panel();
             this.lbproduct = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -89,7 +92,6 @@
             this.toolStripLabel10 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel11 = new System.Windows.Forms.ToolStripLabel();
             this.tstotalrow = new System.Windows.Forms.ToolStripLabel();
-            this.cbshow = new System.Windows.Forms.CheckBox();
             this.Menu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbimg)).BeginInit();
@@ -108,6 +110,7 @@
             this.gvcreate.SuspendLayout();
             this.panel13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).BeginInit();
+            this.MenuStrip.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bngat)).BeginInit();
@@ -391,6 +394,16 @@
             this.panel3.Size = new System.Drawing.Size(556, 27);
             this.panel3.TabIndex = 5;
             // 
+            // cbshow
+            // 
+            this.cbshow.AutoSize = true;
+            this.cbshow.Location = new System.Drawing.Point(418, 5);
+            this.cbshow.Name = "cbshow";
+            this.cbshow.Size = new System.Drawing.Size(132, 16);
+            this.cbshow.TabIndex = 2;
+            this.cbshow.Text = "是否显示预览页内容";
+            this.cbshow.UseVisualStyleBackColor = true;
+            // 
             // btnremove
             // 
             this.btnremove.Location = new System.Drawing.Point(81, 1);
@@ -449,6 +462,7 @@
             this.gvdtl.AllowUserToAddRows = false;
             this.gvdtl.AllowUserToDeleteRows = false;
             this.gvdtl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvdtl.ContextMenuStrip = this.MenuStrip;
             this.gvdtl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvdtl.Location = new System.Drawing.Point(0, 0);
             this.gvdtl.Name = "gvdtl";
@@ -456,6 +470,19 @@
             this.gvdtl.RowTemplate.Height = 23;
             this.gvdtl.Size = new System.Drawing.Size(604, 511);
             this.gvdtl.TabIndex = 0;
+            // 
+            // MenuStrip
+            // 
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmshowdetail});
+            this.MenuStrip.Name = "RightMenu";
+            this.MenuStrip.Size = new System.Drawing.Size(125, 26);
+            // 
+            // tmshowdetail
+            // 
+            this.tmshowdetail.Name = "tmshowdetail";
+            this.tmshowdetail.Size = new System.Drawing.Size(124, 22);
+            this.tmshowdetail.Text = "调出记录";
             // 
             // panel10
             // 
@@ -666,16 +693,6 @@
             this.tstotalrow.Size = new System.Drawing.Size(55, 21);
             this.tstotalrow.Text = "共 {0} 行";
             // 
-            // cbshow
-            // 
-            this.cbshow.AutoSize = true;
-            this.cbshow.Location = new System.Drawing.Point(418, 5);
-            this.cbshow.Name = "cbshow";
-            this.cbshow.Size = new System.Drawing.Size(132, 16);
-            this.cbshow.TabIndex = 2;
-            this.cbshow.Text = "是否显示预览页内容";
-            this.cbshow.UseVisualStyleBackColor = true;
-            // 
             // AdornOrderFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -709,6 +726,7 @@
             this.gvcreate.ResumeLayout(false);
             this.panel13.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvdtl)).EndInit();
+            this.MenuStrip.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
             this.panel9.ResumeLayout(false);
@@ -783,5 +801,7 @@
         private System.Windows.Forms.ToolStripLabel tstotalrow;
         private System.Windows.Forms.Button btnremove;
         private System.Windows.Forms.CheckBox cbshow;
+        private System.Windows.Forms.ContextMenuStrip MenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem tmshowdetail;
     }
 }
