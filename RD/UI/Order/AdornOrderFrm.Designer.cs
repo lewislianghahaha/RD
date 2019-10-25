@@ -343,7 +343,6 @@
             // 
             // gvshow
             // 
-            this.gvshow.AllowUserToDeleteRows = false;
             this.gvshow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvshow.ContextMenuStrip = this.RightMenu;
             this.gvshow.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -396,6 +395,8 @@
             // 
             // cbshow
             // 
+            this.cbshow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbshow.AutoSize = true;
             this.cbshow.Location = new System.Drawing.Point(418, 5);
             this.cbshow.Name = "cbshow";
@@ -766,7 +767,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.DataGridView gvshow;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.TextBox txttypename;
         private System.Windows.Forms.Label label4;
@@ -803,5 +803,6 @@
         private System.Windows.Forms.CheckBox cbshow;
         private System.Windows.Forms.ContextMenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tmshowdetail;
+        private System.Windows.Forms.DataGridView gvshow;
     }
 }
