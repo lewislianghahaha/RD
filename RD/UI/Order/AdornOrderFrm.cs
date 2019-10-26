@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using NPOI.SS.Formula.Functions;
 using RD.DB;
 using RD.Logic;
 using Stimulsoft.Base.Json.Linq;
@@ -321,19 +322,17 @@ namespace RD.UI.Order
                     for (var i = 0; i < rowdtl.Length; i++)
                     {
                         var newrow = gridViewdt.NewRow();
-                        newrow[0] = _pid;             //id(表头主键ID)
-                        newrow[2] = rowdtl[i][0];     //工程类别ID
-                        newrow[4] = rowdtl[i][1];     //装修工程类别
-                        newrow[5] = rowdtl[i][2];     //项目名称
-                        newrow[6] = rowdtl[i][3];     //单位名称
-                        newrow[11] = rowdtl[i][4];    //单价
-                        newrow[17] = rowdtl[i][17];   //RowId(单据状态为C时使用)
-                        rowid = Convert.ToInt32(rowdtl[i][17]); //将每一行的Rowid值都赋给rowid变量(注:rowid最后只会获取最大值)
+                        for (var j = 0; j < gridViewdt.Columns.Count; j++)
+                        {
+                            newrow[j] = rowdtl[i][j];
+                        }
                         gridViewdt.Rows.Add(newrow);
                     }
                 }
 
-                var a = rowid;
+                //若_gvdtldt有值,rowid的初始值就取其最后一行的Rowid值
+                if(_gvdtldt?.Rows.Count > 0)
+                    rowid = Convert.ToInt32(_gvdtldt.Rows[_gvdtldt.Rows.Count - 1][17]);
                 
                 //然后再循环将获取过来的值插入至GridView内
                 foreach (DataRow rows in sourcedt.Rows)
@@ -345,7 +344,7 @@ namespace RD.UI.Order
                     newrow[5] = rows[2];    //项目名称
                     newrow[6] = rows[3];    //单位名称
                     newrow[11] = rows[4];   //单价
-                    newrow[17] = rowid++;   //RowId(单据状态为C时使用)
+                    newrow[17] = ++rowid;   //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
 
@@ -512,8 +511,6 @@ namespace RD.UI.Order
                 //定义_gvdtldt临时表(注:若_gvdtldt!=null就不用创建)
                 if (_gvdtldt == null)
                     _gvdtldt = dtList.Get_AdornEmptydt();
-                
-                var a0 = _deltempdt;
 
                 if (gvshow.RowCount == 0) throw new Exception("没有明细行,不能执行操作");
                 if (txttypename.Text == "") throw new Exception("请输入大类名称信息再继续.");
@@ -543,8 +540,6 @@ namespace RD.UI.Order
                     newrow[17] = rows[17];            //Rowid
                     _tempdt.Rows.Add(newrow);
                 }
-
-                var a00 = _tempdt;
                 
                 //循环_tempdt 执行将其中Adornid为空的记录进行插入至_gvdtldt操作
                 for (var i = 0; i < _tempdt.Rows.Count; i++)
@@ -568,8 +563,6 @@ namespace RD.UI.Order
                         }
                     }
                 }
-
-                var a3 = _gvdtldt;
 
                 //循环_tempdt,并以_tempdt为条件,若Adornid(Rowid)不为空并且在_gvdtldt内存在,即进行更新操作(前提条件:_gvdtldt行数不为0)
                 if (_gvdtldt.Rows.Count > 0)
@@ -623,8 +616,6 @@ namespace RD.UI.Order
                         }
                     }
                 }
-
-                var a = _gvdtldt;
 
                 //通过累加_gvdtldt中的‘合计’并进行显示(累加‘合计’项)
                 foreach (DataRow rows in _gvdtldt.Rows)
