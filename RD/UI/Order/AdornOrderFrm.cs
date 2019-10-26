@@ -2,11 +2,13 @@
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using RD.DB;
 using RD.Logic;
+using Stimulsoft.Base.Json.Linq;
 using Stimulsoft.Report;
 
 namespace RD.UI.Order
@@ -651,77 +653,84 @@ namespace RD.UI.Order
             //从gvshow数据转换至gvdtl (或转换初始化读取的记录为‘预览’显示模式)
             if (type == 0)
             {
-                //循环sourcedt,并将‘大类名称’ 以及 ‘装修工程类别’ 设置相同的记录只显一行
+                //整理出sourcedt内包含的‘大类名称’并返回DT
+                var typedt = GetTypeNameDt(sourcedt);
 
-                for (var i = 0; i < 4; i++)
+                //使用整理出来的typedt作循环
+                foreach (DataRow rows in typedt.Rows)
                 {
-                    switch (i)
+                    //以‘大类名称’为条件,并整理出对应的工程类别及明细信息
+                    for (var i = 0; i < 4; i++)
                     {
-                        //土建工程
-                        case 0:
-                            rowdtl = sourcedt.Select("装修工程类别='土建工程'");
-                            break;
-                        //天花工程
-                        case 1:
-                            rowdtl = sourcedt.Select("装修工程类别='天花工程'");
-                            break;
-                        //地面工程
-                        case 2:
-                            rowdtl = sourcedt.Select("装修工程类别='地面工程'");
-                            break;
-                        //墙身工程
-                        case 3:
-                            rowdtl = sourcedt.Select("装修工程类别='墙身工程'");
-                            break;
+                        switch (i)
+                        {
+                            //土建工程
+                            case 0:
+                                rowdtl = sourcedt.Select("大类名称='" + rows[3] + "' and 装修工程类别='土建工程'");
+                                break;
+                            //天花工程
+                            case 1:
+                                rowdtl = sourcedt.Select("大类名称='" + rows[3] + "' and 装修工程类别='天花工程'");
+                                break;
+                            //地面工程
+                            case 2:
+                                rowdtl = sourcedt.Select("大类名称='" + rows[3] + "' and 装修工程类别='地面工程'");
+                                break;
+                            //墙身工程
+                            case 3:
+                                rowdtl = sourcedt.Select("大类名称='" + rows[3] + "' and 装修工程类别='墙身工程'");
+                                break;
+                        }
+                       
+                        //根据相关条件执行插入操作
+                        for (var j = 0; j < rowdtl.Length; j++)
+                        {
+                            var newrow = changetempdt.NewRow();
+                            newrow[0] = rowdtl[j][0];      //ID
+                            newrow[1] = rowdtl[j][1];      //Adornid
+                            newrow[2] = rowdtl[j][2];      //工程类别ID
+
+                            //大类名称
+                            if (typename == "")
+                            {
+                                newrow[3] = rowdtl[j][3];
+                                typename = Convert.ToString(rowdtl[j][3]);
+                            }
+                            else
+                            {
+                                newrow[3] = DBNull.Value;
+                            }
+
+                            //装修工程类别
+                            if (htypename == Convert.ToString(rowdtl[j][4]))
+                            {
+                                newrow[4] = DBNull.Value;
+                            }
+                            else
+                            {
+                                newrow[4] = rowdtl[j][4];
+                                htypename = Convert.ToString(rowdtl[j][4]);
+                            }
+
+                            newrow[5] = rowdtl[j][5];     //项目名称
+                            newrow[6] = rowdtl[j][6];     //单位名称
+                            newrow[7] = rowdtl[j][7];     //工程量
+                            newrow[8] = rowdtl[j][8];     //综合单价
+                            newrow[9] = rowdtl[j][9];     //人工费用
+                            newrow[10] = rowdtl[j][10];   //辅材费用
+                            newrow[11] = rowdtl[j][11];   //单价
+                            newrow[12] = rowdtl[j][12];   //临时材料单价
+                            newrow[13] = rowdtl[j][13];   //合计
+                            newrow[14] = rowdtl[j][14];   //备注
+                            newrow[15] = rowdtl[j][15];   //录入人
+                            newrow[16] = rowdtl[j][16];   //录入日期
+                            newrow[17] = rowdtl[j][17];   //Rowid
+                            changetempdt.Rows.Add(newrow);
+                        }
                     }
-
-
-
-
-                    for (var rowid = 0; rowid < rowdtl.Length; rowid++)
-                    {
-                        var newrow = changetempdt.NewRow();
-                        newrow[0] = rowdtl[rowid][0];      //ID
-                        newrow[1] = rowdtl[rowid][1];      //Adornid
-                        newrow[2] = rowdtl[rowid][2];      //工程类别ID
-
-                        //大类名称
-                        if (typename == "" || typename!=Convert.ToString(rowdtl[rowid][3]))
-                        {
-                            newrow[3] = rowdtl[rowid][3];
-                            typename = Convert.ToString(rowdtl[rowid][3]);
-                        }
-                        else
-                        {
-                            newrow[3] = DBNull.Value;
-                        }
-
-                        //装修工程类别
-                        if (htypename == Convert.ToString(rowdtl[rowid][4]))
-                        {
-                            newrow[4] = DBNull.Value;
-                        }
-                        else
-                        {
-                            newrow[4] = rowdtl[rowid][4];
-                            htypename = Convert.ToString(rowdtl[rowid][4]);
-                        }
-
-                        newrow[5] = rowdtl[rowid][5];     //项目名称
-                        newrow[6] = rowdtl[rowid][6];     //单位名称
-                        newrow[7] = rowdtl[rowid][7];     //工程量
-                        newrow[8] = rowdtl[rowid][8];     //综合单价
-                        newrow[9] = rowdtl[rowid][9];     //人工费用
-                        newrow[10] = rowdtl[rowid][10];   //辅材费用
-                        newrow[11] = rowdtl[rowid][11];   //单价
-                        newrow[12] = rowdtl[rowid][12];   //临时材料单价
-                        newrow[13] = rowdtl[rowid][13];   //合计
-                        newrow[14] = rowdtl[rowid][14];   //备注
-                        newrow[15] = rowdtl[rowid][15];   //录入人
-                        newrow[16] = rowdtl[rowid][16];   //录入日期
-                        newrow[17] = rowdtl[rowid][17];   //Rowid
-                        changetempdt.Rows.Add(newrow);
-                    }
+                    //完成循环后将相关变量清空
+                    typename = "";
+                    htypename = "";
                 }
             }
             #region 从gvdtl数据转换至gvshow(no need)
@@ -777,6 +786,26 @@ namespace RD.UI.Order
             #endregion
 
             return changetempdt;
+        }
+
+        /// <summary>
+        /// 检索出一个数源DT内有多少个‘大类名称’记录，整后后返回DT
+        /// </summary>
+        /// <param name="sourcedt"></param>
+        /// <returns></returns>
+        private DataTable GetTypeNameDt(DataTable sourcedt)
+        {
+            var dt = dtList.Get_AdornEmptydt();
+            //循环sourcedt,并统计出不相同的‘大类名称’（注:若循环的记录不在dt内存在,才进行插入）
+            foreach (DataRow rows in sourcedt.Rows)
+            {
+                var rowdtl = dt.Select("大类名称='" + Convert.ToString(rows[3])+"'");
+                if (rowdtl.Length != 0) continue;
+                var newrow = dt.NewRow();
+                newrow[3] = rows[3]; //大类名称
+                dt.Rows.Add(newrow);
+            }
+            return dt;
         }
 
         /// <summary>
