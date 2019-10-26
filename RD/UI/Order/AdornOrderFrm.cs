@@ -308,10 +308,34 @@ namespace RD.UI.Order
         private void InsertDtToGridView(DataTable sourcedt)
         {
             try
-            {
-                //bug 
+            { 
                 var gridViewdt = dtList.Get_AdornEmptydt();
-                //循环将获取过来的值插入至GridView内
+                //先判断若gvshow.DataSource内有Adornid(Rowid)行存在,将这些记录先插入
+                var gvshowdt = (DataTable) gvshow.DataSource;
+                foreach (DataRow rows in gvshowdt.Rows)
+                {
+                    var orderid = Convert.ToInt32(rows[1] != DBNull.Value ? rows[1] : rows[17]);
+                    var colname = Convert.ToString(rows[1] != DBNull.Value ? "Adornid" : "Rowid");
+                    var rowdtl = gvshowdt.Select($"{colname}='"+orderid+"'");
+
+                    for (var i = 0; i < rowdtl.Length; i++)
+                    {
+                        var newrow = gridViewdt.NewRow();
+                        newrow[0] = _pid;             //id(表头主键ID)
+                        newrow[2] = rowdtl[i][0];     //工程类别ID
+                        newrow[4] = rowdtl[i][1];     //装修工程类别
+                        newrow[5] = rowdtl[i][2];     //项目名称
+                        newrow[6] = rowdtl[i][3];     //单位名称
+                        newrow[11] = rowdtl[i][4];    //单价
+                        newrow[17] = rowdtl[i][17];   //RowId(单据状态为C时使用)
+                        rowid = Convert.ToInt32(rowdtl[i][17]); //将每一行的Rowid值都赋给rowid变量(注:rowid最后只会获取最大值)
+                        gridViewdt.Rows.Add(newrow);
+                    }
+                }
+
+                var a = rowid;
+                
+                //然后再循环将获取过来的值插入至GridView内
                 foreach (DataRow rows in sourcedt.Rows)
                 {
                     var newrow = gridViewdt.NewRow();
@@ -324,6 +348,7 @@ namespace RD.UI.Order
                     newrow[17] = rowid++;   //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
+
                 //将记录写回gvshow内
                 gvshow.DataSource = gridViewdt;
             }
