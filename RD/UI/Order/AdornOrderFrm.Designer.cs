@@ -47,9 +47,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmadd = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.ts1 = new System.Windows.Forms.ToolStripSeparator();
             this.tmreplace = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.ts2 = new System.Windows.Forms.ToolStripSeparator();
             this.tmdel = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -256,9 +256,9 @@
             // 
             this.RightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tmadd,
-            this.toolStripSeparator4,
+            this.ts1,
             this.tmreplace,
-            this.toolStripSeparator5,
+            this.ts2,
             this.tmdel});
             this.RightMenu.Name = "RightMenu";
             this.RightMenu.Size = new System.Drawing.Size(125, 82);
@@ -269,10 +269,10 @@
             this.tmadd.Size = new System.Drawing.Size(124, 22);
             this.tmadd.Text = "新增记录";
             // 
-            // toolStripSeparator4
+            // ts1
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(121, 6);
+            this.ts1.Name = "ts1";
+            this.ts1.Size = new System.Drawing.Size(121, 6);
             // 
             // tmreplace
             // 
@@ -280,10 +280,10 @@
             this.tmreplace.Size = new System.Drawing.Size(124, 22);
             this.tmreplace.Text = "替换记录";
             // 
-            // toolStripSeparator5
+            // ts2
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
+            this.ts2.Name = "ts2";
+            this.ts2.Size = new System.Drawing.Size(121, 6);
             // 
             // tmdel
             // 
@@ -759,9 +759,9 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ContextMenuStrip RightMenu;
         private System.Windows.Forms.ToolStripMenuItem tmadd;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator ts1;
         private System.Windows.Forms.ToolStripMenuItem tmreplace;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator ts2;
         private System.Windows.Forms.ToolStripMenuItem tmdel;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabControl1;

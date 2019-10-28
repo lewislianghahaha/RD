@@ -30,6 +30,8 @@ namespace RD.UI.Order
         private bool _confirmMarkId;
         //单据状态标记(作用:记录打开此功能窗体时是 读取记录 还是 创建记录) C:创建 R:读取
         private string _funState;
+        //反审核标记(注:当需要反审核的R状态单据要进行再次审核时使用)
+        private bool _backconfirm;
 
         //记录行ID（后面的‘替换’功能使用）
         private int rowid;
@@ -89,6 +91,7 @@ namespace RD.UI.Order
             tmdel.Click += Tmdel_Click;
             gvshow.CellValueChanged += Gvshow_CellValueChanged;
             tmshowdetail.Click += Tmshowdetail_Click;
+            this.FormClosing += AdornOrderFrm_FormClosing;
 
             bnMoveFirstItem.Click += BnMoveFirstItem_Click;
             bnMovePreviousItem.Click += BnMovePreviousItem_Click;
@@ -117,6 +120,8 @@ namespace RD.UI.Order
             //单据状态:读取 R (将读取的数据存放至‘预览页’)
             else
             {
+                //初始化反审核标记为false
+                _backconfirm = false;
                 //获取读取过来的记录信息
                 _gvdtldt = OnInitializeDtl();
                 //通过格式转换再赋值至gvdtl内
@@ -508,6 +513,7 @@ namespace RD.UI.Order
             {
                 //定义‘合计’值
                 decimal totalamount = 0;
+
                 //定义_gvdtldt临时表(注:若_gvdtldt!=null就不用创建)
                 if (_gvdtldt == null)
                     _gvdtldt = dtList.Get_AdornEmptydt();
@@ -854,16 +860,67 @@ namespace RD.UI.Order
         {
             try
             {
-                //_sourcedt赋值并删除最后一列'RowId'
+                //定义_sourcedt临时表
                 _sourcedt = dtList.Get_AdornEmptydt();
+                //将_sourcedt删除最后一列'RowId'(便于后面的提交使用)
                 _sourcedt.Columns.Remove("RowId");
-                //循环
+                //审核条件:=>'录入页'内所有项都不能为空
+                if(!CheckGvshow()) throw new Exception("检测到‘录入页’有记录,请将记录保存或清空,再执行查阅");
 
+                var clickMessage = $"您所选择的信息为:\n 单据名称:{txtOrderNo.Text} \n 是否继续? \n 注:审核后需反审核才能对该单据的记录进行修改, \n 请谨慎处理.";
+                if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                {
+                    //将_gvdtldt的数据循环插入至_sourcedt
+                    foreach (DataRow rows in _gvdtldt.Rows)
+                    {
+                        var newrow = _sourcedt.NewRow();
+                        newrow[0] = rows[0];      //ID    
+                        newrow[1] = rows[1];      //Adornid
+                        newrow[2] = rows[2];      //工程类别ID
+                        newrow[3] = rows[3];      //大类名称
+                        newrow[4] = rows[4];      //装修工程类别
+                        newrow[5] = rows[5];      //项目名称
+                        newrow[6] = rows[6];      //单位名称
+                        newrow[7] = rows[7];      //工程量
+                        newrow[8] = rows[8];      //综合单价
+                        newrow[9] = rows[9];      //人工费用
+                        newrow[10] = rows[10];    //辅材费用
+                        newrow[11] = rows[11];    //单价
+                        newrow[12] = rows[12];    //临时材料单价
+                        newrow[13] = rows[13];    //合计
+                        newrow[14] = rows[14];    //备注
+                        newrow[15] = rows[15];    //录入人
+                        newrow[16] = rows[16];    //录入日期
+                        _sourcedt.Rows.Add(newrow);
+                    }
+                    //审核成功后的操作
+                    //审核成功后操作 => 1)审核图片显示 2)将控件设为不可修改 3)弹出成功信息窗体 4)将_confirmMarkid标记设为True
+                    MessageBox.Show($"审核成功,请进行提交操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _confirmMarkId = true;
+                    //若单据状态为R时,_backconfirm为TRUE
+                    if (_funState == "R")
+                        _backconfirm = true;
+                    //权限控制
+                    PrivilegeControl();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// 检查gvshow内是否有值(包括‘大类名称’文本框)
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckGvshow()
+        {
+            var result = true;
+            var dt = (DataTable) gvshow.DataSource;
+            if (dt.Rows.Count > 0 || txttypename.Text != "")
+                result = false;
+            return result;
         }
 
         /// <summary>
@@ -875,7 +932,22 @@ namespace RD.UI.Order
         {
             try
             {
+                //判断若没有完成审核,即不能执行
+                if (!_confirmMarkId) throw new Exception("请先点击‘审核’再继续");
 
+                //todo task相关关联代码
+
+
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if (!task.ResultMark) throw new Exception("提交异常,请联系管理员");
+                else
+                {
+                    MessageBox.Show($"单据'{txtOrderNo.Text}'提交成功,可关闭此单据", $"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tmsave.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -923,6 +995,51 @@ namespace RD.UI.Order
             }
         }
 
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AdornOrderFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                var clickMessage = !_confirmMarkId ? $"提示:单据'{txtOrderNo.Text}'没提交, \n 其记录退出后将会消失,是否确定退出?" : $"是否退出?";
+
+                if (e.CloseReason != CloseReason.ApplicationExitCall)
+                {
+                    var result = MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    //当点击"OK"按钮时执行以下操作
+                    if (result == DialogResult.Yes)
+                    {
+                        //当退出时,清空useid等相关占用信息
+                        //当单据状态为C时执行
+                        if (_funState == "C")
+                        {
+                            //UpdateUseValue(0, 1, txtbom.Text);
+                        }
+                        //当单据状态为R时执行
+                        else
+                        {
+                            //UpdateUseValue(_fid, 1, "");
+                        }
+
+                        //允许窗体关闭
+                        e.Cancel = false;
+                    }
+                    else
+                    {
+                        //将Cancel属性设置为 true 可以“阻止”窗体关闭
+                        e.Cancel = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void Start()
         {
             task.StartTask();
@@ -944,14 +1061,35 @@ namespace RD.UI.Order
                 //加载图片
                 pbimg.Visible = true;
                 pbimg.BackgroundImage = Image.FromFile(Application.StartupPath + @"\PIC\1.png");
+                //'预览页'方面的设置
+                txttypename.ReadOnly = true;
+                btnsave.Enabled = false;
 
-                
+                tmadd.Visible = false;
+                ts1.Visible = false;
+                tmreplace.Visible = false;
+                ts2.Visible = false;
+                tmdel.Visible = false;
+
+                //若单据状态为R并且不为‘反审核’时执行
+                if (_funState == "R" && !_backconfirm)
+                {
+                    tmconfirm.Enabled = false;
+                    tmsave.Enabled = false;
+                }
+                //单据状态为C“创建” 及R “反审核”时使用,当审核完成单据,但还没提交时执行
+                else
+                {
+                    tmconfirm.Enabled = false;
+                }
             }
             //若为“非审核”状态的,就执行以下语句
             else
             {
                 pbimg.Visible = false;
-
+                txttypename.ReadOnly = false;
+                tmconfirm.Enabled = true;
+                tmsave.Enabled = true;
             }
         }
 
