@@ -111,5 +111,27 @@ namespace RD.Logic.Order
             return result;
         }
 
+        /// <summary>
+        /// 提交数据至数据表
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="sourcedt"></param>
+        /// <param name="deldt"></param>
+        /// <returns></returns>
+        public bool ImportDtToDb(string functionName,DataTable sourcedt,DataTable deldt)
+        {
+            var result = true;
+
+            try
+            {
+                result=importDt.ImportDtToDb(functionName,sourcedt, deldt);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
     }
 }

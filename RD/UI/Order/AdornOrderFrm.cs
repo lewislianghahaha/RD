@@ -124,6 +124,8 @@ namespace RD.UI.Order
                 _backconfirm = false;
                 //获取读取过来的记录信息
                 _gvdtldt = OnInitializeDtl();
+                //todo 更新用户占用单据方法
+
                 //通过格式转换再赋值至gvdtl内
                 LinkGridViewPageChange(ChangeDisplayStyle(0, _gvdtldt));
             }
@@ -218,6 +220,7 @@ namespace RD.UI.Order
             {
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("请选中一行后再继续.");
                 if (gvdtl.RowCount == 0) throw new Exception("‘预览页’没有内容,不能执行查阅");
+
                 var gvshowdt = (DataTable) gvshow.DataSource;
                 if (txttypename.Text != "" || gvshowdt.Rows.Count > 0) throw new Exception("检测到‘录入页’有记录,请将记录保存或清空,再执行查阅");
 
@@ -227,7 +230,7 @@ namespace RD.UI.Order
 
                 var colname = Convert.ToString(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value != DBNull.Value ? "Adornid" : "Rowid");
 
-                //获取对应的‘大类名称’及‘装修工程类别’
+                //根据Adornid(Rowid)获取对应的‘大类名称’及‘装修工程类别’
                 var rowdtl = _gvdtldt.Select($"{colname}='"+orderid+"'");
                 //根据获取的‘大类名称’及‘装修工程类别’再次放到_gvdtldt内进行查找对应的明细行记录
                 var rows = _gvdtldt.Select("大类名称='" + rowdtl[0][3] + "' and 装修工程类别='" + rowdtl[0][4] + "'");
@@ -868,6 +871,7 @@ namespace RD.UI.Order
                 if(!CheckGvshow()) throw new Exception("检测到‘录入页’有记录,请将记录保存或清空,再执行查阅");
 
                 var clickMessage = $"您所选择的信息为:\n 单据名称:{txtOrderNo.Text} \n 是否继续? \n 注:审核后需反审核才能对该单据的记录进行修改, \n 请谨慎处理.";
+
                 if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
                     //将_gvdtldt的数据循环插入至_sourcedt
@@ -893,7 +897,7 @@ namespace RD.UI.Order
                         newrow[16] = rows[16];    //录入日期
                         _sourcedt.Rows.Add(newrow);
                     }
-                    //审核成功后的操作
+
                     //审核成功后操作 => 1)审核图片显示 2)将控件设为不可修改 3)弹出成功信息窗体 4)将_confirmMarkid标记设为True
                     MessageBox.Show($"审核成功,请进行提交操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     _confirmMarkId = true;
@@ -935,8 +939,11 @@ namespace RD.UI.Order
                 //判断若没有完成审核,即不能执行
                 if (!_confirmMarkId) throw new Exception("请先点击‘审核’再继续");
 
-                //todo task相关关联代码
-
+                task.TaskId = 2;
+                task.FunctionId = "5";
+                task.FunctionName = _funName;
+                task.Data = _sourcedt;
+                task.Deldata = _deldt;
 
                 new Thread(Start).Start();
                 load.StartPosition = FormStartPosition.CenterScreen;

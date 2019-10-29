@@ -676,6 +676,41 @@ namespace RD.DB
                          SELECT ISNULL(MAX({colname}),0)+1
                          FROM dbo.{tablename}";
             }
+            //添加T_PRO_AdornEntry生成ID值
+            else if (tablename== "T_PRO_AdornEntry")
+            {
+                _result = @"
+                            DECLARE
+	                            @id INT;
+                            BEGIN
+	                            INSERT INTO dbo.T_PRO_AdornEntry_KEY( Column1 )
+	                            VALUES  (1)
+
+	                            SELECT @id=Id FROM dbo.T_PRO_AdornEntry_KEY
+
+	                            DELETE FROM dbo.T_PRO_AdornEntry_KEY
+
+	                            SELECT @id
+                            END
+                            ";
+            }
+            else if (tablename== "T_PRO_MaterialEntry")
+            {
+                _result = @"
+                            DECLARE
+	                            @id INT;
+                            BEGIN
+	                            INSERT INTO dbo.T_PRO_MaterialEntry_KEY( Column1 )
+	                            VALUES  (1)
+
+	                            SELECT @id=Id FROM dbo.T_PRO_MaterialEntry_KEY
+
+	                            DELETE FROM dbo.T_PRO_MaterialEntry_KEY
+
+	                            SELECT @id
+                            END
+                            ";
+            }
             return _result;
         }
 
@@ -870,7 +905,7 @@ namespace RD.DB
             {
                 case "T_PRO_AdornEntry":
                     _result = @"
-                                     UPDATE dbo.T_PRO_AdornEntry SET HTypeProjectName=@HTypeProjectName,Unit=@Unit,quantities=@quantities,FinalPrice=@FinalPrice,
+                                     UPDATE dbo.T_PRO_AdornEntry SET HTypeid=@HTypeid,TypeName=@TypeName,HTypeProjectName=@HTypeProjectName,Unit=@Unit,quantities=@quantities,FinalPrice=@FinalPrice,
 								                                     Ren_Cost=@Ren_Cost,Fu_Cost=@Fu_Cost,Price=@Price,Temp_Price=@Temp_Price,Amount=@Amount,
 								                                     FRemark=@FRemark
                                      WHERE adornid=@adornid
@@ -878,7 +913,7 @@ namespace RD.DB
                     break;
                 case "T_PRO_MaterialEntry":
                     _result = $@"
-                                    UPDATE dbo.T_PRO_MaterialEntry SET MaterialId=@MaterialId,MaterialName=@MaterialName,Unit=@Unit,quantities=@quantities,
+                                    UPDATE dbo.T_PRO_MaterialEntry SET MaterialId=@MaterialId,MaterialType=@MaterialType,MaterialName=@MaterialName,Unit=@Unit,quantities=@quantities,
 								                                       FinalPrice=@FinalPrice,Ren_Cost=@Ren_Cost,Fu_Cost=@Fu_Cost,Price=@Price,
 								                                       Temp_Price=@Temp_Price,Amount=@Amount,FRemark=@FRemark
                                     WHERE EntryID=@EntryID

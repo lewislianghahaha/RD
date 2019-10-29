@@ -406,6 +406,8 @@ namespace RD.DB.Import
                     break;
                 case "T_PRO_AdornEntry":
                     da.UpdateCommand.Parameters.Add("@adornid", SqlDbType.Int, 8, "adornid");
+                    da.UpdateCommand.Parameters.Add("@HTypeid", SqlDbType.Int, 8, "HTypeid");
+                    da.UpdateCommand.Parameters.Add("@TypeName",SqlDbType.NVarChar,300, "TypeName");
                     da.UpdateCommand.Parameters.Add("@HTypeProjectName", SqlDbType.NVarChar,300, "HTypeProjectName");
                     da.UpdateCommand.Parameters.Add("@Unit", SqlDbType.NVarChar, 50, "Unit");
                     da.UpdateCommand.Parameters.Add("@quantities",SqlDbType.Decimal,2, "quantities");
@@ -420,6 +422,7 @@ namespace RD.DB.Import
                 case "T_PRO_MaterialEntry":
                     da.UpdateCommand.Parameters.Add("@EntryID", SqlDbType.Int, 8, "EntryID");
                     da.UpdateCommand.Parameters.Add("@MaterialId",SqlDbType.Int,8,"MaterialId");
+                    da.UpdateCommand.Parameters.Add("@MaterialType", SqlDbType.NVarChar, 300, "MaterialType");
                     da.UpdateCommand.Parameters.Add("@MaterialName", SqlDbType.NVarChar, 300, "MaterialName");
                     da.UpdateCommand.Parameters.Add("@Unit",SqlDbType.NVarChar,50, "Unit");
                     da.UpdateCommand.Parameters.Add("@quantities",SqlDbType.Decimal,2, "quantities");
@@ -665,6 +668,78 @@ namespace RD.DB.Import
             }
             return result;
         }
+
+        /// <summary>
+        /// 提交数据至数据表 要点:当检测到Adornid  Entryid为空,即插入,反之为更新
+        /// </summary>
+        /// <param name="functionName">AdornOrder:室内装修工程 MaterialOrder:室内主材单</param>
+        /// <param name="sourcedt"></param>
+        /// <param name="deldt">需要删除的记录DT(单据状态为R时使用)</param>
+        /// <returns></returns>
+        public bool ImportDtToDb(string functionName, DataTable sourcedt, DataTable deldt)
+        {
+            var result = true;
+            //定义查询语句
+            var selectvalue = string.Empty;
+
+            try
+            {
+                //根据functionName参数,定义tableName变量对应的值
+                var tablename = functionName == "AdornOrder" ? "T_PRO_AdornEntry" : "T_PRO_MaterialEntry";
+
+                //根据functionName创建用于插入的临时表
+                var insertdtltemp = functionName == "AdornOrder" ? dtList.Get_AdornEmptydt() : dtList.Get_ProMaterialEmtrydt();
+                //根据functionName创建用于更新的临时表
+                var updatedtltemp= functionName == "AdornOrder" ? dtList.Get_AdornEmptydt() : dtList.Get_ProMaterialEmtrydt();
+
+                //获取Adornid(EntryId)为空的记录（用于插入使用）
+                selectvalue = functionName == "AdornOrder" ? "Adornid IS NULL" : "EntryID is null";
+                var dtlnullrows = sourcedt.Select(selectvalue);
+
+                for (var i = 0; i < dtlnullrows.Length; i++)
+                {
+                    var newrow = insertdtltemp.NewRow();
+                    for (var j = 0; j < insertdtltemp.Columns.Count; j++)
+                    {
+                        newrow[i] = dtlnullrows[i][j];
+                    }
+                    insertdtltemp.Rows.Add(newrow);
+                }
+
+                //获取Adornid(EntryId)不为空的记录(用于更新使用)
+                selectvalue = functionName == "AdornOrder" ? "Adornid IS not NULL" : "EntryID is not null";
+                var dtlnotnullrows = sourcedt.Select(selectvalue);
+
+                for (var i = 0; i < dtlnotnullrows.Length; i++)
+                {
+                    var newrow = updatedtltemp.NewRow();
+                    for (var j = 0; j < updatedtltemp.Columns.Count; j++)
+                    {
+                        newrow[i] = dtlnotnullrows[i][j];
+                    }
+                    updatedtltemp.Rows.Add(newrow);
+                }
+
+                //最后将得出的结果进行插入或更新
+                if(insertdtltemp.Rows.Count>0)
+                    Importdt(tablename,insertdtltemp);
+                if(updatedtltemp.Rows.Count>0)
+                    UpEntrydt(tablename,updatedtltemp);
+
+                //若deldt有值的话都执行删除方法
+                if (deldt.Rows.Count > 0)
+                {
+                    //todo
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+
 
         #endregion
 

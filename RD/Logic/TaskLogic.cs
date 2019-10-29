@@ -450,7 +450,7 @@ namespace RD.Logic
                     break;
                 //保存(作用:对“室内主材单”树型菜单信息导入->将“材料信息管理”的大类插入至对应的T_PRO_MaterialTree内)
                 case "2.4":
-                    _resultMark =orderImport.InsertMaterialIntoDt(functionName,pid);
+                    _resultMark = orderImport.InsertMaterialIntoDt(functionName,pid);
                     break;
 
                 //删除节点及对应的表体信息
@@ -461,6 +461,11 @@ namespace RD.Logic
                 //审核（反审核）
                 case "4":
                     _resultMark = orderGenerate.ConfirmOrderDtl(functionName,confirmid,pid);
+                    break;
+
+                //提交(室内装修工程 以及 室内主材单据新模板使用) add date:20191029
+                case "5":
+                    _resultMark = orderImport.ImportDtToDb(functionName, dt,deldt);
                     break;
             }
         }

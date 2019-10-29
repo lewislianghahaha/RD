@@ -157,10 +157,10 @@ namespace RD.UI.Order
                             //将当前窗体隐藏
                             this.Visible = false;
                             //弹出对应窗体相关设置
-                            adornOrder.FunState ="C"; //_funState;             //单据状态
+                            adornOrder.FunState ="C"; //_funState;        //单据状态
                             adornOrder.Pid = id;                         //单据主键id
                             adornOrder.FunName = _funName;              //功能名称
-                           // adornOrder.CandelMarkid = _candelMarkid;   //能否删除权限标记(删除时作权限使用)
+                           // adornOrder.CandelMarkid = _candelMarkid; //能否删除权限标记(删除时作权限使用)
                             adornOrder.OnInitialize();                //初始化信息
                             adornOrder.StartPosition = FormStartPosition.CenterParent;
                             adornOrder.ShowDialog();
