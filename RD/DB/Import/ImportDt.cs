@@ -688,9 +688,13 @@ namespace RD.DB.Import
                 var tablename = functionName == "AdornOrder" ? "T_PRO_AdornEntry" : "T_PRO_MaterialEntry";
 
                 //根据functionName创建用于插入的临时表
-                var insertdtltemp = functionName == "AdornOrder" ? dtList.Get_AdornEmptydt() : dtList.Get_ProMaterialEmtrydt();
+                var insertdtltemp = functionName == "AdornOrder" ? dtList.Get_AdornDTtoDb() : dtList.Get_ProMaterialToDb();
                 //根据functionName创建用于更新的临时表
-                var updatedtltemp= functionName == "AdornOrder" ? dtList.Get_AdornEmptydt() : dtList.Get_ProMaterialEmtrydt();
+                var updatedtltemp= functionName == "AdornOrder" ? dtList.Get_AdornDTtoDb() : dtList.Get_ProMaterialToDb();
+
+                //若发现要进行操作的是AdornOrder,需将sourcedt内的‘装修工程类别’列删除
+                if (functionName== "AdornOrder")
+                    sourcedt.Columns.Remove("装修工程类别");
 
                 //获取Adornid(EntryId)为空的记录（用于插入使用）
                 selectvalue = functionName == "AdornOrder" ? "Adornid IS NULL" : "EntryID is null";
@@ -704,9 +708,12 @@ namespace RD.DB.Import
                         if (j == 1)
                         {
                             //创建新的Adornid(EntryId)
-                            newrow[i] = Maxid(tablename,null);
+                            newrow[j] = Maxid(tablename,null);
                         }
-                        newrow[i] = dtlnullrows[i][j];
+                        else
+                        {
+                            newrow[j] = dtlnullrows[i][j];
+                        }
                     }
                     insertdtltemp.Rows.Add(newrow);
                 }
@@ -720,7 +727,7 @@ namespace RD.DB.Import
                     var newrow = updatedtltemp.NewRow();
                     for (var j = 0; j < updatedtltemp.Columns.Count; j++)
                     {
-                        newrow[i] = dtlnotnullrows[i][j];
+                        newrow[j] = dtlnotnullrows[i][j];
                     }
                     updatedtltemp.Rows.Add(newrow);
                 }
@@ -732,7 +739,7 @@ namespace RD.DB.Import
                     UpEntrydt(tablename,updatedtltemp);
 
                 //若deldt有值的话都执行删除方法
-                if (deldt.Rows.Count > 0)
+                if (deldt?.Rows.Count > 0) 
                     generateDt.Del(functionName, deldt);
             }
             catch (Exception)

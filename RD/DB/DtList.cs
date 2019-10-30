@@ -407,6 +407,110 @@ namespace RD.DB
         }
 
         /// <summary>
+        /// 室内装修工程-对应数据表的插入及更新操作使用
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_AdornDTtoDb()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 16; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //小类ID(主键)
+                    case 1:
+                        dc.ColumnName = "adornid";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //工程类别ID
+                    case 2:
+                        dc.ColumnName = "HTypeid"; 
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //大类名称
+                    case 3:
+                        dc.ColumnName = "TypeName";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    ////装修工程类别
+                    //case 4:
+                    //    dc.ColumnName = "HtypeName";
+                    //    dc.DataType = Type.GetType("System.String");
+                    //    break;
+                    //项目名称
+                    case 4:
+                        dc.ColumnName = "HTypeProjectName";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //单位名称
+                    case 5:
+                        dc.ColumnName = "Unit";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //工程量
+                    case 6:
+                        dc.ColumnName = "quantities";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //综合单价
+                    case 7:
+                        dc.ColumnName = "FinalPrice";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //人工费用
+                    case 8:
+                        dc.ColumnName = "Ren_Cost";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //辅材费用
+                    case 9:
+                        dc.ColumnName = "Fu_Cost";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //单价
+                    case 10:
+                        dc.ColumnName = "Price";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //临时材料单价
+                    case 11:
+                        dc.ColumnName = "Temp_Price";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //合计
+                    case 12:
+                        dc.ColumnName = "Amount";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //备注
+                    case 13:
+                        dc.ColumnName = "FRemark";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //录入人
+                    case 14:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //录入日期
+                    case 15:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
         /// 获取"室内主材"表体临时表
         /// </summary>
         /// <returns></returns>
@@ -508,6 +612,105 @@ namespace RD.DB
                     case 16:
                         dc.ColumnName = "RowId";
                         dc.DataType = Type.GetType("System.Int32");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 室内主材单-对应数据表的插入及更新操作使用
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_ProMaterialToDb()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 16; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    //表头主键ID
+                    case 0:
+                        dc.ColumnName = "Id";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //小类ID
+                    case 1:
+                        dc.ColumnName = "EntryID";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //材料ID
+                    case 2:
+                        dc.ColumnName = "MaterialId";
+                        dc.DataType = Type.GetType("System.Int32");
+                        break;
+                    //材料大类名称
+                    case 3:
+                        dc.ColumnName = "MaterialType";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //材料名称
+                    case 4:
+                        dc.ColumnName = "MaterialName";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //单位名称
+                    case 5:
+                        dc.ColumnName = "Unit";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //工程量
+                    case 6:
+                        dc.ColumnName = "quantities";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //综合单价
+                    case 7:
+                        dc.ColumnName = "FinalPrice";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //人工费用
+                    case 8:
+                        dc.ColumnName = "Ren_Cost";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //辅材费用
+                    case 9:
+                        dc.ColumnName = "Fu_Cost";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //单价
+                    case 10:
+                        dc.ColumnName = "Price";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //临时材料单价
+                    case 11:
+                        dc.ColumnName = "Temp_Price";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //合计
+                    case 12:
+                        dc.ColumnName = "Amount";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                    //备注
+                    case 13:
+                        dc.ColumnName = "FRemark";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //录入人
+                    case 14:
+                        dc.ColumnName = "InputUser";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    //录入日期
+                    case 15:
+                        dc.ColumnName = "InputDt";
+                        dc.DataType = Type.GetType("System.DateTime");
                         break;
                 }
                 dt.Columns.Add(dc);
