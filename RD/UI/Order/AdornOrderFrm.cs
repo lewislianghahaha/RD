@@ -855,7 +855,6 @@ namespace RD.UI.Order
 
         /// <summary>
         /// 审核
-        /// 审核条件:
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

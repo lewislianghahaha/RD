@@ -179,7 +179,7 @@ namespace RD.DB.Generate
             //单据表体使用
             else if (functionName == "AdornOrder" || functionName == "MaterialOrder")
             {
-                sqlscript= sqlList.OrderInfo_Del(functionName, Convert.ToInt32(row[2]));
+                sqlscript= sqlList.OrderInfo_Del(functionName, Convert.ToInt32(row[1]));
             }
             //基础信息库使用
             else

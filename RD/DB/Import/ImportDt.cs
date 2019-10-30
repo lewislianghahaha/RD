@@ -701,6 +701,11 @@ namespace RD.DB.Import
                     var newrow = insertdtltemp.NewRow();
                     for (var j = 0; j < insertdtltemp.Columns.Count; j++)
                     {
+                        if (j == 1)
+                        {
+                            //创建新的Adornid(EntryId)
+                            newrow[i] = Maxid(tablename,null);
+                        }
                         newrow[i] = dtlnullrows[i][j];
                     }
                     insertdtltemp.Rows.Add(newrow);
@@ -728,9 +733,7 @@ namespace RD.DB.Import
 
                 //若deldt有值的话都执行删除方法
                 if (deldt.Rows.Count > 0)
-                {
-                    //todo
-                }
+                    generateDt.Del(functionName, deldt);
             }
             catch (Exception)
             {
