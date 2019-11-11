@@ -125,7 +125,8 @@ namespace RD.UI.Order
                 string frmName;
 
                 if (gvdtl.SelectedRows.Count==0) throw new Exception("请选取某一行,然后再按此按钮");
-                _funName = "AdornOrder";
+                //todo test
+                _funName = "MaterialOrder"; //"AdornOrder";
                 frmName = _funName == "AdornOrder" ? "室内装修工程" : "室内主材";
                 //获取当前行的客户名称 及 客户ID信息
                 var customerid= Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
@@ -171,11 +172,11 @@ namespace RD.UI.Order
                             //将当前窗体隐藏
                             this.Visible = false;
                             //弹出对应窗体相关设置
-                            //materialOrder.FunState = _funState;
-                            //materialOrder.Pid = id;                       //单据主键id
-                            //materialOrder.FunName = _funName;            //功能名称
+                            materialOrder.FunState = _funState;
+                            materialOrder.Pid = id;                       //单据主键id
+                            materialOrder.FunName = _funName;            //功能名称
                             //materialOrder.CandelMarkid = _candelMarkid; //能否删除权限标记(删除时作权限使用)
-                            //materialOrder.OnInitialize();               //初始化信息
+                            materialOrder.OnInitialize();               //初始化信息
                             materialOrder.StartPosition=FormStartPosition.CenterParent;
                             materialOrder.ShowDialog();
                         }

@@ -2,14 +2,11 @@
 using System.Data;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using NPOI.SS.Formula.Functions;
 using RD.DB;
 using RD.Logic;
-using Stimulsoft.Base.Json.Linq;
 using Stimulsoft.Report;
 
 namespace RD.UI.Order
@@ -133,6 +130,57 @@ namespace RD.UI.Order
             ControlGridViewisShow();
             //权限控制
             PrivilegeControl();
+        }
+
+        /// <summary>
+        /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
+        /// </summary>
+        /// <param name="funname"></param>
+        /// <param name="pid"></param>
+        private void ShowHead(string funname, int pid)
+        {
+            //根据ID值读取T_Pro_Adorn表记录;并将结果赋给对应的文本框内
+            task.TaskId = 2;
+            task.FunctionId = "1.3";
+            task.FunctionName = funname;
+            task.Pid = pid;
+
+            task.StartTask();
+            //并将结果赋给对应的文本框内(表头信息)
+            var dt = task.ResultTable;
+            txtOrderNo.Text = dt.Rows[0][0].ToString();
+            txtCustomer.Text = dt.Rows[0][1].ToString();
+            txtHoseName.Text = dt.Rows[0][2].ToString();
+            txtAdd.Text = dt.Rows[0][3].ToString();
+            //获取审核标记
+            _confirmMarkId = dt.Rows[0][4].ToString() == "Y";
+        }
+
+        /// <summary>
+        /// 初始化获取表体信息(注:若单据状态C时,获取空白表;若为R时,就按情况判断是读取空白表还是有内容的表)
+        /// </summary>
+        /// <returns></returns>
+        private DataTable OnInitializeDtl()
+        {
+            var resultdt = new DataTable();
+
+            try
+            {
+                task.TaskId = 2;
+                task.FunctionId = "1.2";
+                task.FunState = _funState;
+                task.Pid = _pid;
+
+                task.StartTask();
+                resultdt = task.ResultTable;
+            }
+            catch (Exception ex)
+            {
+                resultdt.Rows.Clear();
+                resultdt.Columns.Clear();
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return resultdt;
         }
 
         /// <summary>
@@ -814,7 +862,7 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 检索出一个数源DT内有多少个‘大类名称’记录，整后后返回DT
+        /// 检索出一个数源DT内有多少个‘大类名称’记录，整理后返回DT
         /// </summary>
         /// <param name="sourcedt"></param>
         /// <returns></returns>
@@ -1344,57 +1392,6 @@ namespace RD.UI.Order
         }
 
         /// <summary>
-        /// 初始化获取表体信息(注:若单据状态C时,获取空白表;若为R时,就按情况判断是读取空白表还是有内容的表)
-        /// </summary>
-        /// <returns></returns>
-        private DataTable OnInitializeDtl()
-        {
-            var resultdt = new DataTable();
-
-            try
-            {
-                task.TaskId = 2;
-                task.FunctionId = "1.2";
-                task.FunState = _funState;
-                task.Pid = _pid;
-
-                task.StartTask();
-                resultdt = task.ResultTable;
-            }
-            catch (Exception ex)
-            {
-                resultdt.Rows.Clear();
-                resultdt.Columns.Clear();
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return resultdt;
-        }
-
-        /// <summary>
-        /// 根据功能名称 及 表头ID读取表头相关信息(包括单据编号等)
-        /// </summary>
-        /// <param name="funname"></param>
-        /// <param name="pid"></param>
-        private void ShowHead(string funname, int pid)
-        {
-            //根据ID值读取T_Pro_Adorn表记录;并将结果赋给对应的文本框内
-            task.TaskId = 2;
-            task.FunctionId = "1.3";
-            task.FunctionName = funname;
-            task.Pid = pid;
-
-            task.StartTask();
-            //并将结果赋给对应的文本框内(表头信息)
-            var dt = task.ResultTable;
-            txtOrderNo.Text = dt.Rows[0][0].ToString();
-            txtCustomer.Text = dt.Rows[0][1].ToString();
-            txtHoseName.Text = dt.Rows[0][2].ToString();
-            txtAdd.Text = dt.Rows[0][3].ToString();
-            //获取审核标记
-            _confirmMarkId = dt.Rows[0][4].ToString() == "Y";
-        }
-
-        /// <summary>
         /// 连接GridView页面跳转功能
         /// </summary>
         /// <param name="dt"></param>
@@ -1407,7 +1404,8 @@ namespace RD.UI.Order
                 //初始化下拉框所选择的默认值
                 tmshowrows.SelectedItem = "10";
                 //定义初始化标记
-                _pageChange = true;
+                _pageChange = _pageCurrent <= 1;
+                //_pageChange = true;
                 //GridView分页
                 GridViewPageChange();
             }
