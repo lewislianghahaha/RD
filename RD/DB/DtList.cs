@@ -310,11 +310,6 @@ namespace RD.DB
                         dc.ColumnName = "Id";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    //树菜单ID
-                    //case 1:
-                    //    dc.ColumnName = "TreeId";
-                    //    dc.DataType = Type.GetType("System.Int32");
-                    //    break;
                     //小类ID
                     case 1:
                         dc.ColumnName = "adornid";
@@ -528,11 +523,6 @@ namespace RD.DB
                         dc.ColumnName = "Id";
                         dc.DataType = Type.GetType("System.Int32");
                         break;
-                    //树菜单ID
-                    //case 1:
-                    //    dc.ColumnName = "TreeId";
-                    //    dc.DataType = Type.GetType("System.Int32");
-                    //    break;
                     //小类ID
                     case 1:
                         dc.ColumnName = "EntryID";

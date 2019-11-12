@@ -532,7 +532,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 12);
             this.label6.TabIndex = 0;
-            this.label6.Text = "总计:";
+            this.label6.Text = "合计:";
             // 
             // panel9
             // 

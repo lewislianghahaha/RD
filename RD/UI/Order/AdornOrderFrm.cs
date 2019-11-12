@@ -123,7 +123,7 @@ namespace RD.UI.Order
                 _gvdtldt = OnInitializeDtl();
                 //todo 更新用户占用单据方法
 
-                //通过格式转换再赋值至gvdtl内
+                //通过格式转换再赋值至gvdtl内 todo:读取时‘合计’项获取
                 LinkGridViewPageChange(ChangeDisplayStyle(0, _gvdtldt));
             }
             //控制GridView单元格显示方式
@@ -236,7 +236,7 @@ namespace RD.UI.Order
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, $"错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -480,7 +480,7 @@ namespace RD.UI.Order
                     rows[13] = DBNull.Value;                    //合计(清空)
                     rows[14] = DBNull.Value;                    //备注(清空)
                     rows[15] = GlobalClasscs.User.StrUsrName;   //录入人(更新至当前用户)
-                    rows[16] = DateTime.Now;                    //录入日期(更新至当天)
+                    rows[16] = DateTime.Now.Date;               //录入日期(更新至当天)
                     gridViewdt.EndInit();
                 }
             }
@@ -715,7 +715,7 @@ namespace RD.UI.Order
         private DataTable ChangeDisplayStyle(int type,DataTable sourcedt)
         {
             //定义转换临时表
-            var changetempdt = dtList.Get_AdornEmptydt();
+            var changetempdt = sourcedt.Clone(); //dtList.Get_AdornEmptydt();
             //定义‘大类名称’变量
             var typename = string.Empty;
             //定义‘装修工程类别’变量
@@ -805,6 +805,7 @@ namespace RD.UI.Order
                     typename = "";
                     htypename = "";
                 }
+                
             }
             #region 从gvdtl数据转换至gvshow(no need)
             //从gvdtl数据转换至gvshow(no need)
@@ -868,7 +869,7 @@ namespace RD.UI.Order
         /// <returns></returns>
         private DataTable GetTypeNameDt(DataTable sourcedt)
         {
-            var dt = dtList.Get_AdornEmptydt();
+            var dt = sourcedt.Clone();
             //循环sourcedt,并统计出不相同的‘大类名称’（注:若循环的记录不在dt内存在,才进行插入）
             foreach (DataRow rows in sourcedt.Rows)
             {
@@ -1058,7 +1059,7 @@ namespace RD.UI.Order
         {
             try
             {
-                var clickMessage = !_confirmMarkId ? $"提示:单据'{txtOrderNo.Text}'没提交, \n 其记录退出后将会消失,是否确定退出?" : $"是否退出?";
+                var clickMessage = !_confirmMarkId ? $"提示:单据'{txtOrderNo.Text}'没提交, \n 其记录退出后将会消失,是否确定退出?" : $"是否退出? \n 注:若审核但没有提交,退出后数据也会消失";
 
                 if (e.CloseReason != CloseReason.ApplicationExitCall)
                 {

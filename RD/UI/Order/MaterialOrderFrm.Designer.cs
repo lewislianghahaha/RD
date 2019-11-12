@@ -67,8 +67,6 @@
             this.MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tmshowdetail = new System.Windows.Forms.ToolStripMenuItem();
             this.panel10 = new System.Windows.Forms.Panel();
-            this.lbproduct = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.lbtotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
@@ -258,34 +256,34 @@
             this.ts2,
             this.tmdel});
             this.RightMenu.Name = "RightMenu";
-            this.RightMenu.Size = new System.Drawing.Size(153, 104);
+            this.RightMenu.Size = new System.Drawing.Size(125, 82);
             // 
             // tmadd
             // 
             this.tmadd.Name = "tmadd";
-            this.tmadd.Size = new System.Drawing.Size(152, 22);
+            this.tmadd.Size = new System.Drawing.Size(124, 22);
             this.tmadd.Text = "新增记录";
             // 
             // ts1
             // 
             this.ts1.Name = "ts1";
-            this.ts1.Size = new System.Drawing.Size(149, 6);
+            this.ts1.Size = new System.Drawing.Size(121, 6);
             // 
             // tmreplace
             // 
             this.tmreplace.Name = "tmreplace";
-            this.tmreplace.Size = new System.Drawing.Size(152, 22);
+            this.tmreplace.Size = new System.Drawing.Size(124, 22);
             this.tmreplace.Text = "替换记录";
             // 
             // ts2
             // 
             this.ts2.Name = "ts2";
-            this.ts2.Size = new System.Drawing.Size(149, 6);
+            this.ts2.Size = new System.Drawing.Size(121, 6);
             // 
             // tmdel
             // 
             this.tmdel.Name = "tmdel";
-            this.tmdel.Size = new System.Drawing.Size(152, 22);
+            this.tmdel.Size = new System.Drawing.Size(124, 22);
             this.tmdel.Text = "删除记录";
             // 
             // splitContainer1
@@ -456,8 +454,6 @@
             // panel10
             // 
             this.panel10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel10.Controls.Add(this.lbproduct);
-            this.panel10.Controls.Add(this.label8);
             this.panel10.Controls.Add(this.lbtotal);
             this.panel10.Controls.Add(this.label6);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -465,24 +461,6 @@
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(606, 20);
             this.panel10.TabIndex = 2;
-            // 
-            // lbproduct
-            // 
-            this.lbproduct.AutoSize = true;
-            this.lbproduct.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbproduct.Location = new System.Drawing.Point(379, 3);
-            this.lbproduct.Name = "lbproduct";
-            this.lbproduct.Size = new System.Drawing.Size(2, 14);
-            this.lbproduct.TabIndex = 3;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(320, 3);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 12);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "管理费5%:";
             // 
             // lbtotal
             // 
@@ -500,7 +478,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 12);
             this.label6.TabIndex = 0;
-            this.label6.Text = "总计:";
+            this.label6.Text = "合计:";
             // 
             // panel9
             // 
@@ -743,8 +721,6 @@
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.DataGridView gvdtl;
         private System.Windows.Forms.Panel panel10;
-        private System.Windows.Forms.Label lbproduct;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lbtotal;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel9;
