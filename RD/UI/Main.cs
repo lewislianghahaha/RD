@@ -473,14 +473,14 @@ namespace RD.UI
                 //室内主材单
                 else
                 {
-                    //materialOrder.FunState = "R";
-                    //materialOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
-                    //materialOrder.FunName = funname;
+                    materialOrder.FunState = "R";
+                    materialOrder.Pid = Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[0].Value);
+                    materialOrder.FunName = funname;
                     //materialOrder.CandelMarkid = ruleid;
-                    ////初始化窗体信息
-                    //materialOrder.OnInitialize();
-                    //materialOrder.StartPosition = FormStartPosition.CenterParent;
-                    //materialOrder.ShowDialog();
+                    //初始化窗体信息
+                    materialOrder.OnInitialize();
+                    materialOrder.StartPosition = FormStartPosition.CenterParent;
+                    materialOrder.ShowDialog();
                 }
                 //子窗体退出后再次执行查询
                 OnSearchRd();
@@ -987,7 +987,8 @@ namespace RD.UI
                     //初始化下拉框所选择的默认值
                     tmshowrows.SelectedItem = "10";
                     //定义初始化标记
-                    _pageChange = true;
+                    _pageChange = _pageCurrent <= 1;
+                    //_pageChange = true;
                     //GridView分页
                     GridViewPageChange();
                 }

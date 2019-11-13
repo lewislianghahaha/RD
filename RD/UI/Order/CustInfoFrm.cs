@@ -12,6 +12,7 @@ namespace RD.UI.Order
         AdornOrderFrm adornOrder=new AdornOrderFrm();
         MaterialOrderFrm materialOrder=new MaterialOrderFrm();
 
+        #region 变量定义
         //记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
         private string _funName;
         //单据状态标记(作用:记录创建记录) C:创建
@@ -28,13 +29,14 @@ namespace RD.UI.Order
 
         //记录能否删除ID(删除权限使用)
         private bool _candelMarkid;
+        #endregion
 
         #region Set
 
-            /// <summary>
-            /// 获取单据状态标记ID C:创建 R:读取
-            /// </summary>
-            public string FunState { set { _funState = value; } }
+        /// <summary>
+        /// 获取单据状态标记ID C:创建 R:读取
+        /// </summary>
+        public string FunState { set { _funState = value; } }
             /// <summary>
             /// 记录功能名称 AdornOrder:室内装修工程 MaterialOrder:室内主材单
             /// </summary>
@@ -126,7 +128,7 @@ namespace RD.UI.Order
 
                 if (gvdtl.SelectedRows.Count==0) throw new Exception("请选取某一行,然后再按此按钮");
                 //todo test
-                _funName = "MaterialOrder"; //"AdornOrder";
+                _funName = "MaterialOrder"; //"AdornOrder"; //
                 frmName = _funName == "AdornOrder" ? "室内装修工程" : "室内主材";
                 //获取当前行的客户名称 及 客户ID信息
                 var customerid= Convert.ToInt32(gvdtl.Rows[gvdtl.CurrentCell.RowIndex].Cells[1].Value);
@@ -151,7 +153,7 @@ namespace RD.UI.Order
                     else
                     {
                         //当插入完成后,转移到 室内装修工程单 或 室内主材单 窗体内,并将此窗体关闭
-                        MessageBox.Show($"新增'{frmName}'类型单据成功,请点击继续", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"新增'{frmName}'类型单据成功,请点击继续", $"提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //室内装修工程单
                         if (_funName == "AdornOrder")
                         {
@@ -172,11 +174,11 @@ namespace RD.UI.Order
                             //将当前窗体隐藏
                             this.Visible = false;
                             //弹出对应窗体相关设置
-                            materialOrder.FunState = _funState;
-                            materialOrder.Pid = id;                       //单据主键id
-                            materialOrder.FunName = _funName;            //功能名称
+                            materialOrder.FunState ="C";//_funState;       //单据状态
+                            materialOrder.Pid = id;                        //单据主键id
+                            materialOrder.FunName = _funName;              //功能名称
                             //materialOrder.CandelMarkid = _candelMarkid; //能否删除权限标记(删除时作权限使用)
-                            materialOrder.OnInitialize();               //初始化信息
+                            materialOrder.OnInitialize();                 //初始化信息
                             materialOrder.StartPosition=FormStartPosition.CenterParent;
                             materialOrder.ShowDialog();
                         }

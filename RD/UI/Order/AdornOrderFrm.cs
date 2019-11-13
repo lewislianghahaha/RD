@@ -123,7 +123,7 @@ namespace RD.UI.Order
                 _gvdtldt = OnInitializeDtl();
                 //todo 更新用户占用单据方法
 
-                //通过格式转换再赋值至gvdtl内 todo:读取时‘合计’项获取
+                //通过格式转换再赋值至gvdtl内
                 LinkGridViewPageChange(ChangeDisplayStyle(0, _gvdtldt));
             }
             //控制GridView单元格显示方式
@@ -677,6 +677,7 @@ namespace RD.UI.Order
                 //通过累加_gvdtldt中的‘合计’并进行显示(累加‘合计’项)
                 foreach (DataRow rows in _gvdtldt.Rows)
                 {
+                    if(rows[13]==DBNull.Value)continue;
                     totalamount += Convert.ToDecimal(rows[13]);
                 }
 
@@ -720,6 +721,9 @@ namespace RD.UI.Order
             var typename = string.Empty;
             //定义‘装修工程类别’变量
             var htypename = string.Empty;
+            //定义‘合计’变量
+            decimal total = 0;
+
             //定义DataRow数组
             var rowdtl = new DataRow[] {};
 
@@ -799,14 +803,22 @@ namespace RD.UI.Order
                             newrow[16] = rowdtl[j][16];   //录入日期
                             newrow[17] = rowdtl[j][17];   //Rowid
                             changetempdt.Rows.Add(newrow);
+                            //累加‘合计’数 - 读取状态时使用
+                            total += Convert.ToDecimal(rowdtl[j][13]);
                         }
                     }
                     //完成循环后将相关变量清空
                     typename = "";
                     htypename = "";
-                }
-                
+                } 
             }
+            //若为‘读取’状态,即执行
+            if (_funState == "R")
+            {
+                lbtotal.Text = Convert.ToString(total, CultureInfo.InvariantCulture);
+                lbproduct.Text = Convert.ToString(total*Convert.ToDecimal(0.05), CultureInfo.InvariantCulture);
+            }
+
             #region 从gvdtl数据转换至gvshow(no need)
             //从gvdtl数据转换至gvshow(no need)
             //else
@@ -1429,13 +1441,13 @@ namespace RD.UI.Order
             gvshow.Columns[0].Visible = false;
             gvshow.Columns[1].Visible = false;
             gvshow.Columns[2].Visible = false;
-            gvshow.Columns[3].Visible = false; //大类名称
+            gvshow.Columns[3].Visible = false;   //大类名称
 
             //设置指定列不能编辑
-            gvshow.Columns[4].ReadOnly = true; //装修工程类别
-            gvshow.Columns[5].ReadOnly = true; //项目名称
-            gvshow.Columns[6].ReadOnly = true; //单位名称
-            gvshow.Columns[8].ReadOnly = true; //综合单价
+            gvshow.Columns[4].ReadOnly = true;  //装修工程类别
+            //gvshow.Columns[5].ReadOnly = true;  //项目名称
+            gvshow.Columns[6].ReadOnly = true;  //单位名称
+            gvshow.Columns[8].ReadOnly = true;  //综合单价
             gvshow.Columns[11].ReadOnly = true; //单价
             gvshow.Columns[13].ReadOnly = true; //合计
 
@@ -1450,5 +1462,7 @@ namespace RD.UI.Order
             gvdtl.Columns[2].Visible = false;
             gvdtl.Columns[gvdtl.Columns.Count - 1].Visible = false; // RowId(单据状态为C时使用)
         }
+
+
     }
 }

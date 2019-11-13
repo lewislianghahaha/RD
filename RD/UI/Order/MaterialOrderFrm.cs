@@ -123,7 +123,7 @@ namespace RD.UI.Order
                 _gvdtldt = OnInitializeDtl();
                 //todo 更新用户占用单据方法
 
-                //通过格式转换再赋值至gvdtl内 todo:读取时‘合计’项获取
+                //通过格式转换再赋值至gvdtl内
                 LinkGridViewPageChange(ChangeDisplayStyle(0, _gvdtldt));
             }
             //控制GridView单元格显示方式
@@ -431,6 +431,7 @@ namespace RD.UI.Order
                 //通过累加_gvdtldt中的‘合计’并进行显示(累加‘合计’项)
                 foreach (DataRow rows in _gvdtldt.Rows)
                 {
+                    if (rows[12] == DBNull.Value) continue;
                     totalamount += Convert.ToDecimal(rows[12]);
                 }
 
@@ -557,8 +558,8 @@ namespace RD.UI.Order
                     newrow[2] = rows[0];    //MaterialId
                     newrow[3] = rows[1];    //材料大类名称
                     newrow[4] = rows[2];    //材料名称
-                    newrow[5] = rows[3];    //单位名称
-                    newrow[10] = rows[4];   //单价
+                    newrow[5] = rows[4];    //单位名称
+                    newrow[10] = rows[5];   //单价
                     newrow[16] = ++rowid;   //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
@@ -628,13 +629,13 @@ namespace RD.UI.Order
                     rows[2] = sourcedt.Rows[0][0];              //MaterialId
                     rows[3] = sourcedt.Rows[0][1];              //材料大料名称
                     rows[4] = sourcedt.Rows[0][2];              //材料名称
-                    rows[5] = sourcedt.Rows[0][3];              //单位名称
+                    rows[5] = sourcedt.Rows[0][4];              //单位名称
 
                     rows[6] = DBNull.Value;                     //工程量(清空)
                     rows[7] = DBNull.Value;                     //综合单价(清空)
                     rows[8] = DBNull.Value;                     //人工费用(清空)
                     rows[9] = DBNull.Value;                     //辅材费用(清空)
-                    rows[10] = sourcedt.Rows[0][4];             //单价
+                    rows[10] = sourcedt.Rows[0][5];             //单价
                     rows[11] = DBNull.Value;                    //临时材料单价(清空)
                     rows[12] = DBNull.Value;                    //合计(清空)
                     rows[13] = DBNull.Value;                    //备注(清空)
@@ -1219,9 +1220,9 @@ namespace RD.UI.Order
             gvshow.Columns[2].Visible = false;
 
             //设置指定列不能编辑
-            gvshow.Columns[3].ReadOnly = true; //材料大类名称
-            gvshow.Columns[5].ReadOnly = true; //单位名称
-            gvshow.Columns[7].ReadOnly = true; //综合单价
+            gvshow.Columns[3].ReadOnly = true;  //材料大类名称
+            gvshow.Columns[5].ReadOnly = true;  //单位名称
+            gvshow.Columns[7].ReadOnly = true;  //综合单价
             gvshow.Columns[10].ReadOnly = true; //单价
             gvshow.Columns[12].ReadOnly = true; //合计
 

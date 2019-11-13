@@ -228,6 +228,7 @@ namespace RD.UI.Order
                 //区分:当_remark="A"时,表示‘新增’记录,可多行选择; 反之,为‘替换’使用,只能选择一行
                 if (gvdtl.SelectedRows.Count == 0) throw new Exception("没有选中行,请选择后再继续");
                 //根据不同情况获取不同的临时表
+                //'室内装修工程单'使用
                 if (_funname == "HouseProject")
                 {
                     //基础信自息库获取
@@ -241,6 +242,7 @@ namespace RD.UI.Order
                         _resultTable = dtList.Get_HistoryAdornEmptydt();
                     }
                 }
+                //'室内主材单'使用
                 else
                 {
                     if (rdchooseBd.Checked)
@@ -256,29 +258,63 @@ namespace RD.UI.Order
                 //当为‘新增’操作时执行
                 if (_remark == "A")
                 {
-                    //循环所选行数
-                    foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                    //'室内装修工程单'使用
+                    if (_funname == "HouseProject")
                     {
-                        var newrow = _resultTable.NewRow();
-                        newrow[0] = row.Cells[0].Value; //Htypeid(MaterialId)   
-                        newrow[1] = row.Cells[1].Value; //装修工程类别(材料大类)
-                        newrow[2] = row.Cells[2].Value; //项目名称(材料名称)
-                        newrow[3] = row.Cells[3].Value; //单位
-                        newrow[4] = row.Cells[4].Value; //单价
-                        _resultTable.Rows.Add(newrow);
+                        //循环所选行数
+                        foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                        {
+                            var newrow = _resultTable.NewRow();
+                            newrow[0] = row.Cells[0].Value; //Htypeid
+                            newrow[1] = row.Cells[1].Value; //装修工程类别
+                            newrow[2] = row.Cells[2].Value; //项目名称
+                            newrow[3] = row.Cells[3].Value; //单位
+                            newrow[4] = row.Cells[4].Value; //单价
+                            _resultTable.Rows.Add(newrow);
+                        }
                     }
+                    //'室内主材单'使用
+                    else
+                    {
+                        //循环所选行数
+                        foreach (DataGridViewRow row in gvdtl.SelectedRows)
+                        {
+                            var newrow = _resultTable.NewRow();
+                            newrow[0] = row.Cells[0].Value; //MaterialId   
+                            newrow[1] = row.Cells[1].Value; //材料大类
+                            newrow[2] = row.Cells[2].Value; //材料名称
+                            newrow[4] = row.Cells[4].Value; //单位
+                            newrow[5] = row.Cells[5].Value; //单价
+                            _resultTable.Rows.Add(newrow);
+                        }
+                    }  
                 }
                 //当为‘替换’操作时
                 else
                 {
                     if (gvdtl.SelectedRows.Count > 1) throw new Exception("只能选择一行记录进行替换,请重新选择");
-                    var newrow = _resultTable.NewRow();
-                    newrow[0] = gvdtl.SelectedRows[0].Cells[0].Value; //Htypeid(MaterialId)   
-                    newrow[1] = gvdtl.SelectedRows[0].Cells[1].Value; //装修工程类别(材料大类名称)
-                    newrow[2] = gvdtl.SelectedRows[0].Cells[2].Value; //项目名称(材料名称)
-                    newrow[3] = gvdtl.SelectedRows[0].Cells[3].Value; //单位
-                    newrow[4] = gvdtl.SelectedRows[0].Cells[4].Value; //单价
-                    _resultTable.Rows.Add(newrow);
+                    //'室内装修工程单'使用
+                    if (_funname == "HouseProject")
+                    {
+                        var newrow = _resultTable.NewRow();
+                        newrow[0] = gvdtl.SelectedRows[0].Cells[0].Value; //Htypeid  
+                        newrow[1] = gvdtl.SelectedRows[0].Cells[1].Value; //装修工程类别
+                        newrow[2] = gvdtl.SelectedRows[0].Cells[2].Value; //项目名称
+                        newrow[3] = gvdtl.SelectedRows[0].Cells[3].Value; //单位
+                        newrow[4] = gvdtl.SelectedRows[0].Cells[4].Value; //单价
+                        _resultTable.Rows.Add(newrow);
+                    }
+                    //'室内主材单'使用
+                    else
+                    {
+                        var newrow = _resultTable.NewRow();
+                        newrow[0] = gvdtl.SelectedRows[0].Cells[0].Value; //MaterialId   
+                        newrow[1] = gvdtl.SelectedRows[0].Cells[1].Value; //材料大类名称
+                        newrow[2] = gvdtl.SelectedRows[0].Cells[2].Value; //材料名称
+                        newrow[4] = gvdtl.SelectedRows[0].Cells[4].Value; //单位
+                        newrow[5] = gvdtl.SelectedRows[0].Cells[5].Value; //单价
+                        _resultTable.Rows.Add(newrow);
+                    }
                 }
                 //完成后关闭该窗体
                 this.Close();
