@@ -554,13 +554,15 @@ namespace RD.UI.Order
                 foreach (DataRow rows in sourcedt.Rows)
                 {
                     var newrow = gridViewdt.NewRow();
-                    newrow[0] = _pid;       //id(表头主键ID)
-                    newrow[2] = rows[0];    //MaterialId
-                    newrow[3] = rows[1];    //材料大类名称
-                    newrow[4] = rows[2];    //材料名称
-                    newrow[5] = rows[4];    //单位名称
-                    newrow[10] = rows[5];   //单价
-                    newrow[16] = ++rowid;   //RowId(单据状态为C时使用)
+                    newrow[0] = _pid;                           //id(表头主键ID)
+                    newrow[2] = rows[0];                        //MaterialId
+                    newrow[3] = rows[1];                        //材料大类名称
+                    newrow[4] = rows[2];                        //材料名称
+                    newrow[5] = rows[4];                        //单位名称
+                    newrow[10] = rows[5];                       //单价
+                    newrow[14] = GlobalClasscs.User.StrUsrName;   //录入人(更新至当前用户)
+                    newrow[15] = DateTime.Now.Date;               //录入日期(更新至当天)
+                    newrow[16] = ++rowid;                       //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
 

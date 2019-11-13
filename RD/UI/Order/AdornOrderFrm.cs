@@ -394,13 +394,15 @@ namespace RD.UI.Order
                 foreach (DataRow rows in sourcedt.Rows)
                 {
                     var newrow = gridViewdt.NewRow();
-                    newrow[0] = _pid;       //id(表头主键ID)
-                    newrow[2] = rows[0];    //工程类别ID
-                    newrow[4] = rows[1];    //装修工程类别
-                    newrow[5] = rows[2];    //项目名称
-                    newrow[6] = rows[3];    //单位名称
-                    newrow[11] = rows[4];   //单价
-                    newrow[17] = ++rowid;   //RowId(单据状态为C时使用)
+                    newrow[0] = _pid;                           //id(表头主键ID)
+                    newrow[2] = rows[0];                        //工程类别ID
+                    newrow[4] = rows[1];                        //装修工程类别
+                    newrow[5] = rows[2];                        //项目名称
+                    newrow[6] = rows[3];                        //单位名称
+                    newrow[11] = rows[4];                       //单价
+                    newrow[15] = GlobalClasscs.User.StrUsrName; //录入人(更新至当前用户)
+                    newrow[16] = DateTime.Now.Date;             //录入日期(更新至当天)
+                    newrow[17] = ++rowid;                       //RowId(单据状态为C时使用)
                     gridViewdt.Rows.Add(newrow);
                 }
 

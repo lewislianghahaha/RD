@@ -515,7 +515,7 @@ namespace RD.DB
                              FROM dbo.T_PRO_AdornEntry a
                              INNER JOIN dbo.T_BD_HTypeEntry b ON a.HTypeid=b.HTypeid
                              WHERE a.Id='{pid}'
-                             order by a.HTypeid
+                             order by a.id,a.HTypeid
                           ";
                     break;
                 case "MaterialOrder":
@@ -527,7 +527,7 @@ namespace RD.DB
                                     null RowId --行标记,单据状态为C时使用              
                                FROM dbo.T_PRO_MaterialEntry a
                                WHERE a.Id='{pid}'
-                               order by a.MaterialId
+                               order by a.id,a.MaterialId
                                 ";
                     break;
             }
