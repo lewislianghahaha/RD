@@ -1035,6 +1035,7 @@ namespace RD.UI.Order
             {
                 try
                 {
+                    if (tmsave.Enabled) throw new Exception($"没有提交的记录不能进行打印,请先将单据'{txtOrderNo.Text}'提交后继续");
                     task.TaskId = 4;
                     task.FunctionId = "4";
                     task.Id = _pid;
