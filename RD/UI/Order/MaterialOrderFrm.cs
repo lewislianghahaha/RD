@@ -1142,10 +1142,10 @@ namespace RD.UI.Order
                     //初始化时判断;若“总页数”=1，四个按钮不可用；若>1,“下一页” “末页”按钮可用
                     if (_totalpagecount == 1)
                     {
-                        bnMoveNextItem.Enabled = false;
-                        bnMoveLastItem.Enabled = false;
-                        bnMoveNextItem.Enabled = false;
-                        bnMoveLastItem.Enabled = false;
+                        bnMoveFirstItem.Enabled = false;                            //'首页'按钮
+                        bnMovePreviousItem.Enabled = false;                         //'上一页'按钮
+                        bnMoveNextItem.Enabled = false;                             //'下一页'按钮
+                        bnMoveLastItem.Enabled = false;                             //'末页'按钮
                         bnPositionItem.Enabled = false;                             //跳转页文本框
                     }
                     else
